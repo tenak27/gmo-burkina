@@ -8,6 +8,7 @@ import {
   ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus
 } from "lucide-react";
 import DeliveryProgress from "@/components/client/DeliveryProgress";
+import LogisticsTracker from "@/components/client/LogisticsTracker";
 
 const STATUS_CONFIG = {
   en_attente:     { label: "En attente",     color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200",  icon: Circle },
@@ -227,14 +228,14 @@ function ClientDashboard() {
                 {activeOrders.length > 0 && (
                   <>
                     <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mb-2">En cours ({activeOrders.length})</p>
-                    {activeOrders.map(o => <OrderCard key={o.id} order={o} />)}
+                    {activeOrders.map(o => <LogisticsTracker key={o.id} order={o} />)}
                   </>
                 )}
                 {/* Done */}
                 {doneOrders.length > 0 && (
                   <>
                     <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mt-5 mb-2">Historique ({doneOrders.length})</p>
-                    {doneOrders.map(o => <OrderCard key={o.id} order={o} />)}
+                    {doneOrders.map(o => <LogisticsTracker key={o.id} order={o} />)}
                   </>
                 )}
               </div>

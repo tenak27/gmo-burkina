@@ -146,4 +146,22 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   }
+
+  /* Mobile sidebar slide-in */
+  @keyframes slideInLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+  }
+  .animate-slide-in-left {
+    animation: slideInLeft 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Smooth tab fade-in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
 }

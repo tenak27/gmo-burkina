@@ -8,9 +8,11 @@ import {
   ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send
 } from "lucide-react";
 import StocksView from "@/components/retailer/StocksView";
+import ProductGallery from "@/components/retailer/ProductGallery";
 
 const TABS = [
   { id: "accueil", label: "Accueil" },
+  { id: "catalogue", label: "Catalogue" },
   { id: "stocks", label: "Stocks" },
   { id: "commande", label: "Commander" },
   { id: "livraisons", label: "Livraisons" },
@@ -211,6 +213,22 @@ function RetailerDashboard() {
                 <p className="text-[10px] text-obsidian/35 font-body">Remise actuelle</p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ── CATALOGUE GALERIE ── */}
+        {tab === "catalogue" && (
+          <div>
+            <div className="mb-5">
+              <h2 className="font-heading text-xl font-bold text-obsidian">Catalogue produits</h2>
+              <p className="text-xs text-obsidian/40 font-body mt-0.5">Tarifs grossiste · Ajout rapide au panier</p>
+            </div>
+            <ProductGallery
+              products={products}
+              cart={cart}
+              setCart={setCart}
+              onGoToCart={() => setTab("commande")}
+            />
           </div>
         )}
 

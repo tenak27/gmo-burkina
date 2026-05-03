@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import RoleGuard from "@/components/auth/RoleGuard";
-import AdminHeader from "@/components/admin/AdminHeader";
-import DashboardTab from "@/components/admin/DashboardTab";
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import DashboardVisual from "@/components/admin/DashboardVisual";
 import ClientsTab from "@/components/admin/ClientsTab";
 import SuppliersTab from "@/components/admin/SuppliersTab";
 import InvoicesTab from "@/components/admin/InvoicesTab";
@@ -19,7 +19,6 @@ import UsersAdminTab from "@/components/admin/UsersAdminTab";
 function AdminDashboard() {
   const [tab, setTab] = useState("dashboard");
 
-  // All data state
   const [users, setUsers] = useState([]);
   const [clients, setClients] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
@@ -34,11 +33,8 @@ function AdminDashboard() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadAll();
-  }, []);
+  useEffect(() => { loadAll(); }, []);
 
-  // Real-time orders
   useEffect(() => {
     const unsub = base44.entities.Order.subscribe(event => {
       setOrders(prev => {
@@ -83,42 +79,46 @@ function AdminDashboard() {
   };
 
   const pendingOrders = orders.filter(o => o.status === "en_attente").length;
-
   const allData = { users, clients, suppliers, products, orders, invoices, employees, entries };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F2F4F7] flex items-center justify-center">
+      <div className="min-h-screen bg-[#1C1C1E] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-3 border-gmo-green/30 border-t-gmo-green rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs text-obsidian/40 font-body">Chargement ERP…</p>
+          <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-xs text-white/30 font-body uppercase tracking-widest">Chargement ERP…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F4F7]">
-      <AdminHeader tab={tab} setTab={setTab} pendingOrders={pendingOrders} />
+    <div className="min-h-screen bg-[#F2F4F7] flex flex-col lg:flex-row">
+      {/* Sidebar */}
+      <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} />
 
-      <main className="max-w-full px-4 sm:px-6 py-5">
-        {tab === "dashboard"  && <DashboardTab data={allData} setTab={setTab} />}
-        {tab === "clients"    && <ClientsTab clients={clients} setClients={setClients} />}
-        {tab === "suppliers"  && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
-        {tab === "invoices"   && <InvoicesTab invoices={invoices} setInvoices={setInvoices} />}
-        {tab === "delivery"   && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
-        {tab === "products"   && <ProductsTab products={products} setProducts={setProducts} />}
-        {tab === "categories" && <CategoriesTab categories={categories} setCategories={setCategories} />}
-        {tab === "warehouses" && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
-        {tab === "stock"      && <StockTab movements={movements} setMovements={setMovements} />}
-        {tab === "accounting" && <AccountingTab entries={entries} setEntries={setEntries} />}
-        {tab === "hr"         && <HRTab employees={employees} setEmployees={setEmployees} />}
-        {tab === "orders"     && <OrdersAdminTab orders={orders} setOrders={setOrders} />}
-        {tab === "users"      && <UsersAdminTab users={users} />}
-
-        <p className="text-center text-[9px] text-obsidian/15 font-body mt-8 uppercase tracking-widest">
-          GMO Burkina ERP · IAM Technology · Développé par Armand Olivier KONATE
-        </p>
+      {/* Main content */}
+      <main className="flex-1 min-w-0 overflow-x-hidden">
+        <div className="max-w-full px-4 sm:px-6 py-5">
+          <div key={tab} className="page-enter">
+            {tab === "dashboard"  && <DashboardVisual data={allData} setTab={setTab} />}
+            {tab === "clients"    && <ClientsTab clients={clients} setClients={setClients} />}
+            {tab === "suppliers"  && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
+            {tab === "invoices"   && <InvoicesTab invoices={invoices} setInvoices={setInvoices} />}
+            {tab === "delivery"   && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
+            {tab === "products"   && <ProductsTab products={products} setProducts={setProducts} />}
+            {tab === "categories" && <CategoriesTab categories={categories} setCategories={setCategories} />}
+            {tab === "warehouses" && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
+            {tab === "stock"      && <StockTab movements={movements} setMovements={setMovements} />}
+            {tab === "accounting" && <AccountingTab entries={entries} setEntries={setEntries} />}
+            {tab === "hr"         && <HRTab employees={employees} setEmployees={setEmployees} />}
+            {tab === "orders"     && <OrdersAdminTab orders={orders} setOrders={setOrders} />}
+            {tab === "users"      && <UsersAdminTab users={users} />}
+          </div>
+          <p className="text-center text-[9px] text-obsidian/15 font-body mt-8 uppercase tracking-widest">
+            GMO Burkina ERP · IAM Technology · Développé par Armand Olivier KONATE
+          </p>
+        </div>
       </main>
     </div>
   );
