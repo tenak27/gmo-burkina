@@ -113,7 +113,7 @@ function AdminDashboard() {
             {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
             {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
             {tab === "suppliers"    && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
-            {tab === "invoices"     && <InvoicesTab invoices={invoices} setInvoices={setInvoices} />}
+            {tab === "invoices"     && <InvoicesTab invoices={invoices} setInvoices={setInvoices} clients={clients} products={products} />}
             {tab === "delivery"     && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
             {tab === "drivers"      && <DriversTab drivers={drivers} setDrivers={setDrivers} />}
             {tab === "products"     && <ProductsTab products={products} setProducts={setProducts} />}
@@ -124,7 +124,7 @@ function AdminDashboard() {
             {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} />}
             {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} />}
             {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
-            {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} />}
+            {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
             {tab === "users"        && <UsersAdminTab users={users} />}
           </div>
           <p className="text-center text-[9px] text-obsidian/10 font-body mt-8">
