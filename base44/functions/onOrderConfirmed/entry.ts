@@ -13,19 +13,19 @@ Deno.serve(async (req) => {
 
     const { event, data, old_data } = body;
 
-    // Only act when status changes to "confirmee" or "livree"
     const newStatus = data?.status;
     const oldStatus = old_data?.status;
+    const eventType = event?.type; // "create" | "update"
 
-    if (!["confirmee", "livree"].includes(newStatus)) {
-      return Response.json({ skipped: true, reason: "status not confirmee or livree" });
+    // Only act when status is "confirmee"
+    // - on update: status just changed to "confirmee" (not from "confirmee" already)
+    // - on create: order was created directly with status "confirmee"
+    if (newStatus !== "confirmee") {
+      return Response.json({ skipped: true, reason: "status not confirmee" });
     }
-    // Avoid double-decrement if already processed (e.g. confirmee → livree)
-    if (oldStatus === "confirmee" && newStatus === "livree") {
-      return Response.json({ skipped: true, reason: "already decremented at confirmee" });
-    }
-    if (oldStatus === newStatus) {
-      return Response.json({ skipped: true, reason: "status unchanged" });
+    // Avoid double-decrement: if already "confirmee" before (update from confirmee to confirmee)
+    if (eventType === "update" && oldStatus === "confirmee") {
+      return Response.json({ skipped: true, reason: "already confirmee — no change" });
     }
 
     const items = data?.items;

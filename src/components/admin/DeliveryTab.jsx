@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityTable from "./EntityTable";
 import EntityForm from "./EntityForm";
+import DeliveryPdfButton from "./DeliveryPdfButton";
 
 const TYPE_LABELS = { bon_livraison: "Bon de Livraison", bon_enlevement: "Bon d'Enlèvement", bon_commande: "Bon de Commande" };
 const STATUS_STYLE = {
@@ -31,6 +32,7 @@ const COLUMNS = [
   { key: "driver", label: "Chauffeur", render: v => <span className="text-xs text-obsidian/50 font-body">{v || "—"}</span> },
   { key: "vehicle", label: "Véhicule", render: v => <span className="text-xs text-obsidian/50 font-body">{v || "—"}</span> },
   { key: "status", label: "Statut", align: "center", render: v => <span className={`text-[10px] px-2 py-0.5 rounded-full font-body ${STATUS_STYLE[v] || "bg-gray-100 text-obsidian/40"}`}>{{brouillon:"Brouillon",valide:"Validé",livre:"Livré",annule:"Annulé"}[v]||v}</span> },
+  { key: "id", label: "PDF", align: "center", render: (v, r) => <DeliveryPdfButton deliveryId={v} number={r.number} /> },
 ];
 
 const EMPTY = { type: "bon_livraison", number: "", date: "", client_name: "", supplier_name: "", warehouse_name: "", driver: "", vehicle: "", status: "brouillon", notes: "" };

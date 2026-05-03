@@ -57,66 +57,65 @@ Deno.serve(async (req) => {
     const doc = new jsPDF({ unit: "mm", format: "a4" });
     const W = 210, H = 297;
 
-    // ── HEADER GREEN BAR ──
+    // ── HEADER ──
     doc.setFillColor(26, 122, 46);
-    doc.rect(0, 0, W, 42, 'F');
+    doc.rect(0, 0, W, 40, 'F');
+    doc.setFillColor(204, 23, 23);
+    doc.rect(0, 40, W, 2, 'F');
 
     // Logo area (white box)
     doc.setFillColor(255, 255, 255);
-    doc.roundedRect(12, 8, 55, 26, 2, 2, 'F');
+    doc.roundedRect(12, 7, 52, 26, 2, 2, 'F');
     doc.setTextColor(26, 122, 46);
-    doc.setFontSize(16);
+    doc.setFontSize(15);
     doc.setFont("helvetica", "bold");
-    doc.text("GMO BURKINA", 39, 23, { align: "center" });
-    doc.setFontSize(7);
-    doc.setTextColor(26, 122, 46);
-    doc.text("Groupe Madina Oumarou", 39, 29, { align: "center" });
+    doc.text("GMO BURKINA", 38, 21, { align: "center" });
+    doc.setFontSize(6.5);
+    doc.setTextColor(100, 150, 100);
+    doc.text("Groupe Madina Oumarou", 38, 28, { align: "center" });
 
     // Doc type
     const typeLabel = { facture: "FACTURE", proforma: "PROFORMA", devis: "DEVIS" }[inv.type] || "DOCUMENT";
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(22);
+    doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
-    doc.text(typeLabel, W - 15, 20, { align: "right" });
+    doc.text(typeLabel, W - 14, 18, { align: "right" });
     doc.setFontSize(11);
-    doc.text(inv.number || "—", W - 15, 30, { align: "right" });
-
-    // White accent line
-    doc.setFillColor(204, 23, 23);
-    doc.rect(0, 42, W, 2, 'F');
+    doc.text(inv.number || "—", W - 14, 28, { align: "right" });
 
     // ── COMPANY INFO ──
     doc.setTextColor(60, 60, 60);
-    doc.setFontSize(8);
+    doc.setFontSize(7.5);
     doc.setFont("helvetica", "normal");
     let y = 52;
     const companyLines = [
       "Quartier Dapoya, Parcelle 05, Lot 29, Section BI",
       "01 BP 3370 · Ouagadougou, Burkina Faso",
       "Tél: +226 25 33 19 00 · WhatsApp: +226 76 21 16 33",
-      "Email: infos@gmoburkina.com",
+      "Email: infos@gmoburkina.com · www.gmobfaso.com",
     ];
     companyLines.forEach(l => { doc.text(l, 14, y); y += 5; });
 
     // ── CLIENT BOX ──
-    doc.setFillColor(248, 248, 248);
-    doc.roundedRect(110, 50, 85, 35, 3, 3, 'F');
-    doc.setDrawColor(220, 220, 220);
+    doc.setFillColor(246, 248, 250);
+    doc.roundedRect(110, 48, 86, 36, 3, 3, 'F');
+    doc.setDrawColor(210, 220, 210);
     doc.setLineWidth(0.3);
-    doc.roundedRect(110, 50, 85, 35, 3, 3, 'S');
+    doc.roundedRect(110, 48, 86, 36, 3, 3, 'S');
 
     doc.setFontSize(7);
     doc.setTextColor(150, 150, 150);
     doc.setFont("helvetica", "bold");
-    doc.text("FACTURER À", 118, 57);
-    doc.setTextColor(30, 30, 30);
-    doc.setFontSize(10);
-    doc.text(inv.client_name || "—", 118, 64);
-    doc.setFontSize(8);
+    doc.text("FACTURER À", 118, 55);
+    doc.setTextColor(26, 122, 46);
+    doc.setFontSize(10.5);
+    doc.setFont("helvetica", "bold");
+    doc.text(inv.client_name || "—", 118, 63);
+    doc.setFontSize(7.5);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(80, 80, 80);
-    if (inv.date) doc.text(`Date: ${new Date(inv.date).toLocaleDateString("fr-FR")}`, 118, 71);
-    if (inv.due_date) doc.text(`Échéance: ${new Date(inv.due_date).toLocaleDateString("fr-FR")}`, 118, 77);
+    if (inv.date) doc.text(`Émis le: ${new Date(inv.date).toLocaleDateString("fr-FR")}`, 118, 70);
+    if (inv.due_date) doc.text(`Échéance: ${new Date(inv.due_date).toLocaleDateString("fr-FR")}`, 118, 76);
 
     // ── STATUS BADGE ──
     const statusColors = { paye:[26,122,46], envoye:[59,130,246], brouillon:[150,150,150], partiel:[245,158,11], annule:[204,23,23] };
