@@ -9,6 +9,7 @@ import ProductsSection from "../components/landing/ProductsSection";
 import TestimonialsSection from "../components/landing/TestimonialsSection";
 import JourneyBanner from "../components/landing/JourneyBanner";
 import GallerySection from "../components/landing/GallerySection";
+import BlogSection from "../components/landing/BlogSection";
 import GMOFootSection from "../components/landing/GMOFootSection";
 import CoverageMap from "../components/landing/CoverageMap";
 import ContactSection from "../components/landing/ContactSection";
@@ -35,7 +36,7 @@ export default function Home() {
   return (
     <div className="bg-obsidian min-h-screen">
       <Navbar />
-      <HeroSection heroImage={IMAGES.hero} />
+      <HeroSection />
       <PartnersCarousel />
       <ServicesSection />
       <StatsSection />
@@ -44,6 +45,7 @@ export default function Home() {
       <TestimonialsSection />
       <JourneyBanner journeyImage={IMAGES.journey} />
       <GallerySection images={galleryImages} />
+      <BlogSection />
       <GMOFootSection />
       <CoverageMap />
       <ContactSection />

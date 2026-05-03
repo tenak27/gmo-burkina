@@ -71,8 +71,8 @@ export default function Footer() {
 
         {/* Giant GMOB */}
         <div className="text-center overflow-hidden -mb-6 select-none pointer-events-none">
-          <span className="font-heading text-[100px] sm:text-[160px] lg:text-[220px] font-bold text-white/[0.025] leading-none">
-            GMOB
+          <span className="font-heading text-[80px] sm:text-[130px] lg:text-[180px] font-bold text-white/[0.025] leading-none">
+            GMO BURKINA
           </span>
         </div>
       </div>

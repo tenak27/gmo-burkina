@@ -29,7 +29,7 @@ export default function GallerySection({ images }) {
             transition={{ delay: 0.2 }}
             className="font-heading text-4xl lg:text-5xl font-bold text-concrete"
           >
-            GALERIE FLOTTE
+            GALERIE
           </motion.h2>
           <motion.div
             initial={{ scaleX: 0 }}
