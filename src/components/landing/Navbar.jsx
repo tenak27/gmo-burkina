@@ -33,10 +33,10 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-obsidian/95 backdrop-blur-md shadow-lg"
+            ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100"
             : "bg-transparent"
         }`}
       >
@@ -47,24 +47,27 @@ export default function Navbar() {
               <img
                 src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
                 alt="GMO Logo"
-                className="h-10 w-auto object-contain"
+                className={`h-10 w-auto object-contain transition-all duration-300 ${!scrolled ? "brightness-0 invert" : ""}`}
               />
             </button>
 
             {/* Desktop Links */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-7">
               {NAV_LINKS.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="font-body text-sm text-concrete/70 hover:text-gmo-green transition-colors duration-300 tracking-wide uppercase"
+                  className={`font-body text-sm transition-colors duration-300 tracking-wide relative group ${
+                    scrolled ? "text-obsidian/60 hover:text-gmo-green" : "text-white/70 hover:text-white"
+                  }`}
                 >
                   {link.label}
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-gmo-green group-hover:w-full transition-all duration-300 rounded-full" />
                 </button>
               ))}
               <a
                 href="tel:+22625331900"
-                className="ml-4 flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 hover:bg-gmo-green/80 transition-colors duration-300"
+                className="ml-2 flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-gmo-green/90 hover:shadow-lg hover:shadow-gmo-green/25 hover:-translate-y-0.5 transition-all duration-300"
               >
                 <Phone className="w-4 h-4" />
                 Appeler
@@ -74,7 +77,7 @@ export default function Navbar() {
             {/* Mobile Toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden text-concrete p-2"
+              className={`lg:hidden p-2 transition-colors ${scrolled ? "text-obsidian" : "text-white"}`}
             >
               {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -89,24 +92,25 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-obsidian/98 backdrop-blur-lg pt-24 px-8"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-white pt-24 px-8 overflow-y-auto"
           >
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-5">
               {NAV_LINKS.map((link, i) => (
                 <motion.button
                   key={link.href}
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.08 }}
+                  transition={{ delay: i * 0.06 }}
                   onClick={() => scrollTo(link.href)}
-                  className="font-heading text-3xl text-concrete/90 hover:text-gmo-green text-left transition-colors"
+                  className="font-heading text-2xl text-obsidian/80 hover:text-gmo-green text-left transition-colors border-b border-gray-100 pb-4"
                 >
                   {link.label}
                 </motion.button>
               ))}
               <a
                 href="tel:+22625331900"
-                className="mt-6 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-lg px-6 py-4"
+                className="mt-4 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-base px-6 py-4 rounded-xl"
               >
                 <Phone className="w-5 h-5" />
                 +226 25 33 19 00

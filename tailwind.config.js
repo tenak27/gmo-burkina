@@ -14,11 +14,13 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
-        obsidian: '#121212',
+        obsidian: '#1C1C1E',
         gold: '#F5C400',
         'gmo-green': '#1A7A2E',
         'gmo-red': '#CC1717',
-        concrete: '#F2F2F2',
+        concrete: '#F8F8F6',
+        'light-gray': '#F2F4F7',
+        cream: '#FDFCF8',
         amber: '#F5C400',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -83,12 +85,27 @@ module.exports = {
         'ticker': {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' }
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%':       { transform: 'translateY(-8px)' }
+        },
+        'pulse-green': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(26,122,46,0.4)' },
+          '50%':       { boxShadow: '0 0 0 10px rgba(26,122,46,0)' }
+        },
+        'shimmer': {
+          '0%':   { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' }
         }
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
-        'ticker': 'ticker 30s linear infinite'
+        'ticker': 'ticker 35s linear infinite',
+        'float': 'float 4s ease-in-out infinite',
+        'pulse-green': 'pulse-green 2s ease-in-out infinite',
+        'shimmer': 'shimmer 2.5s linear infinite'
   		}
   	}
   },

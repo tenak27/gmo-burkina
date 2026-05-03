@@ -9,6 +9,7 @@ import TestimonialsSection from "../components/landing/TestimonialsSection";
 import GallerySection from "../components/landing/GallerySection";
 import GMOFootSection from "../components/landing/GMOFootSection";
 import PartnersSection from "../components/landing/PartnersSection";
+import CoverageMap from "../components/landing/CoverageMap";
 import ContactSection from "../components/landing/ContactSection";
 import Footer from "../components/landing/Footer";
 
@@ -42,6 +43,7 @@ export default function Home() {
       <GallerySection images={galleryImages} />
       <GMOFootSection />
       <PartnersSection />
+      <CoverageMap />
       <ContactSection />
       <Footer />
     </div>
