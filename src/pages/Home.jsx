@@ -5,7 +5,9 @@ import ServicesSection from "../components/landing/ServicesSection";
 import AboutSection from "../components/landing/AboutSection";
 import ProductsSection from "../components/landing/ProductsSection";
 import JourneyBanner from "../components/landing/JourneyBanner";
+import TestimonialsSection from "../components/landing/TestimonialsSection";
 import GallerySection from "../components/landing/GallerySection";
+import GMOFootSection from "../components/landing/GMOFootSection";
 import PartnersSection from "../components/landing/PartnersSection";
 import ContactSection from "../components/landing/ContactSection";
 import Footer from "../components/landing/Footer";
@@ -33,10 +35,12 @@ export default function Home() {
       <Navbar />
       <HeroSection heroImage={IMAGES.hero} />
       <ServicesSection />
-      <AboutSection hubImage={IMAGES.hub} detailImage={IMAGES.detail} />
+      <AboutSection />
       <ProductsSection />
+      <TestimonialsSection />
       <JourneyBanner journeyImage={IMAGES.journey} />
       <GallerySection images={galleryImages} />
+      <GMOFootSection />
       <PartnersSection />
       <ContactSection />
       <Footer />

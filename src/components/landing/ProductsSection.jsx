@@ -2,69 +2,84 @@ import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 
+const CATEGORIES = ["Tous", "Alimentaire", "Confiserie", "Hygiène", "Agriculture"];
+
 const PRODUCTS = [
   {
     name: "Huile de coton MADINA",
     category: "Alimentaire",
+    brand: "MADINA · SN CITEC",
     description:
-      "L'huile de coton raffinée MADINA, enrichie en vitamine A, 100% huile végétale et sans cholestérol, est fortement recommandée pour sa qualité nutritionnelle. MADINA, la saveur enrichie de la bonne cuisine. Les plus fins gourmets du Burkina Faso connaissent bien sa qualité.",
-    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% huile végétale", "Disponible en bidon 20L et 5L"],
+      "L'huile de coton raffinée MADINA, enrichie en vitamine A, 100% huile végétale et sans cholestérol, est fortement recommandée pour sa qualité nutritionnelle.",
+    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% végétale", "Bidon 20L et 5L"],
     image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/678f80d25_huile.jpg",
-    brand: "MADINA",
   },
   {
     name: "Farine de blé — Blé du Sahel",
     category: "Alimentaire",
+    brand: "Blé du Sahel · GMO",
     description:
-      "La farine de blé est le résultat de la mouture de la graine du blé tendre ou froment. Produite par le Grand Moulin du Faso dont l'expérience n'est plus à présenter, distribuée par GMO.",
-    details: ["Pure farine de blé", "Produit par le Grand Moulin du Faso", "Plusieurs formats disponibles"],
+      "Pure farine de blé, résultat de la mouture de la graine du blé tendre ou froment. Produite par le Grand Moulin du Faso, distribuée par GMO.",
+    details: ["Pure farine de blé", "Grand Moulin du Faso", "Plusieurs formats"],
     image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/41c37a185_ble.jpg",
-    brand: "Blé du Sahel",
+  },
+  {
+    name: "Sucre blond & blanc",
+    category: "Alimentaire",
+    brand: "GAZELLE · CASCADE",
+    description:
+      "Sucre blond de canne sans aromatisants ni colorants, conditionné sous différents formats. Également disponible en sucre blanc sous la dénomination CASCADE.",
+    details: ["Sac 50 kg granulé", "Sachets 1 kg (lot 25–50 kg)", "Morceaux GAZELLE", "Sucre blanc CASCADE"],
+    image: "https://gmobfaso.com/assets/img/produits/sucre.jpg",
   },
   {
     name: "Chewing-gum ETALON",
     category: "Confiserie",
+    brand: "ETALON · COBUFA",
     description:
-      "Découvrez une explosion de saveurs avec nos délicieux chewing-gums et bonbons produits par COBUFA. Faits à partir des meilleurs ingrédients de qualité, soigneusement sélectionnés pour offrir une expérience gustative exceptionnelle à chaque bouchée.",
-    details: ["Produit par COBUFA", "Différentes saveurs", "Idéal pour toute occasion"],
+      "Explosion de saveurs avec nos délicieux chewing-gums produits par COBUFA. Ingrédients de qualité, saveurs fruitées pour toutes les occasions.",
+    details: ["Produit par COBUFA", "Différentes saveurs", "Conditionnement varié"],
     image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/51c70cd01_chewingum.jpg",
-    brand: "ETALON",
+  },
+  {
+    name: "Bonbons ZOODO",
+    category: "Confiserie",
+    brand: "ZOODO · COBUFA",
+    description:
+      "Les bonbons ZOODO, une œuvre d'art de couleur et de texture qui ravira vos papilles avec sa douceur sucrée et sa saveur fruitée incomparable.",
+    details: ["Produit par COBUFA", "Saveur fruitée unique", "Idéal pour tout âge"],
+    image: "https://gmobfaso.com/assets/img/produits/chewingum.jpg",
   },
   {
     name: "Savon SN CITEC",
     category: "Hygiène",
-    description:
-      "À partir de corps gras végétaux (beurre de karité, acide gras de palme...), le savon de ménage SN CITEC est obtenu par saponification. Grâce à ses vertus hypoallergéniques et bactéricides, il est recommandé pour les peaux sensibles.",
-    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux", "Multi-usages — linge & hygiène", "Recommandé par les dermatologues"],
-    image: "https://gmobfaso.com/assets/img/produits/savon.jpg",
     brand: "SN CITEC",
+    description:
+      "À partir de corps gras végétaux (karité, acide gras de palme), le savon SN CITEC est hypoallergénique et bactéricide — recommandé pour les peaux sensibles.",
+    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux", "Multi-usages", "Recommandé dermato"],
+    image: "https://gmobfaso.com/assets/img/produits/savon.jpg",
   },
   {
-    name: "Sucre — GAZELLE & CASCADE",
-    category: "Alimentaire",
+    name: "Produits Axe",
+    category: "Hygiène",
+    brand: "AXE · GMO",
     description:
-      "Sucre blond de canne sans addition d'aromatisants ou de colorants, conditionné sous différents formats. Également disponible en sucre blanc sous la dénomination CASCADE.",
-    details: [
-      "Granulé en sac de 50 kg",
-      "Sachets de 1 kg en lot de 25–50 kg",
-      "Morceaux en paquets (GAZELLE)",
-      "Sucre blanc en morceaux (CASCADE)",
-    ],
-    image: "https://gmobfaso.com/assets/img/produits/sucre.jpg",
-    brand: "GAZELLE · CASCADE",
+      "Gamme complète de produits d'hygiène Axe distribués par GMO à travers tout le Burkina Faso. Disponibles dans toutes les villes desservies.",
+    details: ["Déodorants & soins", "Distribution nationale", "Marque internationale"],
+    image: "https://gmobfaso.com/assets/img/produits/axe.jpg",
   },
   {
     name: "Aliments pour bétail",
     category: "Agriculture",
-    description:
-      "Large gamme d'aliments pour bétail, conçus pour répondre aux besoins nutritionnels spécifiques de vos animaux. Bovins, moutons, chèvres — chaque formule est optimisée pour la santé et la croissance.",
-    details: ["Riches en protéines & vitamines", "Formules spécialisées par espèce", "Ingrédients de première qualité"],
-    image: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg",
     brand: "GMO Agri",
+    description:
+      "Large gamme d'aliments pour bétail conçus pour répondre aux besoins nutritionnels spécifiques. Bovins, moutons, chèvres — formules optimisées.",
+    details: ["Riches en protéines", "Formules spécialisées", "Ingrédients de qualité", "Vitamines & minéraux"],
+    image: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg",
   },
 ];
 
-const WHATSAPP_URL = "https://wa.me/22676211633";
+const WHATSAPP = "https://wa.me/22676211633";
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
@@ -76,7 +91,7 @@ function ProductCard({ product, index }) {
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
       className="group relative bg-white border border-obsidian/8 flex flex-col overflow-hidden hover:shadow-xl transition-all duration-500"
     >
       {/* Image */}
@@ -87,7 +102,6 @@ function ProductCard({ product, index }) {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/10 transition-all duration-500" />
-        {/* Category badge */}
         <span className="absolute top-3 left-3 font-body text-[10px] uppercase tracking-widest text-gmo-red bg-white/90 backdrop-blur-sm border border-gmo-red/20 px-3 py-1">
           {product.category}
         </span>
@@ -95,23 +109,16 @@ function ProductCard({ product, index }) {
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-6">
-        <p className="font-body text-[10px] uppercase tracking-widest text-gmo-green/60 mb-1">
-          {product.brand}
-        </p>
-        <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">
-          {product.name}
-        </h3>
-        <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">
-          {product.description}
-        </p>
+        <p className="font-body text-[10px] uppercase tracking-widest text-gmo-green/60 mb-1">{product.brand}</p>
+        <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">{product.name}</h3>
+        <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">{product.description}</p>
 
-        {/* Expandable details */}
         <button
           onClick={() => setExpanded(!expanded)}
           className="flex items-center gap-2 font-body text-xs uppercase tracking-widest text-gmo-green hover:text-gmo-green/70 transition-colors mb-3 text-left"
         >
           {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-          {expanded ? "Masquer" : "Voir les détails"}
+          {expanded ? "Masquer les détails" : "Voir les détails"}
         </button>
 
         <AnimatePresence>
@@ -133,22 +140,19 @@ function ProductCard({ product, index }) {
           )}
         </AnimatePresence>
 
-        {/* Spacer to push CTA to bottom */}
         <div className="flex-1" />
 
-        {/* CTA */}
         <a
-          href={WHATSAPP_URL}
+          href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20un%20devis%20pour%20:%20${encodeURIComponent(product.name)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-4 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-xs uppercase tracking-widest px-4 py-3 hover:bg-gmo-green/80 transition-colors duration-300"
         >
           <MessageCircle className="w-4 h-4" />
-          Commander via WhatsApp
+          Demander un devis
         </a>
       </div>
 
-      {/* Bottom accent line */}
       <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-red w-0 group-hover:w-full transition-all duration-500" />
     </motion.div>
   );
@@ -157,12 +161,17 @@ function ProductCard({ product, index }) {
 export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [activeCategory, setActiveCategory] = useState("Tous");
+
+  const filtered = activeCategory === "Tous"
+    ? PRODUCTS
+    : PRODUCTS.filter((p) => p.category === activeCategory);
 
   return (
     <section id="produits" className="bg-concrete py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
-        <div ref={ref} className="mb-16">
+        <div ref={ref} className="mb-10">
           <motion.span
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
@@ -170,39 +179,78 @@ export default function ProductsSection() {
           >
             Notre catalogue
           </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2 }}
-            className="font-heading text-4xl lg:text-5xl font-bold text-obsidian"
-          >
-            NOS PRODUITS
-          </motion.h2>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={isInView ? { width: 80 } : {}}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="h-[2px] bg-gmo-green mt-6"
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5 }}
-            className="font-body text-base text-obsidian/55 mt-6 max-w-2xl leading-relaxed"
-          >
-            Alimentaires, hygiène, confiserie et agriculture — GMO distribue une gamme complète de produits 
-            de grande consommation à travers tout le Burkina Faso.
-          </motion.p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <motion.h2
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.2 }}
+                className="font-heading text-4xl lg:text-5xl font-bold text-obsidian"
+              >
+                NOS PRODUITS
+              </motion.h2>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={isInView ? { width: 80 } : {}}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                className="h-[2px] bg-gmo-green mt-6"
+              />
+            </div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.5 }}
+              className="font-body text-sm text-obsidian/50 max-w-sm"
+            >
+              Alimentaire, hygiène, confiserie et agriculture — une gamme complète distribuée à travers le Burkina Faso.
+            </motion.p>
+          </div>
         </div>
+
+        {/* Category Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5 }}
+          className="flex flex-wrap gap-3 mb-12"
+        >
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`font-body text-xs uppercase tracking-widest px-5 py-2.5 border transition-all duration-300 ${
+                activeCategory === cat
+                  ? "bg-gmo-green text-white border-gmo-green"
+                  : "border-obsidian/15 text-obsidian/60 hover:border-gmo-green hover:text-gmo-green"
+              }`}
+            >
+              {cat}
+              {cat !== "Tous" && (
+                <span className="ml-2 opacity-50">
+                  {PRODUCTS.filter((p) => p.category === cat).length}
+                </span>
+              )}
+            </button>
+          ))}
+        </motion.div>
 
         {/* Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PRODUCTS.map((product, i) => (
-            <ProductCard key={product.name} product={product} index={i} />
-          ))}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
+            {filtered.map((product, i) => (
+              <ProductCard key={product.name} product={product} index={i} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
-        {/* WhatsApp CTA banner */}
+        {/* CTA Banner */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -210,21 +258,19 @@ export default function ProductsSection() {
           className="mt-16 bg-obsidian p-8 lg:p-12 flex flex-col lg:flex-row items-center justify-between gap-6"
         >
           <div>
-            <p className="font-body text-xs uppercase tracking-widest text-gmo-green/70 mb-2">
-              Besoin d'un devis ?
-            </p>
+            <p className="font-body text-xs uppercase tracking-widest text-gmo-green/70 mb-2">Besoin d'un devis groupé ?</p>
             <h3 className="font-heading text-2xl lg:text-3xl font-bold text-concrete">
-              Contactez-nous directement sur WhatsApp
+              Contactez notre équipe commerciale
             </h3>
           </div>
           <a
-            href={WHATSAPP_URL}
+            href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-shrink-0 flex items-center gap-3 bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 hover:bg-gmo-green/80 transition-colors duration-300"
           >
             <MessageCircle className="w-5 h-5" />
-            +226 76 21 16 33
+            WhatsApp +226 76 21 16 33
           </a>
         </motion.div>
       </div>

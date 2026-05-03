@@ -62,8 +62,8 @@ export default function ContactSection() {
               className="space-y-6 mb-12"
             >
               {[
-                { icon: MapPin, label: "Siège", value: "01 BP 3370 OUAGADOUGOU 01\nBURKINA FASO" },
-                { icon: Phone, label: "Téléphone", value: "+226 25 33 19 00" },
+                { icon: MapPin, label: "Siège Social", value: "Quartier Dapoya — Parcelle 05, Lot 29, Section BI\n01 BP 3370, Ouagadougou, Burkina Faso" },
+                { icon: Phone, label: "Téléphone", value: "+226 25 33 19 00\n+226 76 21 16 33 (WhatsApp)" },
                 { icon: Mail, label: "E-mail", value: "infos@gmoburkina.com" },
                 { icon: Clock, label: "Horaires", value: "Lun-Sam: 8h30-13h / 15h-18h\nVen: 8h30-12h30 / 15h-18h" },
               ].map((item) => (

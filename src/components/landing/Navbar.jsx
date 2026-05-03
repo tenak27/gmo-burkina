@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { label: "Services", href: "#services" },
   { label: "À Propos", href: "#apropos" },
   { label: "Produits", href: "#produits" },
+  { label: "GMO Foot", href: "#gmofoot" },
   { label: "Galerie", href: "#galerie" },
   { label: "Contact", href: "#contact" },
 ];
