@@ -41,7 +41,7 @@ export default function HeroSection({ heroImage }) {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="mb-6"
             >
-              <span className="font-body text-xs uppercase tracking-[0.3em] text-gold/80">
+              <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green/80">
                 Groupe Madina Oumarou · Burkina Faso
               </span>
             </motion.div>
@@ -54,7 +54,7 @@ export default function HeroSection({ heroImage }) {
             >
               NOUS
               <br />
-              <span className="text-gold">DÉPLAÇONS</span>
+              <span className="text-gmo-green">DÉPLAÇONS</span>
               <br />
               LE CONTINENT
             </motion.h1>
@@ -81,7 +81,7 @@ export default function HeroSection({ heroImage }) {
                   e.preventDefault();
                   document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="bg-gold text-obsidian font-heading font-bold text-sm px-8 py-4 hover:bg-amber transition-colors duration-300 flex items-center gap-2"
+                className="bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 hover:bg-gmo-green/80 transition-colors duration-300 flex items-center gap-2"
               >
                 Demander un devis
                 <ArrowDown className="w-4 h-4 rotate-[-90deg]" />
@@ -92,7 +92,7 @@ export default function HeroSection({ heroImage }) {
                   e.preventDefault();
                   document.querySelector("#services")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="border border-concrete/20 text-concrete font-heading font-medium text-sm px-8 py-4 hover:border-gold/50 hover:text-gold transition-all duration-300"
+                className="border border-concrete/20 text-concrete font-heading font-medium text-sm px-8 py-4 hover:border-gmo-green/50 hover:text-gmo-green transition-all duration-300"
               >
                 Nos services
               </a>
@@ -119,7 +119,7 @@ export default function HeroSection({ heroImage }) {
                 transition={{ delay: 1.2 + i * 0.15 }}
                 className="border border-concrete/10 p-6 bg-obsidian/40 backdrop-blur-sm"
               >
-                <stat.icon className="w-5 h-5 text-gold mb-3" />
+                <stat.icon className="w-5 h-5 text-gmo-green mb-3" />
                 <p className="font-heading text-3xl font-bold text-concrete">{stat.value}</p>
                 <p className="font-body text-xs text-concrete/50 uppercase tracking-widest mt-1">
                   {stat.label}
@@ -140,7 +140,7 @@ export default function HeroSection({ heroImage }) {
                 className="font-body text-xs uppercase tracking-[0.2em] text-concrete/30 mx-8"
               >
                 {item}
-                <span className="ml-8 text-gold/40">●</span>
+                <span className="ml-8 text-gmo-red/40">●</span>
               </span>
             ))}
           </div>

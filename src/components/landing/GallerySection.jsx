@@ -13,7 +13,7 @@ export default function GallerySection({ images }) {
           <motion.span
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            className="font-body text-xs uppercase tracking-[0.3em] text-gold/60 block mb-4"
+            className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green/70 block mb-4"
           >
             En images
           </motion.span>
@@ -29,7 +29,7 @@ export default function GallerySection({ images }) {
             initial={{ width: 0 }}
             animate={isInView ? { width: 80 } : {}}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="h-[2px] bg-gold mt-6"
+            className="h-[2px] bg-gmo-red mt-6"
           />
         </div>
 
@@ -53,7 +53,7 @@ export default function GallerySection({ images }) {
                 }`}
               />
               <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/30 transition-all duration-500" />
-              <div className="absolute bottom-0 left-0 h-[2px] bg-gold w-0 group-hover:w-full transition-all duration-700" />
+              <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-red w-0 group-hover:w-full transition-all duration-700" />
             </motion.div>
           ))}
         </div>

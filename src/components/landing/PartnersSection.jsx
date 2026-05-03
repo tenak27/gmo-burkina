@@ -32,7 +32,7 @@ export default function PartnersSection() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center justify-center px-6 py-4 border border-obsidian/8 bg-white hover:border-gold/30 transition-all duration-300"
+                className="flex items-center justify-center px-6 py-4 border border-obsidian/10 bg-white hover:border-gmo-green/30 transition-all duration-300"
               >
                 <span className="font-heading text-sm font-bold text-obsidian/40 tracking-widest uppercase">
                   {partner}

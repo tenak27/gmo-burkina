@@ -10,7 +10,11 @@ export default function Footer() {
           <div className="grid md:grid-cols-3 gap-8 mb-16 relative z-10">
             {/* Col 1 */}
             <div>
-              <span className="font-heading text-xl font-bold text-gold mb-4 block">GMOB</span>
+              <img
+                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                alt="GMO Logo"
+                className="h-12 w-auto object-contain mb-4"
+              />
               <p className="font-body text-sm text-concrete/40 leading-relaxed">
                 Groupe Madina Oumarou — Leader de la distribution au Burkina Faso. 
                 Entreprise citoyenne et socialement responsable.
@@ -30,7 +34,7 @@ export default function Footer() {
                       const id = link.toLowerCase().replace("à propos", "apropos").replace(" ", "");
                       document.querySelector(`#${id === "accueil" ? "accueil" : id}`)?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="block font-body text-sm text-concrete/40 hover:text-gold transition-colors"
+                    className="block font-body text-sm text-concrete/40 hover:text-gmo-green transition-colors"
                   >
                     {link}
                   </button>
@@ -47,7 +51,7 @@ export default function Footer() {
                 <p>01 BP 3370 Ouagadougou 01</p>
                 <p>Burkina Faso</p>
                 <p>+226 25 33 19 00</p>
-                <a href="mailto:infos@gmoburkina.com" className="hover:text-gold transition-colors block">
+                <a href="mailto:infos@gmoburkina.com" className="hover:text-gmo-green transition-colors block">
                   infos@gmoburkina.com
                 </a>
               </div>

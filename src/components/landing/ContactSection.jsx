@@ -40,7 +40,7 @@ export default function ContactSection() {
             <motion.span
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
-              className="font-body text-xs uppercase tracking-[0.3em] text-gold/60 block mb-4"
+              className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green/70 block mb-4"
             >
               Contactez-nous
             </motion.span>
@@ -52,7 +52,7 @@ export default function ContactSection() {
             >
               RESTONS EN
               <br />
-              <span className="text-gold">CONTACT</span>
+              <span className="text-gmo-green">CONTACT</span>
             </motion.h2>
 
             <motion.div
@@ -68,8 +68,8 @@ export default function ContactSection() {
                 { icon: Clock, label: "Horaires", value: "Lun-Sam: 8h30-13h / 15h-18h\nVen: 8h30-12h30 / 15h-18h" },
               ].map((item) => (
                 <div key={item.label} className="flex gap-4">
-                  <div className="w-10 h-10 bg-gold/10 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-4 h-4 text-gold" />
+                  <div className="w-10 h-10 bg-gmo-green/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-4 h-4 text-gmo-green" />
                   </div>
                   <div>
                     <p className="font-heading text-xs uppercase tracking-widest text-concrete/40 mb-1">
@@ -98,7 +98,7 @@ export default function ContactSection() {
                     key={loc.city}
                     className={`font-body text-[11px] uppercase tracking-widest px-3 py-1.5 border ${
                       loc.status === "active"
-                        ? "text-gold/80 border-gold/20"
+                        ? "text-gmo-green/80 border-gmo-green/20"
                         : "text-concrete/25 border-concrete/10"
                     }`}
                   >
@@ -179,7 +179,7 @@ export default function ContactSection() {
               <Button
                 type="submit"
                 disabled={sending}
-                className="w-full bg-gold text-obsidian hover:bg-amber font-heading font-bold text-sm h-14 rounded-none transition-colors duration-300"
+                className="w-full bg-gmo-green text-white hover:bg-gmo-green/80 font-heading font-bold text-sm h-14 rounded-none transition-colors duration-300"
               >
                 {sending ? (
                   <span className="flex items-center gap-2">

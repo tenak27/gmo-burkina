@@ -30,7 +30,7 @@ export default function JourneyBanner({ journeyImage }) {
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-6xl font-bold text-concrete leading-tight max-w-3xl">
             LA FORCE DU
             <br />
-            <span className="text-gold">MOUVEMENT</span>
+            <span className="text-gmo-green">MOUVEMENT</span>
           </h2>
           <p className="font-body text-sm text-concrete/50 mt-6 max-w-xl mx-auto leading-relaxed">
             Chaque jour, nos équipes parcourent des milliers de kilomètres pour connecter les communautés 

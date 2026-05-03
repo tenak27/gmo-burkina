@@ -15,9 +15,11 @@ module.exports = {
   		},
   		colors: {
         obsidian: '#121212',
-        gold: '#E5A93D',
+        gold: '#F5C400',
+        'gmo-green': '#1A7A2E',
+        'gmo-red': '#CC1717',
         concrete: '#F2F2F2',
-        amber: '#FFBF00',
+        amber: '#F5C400',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

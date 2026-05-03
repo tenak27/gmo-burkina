@@ -29,7 +29,7 @@ function ProductCard({ product, index }) {
       </span>
 
       <div className="w-10 h-10 bg-obsidian flex items-center justify-center mb-5">
-        <span className="font-heading text-sm font-bold text-gold">
+        <span className="font-heading text-sm font-bold text-gmo-green">
           {product.name.charAt(0)}
         </span>
       </div>
@@ -38,11 +38,11 @@ function ProductCard({ product, index }) {
         {product.name}
       </h3>
 
-      <span className="font-body text-[10px] uppercase tracking-[0.2em] text-gold/80 border border-gold/20 px-3 py-1 inline-block">
+      <span className="font-body text-[10px] uppercase tracking-[0.2em] text-gmo-red/80 border border-gmo-red/20 px-3 py-1 inline-block">
         {product.category}
       </span>
 
-      <div className="absolute bottom-0 left-0 h-[2px] bg-gold w-0 group-hover:w-full transition-all duration-500" />
+      <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-green w-0 group-hover:w-full transition-all duration-500" />
     </motion.div>
   );
 }
@@ -59,7 +59,7 @@ export default function ProductsSection() {
           <motion.span
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            className="font-body text-xs uppercase tracking-[0.3em] text-gold block mb-4"
+            className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red block mb-4"
           >
             Notre catalogue
           </motion.span>
@@ -75,7 +75,7 @@ export default function ProductsSection() {
             initial={{ width: 0 }}
             animate={isInView ? { width: 80 } : {}}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="h-[2px] bg-gold mt-6"
+            className="h-[2px] bg-gmo-green mt-6"
           />
         </div>
 

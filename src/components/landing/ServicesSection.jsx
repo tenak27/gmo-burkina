@@ -60,7 +60,7 @@ function ServiceCard({ service, index }) {
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      <service.icon className="w-6 h-6 text-gold mb-6" />
+      <service.icon className="w-6 h-6 text-gmo-green mb-6" />
       
       <h3 className="font-heading text-xl font-bold text-concrete mb-3">
         {service.title}
@@ -75,7 +75,7 @@ function ServiceCard({ service, index }) {
         {service.specs.map((spec) => (
           <span
             key={spec}
-            className="font-body text-[10px] uppercase tracking-widest text-gold/60 border border-gold/15 px-3 py-1"
+            className="font-body text-[10px] uppercase tracking-widest text-gmo-green/70 border border-gmo-green/20 px-3 py-1"
           >
             {spec}
           </span>
@@ -83,7 +83,7 @@ function ServiceCard({ service, index }) {
       </div>
 
       {/* Hover line */}
-      <div className="absolute bottom-0 left-0 h-[2px] bg-gold w-0 group-hover:w-full transition-all duration-500" />
+      <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-red w-0 group-hover:w-full transition-all duration-500" />
     </motion.div>
   );
 }
@@ -100,7 +100,7 @@ export default function ServicesSection() {
           <motion.span
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            className="font-body text-xs uppercase tracking-[0.3em] text-gold/60 block mb-4"
+            className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green/70 block mb-4"
           >
             Ce que nous faisons
           </motion.span>
@@ -116,7 +116,7 @@ export default function ServicesSection() {
             initial={{ width: 0 }}
             animate={isInView ? { width: 80 } : {}}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="h-[2px] bg-gold mt-6"
+            className="h-[2px] bg-gmo-red mt-6"
           />
         </div>
 

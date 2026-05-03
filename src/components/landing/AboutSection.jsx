@@ -39,7 +39,7 @@ export default function AboutSection({ hubImage, detailImage }) {
             </motion.div>
 
             {/* Decorative */}
-            <div className="absolute top-4 left-4 w-full h-full border border-gold/20 -z-0" />
+            <div className="absolute top-4 left-4 w-full h-full border border-gmo-green/20 -z-0" />
           </div>
 
           {/* Right: Content */}
@@ -48,7 +48,7 @@ export default function AboutSection({ hubImage, detailImage }) {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.2 }}
-              className="font-body text-xs uppercase tracking-[0.3em] text-gold block mb-4"
+              className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red block mb-4"
             >
               À propos de nous
             </motion.span>
@@ -61,7 +61,7 @@ export default function AboutSection({ hubImage, detailImage }) {
             >
               UNE ENTREPRISE
               <br />
-              <span className="text-gold">CITOYENNE</span>
+              <span className="text-gmo-green">CITOYENNE</span>
             </motion.h2>
 
             <motion.p
@@ -99,7 +99,7 @@ export default function AboutSection({ hubImage, detailImage }) {
               ].map((v) => (
                 <div key={v.label} className="text-center">
                   <div className="w-12 h-12 bg-obsidian flex items-center justify-center mx-auto mb-3">
-                    <v.icon className="w-5 h-5 text-gold" />
+                    <v.icon className="w-5 h-5 text-gmo-green" />
                   </div>
                   <p className="font-heading text-xs uppercase tracking-widest text-obsidian/70">
                     {v.label}
@@ -117,7 +117,7 @@ export default function AboutSection({ hubImage, detailImage }) {
                 e.preventDefault();
                 document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="inline-flex items-center gap-2 font-heading font-bold text-sm text-obsidian hover:text-gold transition-colors group"
+              className="inline-flex items-center gap-2 font-heading font-bold text-sm text-obsidian hover:text-gmo-green transition-colors group"
             >
               En savoir plus
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
