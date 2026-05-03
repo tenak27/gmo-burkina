@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityForm from "./EntityForm";
+import DriverMapView from "./DriverMapView";
 import {
   Truck, Phone, MapPin, CheckCircle2, Clock, XCircle,
-  Plus, Edit2, Trash2, RefreshCw, Zap, Navigation, User
+  Plus, Edit2, Trash2, Zap, Navigation, Map
 } from "lucide-react";
 
 const STATUS_CONFIG = {
   disponible: {
     label: "Disponible",
-    badge: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30",
+    badge: "bg-emerald-50 text-emerald-700 border border-emerald-200",
     dot: "bg-emerald-400",
-    glow: "shadow-emerald-500/20",
-    ring: "ring-emerald-500/30",
+    glow: "",
+    ring: "ring-emerald-200",
     icon: CheckCircle2,
   },
   en_livraison: {
     label: "En livraison",
-    badge: "bg-blue-500/15 text-blue-400 border border-blue-500/30",
-    dot: "bg-blue-400",
-    glow: "shadow-blue-500/20",
-    ring: "ring-blue-500/30",
+    badge: "bg-blue-50 text-blue-700 border border-blue-200",
+    dot: "bg-blue-500",
+    glow: "",
+    ring: "ring-blue-200",
     icon: Truck,
   },
   inactif: {
     label: "Inactif",
-    badge: "bg-white/5 text-white/30 border border-white/10",
-    dot: "bg-white/20",
-    glow: "shadow-black/10",
-    ring: "ring-white/10",
+    badge: "bg-gray-100 text-gray-500 border border-gray-200",
+    dot: "bg-gray-400",
+    glow: "",
+    ring: "ring-gray-200",
     icon: XCircle,
   },
 };
@@ -70,38 +71,36 @@ function DriverCard({ driver, onEdit, onDelete, onStatusChange }) {
   const nextStatuses = Object.keys(STATUS_CONFIG).filter(s => s !== driver.status);
 
   return (
-    <div className={`relative bg-[#1E1E22] border border-white/[0.07] rounded-2xl p-4 flex flex-col gap-3 hover:border-white/[0.14] transition-all duration-200 shadow-lg ${cfg.glow}`}>
-      {/* Glow accent top */}
-      <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-full" />
-
+    <div className="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col gap-3 hover:shadow-md hover:border-gray-200 transition-all duration-200 shadow-sm">
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-xl bg-[#161618] ring-2 ${cfg.ring} flex items-center justify-center font-heading font-bold text-sm text-white/70 flex-shrink-0`}>
+          <div className={`w-10 h-10 rounded-xl ring-2 ${cfg.ring} flex items-center justify-center font-heading font-bold text-sm text-white flex-shrink-0`}
+            style={{ background: driver.status === "disponible" ? "#10B981" : driver.status === "en_livraison" ? "#3B82F6" : "#9CA3AF" }}>
             {(driver.first_name||"?").charAt(0)}{(driver.last_name||"").charAt(0)}
           </div>
           <div>
-            <p className="font-heading text-sm font-bold text-white/90">{driver.first_name} {driver.last_name}</p>
-            <p className="text-[10px] text-white/35 font-body flex items-center gap-1">
+            <p className="font-heading text-sm font-bold text-obsidian">{driver.first_name} {driver.last_name}</p>
+            <p className="text-[10px] text-obsidian/50 font-body flex items-center gap-1">
               <Phone className="w-2.5 h-2.5" />{driver.phone}
             </p>
           </div>
         </div>
         <span className={`flex items-center gap-1.5 text-[10px] font-body px-2.5 py-1 rounded-full flex-shrink-0 ${cfg.badge}`}>
-          <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot} ${driver.status === "disponible" ? "animate-pulse" : ""}`} />
+          <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${cfg.dot}`} />
           {cfg.label}
         </span>
       </div>
 
       {/* Vehicle + Zone */}
-      <div className="flex items-center gap-3 text-[11px] font-body">
-        <span className="flex items-center gap-1.5 bg-white/5 border border-white/8 px-2.5 py-1 rounded-lg text-white/50">
+      <div className="flex items-center gap-2 flex-wrap text-[11px] font-body">
+        <span className="flex items-center gap-1.5 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-lg text-obsidian/60">
           <span>{VEHICLE_ICONS[driver.vehicle_type] || "🚗"}</span>
           <span className="capitalize">{driver.vehicle_type}</span>
-          {driver.vehicle_plate && <span className="text-white/25 font-mono">· {driver.vehicle_plate}</span>}
+          {driver.vehicle_plate && <span className="text-obsidian/35 font-mono">· {driver.vehicle_plate}</span>}
         </span>
         {driver.zone && (
-          <span className="flex items-center gap-1 text-white/35">
+          <span className="flex items-center gap-1 text-obsidian/45">
             <MapPin className="w-3 h-3" />{driver.zone}
           </span>
         )}
@@ -116,7 +115,7 @@ function DriverCard({ driver, onEdit, onDelete, onStatusChange }) {
               key={s}
               onClick={() => changeStatus(s)}
               disabled={changing}
-              className="flex-1 text-[9px] font-body uppercase tracking-wider border border-white/8 hover:border-white/20 text-white/30 hover:text-white/60 py-1.5 rounded-lg transition-all duration-150 disabled:opacity-40"
+              className="flex-1 text-[9px] font-body uppercase tracking-wider border border-gray-200 hover:border-gmo-green hover:text-gmo-green text-obsidian/40 py-1.5 rounded-lg transition-all duration-150 disabled:opacity-40 cursor-pointer"
             >
               → {c.label}
             </button>
@@ -125,15 +124,15 @@ function DriverCard({ driver, onEdit, onDelete, onStatusChange }) {
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-1 border-t border-white/[0.05]">
+      <div className="flex items-center justify-between pt-1 border-t border-gray-100">
         {driver.notes ? (
-          <p className="text-[10px] text-white/25 font-body truncate flex-1 mr-2 italic">{driver.notes}</p>
+          <p className="text-[10px] text-obsidian/35 font-body truncate flex-1 mr-2 italic">{driver.notes}</p>
         ) : <span />}
         <div className="flex items-center gap-1 flex-shrink-0">
-          <button onClick={() => onEdit(driver)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/25 hover:text-white/70 transition-all">
+          <button onClick={() => onEdit(driver)} className="w-7 h-7 rounded-lg bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-obsidian/40 hover:text-obsidian transition-all cursor-pointer">
             <Edit2 className="w-3 h-3" />
           </button>
-          <button onClick={() => onDelete(driver)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-gmo-red/15 flex items-center justify-center text-white/25 hover:text-gmo-red/70 transition-all">
+          <button onClick={() => onDelete(driver)} className="w-7 h-7 rounded-lg bg-gray-50 hover:bg-red-50 flex items-center justify-center text-obsidian/40 hover:text-gmo-red transition-all cursor-pointer">
             <Trash2 className="w-3 h-3" />
           </button>
         </div>
@@ -199,46 +198,40 @@ export default function DriversTab({ drivers, setDrivers }) {
 
   return (
     <div className="space-y-5 animate-fade-up">
-      {/* Dark header banner */}
-      <div className="bg-[#161618] rounded-2xl border border-white/[0.06] p-5 relative overflow-hidden">
-        {/* Glow */}
-        <div className="absolute top-0 right-0 w-64 h-32 bg-gmo-green/8 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-48 h-20 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[9px] text-emerald-400/70 uppercase tracking-[0.3em] font-body">Suivi temps réel</span>
-              <span className="text-[9px] text-white/20 font-body">· mis à jour {lastUpdate.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"})}</span>
-            </div>
-            <h2 className="font-heading text-xl font-bold text-white">Chauffeurs-Livreurs</h2>
-            <p className="text-xs text-white/35 font-body mt-0.5">{drivers.length} chauffeur(s) enregistré(s)</p>
-          </div>
-          <button onClick={openAdd}
-            className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-xl btn-glow-green">
-            <Plus className="w-4 h-4" /> Nouveau chauffeur
-          </button>
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h2 className="font-heading text-2xl font-bold text-obsidian">Chauffeurs-Livreurs</h2>
+          <p className="text-sm text-obsidian/40 font-body mt-0.5">{drivers.length} chauffeur(s) · mis à jour {lastUpdate.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"})}</p>
         </div>
-
-        {/* KPI bar */}
-        <div className="relative z-10 grid grid-cols-3 gap-3 mt-5">
-          {[
-            { label: "Disponibles", value: available, color: "text-emerald-400", border: "border-emerald-500/20", bg: "bg-emerald-500/8", dot: "bg-emerald-400 animate-pulse", status: "disponible" },
-            { label: "En livraison", value: busy, color: "text-blue-400", border: "border-blue-500/20", bg: "bg-blue-500/8", dot: "bg-blue-400 animate-pulse", status: "en_livraison" },
-            { label: "Inactifs", value: inactive, color: "text-white/35", border: "border-white/8", bg: "bg-white/4", dot: "bg-white/20", status: "inactif" },
-          ].map(s => (
-            <button key={s.label} onClick={() => setFilter(filter === s.status ? "all" : s.status)}
-              className={`${s.bg} border ${s.border} rounded-xl p-3 flex items-center gap-3 transition-all hover:brightness-125 ${filter === s.status ? "ring-1 ring-white/20" : ""}`}>
-              <div className="flex items-center gap-1.5">
-                <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
-                <p className={`font-heading text-2xl font-bold ${s.color}`}>{s.value}</p>
-              </div>
-              <p className="text-[10px] text-white/35 font-body leading-tight">{s.label}</p>
-            </button>
-          ))}
-        </div>
+        <button onClick={openAdd}
+          className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-xl btn-glow-green cursor-pointer">
+          <Plus className="w-4 h-4" /> Nouveau chauffeur
+        </button>
       </div>
+
+      {/* KPI bar */}
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { label: "Disponibles", value: available, color: "text-emerald-600", border: "border-emerald-100", bg: "bg-emerald-50", dot: "bg-emerald-400", status: "disponible" },
+          { label: "En livraison", value: busy, color: "text-blue-600", border: "border-blue-100", bg: "bg-blue-50", dot: "bg-blue-500", status: "en_livraison" },
+          { label: "Inactifs", value: inactive, color: "text-gray-500", border: "border-gray-100", bg: "bg-gray-50", dot: "bg-gray-300", status: "inactif" },
+        ].map(s => (
+          <button key={s.label} onClick={() => setFilter(filter === s.status ? "all" : s.status)}
+            className={`${s.bg} border ${s.border} rounded-2xl p-4 flex items-center gap-3 transition-all hover:shadow-sm cursor-pointer ${filter === s.status ? "ring-2 ring-gmo-green/30" : ""}`}>
+            <div className={`w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0`}>
+              <span className={`w-3 h-3 rounded-full ${s.dot}`} />
+            </div>
+            <div>
+              <p className={`font-heading text-xl font-bold ${s.color}`}>{s.value}</p>
+              <p className="text-[10px] text-obsidian/45 font-body">{s.label}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Map */}
+      <DriverMapView drivers={drivers} />
 
       {/* Filter pills */}
       <div className="flex items-center gap-2 flex-wrap">
@@ -259,10 +252,10 @@ export default function DriversTab({ drivers, setDrivers }) {
 
       {/* Driver grid */}
       {filtered.length === 0 ? (
-        <div className="bg-[#161618] rounded-2xl border border-white/[0.06] p-12 text-center">
-          <Truck className="w-10 h-10 text-white/10 mx-auto mb-3" />
-          <p className="text-sm text-white/30 font-body">Aucun chauffeur dans cette catégorie</p>
-          <button onClick={openAdd} className="mt-4 text-xs text-gmo-green font-body hover:underline">+ Ajouter un chauffeur</button>
+        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-12 text-center">
+          <Truck className="w-10 h-10 text-obsidian/10 mx-auto mb-3" />
+          <p className="text-sm text-obsidian/35 font-body">Aucun chauffeur dans cette catégorie</p>
+          <button onClick={openAdd} className="mt-4 text-xs text-gmo-green font-body hover:underline cursor-pointer">+ Ajouter un chauffeur</button>
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">

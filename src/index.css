@@ -116,12 +116,8 @@
   .card-glow:hover {
     box-shadow: 0 8px 40px rgba(26,122,46,0.12), 0 2px 12px rgba(0,0,0,0.08);
   }
-  @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(26,122,46,0.3), 0 0 30px rgba(26,122,46,0.1); }
-    50% { box-shadow: 0 0 20px rgba(26,122,46,0.5), 0 0 50px rgba(26,122,46,0.2); }
-  }
   .animate-glow-pulse {
-    animation: glowPulse 3s ease-in-out infinite;
+    /* glow pulse removed to reduce visual noise */
   }
 
   /* Smooth scroll reveal */
@@ -143,13 +139,9 @@
     animation: ticker 35s linear infinite;
   }
 
-  /* Pulse glow green */
-  @keyframes pulseGreen {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(26,122,46,0.4); }
-    50%       { box-shadow: 0 0 0 10px rgba(26,122,46,0); }
-  }
+  /* Pulse glow green — disabled to avoid distracting flicker */
   .animate-pulse-green {
-    animation: pulseGreen 2s ease-in-out infinite;
+    /* animation removed */
   }
 
   /* Float */

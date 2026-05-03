@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import StocksView from "@/components/retailer/StocksView";
 import ProductGallery from "@/components/retailer/ProductGallery";
+import LiveChatWidget from "@/components/retailer/LiveChatWidget";
 
 const TABS = [
   { id: "accueil", label: "Accueil" },
@@ -407,6 +408,7 @@ function RetailerDashboard() {
           <Link to="/" className="hover:text-gmo-red transition-colors">← Retour au site</Link>
         </p>
       </main>
+      <LiveChatWidget />
     </div>
   );
 }
