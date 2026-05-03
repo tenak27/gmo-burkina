@@ -4,9 +4,10 @@ import { useAuth } from "@/lib/AuthContext";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
-  Package, Truck, LogOut, Bell, Star, RefreshCw, Phone,
-  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send, BarChart2
+  Package, Truck, LogOut, Star, RefreshCw, Phone,
+  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send
 } from "lucide-react";
+import StocksView from "@/components/retailer/StocksView";
 
 const TABS = [
   { id: "accueil", label: "Accueil" },
@@ -215,72 +216,7 @@ function RetailerDashboard() {
 
         {/* ── STOCKS ── */}
         {tab === "stocks" && (
-          <div>
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <h2 className="font-heading text-xl font-bold text-obsidian">Stocks disponibles</h2>
-                <p className="text-xs text-obsidian/40 font-body mt-0.5">{products.length} produits · Tarifs grossiste</p>
-              </div>
-              <button onClick={loadProducts} className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2 text-xs text-obsidian/50 hover:border-gmo-red hover:text-gmo-red transition-colors">
-                <RefreshCw className={`w-3.5 h-3.5 ${loadingProducts ? "animate-spin" : ""}`} />
-              </button>
-            </div>
-
-            {products.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
-                <Package className="w-8 h-8 text-obsidian/10 mx-auto mb-2" />
-                <p className="text-sm text-obsidian/35 font-body">Catalogue en cours de chargement</p>
-              </div>
-            ) : (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-100 bg-gray-50/50">
-                        <th className="text-left px-5 py-3 text-[10px] uppercase tracking-widest text-obsidian/40 font-heading">Produit</th>
-                        <th className="text-left px-4 py-3 text-[10px] uppercase tracking-widest text-obsidian/40 font-heading hidden sm:table-cell">Catégorie</th>
-                        <th className="text-right px-4 py-3 text-[10px] uppercase tracking-widest text-obsidian/40 font-heading">Prix grossiste</th>
-                        <th className="text-right px-4 py-3 text-[10px] uppercase tracking-widest text-obsidian/40 font-heading hidden sm:table-cell">Stock</th>
-                        <th className="text-center px-4 py-3 text-[10px] uppercase tracking-widest text-obsidian/40 font-heading">Statut</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50">
-                      {products.map(p => {
-                        const inStock = p.stock_quantity > (p.stock_alert || 0);
-                        const lowS = p.stock_quantity <= (p.stock_alert || 0) && p.stock_quantity > 0;
-                        return (
-                          <tr key={p.id} className="hover:bg-gray-50/50 transition-colors">
-                            <td className="px-5 py-3.5">
-                              <p className="font-heading text-sm font-semibold text-obsidian">{p.name}</p>
-                              <p className="text-[11px] text-obsidian/40 font-body">{p.unit || "unité"}</p>
-                            </td>
-                            <td className="px-4 py-3.5 hidden sm:table-cell">
-                              <span className="text-[11px] text-obsidian/50 font-body capitalize">{p.category || "—"}</span>
-                            </td>
-                            <td className="px-4 py-3.5 text-right">
-                              <p className="font-heading text-sm font-bold text-gmo-green">{(p.wholesale_price || p.unit_price || 0).toLocaleString()} FCFA</p>
-                            </td>
-                            <td className="px-4 py-3.5 text-right hidden sm:table-cell">
-                              <p className="font-heading text-sm font-semibold text-obsidian">{p.stock_quantity ?? "—"}</p>
-                            </td>
-                            <td className="px-4 py-3.5 text-center">
-                              {p.stock_quantity === 0 ? (
-                                <span className="text-[10px] text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full font-body">Épuisé</span>
-                              ) : lowS ? (
-                                <span className="text-[10px] text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-body">Faible</span>
-                              ) : (
-                                <span className="text-[10px] text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full font-body">Dispo</span>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
+          <StocksView products={products} loadingProducts={loadingProducts} onRefresh={loadProducts} />
         )}
 
         {/* ── COMMANDER ── */}

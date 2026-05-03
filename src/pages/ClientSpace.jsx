@@ -4,9 +4,10 @@ import { useAuth } from "@/lib/AuthContext";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
-  Package, Clock, MapPin, ShoppingBag, Phone, LogOut, Bell,
+  Package, Clock, MapPin, ShoppingBag, Phone, LogOut,
   ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus
 } from "lucide-react";
+import DeliveryProgress from "@/components/client/DeliveryProgress";
 
 const STATUS_CONFIG = {
   en_attente:     { label: "En attente",     color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200",  icon: Circle },
@@ -286,9 +287,6 @@ function ClientDashboard() {
 function OrderCard({ order }) {
   const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.en_attente;
   const Icon = cfg.icon;
-  // Build delivery progress
-  const steps = ["en_attente","confirmee","en_preparation","en_livraison","livree"];
-  const stepIdx = steps.indexOf(order.status);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
@@ -303,29 +301,9 @@ function OrderCard({ order }) {
       </div>
 
       {/* Progress bar */}
-      {order.status !== "annulee" && (
-        <div className="mb-4">
-          <div className="flex items-center gap-0">
-            {steps.map((s, i) => (
-              <React.Fragment key={s}>
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
-                  i <= stepIdx ? "bg-gmo-green" : "bg-gray-100"
-                }`}>
-                  <div className={`w-2 h-2 rounded-full ${i <= stepIdx ? "bg-white" : "bg-gray-300"}`} />
-                </div>
-                {i < steps.length - 1 && (
-                  <div className={`flex-1 h-[2px] transition-colors ${i < stepIdx ? "bg-gmo-green" : "bg-gray-100"}`} />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="flex justify-between mt-1">
-            {["Attente","Confirmée","Prépa.","Livraison","Livrée"].map((l, i) => (
-              <span key={l} className={`text-[9px] font-body ${i <= stepIdx ? "text-gmo-green" : "text-obsidian/25"}`}>{l}</span>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="mb-4">
+        <DeliveryProgress status={order.status} />
+      </div>
 
       <div className="flex items-center justify-between">
         {order.delivery_city && (

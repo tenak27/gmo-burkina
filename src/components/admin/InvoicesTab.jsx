@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityTable from "./EntityTable";
 import EntityForm from "./EntityForm";
-import { FileText, CheckCircle2, Clock, XCircle } from "lucide-react";
+import InvoicePdfButton from "./InvoicePdfButton";
+import { FileText } from "lucide-react";
 
 const STATUS_STYLE = {
   brouillon: "bg-gray-100 text-obsidian/50",
@@ -35,6 +36,7 @@ const COLUMNS = [
   { key: "total", label: "Total", align: "right", render: v => v ? <span className="font-heading text-xs font-bold text-obsidian">{Number(v).toLocaleString()} FCFA</span> : <span className="text-obsidian/25">—</span> },
   { key: "paid_amount", label: "Payé", align: "right", render: v => v ? <span className="text-xs text-green-600 font-heading font-bold">{Number(v).toLocaleString()}</span> : <span className="text-obsidian/25 text-xs">—</span> },
   { key: "status", label: "Statut", align: "center", render: v => <span className={`text-[10px] px-2 py-0.5 rounded-full font-body ${STATUS_STYLE[v] || ""}`}>{STATUS_LABELS[v] || v}</span> },
+  { key: "id", label: "PDF", align: "center", render: (v) => <InvoicePdfButton invoiceId={v} label="PDF" /> },
 ];
 
 const EMPTY = { type: "facture", number: "", client_name: "", date: "", due_date: "", subtotal: 0, tax_rate: 18, total: 0, status: "brouillon", paid_amount: 0, notes: "" };
