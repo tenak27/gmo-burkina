@@ -1,0 +1,61 @@
+{
+  "name": "AccountEntry",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "recette",
+        "depense",
+        "virement"
+      ],
+      "default": "recette"
+    },
+    "category": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "reference": {
+      "type": "string"
+    },
+    "account": {
+      "type": "string"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "cash",
+        "virement",
+        "cheque",
+        "mobile_money"
+      ],
+      "default": "virement"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en_attente",
+        "valide",
+        "annule"
+      ],
+      "default": "valide"
+    },
+    "invoice_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "amount",
+    "description"
+  ]
+}

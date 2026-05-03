@@ -1,0 +1,68 @@
+{
+  "name": "DeliveryNote",
+  "type": "object",
+  "properties": {
+    "number": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "bon_livraison",
+        "bon_enlevement",
+        "bon_commande"
+      ],
+      "default": "bon_livraison"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "supplier_id": {
+      "type": "string"
+    },
+    "supplier_name": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "warehouse_id": {
+      "type": "string"
+    },
+    "warehouse_name": {
+      "type": "string"
+    },
+    "driver": {
+      "type": "string"
+    },
+    "vehicle": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brouillon",
+        "valide",
+        "livre",
+        "annule"
+      ],
+      "default": "brouillon"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type"
+  ]
+}

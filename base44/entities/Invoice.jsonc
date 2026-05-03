@@ -1,0 +1,76 @@
+{
+  "name": "Invoice",
+  "type": "object",
+  "properties": {
+    "number": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "facture",
+        "proforma",
+        "devis"
+      ],
+      "default": "facture"
+    },
+    "client_id": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "default": 0
+    },
+    "tax_rate": {
+      "type": "number",
+      "default": 18
+    },
+    "tax_amount": {
+      "type": "number",
+      "default": 0
+    },
+    "total": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brouillon",
+        "envoye",
+        "paye",
+        "partiel",
+        "annule"
+      ],
+      "default": "brouillon"
+    },
+    "paid_amount": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "client_name"
+  ]
+}

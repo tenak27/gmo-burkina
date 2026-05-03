@@ -1,0 +1,50 @@
+{
+  "name": "StockMovement",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "entree",
+        "sortie",
+        "transfert",
+        "ajustement"
+      ],
+      "default": "entree"
+    },
+    "product_id": {
+      "type": "string"
+    },
+    "product_name": {
+      "type": "string"
+    },
+    "warehouse_id": {
+      "type": "string"
+    },
+    "warehouse_name": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "number"
+    },
+    "unit_cost": {
+      "type": "number",
+      "default": 0
+    },
+    "reference": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "product_id",
+    "quantity",
+    "type"
+  ]
+}

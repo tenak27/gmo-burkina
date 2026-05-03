@@ -1,0 +1,49 @@
+{
+  "name": "Supplier",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "default": "Burkina Faso"
+    },
+    "tax_id": {
+      "type": "string"
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "payment_terms": {
+      "type": "string",
+      "default": "30 jours"
+    },
+    "balance": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ]
+}
