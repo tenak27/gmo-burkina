@@ -1,160 +1,347 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Package, Clock, MapPin, Star, ShoppingBag, ArrowRight, Phone, LogOut, User, ChevronRight, Bell } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import RoleGuard from "@/components/auth/RoleGuard";
+import { base44 } from "@/api/base44Client";
+import {
+  Package, Clock, MapPin, ShoppingBag, Phone, LogOut, Bell,
+  ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus
+} from "lucide-react";
 
-const PRODUCTS = [
-  { name: "Huile MADINA", cat: "Alimentaire", img: "https://gmobfaso.com/assets/img/produits/huile-madina.jpg", status: "Disponible" },
-  { name: "Sucre GAZELLE", cat: "Alimentaire", img: "https://gmobfaso.com/assets/img/produits/sucre-gazelle.jpg", status: "Disponible" },
-  { name: "Farine Blé du Sahel", cat: "Alimentaire", img: "https://gmobfaso.com/assets/img/produits/farine.jpg", status: "Disponible" },
-  { name: "Savon BURKINA", cat: "Hygiène", img: "https://gmobfaso.com/assets/img/produits/savon.jpg", status: "Disponible" },
+const STATUS_CONFIG = {
+  en_attente:     { label: "En attente",     color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200",  icon: Circle },
+  confirmee:      { label: "Confirmée",      color: "text-blue-600",   bg: "bg-blue-50",    border: "border-blue-200",   icon: CheckCircle2 },
+  en_preparation: { label: "En préparation", color: "text-purple-600", bg: "bg-purple-50",  border: "border-purple-200", icon: Package },
+  en_livraison:   { label: "En livraison",   color: "text-gmo-green",  bg: "bg-green-50",   border: "border-green-200",  icon: Truck },
+  livree:         { label: "Livrée",         color: "text-green-700",  bg: "bg-green-100",  border: "border-green-300",  icon: CheckCircle2 },
+  annulee:        { label: "Annulée",        color: "text-red-600",    bg: "bg-red-50",     border: "border-red-200",    icon: AlertCircle },
+};
+
+const TABS = [
+  { id: "accueil", label: "Accueil" },
+  { id: "commandes", label: "Commandes" },
+  { id: "catalogue", label: "Catalogue" },
 ];
 
-const QUICK_ACTIONS = [
-  { icon: ShoppingBag, label: "Commander", desc: "Passer une commande", href: "https://wa.me/22676211633", external: true, color: "gmo-green" },
-  { icon: Clock, label: "Mes commandes", desc: "Historique & suivi", href: "#", external: false, color: "gmo-green" },
-  { icon: MapPin, label: "Points de retrait", desc: "Trouver un point", href: "#", external: false, color: "gmo-green" },
-  { icon: Star, label: "Catalogue", desc: "Voir nos produits", href: "#", external: false, color: "gmo-green" },
+const SAMPLE_PRODUCTS = [
+  { name: "Huile MADINA", cat: "Alimentaire", price: "3 500 FCFA", unit: "bidon", img: "https://gmobfaso.com/assets/img/produits/huile-madina.jpg" },
+  { name: "Sucre GAZELLE", cat: "Alimentaire", price: "1 200 FCFA", unit: "sac 2kg", img: "https://gmobfaso.com/assets/img/produits/sucre-gazelle.jpg" },
+  { name: "Farine Blé du Sahel", cat: "Alimentaire", price: "2 800 FCFA", unit: "sac", img: "https://gmobfaso.com/assets/img/produits/farine.jpg" },
+  { name: "Savon BURKINA", cat: "Hygiène", price: "4 500 FCFA", unit: "carton", img: "https://gmobfaso.com/assets/img/produits/savon.jpg" },
+  { name: "Lait Condensé", cat: "Alimentaire", price: "950 FCFA", unit: "boîte", img: "" },
+  { name: "Tomate Concentrée", cat: "Alimentaire", price: "750 FCFA", unit: "boîte", img: "" },
 ];
+
+function StatusBadge({ status }) {
+  const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.en_attente;
+  const Icon = cfg.icon;
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium ${cfg.color} ${cfg.bg} ${cfg.border}`}>
+      <Icon className="w-3 h-3" />
+      {cfg.label}
+    </span>
+  );
+}
 
 function ClientDashboard() {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState("accueil");
+  const [tab, setTab] = useState("accueil");
+  const [orders, setOrders] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+
+  useEffect(() => {
+    if (tab === "commandes" && user) fetchOrders();
+  }, [tab, user]);
+
+  // Real-time subscription
+  useEffect(() => {
+    if (!user) return;
+    const unsub = base44.entities.Order.subscribe((event) => {
+      if (event.data?.client_email === user.email) {
+        setOrders(prev => {
+          if (event.type === "create") return [event.data, ...prev];
+          if (event.type === "update") return prev.map(o => o.id === event.id ? event.data : o);
+          if (event.type === "delete") return prev.filter(o => o.id !== event.id);
+          return prev;
+        });
+      }
+    });
+    return unsub;
+  }, [user]);
+
+  const fetchOrders = async () => {
+    setLoadingOrders(true);
+    const data = await base44.entities.Order.filter({ client_email: user.email }, "-created_date", 20);
+    setOrders(data || []);
+    setLoadingOrders(false);
+  };
+
+  const activeOrders = orders.filter(o => !["livree","annulee"].includes(o.status));
+  const doneOrders = orders.filter(o => ["livree","annulee"].includes(o.status));
 
   return (
-    <div className="min-h-screen bg-concrete">
-      {/* Top bar */}
-      <div className="bg-obsidian text-white sticky top-0 z-40 shadow-xl">
-        <div className="max-w-5xl mx-auto px-5 py-0 flex items-center justify-between h-16">
-          <div className="flex items-center gap-4">
-            <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-8 brightness-0 invert opacity-90" />
-            <span className="hidden sm:block w-px h-5 bg-white/15" />
-            <span className="hidden sm:block font-body text-[11px] text-white/35 uppercase tracking-widest">Espace Client</span>
-          </div>
+    <div className="min-h-screen bg-[#F8F8F6]">
+      {/* Header */}
+      <header className="bg-[#1C1C1E] sticky top-0 z-40">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button className="w-8 h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors">
-              <Bell className="w-4 h-4" />
-            </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center">
-                <span className="font-heading font-bold text-white text-xs">{user?.full_name?.charAt(0) || "C"}</span>
-              </div>
-              <span className="hidden sm:block font-body text-xs text-white/55">{user?.full_name || "Client"}</span>
+            <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 brightness-0 invert opacity-90" />
+            <span className="hidden sm:block text-[10px] text-white/30 uppercase tracking-[0.2em] font-body">Client</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-gmo-green flex items-center justify-center text-white text-[11px] font-bold font-heading">
+              {user?.full_name?.charAt(0) || "C"}
             </div>
-            <button onClick={() => logout()} className="flex items-center gap-1 text-white/30 hover:text-gmo-red transition-colors ml-1">
+            <span className="hidden sm:block text-xs text-white/50 font-body">{user?.full_name}</span>
+            <button onClick={() => logout()} className="ml-2 text-white/25 hover:text-red-400 transition-colors">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
         </div>
-
-        {/* Tabs */}
-        <div className="max-w-5xl mx-auto px-5 flex gap-1 border-t border-white/5">
-          {[
-            { id: "accueil", label: "Accueil" },
-            { id: "commandes", label: "Commandes" },
-            { id: "catalogue", label: "Catalogue" },
-            { id: "contact", label: "Contact" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`font-body text-xs uppercase tracking-widest px-4 py-3.5 border-b-2 transition-all ${
-                activeTab === tab.id
-                  ? "border-gmo-green text-gmo-green"
-                  : "border-transparent text-white/35 hover:text-white/60"
+        <nav className="max-w-5xl mx-auto px-4 sm:px-6 flex gap-0 border-t border-white/5">
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={`px-4 py-2.5 text-[11px] font-body uppercase tracking-widest border-b-2 transition-colors ${
+                tab === t.id ? "border-gmo-green text-gmo-green" : "border-transparent text-white/30 hover:text-white/60"
               }`}
-            >
-              {tab.label}
-            </button>
+            >{t.label}</button>
           ))}
-        </div>
-      </div>
+        </nav>
+      </header>
 
-      <div className="max-w-5xl mx-auto px-5 py-8">
-        {/* Welcome banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-obsidian to-gmo-green/80 rounded-2xl p-7 mb-8 text-white overflow-hidden relative"
-        >
-          <div className="absolute right-0 top-0 bottom-0 w-40 opacity-10">
-            <div className="w-40 h-40 bg-white rounded-full -translate-y-8 translate-x-8" />
-          </div>
-          <p className="font-body text-xs uppercase tracking-widest text-white/50 mb-2">Bienvenue</p>
-          <h1 className="font-heading text-2xl sm:text-3xl font-bold mb-1">
-            {user?.full_name || "Cher Client"} 👋
-          </h1>
-          <p className="font-body text-sm text-white/50">Gérez vos commandes et accédez à nos services depuis votre espace dédié.</p>
-        </motion.div>
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
 
-        {/* Quick actions */}
-        <p className="font-heading text-xs uppercase tracking-widest text-obsidian/35 mb-4">Actions rapides</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-          {QUICK_ACTIONS.map((a, i) => (
-            <motion.a
-              key={a.label}
-              href={a.href}
-              target={a.external ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-              className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:border-gmo-green/20 transition-all group flex flex-col items-center text-center cursor-pointer"
-            >
-              <div className="w-10 h-10 bg-gmo-green/10 rounded-xl flex items-center justify-center mb-3 group-hover:bg-gmo-green/20 transition-colors">
-                <a.icon className="w-5 h-5 text-gmo-green" />
-              </div>
-              <p className="font-heading text-sm font-bold text-obsidian">{a.label}</p>
-              <p className="font-body text-[11px] text-obsidian/40 mt-0.5">{a.desc}</p>
-            </motion.a>
-          ))}
-        </div>
-
-        {/* Products preview */}
-        <p className="font-heading text-xs uppercase tracking-widest text-obsidian/35 mb-4">Nos produits</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-          {PRODUCTS.map((p, i) => (
-            <motion.div
-              key={p.name}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.07 }}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all"
-            >
-              <div className="aspect-square bg-gray-50 overflow-hidden">
-                <img src={p.img} alt={p.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onError={(e) => { e.target.style.display="none"; }} />
-              </div>
-              <div className="p-3">
-                <p className="font-heading text-xs font-bold text-obsidian">{p.name}</p>
-                <p className="font-body text-[10px] text-obsidian/35">{p.cat}</p>
-                <span className="inline-block mt-1.5 font-body text-[9px] uppercase tracking-widest text-gmo-green bg-gmo-green/8 px-2 py-0.5 rounded-full">{p.status}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* CTA block */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-        >
+        {/* ── ACCUEIL ── */}
+        {tab === "accueil" && (
           <div>
-            <p className="font-heading text-base font-bold text-obsidian mb-1">Besoin d'aide ?</p>
-            <p className="font-body text-sm text-obsidian/45">Notre équipe est disponible Lun–Sam 8h30–18h.</p>
-          </div>
-          <a href="tel:+22625331900" className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-6 py-3 rounded-lg hover:bg-gmo-green/90 transition-all flex-shrink-0">
-            <Phone className="w-4 h-4" /> +226 25 33 19 00
-          </a>
-        </motion.div>
+            {/* Welcome */}
+            <div className="bg-gradient-to-r from-[#1C1C1E] to-[#1A7A2E]/80 rounded-2xl p-6 mb-6 text-white">
+              <p className="text-[11px] text-white/40 uppercase tracking-widest font-body mb-1">Bienvenue</p>
+              <h1 className="font-heading text-2xl font-bold mb-1">{user?.full_name || "Cher Client"} 👋</h1>
+              <p className="text-sm text-white/45 font-body">Gérez vos commandes depuis votre espace personnel.</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <a href="https://wa.me/22676211633" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-4 py-2 rounded-lg hover:bg-gmo-green/90">
+                  <ShoppingBag className="w-3.5 h-3.5" /> Commander via WhatsApp
+                </a>
+                <button onClick={() => setTab("commandes")}
+                  className="inline-flex items-center gap-2 border border-white/20 text-white/60 text-xs font-body px-4 py-2 rounded-lg hover:border-white/40 hover:text-white transition-colors">
+                  <Clock className="w-3.5 h-3.5" /> Voir mes commandes
+                </button>
+              </div>
+            </div>
 
-        <p className="text-center font-body text-[11px] text-obsidian/25 mt-8">
-          <Link to="/" className="hover:text-gmo-green transition-colors">← Retour au site public</Link>
+            {/* Quick stats */}
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {[
+                { label: "Commandes actives", value: activeOrders.length || "—", icon: Truck, color: "text-gmo-green" },
+                { label: "Livrées", value: doneOrders.filter(o => o.status === "livree").length || "—", icon: CheckCircle2, color: "text-blue-600" },
+                { label: "Total commandes", value: orders.length || "—", icon: Package, color: "text-purple-600" },
+              ].map(s => (
+                <div key={s.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                  <s.icon className={`w-4 h-4 ${s.color} mb-2`} />
+                  <p className="font-heading text-xl font-bold text-obsidian">{s.value}</p>
+                  <p className="text-[11px] text-obsidian/40 font-body mt-0.5 leading-tight">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Recent orders */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                <p className="font-heading text-sm font-bold text-obsidian">Commandes récentes</p>
+                <button onClick={() => setTab("commandes")} className="text-xs text-gmo-green font-body hover:underline flex items-center gap-1">
+                  Tout voir <ChevronRight className="w-3 h-3" />
+                </button>
+              </div>
+              {orders.length === 0 ? (
+                <div className="py-10 text-center">
+                  <Package className="w-8 h-8 text-obsidian/10 mx-auto mb-2" />
+                  <p className="text-sm text-obsidian/35 font-body">Aucune commande pour l'instant</p>
+                  <a href="https://wa.me/22676211633" target="_blank" rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 text-xs text-gmo-green font-body hover:underline">
+                    <Plus className="w-3 h-3" /> Passer une commande
+                  </a>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-50">
+                  {orders.slice(0, 3).map(o => (
+                    <div key={o.id} className="px-5 py-3.5 flex items-center gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-heading text-sm font-semibold text-obsidian">{o.order_number || `CMD-${o.id?.slice(-6)}`}</p>
+                        <p className="text-[11px] text-obsidian/40 font-body">{new Date(o.created_date).toLocaleDateString("fr-FR")}</p>
+                      </div>
+                      {o.total_amount && <p className="text-sm font-bold text-obsidian font-heading whitespace-nowrap">{o.total_amount.toLocaleString()} FCFA</p>}
+                      <StatusBadge status={o.status} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Contact */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex items-center justify-between gap-4">
+              <div>
+                <p className="font-heading text-sm font-bold text-obsidian mb-0.5">Besoin d'aide ?</p>
+                <p className="text-xs text-obsidian/45 font-body">Lun–Sam 8h30–18h</p>
+              </div>
+              <a href="tel:+22625331900" className="flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-5 py-2.5 rounded-lg hover:bg-gmo-green/90 transition-colors flex-shrink-0">
+                <Phone className="w-3.5 h-3.5" /> Appeler
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* ── COMMANDES ── */}
+        {tab === "commandes" && (
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-heading text-xl font-bold text-obsidian">Mes commandes</h2>
+                <p className="text-xs text-obsidian/40 font-body mt-0.5">Suivi en temps réel</p>
+              </div>
+              <button onClick={fetchOrders} disabled={loadingOrders}
+                className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-2 text-xs font-body text-obsidian/60 hover:border-gmo-green hover:text-gmo-green transition-colors">
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingOrders ? "animate-spin" : ""}`} /> Actualiser
+              </button>
+            </div>
+
+            {loadingOrders ? (
+              <div className="flex justify-center py-16">
+                <div className="w-6 h-6 border-2 border-gmo-green/30 border-t-gmo-green rounded-full animate-spin" />
+              </div>
+            ) : orders.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center">
+                <Package className="w-10 h-10 text-obsidian/10 mx-auto mb-3" />
+                <p className="font-heading text-base font-semibold text-obsidian/40 mb-1">Aucune commande</p>
+                <p className="text-sm text-obsidian/25 font-body mb-4">Votre historique apparaîtra ici</p>
+                <a href="https://wa.me/22676211633" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-5 py-2.5 rounded-lg">
+                  <ShoppingBag className="w-3.5 h-3.5" /> Commander maintenant
+                </a>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {/* Active */}
+                {activeOrders.length > 0 && (
+                  <>
+                    <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mb-2">En cours ({activeOrders.length})</p>
+                    {activeOrders.map(o => <OrderCard key={o.id} order={o} />)}
+                  </>
+                )}
+                {/* Done */}
+                {doneOrders.length > 0 && (
+                  <>
+                    <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mt-5 mb-2">Historique ({doneOrders.length})</p>
+                    {doneOrders.map(o => <OrderCard key={o.id} order={o} />)}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── CATALOGUE ── */}
+        {tab === "catalogue" && (
+          <div>
+            <div className="mb-5">
+              <h2 className="font-heading text-xl font-bold text-obsidian">Catalogue produits</h2>
+              <p className="text-xs text-obsidian/40 font-body mt-0.5">Disponibles à la commande</p>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {SAMPLE_PRODUCTS.map(p => (
+                <div key={p.name} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                  <div className="aspect-square bg-gray-50 overflow-hidden">
+                    {p.img ? (
+                      <img src={p.img} alt={p.name} className="w-full h-full object-cover" onError={e => { e.target.style.display="none"; }} />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Package className="w-8 h-8 text-obsidian/10" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <p className="font-heading text-xs font-bold text-obsidian">{p.name}</p>
+                    <p className="text-[10px] text-obsidian/35 font-body">{p.cat} · {p.unit}</p>
+                    <p className="font-heading text-sm font-bold text-gmo-green mt-1.5">{p.price}</p>
+                    <a href="https://wa.me/22676211633" target="_blank" rel="noopener noreferrer"
+                      className="mt-2 w-full flex justify-center items-center gap-1.5 bg-obsidian text-white text-[10px] font-heading font-bold py-1.5 rounded-lg hover:bg-gmo-green transition-colors">
+                      Commander
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <p className="text-center text-[11px] text-obsidian/20 font-body mt-8">
+          <Link to="/" className="hover:text-gmo-green transition-colors">← Retour au site</Link>
         </p>
+      </main>
+    </div>
+  );
+}
+
+function OrderCard({ order }) {
+  const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.en_attente;
+  const Icon = cfg.icon;
+  // Build delivery progress
+  const steps = ["en_attente","confirmee","en_preparation","en_livraison","livree"];
+  const stepIdx = steps.indexOf(order.status);
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div>
+          <p className="font-heading text-sm font-bold text-obsidian">{order.order_number || `CMD-${order.id?.slice(-6)}`}</p>
+          <p className="text-[11px] text-obsidian/40 font-body mt-0.5">
+            {new Date(order.created_date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+          </p>
+        </div>
+        <StatusBadge status={order.status} />
       </div>
+
+      {/* Progress bar */}
+      {order.status !== "annulee" && (
+        <div className="mb-4">
+          <div className="flex items-center gap-0">
+            {steps.map((s, i) => (
+              <React.Fragment key={s}>
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                  i <= stepIdx ? "bg-gmo-green" : "bg-gray-100"
+                }`}>
+                  <div className={`w-2 h-2 rounded-full ${i <= stepIdx ? "bg-white" : "bg-gray-300"}`} />
+                </div>
+                {i < steps.length - 1 && (
+                  <div className={`flex-1 h-[2px] transition-colors ${i < stepIdx ? "bg-gmo-green" : "bg-gray-100"}`} />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="flex justify-between mt-1">
+            {["Attente","Confirmée","Prépa.","Livraison","Livrée"].map((l, i) => (
+              <span key={l} className={`text-[9px] font-body ${i <= stepIdx ? "text-gmo-green" : "text-obsidian/25"}`}>{l}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="flex items-center justify-between">
+        {order.delivery_city && (
+          <div className="flex items-center gap-1.5 text-xs text-obsidian/45 font-body">
+            <MapPin className="w-3.5 h-3.5" /> {order.delivery_city}
+          </div>
+        )}
+        {order.total_amount && (
+          <p className="font-heading text-sm font-bold text-obsidian ml-auto">{order.total_amount.toLocaleString()} FCFA</p>
+        )}
+      </div>
+      {order.estimated_delivery && (
+        <p className="text-[11px] text-obsidian/35 font-body mt-1.5 flex items-center gap-1">
+          <Truck className="w-3 h-3" /> Livraison estimée : {new Date(order.estimated_delivery).toLocaleDateString("fr-FR")}
+        </p>
+      )}
     </div>
   );
 }

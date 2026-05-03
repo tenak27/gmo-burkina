@@ -1,0 +1,57 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du produit"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "alimentaire",
+        "hygiene",
+        "boisson",
+        "cereale",
+        "autre"
+      ],
+      "default": "alimentaire"
+    },
+    "description": {
+      "type": "string"
+    },
+    "unit_price": {
+      "type": "number",
+      "description": "Prix unitaire (FCFA)"
+    },
+    "wholesale_price": {
+      "type": "number",
+      "description": "Prix grossiste (FCFA)"
+    },
+    "stock_quantity": {
+      "type": "number",
+      "default": 0
+    },
+    "stock_alert": {
+      "type": "number",
+      "default": 10,
+      "description": "Seuil d'alerte stock"
+    },
+    "unit": {
+      "type": "string",
+      "default": "carton",
+      "description": "Unit\u00e9 (carton, sac, bouteille...)"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "unit_price"
+  ]
+}

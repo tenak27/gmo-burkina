@@ -47,10 +47,24 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     @apply bg-background text-foreground font-body;
+    overscroll-behavior: none;
+  }
+
+  /* GPU-accelerated transitions for interactive elements */
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smoother scrolling for sticky elements */
+  .sticky {
+    will-change: transform;
   }
 }
 

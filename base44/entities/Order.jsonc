@@ -1,0 +1,66 @@
+{
+  "name": "Order",
+  "type": "object",
+  "properties": {
+    "order_number": {
+      "type": "string",
+      "description": "Num\u00e9ro de commande"
+    },
+    "client_email": {
+      "type": "string",
+      "description": "Email du client"
+    },
+    "client_name": {
+      "type": "string",
+      "description": "Nom du client"
+    },
+    "client_type": {
+      "type": "string",
+      "enum": [
+        "client",
+        "detaillant"
+      ],
+      "default": "client"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "Produits command\u00e9s"
+    },
+    "total_amount": {
+      "type": "number",
+      "description": "Montant total (FCFA)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en_attente",
+        "confirmee",
+        "en_preparation",
+        "en_livraison",
+        "livree",
+        "annulee"
+      ],
+      "default": "en_attente"
+    },
+    "delivery_address": {
+      "type": "string"
+    },
+    "delivery_city": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "estimated_delivery": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "client_email",
+    "client_name"
+  ]
+}
