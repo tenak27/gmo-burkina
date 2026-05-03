@@ -139,9 +139,8 @@
     animation: ticker 35s linear infinite;
   }
 
-  /* Pulse glow green — disabled to avoid distracting flicker */
   .animate-pulse-green {
-    /* animation removed */
+    /* animation removed — no flicker */
   }
 
   /* Float */

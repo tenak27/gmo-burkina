@@ -170,7 +170,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
         {GROUPS.map((group, gi) => (
           <div key={gi} className={gi > 0 ? "mt-5" : ""}>
             {group.label && (!collapsed || mobile) && (
-              <p className="text-[9px] uppercase tracking-[0.32em] text-white/30 font-heading px-3 mb-2">
+              <p className="text-[9px] uppercase tracking-[0.32em] text-white/45 font-heading px-3 mb-2">
                 {group.label}
               </p>
             )}
@@ -186,21 +186,21 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
                   title={collapsed && !mobile ? item.label : ""}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-150 group relative ${
                     isActive
-                      ? "bg-gmo-green text-white shadow-md shadow-gmo-green/25"
-                      : "text-white/55 hover:text-white hover:bg-white/8"
+                      ? "bg-gmo-green text-white shadow-md shadow-gmo-green/20"
+                      : "text-white/60 hover:text-white hover:bg-white/10"
                   } ${collapsed && !mobile ? "justify-center px-0" : ""}`}
                 >
-                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-white" : "text-white/45 group-hover:text-white/90"}`} />
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-white" : "text-white/55 group-hover:text-white"}`} />
                   {(!collapsed || mobile) && (
-                    <span className={`text-sm font-body truncate flex-1 ${isActive ? "font-semibold" : "font-normal"}`}>{item.label}</span>
+                    <span className={`text-sm font-body truncate flex-1 ${isActive ? "font-semibold text-white" : "font-normal"}`}>{item.label}</span>
                   )}
                   {showBadge && (!collapsed || mobile) && (
-                    <span className="bg-gmo-red text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 animate-pulse">
+                    <span className="bg-gmo-red text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0">
                       {pendingOrders}
                     </span>
                   )}
                   {showBadge && collapsed && !mobile && (
-                    <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-gmo-red rounded-full animate-pulse" />
+                    <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-gmo-red rounded-full" />
                   )}
                 </button>
               );
@@ -220,7 +220,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm text-white font-heading font-semibold truncate leading-tight">{user?.full_name}</p>
-              <p className="text-[10px] text-white/40 font-body truncate">{user?.email}</p>
+              <p className="text-[10px] text-white/55 font-body truncate">{user?.email}</p>
             </div>
             <div className="flex items-center gap-1 flex-shrink-0">
               <Link to="/" className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/35 hover:text-white/80 transition-all" title="Site public">
@@ -268,7 +268,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
           {pendingOrders > 0 && (
             <button onClick={() => setTab("orders")} className="relative">
               <Bell className="w-4 h-4 text-white/50" />
-              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-gmo-red rounded-full text-[8px] text-white flex items-center justify-center font-bold animate-pulse">{pendingOrders}</span>
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-gmo-red rounded-full text-[8px] text-white flex items-center justify-center font-bold">{pendingOrders}</span>
             </button>
           )}
           <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold">
