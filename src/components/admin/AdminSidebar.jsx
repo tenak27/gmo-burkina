@@ -4,8 +4,8 @@ import { useAuth } from "@/lib/AuthContext";
 import {
   LayoutDashboard, Users, UserCheck, FileText, Truck, Package,
   Tag, Warehouse, BarChart2, BookOpen, Users2, ShoppingCart,
-  Shield, Globe, Bell, LogOut, ChevronRight, Menu, X, Search, Command,
-  DollarSign, TrendingDown
+  Shield, Globe, Bell, LogOut, ChevronRight, Menu, X, Search,
+  DollarSign, TrendingDown, Navigation
 } from "lucide-react";
 
 const GROUPS = [
@@ -40,7 +40,7 @@ const GROUPS = [
     label: "Livraison",
     items: [
       { id: "delivery", label: "Bons de livraison", icon: Truck },
-      { id: "drivers", label: "Chauffeurs", icon: Truck },
+      { id: "drivers", label: "Chauffeurs", icon: Navigation },
     ],
   },
   {
@@ -71,38 +71,32 @@ function CommandPalette({ onNavigate, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-24 px-4">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
-        {/* Search input */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100">
-          <Search className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-md bg-[#1E1E22] rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/8">
+          <Search className="w-4 h-4 text-white/40 flex-shrink-0" />
           <input
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Naviguer vers un module…"
-            className="flex-1 text-sm font-body text-obsidian placeholder:text-obsidian/25 focus:outline-none"
+            className="flex-1 text-sm font-body text-white placeholder:text-white/25 focus:outline-none bg-transparent"
           />
-          <kbd className="text-[9px] text-obsidian/25 font-body border border-gray-200 rounded px-1.5 py-0.5">ESC</kbd>
+          <kbd className="text-[9px] text-white/20 font-body border border-white/10 rounded px-1.5 py-0.5">ESC</kbd>
         </div>
-        {/* Results */}
         <div className="max-h-72 overflow-y-auto py-2">
           {results.map(item => {
             const Icon = item.icon;
             return (
               <button key={item.id} onClick={() => { onNavigate(item.id); onClose(); }}
-                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 text-left transition-colors group">
-                <div className="w-7 h-7 bg-obsidian/5 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-gmo-green/10 transition-colors">
-                  <Icon className="w-3.5 h-3.5 text-obsidian/50 group-hover:text-gmo-green transition-colors" />
+                className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/6 text-left transition-colors group">
+                <div className="w-7 h-7 bg-white/6 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-gmo-green/15 transition-colors">
+                  <Icon className="w-3.5 h-3.5 text-white/40 group-hover:text-gmo-green transition-colors" />
                 </div>
-                <span className="text-sm font-body text-obsidian/70 group-hover:text-obsidian">{item.label}</span>
+                <span className="text-sm font-body text-white/55 group-hover:text-white/90">{item.label}</span>
               </button>
             );
           })}
-        </div>
-        <div className="px-4 py-2 border-t border-gray-50 flex items-center gap-2">
-          <Command className="w-3 h-3 text-obsidian/20" />
-          <span className="text-[10px] text-obsidian/25 font-body">K pour ouvrir · Echap pour fermer</span>
         </div>
       </div>
     </div>
@@ -115,7 +109,6 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
 
-  // Cmd+K shortcut
   useEffect(() => {
     const handler = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); setCmdOpen(s => !s); }
@@ -126,60 +119,62 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
   }, []);
 
   const SidebarContent = ({ mobile = false }) => (
-    <div className={`flex flex-col h-full ${mobile ? "w-72" : collapsed ? "w-16" : "w-60"} transition-all duration-300 ease-in-out`}>
-      {/* Logo + toggle */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-white/6 flex-shrink-0">
+    <div className={`flex flex-col h-full ${mobile ? "w-72" : collapsed ? "w-16" : "w-64"} transition-all duration-300 ease-in-out`}>
+      
+      {/* Logo */}
+      <div className="flex items-center justify-between px-4 py-5 flex-shrink-0">
         {(!collapsed || mobile) && (
-          <div className="flex items-center gap-2.5 overflow-hidden">
+          <div className="flex items-center gap-3 overflow-hidden">
             <img
               src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
-              alt="GMO"
-              className="h-7 w-auto brightness-0 invert opacity-90 flex-shrink-0"
+              alt="GMO" className="h-8 w-auto brightness-0 invert flex-shrink-0"
             />
             <div className="flex flex-col min-w-0">
-              <span className="text-[9px] text-gmo-green/90 uppercase tracking-[0.28em] font-body whitespace-nowrap">ERP Admin</span>
-              <span className="text-[8px] text-white/18 font-body whitespace-nowrap truncate">GMO Burkina</span>
+              <span className="text-xs font-heading font-bold text-white whitespace-nowrap">GMO Burkina</span>
+              <span className="text-[9px] text-gmo-green uppercase tracking-[0.25em] font-body whitespace-nowrap">ERP Admin</span>
             </div>
           </div>
         )}
         {collapsed && !mobile && (
-          <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-6 w-auto brightness-0 invert opacity-70 mx-auto" />
+          <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 w-auto brightness-0 invert opacity-80 mx-auto" />
         )}
         {!mobile && (
           <button onClick={() => setCollapsed(!collapsed)}
-            className="w-6 h-6 rounded-md bg-white/5 hover:bg-white/12 flex items-center justify-center text-white/25 hover:text-white/60 transition-all flex-shrink-0 ml-auto">
-            <ChevronRight className={`w-3 h-3 transition-transform duration-300 ${collapsed ? "" : "rotate-180"}`} />
+            className="w-7 h-7 rounded-lg bg-white/8 hover:bg-white/15 flex items-center justify-center text-white/50 hover:text-white transition-all flex-shrink-0 ml-auto">
+            <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${collapsed ? "" : "rotate-180"}`} />
           </button>
         )}
         {mobile && (
-          <button onClick={() => setMobileOpen(false)} className="text-white/40 hover:text-white ml-auto">
+          <button onClick={() => setMobileOpen(false)} className="text-white/50 hover:text-white ml-auto">
             <X className="w-5 h-5" />
           </button>
         )}
       </div>
 
-      {/* Search bar (expanded only) */}
+      {/* Search */}
       {(!collapsed || mobile) && (
-        <div className="px-3 py-2.5 border-b border-white/5">
+        <div className="px-3 pb-3">
           <button onClick={() => setCmdOpen(true)}
-            className="w-full flex items-center gap-2 bg-white/5 hover:bg-white/8 border border-white/8 rounded-lg px-3 py-2 text-left transition-all group">
-            <Search className="w-3 h-3 text-white/25 group-hover:text-white/50 transition-colors" />
-            <span className="text-[11px] text-white/25 group-hover:text-white/50 font-body flex-1 transition-colors">Rechercher…</span>
-            <kbd className="text-[8px] text-white/15 font-body border border-white/10 rounded px-1 py-0.5 flex-shrink-0">⌘K</kbd>
+            className="w-full flex items-center gap-2.5 bg-white/8 hover:bg-white/12 border border-white/10 rounded-xl px-3 py-2.5 text-left transition-all group">
+            <Search className="w-3.5 h-3.5 text-white/40 group-hover:text-white/70 transition-colors" />
+            <span className="text-xs text-white/40 group-hover:text-white/70 font-body flex-1 transition-colors">Rechercher…</span>
+            <kbd className="text-[8px] text-white/20 font-body border border-white/10 rounded px-1.5 py-0.5 flex-shrink-0">⌘K</kbd>
           </button>
         </div>
       )}
 
+      <div className="h-px bg-white/8 mx-3 mb-2" />
+
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-px">
+      <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-0.5">
         {GROUPS.map((group, gi) => (
-          <div key={gi} className={gi > 0 ? "mt-4" : ""}>
+          <div key={gi} className={gi > 0 ? "mt-5" : ""}>
             {group.label && (!collapsed || mobile) && (
-              <p className="text-[8px] uppercase tracking-[0.35em] text-white/18 font-heading px-2.5 mb-1.5">
+              <p className="text-[9px] uppercase tracking-[0.32em] text-white/30 font-heading px-3 mb-2">
                 {group.label}
               </p>
             )}
-            {group.label && collapsed && !mobile && <div className="h-px bg-white/8 mx-2 my-3" />}
+            {group.label && collapsed && !mobile && <div className="h-px bg-white/8 mx-1 my-3" />}
             {group.items.map(item => {
               const Icon = item.icon;
               const isActive = tab === item.id;
@@ -189,15 +184,15 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
                   key={item.id}
                   onClick={() => { setTab(item.id); if (mobile) setMobileOpen(false); }}
                   title={collapsed && !mobile ? item.label : ""}
-                  className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-left transition-all duration-150 group relative ${
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-150 group relative ${
                     isActive
-                      ? "bg-gmo-green/18 text-gmo-green border border-gmo-green/25 shadow-sm shadow-gmo-green/5"
-                      : "text-white/38 hover:text-white/75 hover:bg-white/6 border border-transparent"
-                  } ${collapsed && !mobile ? "justify-center" : ""}`}
+                      ? "bg-gmo-green text-white shadow-md shadow-gmo-green/25"
+                      : "text-white/55 hover:text-white hover:bg-white/8"
+                  } ${collapsed && !mobile ? "justify-center px-0" : ""}`}
                 >
-                  <Icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isActive ? "text-gmo-green" : "text-white/30 group-hover:text-white/65"}`} />
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-white" : "text-white/45 group-hover:text-white/90"}`} />
                   {(!collapsed || mobile) && (
-                    <span className={`text-[11px] font-body font-medium truncate flex-1 ${isActive ? "font-semibold" : ""}`}>{item.label}</span>
+                    <span className={`text-sm font-body truncate flex-1 ${isActive ? "font-semibold" : "font-normal"}`}>{item.label}</span>
                   )}
                   {showBadge && (!collapsed || mobile) && (
                     <span className="bg-gmo-red text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 animate-pulse">
@@ -205,9 +200,8 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
                     </span>
                   )}
                   {showBadge && collapsed && !mobile && (
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-gmo-red rounded-full animate-pulse" />
+                    <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-gmo-red rounded-full animate-pulse" />
                   )}
-                  {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-gmo-green rounded-r-full" />}
                 </button>
               );
             })}
@@ -215,32 +209,34 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
         ))}
       </nav>
 
+      <div className="h-px bg-white/8 mx-3 mt-2" />
+
       {/* User footer */}
-      <div className="flex-shrink-0 border-t border-white/6 p-3">
+      <div className="flex-shrink-0 p-3">
         {(!collapsed || mobile) ? (
-          <div className="flex items-center gap-2.5 px-1">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gmo-green to-gmo-green/50 flex items-center justify-center text-white text-[11px] font-bold font-heading flex-shrink-0 ring-2 ring-gmo-green/20">
+          <div className="flex items-center gap-3 bg-white/6 rounded-xl px-3 py-2.5">
+            <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold font-heading flex-shrink-0">
               {user?.full_name?.charAt(0) || "A"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] text-white/70 font-heading font-semibold truncate">{user?.full_name}</p>
-              <p className="text-[9px] text-white/28 font-body truncate">{user?.email}</p>
+              <p className="text-sm text-white font-heading font-semibold truncate leading-tight">{user?.full_name}</p>
+              <p className="text-[10px] text-white/40 font-body truncate">{user?.email}</p>
             </div>
-            <div className="flex items-center gap-1.5 flex-shrink-0">
-              <Link to="/" className="w-6 h-6 rounded-lg hover:bg-white/8 flex items-center justify-center text-white/20 hover:text-white/60 transition-all" title="Site public">
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Link to="/" className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/35 hover:text-white/80 transition-all" title="Site public">
                 <Globe className="w-3.5 h-3.5" />
               </Link>
-              <button onClick={() => logout()} className="w-6 h-6 rounded-lg hover:bg-red-500/10 flex items-center justify-center text-white/20 hover:text-red-400 transition-all" title="Déconnexion">
+              <button onClick={() => logout()} className="w-7 h-7 rounded-lg hover:bg-red-500/15 flex items-center justify-center text-white/35 hover:text-red-400 transition-all" title="Déconnexion">
                 <LogOut className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gmo-green to-gmo-green/50 flex items-center justify-center text-white text-[11px] font-bold font-heading ring-2 ring-gmo-green/20">
+            <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold">
               {user?.full_name?.charAt(0) || "A"}
             </div>
-            <button onClick={() => logout()} className="w-6 h-6 rounded-lg hover:bg-red-500/10 flex items-center justify-center text-white/20 hover:text-red-400 transition-all">
+            <button onClick={() => logout()} className="w-7 h-7 rounded-lg hover:bg-red-500/15 flex items-center justify-center text-white/35 hover:text-red-400 transition-all">
               <LogOut className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -252,30 +248,30 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className={`hidden lg:flex flex-col bg-[#161618] border-r border-white/[0.06] h-screen sticky top-0 transition-all duration-300 flex-shrink-0 ${collapsed ? "w-16" : "w-60"}`}>
+      <aside className={`hidden lg:flex flex-col bg-[#111113] border-r border-white/[0.07] h-screen sticky top-0 transition-all duration-300 flex-shrink-0 ${collapsed ? "w-16" : "w-64"}`}>
         <SidebarContent />
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden bg-[#161618] border-b border-white/[0.06] sticky top-0 z-50 flex items-center justify-between px-4 h-12">
+      <div className="lg:hidden bg-[#111113] border-b border-white/[0.07] sticky top-0 z-50 flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-3">
-          <button onClick={() => setMobileOpen(true)} className="text-white/50 hover:text-white transition-colors">
+          <button onClick={() => setMobileOpen(true)} className="text-white/60 hover:text-white transition-colors">
             <Menu className="w-5 h-5" />
           </button>
-          <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-6 brightness-0 invert opacity-80" />
-          <span className="text-[9px] text-gmo-green/60 uppercase tracking-widest font-body">ERP</span>
+          <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 brightness-0 invert opacity-90" />
+          <span className="text-[9px] text-gmo-green uppercase tracking-widest font-body">ERP</span>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={() => setCmdOpen(true)} className="text-white/30 hover:text-white/60 transition-colors">
+          <button onClick={() => setCmdOpen(true)} className="text-white/40 hover:text-white/80 transition-colors">
             <Search className="w-4 h-4" />
           </button>
           {pendingOrders > 0 && (
             <button onClick={() => setTab("orders")} className="relative">
-              <Bell className="w-4 h-4 text-white/40" />
+              <Bell className="w-4 h-4 text-white/50" />
               <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-gmo-red rounded-full text-[8px] text-white flex items-center justify-center font-bold animate-pulse">{pendingOrders}</span>
             </button>
           )}
-          <div className="w-7 h-7 rounded-full bg-gmo-green flex items-center justify-center text-white text-[10px] font-bold ring-2 ring-gmo-green/20">
+          <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold">
             {user?.full_name?.charAt(0) || "A"}
           </div>
         </div>
@@ -285,13 +281,12 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 bg-[#161618] flex shadow-2xl animate-slide-in-left">
+          <div className="absolute left-0 top-0 bottom-0 bg-[#111113] flex shadow-2xl animate-slide-in-left">
             <SidebarContent mobile />
           </div>
         </div>
       )}
 
-      {/* Command palette */}
       {cmdOpen && (
         <CommandPalette
           onNavigate={(id) => { setTab(id); setMobileOpen(false); }}

@@ -5,7 +5,7 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Package, Truck, LogOut, Star, RefreshCw, Phone,
-  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send, MapPin, Home
+  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send, MapPin, Home, Download, FileText
 } from "lucide-react";
 import StocksView from "@/components/retailer/StocksView";
 import ProductGallery from "@/components/retailer/ProductGallery";
@@ -224,9 +224,18 @@ function RetailerDashboard() {
         {/* ── CATALOGUE GALERIE ── */}
         {tab === "catalogue" && (
           <div>
-            <div className="mb-5">
-              <h2 className="font-heading text-xl font-bold text-obsidian">Catalogue produits</h2>
-              <p className="text-xs text-obsidian/40 font-body mt-0.5">Tarifs grossiste · Ajout rapide au panier</p>
+            <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
+              <div>
+                <h2 className="font-heading text-xl font-bold text-obsidian">Catalogue produits</h2>
+                <p className="text-xs text-obsidian/40 font-body mt-0.5">Tarifs grossiste · Ajout rapide au panier</p>
+              </div>
+              <a
+                href={`data:text/html;charset=utf-8,${encodeURIComponent(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Catalogue GMO Burkina</title><style>body{font-family:Arial,sans-serif;margin:30px;color:#1C1C1E}h1{color:#1A7A2E;border-bottom:3px solid #1A7A2E;padding-bottom:10px}table{width:100%;border-collapse:collapse;margin-top:20px}th{background:#1A7A2E;color:white;padding:10px;text-align:left;font-size:12px}td{padding:8px 10px;border-bottom:1px solid #eee;font-size:12px}tr:nth-child(even){background:#f9f9f9}.footer{margin-top:30px;color:#999;font-size:10px;text-align:center}</style></head><body><h1>📦 Catalogue Produits — GMO Burkina</h1><p style="color:#666;font-size:12px">Tarifs grossiste en vigueur · ${new Date().toLocaleDateString('fr-FR')}</p><table><tr><th>Produit</th><th>Catégorie</th><th>Unité</th><th>Prix Grossiste (FCFA)</th><th>Stock</th></tr>${products.map(p=>`<tr><td><strong>${p.name}</strong></td><td>${p.category||'—'}</td><td>${p.unit||'unité'}</td><td><strong>${(p.wholesale_price||p.unit_price||0).toLocaleString()}</strong></td><td>${p.stock_quantity||0}</td></tr>`).join('')}</table><div class="footer">GMO Burkina · Quartier Dapoya, Ouagadougou · +226 25 33 19 00 · infos@gmoburkina.com</div></body></html>`)}`}
+                download="Catalogue-GMO-Burkina.html"
+                className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-xs px-4 py-2.5 rounded-xl btn-glow-green"
+              >
+                <Download className="w-3.5 h-3.5" /> Télécharger catalogue PDF
+              </a>
             </div>
             <ProductGallery
               products={products}

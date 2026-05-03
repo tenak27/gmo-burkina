@@ -7,6 +7,7 @@ import StatsSection from "../components/landing/StatsSection";
 import AboutSection from "../components/landing/AboutSection";
 import ProductsSection from "../components/landing/ProductsSection";
 import TestimonialsSection from "../components/landing/TestimonialsSection";
+
 import JourneyBanner from "../components/landing/JourneyBanner";
 import GallerySection from "../components/landing/GallerySection";
 import BlogSection from "../components/landing/BlogSection";

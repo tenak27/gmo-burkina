@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import DeliveryProgress from "@/components/client/DeliveryProgress";
 import LogisticsTracker from "@/components/client/LogisticsTracker";
+import OrderProgressBar from "@/components/client/OrderProgressBar";
 
 const STATUS_CONFIG = {
   en_attente:     { label: "En attente",     color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200",  icon: Circle },
@@ -228,14 +229,39 @@ function ClientDashboard() {
                 {activeOrders.length > 0 && (
                   <>
                     <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mb-2">En cours ({activeOrders.length})</p>
-                    {activeOrders.map(o => <LogisticsTracker key={o.id} order={o} />)}
+                    {activeOrders.map(o => (
+                      <div key={o.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                        <div className="flex items-start justify-between gap-3 mb-4">
+                          <div>
+                            <p className="font-heading text-sm font-bold text-obsidian">{o.order_number || `CMD-${o.id?.slice(-6)}`}</p>
+                            <p className="text-[11px] text-obsidian/40 font-body">{new Date(o.created_date).toLocaleDateString("fr-FR")}</p>
+                          </div>
+                          <StatusBadge status={o.status} />
+                        </div>
+                        <OrderProgressBar status={o.status} />
+                        {o.total_amount && <p className="font-heading text-sm font-bold text-obsidian mt-3 text-right">{o.total_amount.toLocaleString()} FCFA</p>}
+                      </div>
+                    ))}
                   </>
                 )}
                 {/* Done */}
                 {doneOrders.length > 0 && (
                   <>
                     <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mt-5 mb-2">Historique ({doneOrders.length})</p>
-                    {doneOrders.map(o => <LogisticsTracker key={o.id} order={o} />)}
+                    {doneOrders.map(o => (
+                      <div key={o.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="font-heading text-sm font-semibold text-obsidian">{o.order_number || `CMD-${o.id?.slice(-6)}`}</p>
+                            <p className="text-[11px] text-obsidian/35 font-body">{new Date(o.created_date).toLocaleDateString("fr-FR")}</p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {o.total_amount && <p className="font-heading text-sm font-bold text-obsidian">{o.total_amount.toLocaleString()} FCFA</p>}
+                            <StatusBadge status={o.status} />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </>
                 )}
               </div>
