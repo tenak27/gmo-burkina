@@ -1,48 +1,155 @@
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 
 const PRODUCTS = [
-  { name: "Huile alimentaire", category: "Alimentaire" },
-  { name: "Blé & Farine", category: "Alimentaire" },
-  { name: "Sucre", category: "Alimentaire" },
-  { name: "Chewing-gum", category: "Confiserie" },
-  { name: "Produits Axe", category: "Hygiène" },
-  { name: "Zoodo Gingembre", category: "Boissons" },
-  { name: "Savon", category: "Hygiène" },
-  { name: "Produits animaux", category: "Agriculture" },
+  {
+    name: "Huile de coton MADINA",
+    category: "Alimentaire",
+    description:
+      "L'huile de coton raffinée MADINA, enrichie en vitamine A, 100% huile végétale et sans cholestérol, est fortement recommandée pour sa qualité nutritionnelle. MADINA, la saveur enrichie de la bonne cuisine. Les plus fins gourmets du Burkina Faso connaissent bien sa qualité.",
+    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% huile végétale", "Disponible en bidon 20L et 5L"],
+    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/678f80d25_huile.jpg",
+    brand: "MADINA",
+  },
+  {
+    name: "Farine de blé — Blé du Sahel",
+    category: "Alimentaire",
+    description:
+      "La farine de blé est le résultat de la mouture de la graine du blé tendre ou froment. Produite par le Grand Moulin du Faso dont l'expérience n'est plus à présenter, distribuée par GMO.",
+    details: ["Pure farine de blé", "Produit par le Grand Moulin du Faso", "Plusieurs formats disponibles"],
+    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/41c37a185_ble.jpg",
+    brand: "Blé du Sahel",
+  },
+  {
+    name: "Chewing-gum ETALON",
+    category: "Confiserie",
+    description:
+      "Découvrez une explosion de saveurs avec nos délicieux chewing-gums et bonbons produits par COBUFA. Faits à partir des meilleurs ingrédients de qualité, soigneusement sélectionnés pour offrir une expérience gustative exceptionnelle à chaque bouchée.",
+    details: ["Produit par COBUFA", "Différentes saveurs", "Idéal pour toute occasion"],
+    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/51c70cd01_chewingum.jpg",
+    brand: "ETALON",
+  },
+  {
+    name: "Savon SN CITEC",
+    category: "Hygiène",
+    description:
+      "À partir de corps gras végétaux (beurre de karité, acide gras de palme...), le savon de ménage SN CITEC est obtenu par saponification. Grâce à ses vertus hypoallergéniques et bactéricides, il est recommandé pour les peaux sensibles.",
+    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux", "Multi-usages — linge & hygiène", "Recommandé par les dermatologues"],
+    image: "https://gmobfaso.com/assets/img/produits/savon.jpg",
+    brand: "SN CITEC",
+  },
+  {
+    name: "Sucre — GAZELLE & CASCADE",
+    category: "Alimentaire",
+    description:
+      "Sucre blond de canne sans addition d'aromatisants ou de colorants, conditionné sous différents formats. Également disponible en sucre blanc sous la dénomination CASCADE.",
+    details: [
+      "Granulé en sac de 50 kg",
+      "Sachets de 1 kg en lot de 25–50 kg",
+      "Morceaux en paquets (GAZELLE)",
+      "Sucre blanc en morceaux (CASCADE)",
+    ],
+    image: "https://gmobfaso.com/assets/img/produits/sucre.jpg",
+    brand: "GAZELLE · CASCADE",
+  },
+  {
+    name: "Aliments pour bétail",
+    category: "Agriculture",
+    description:
+      "Large gamme d'aliments pour bétail, conçus pour répondre aux besoins nutritionnels spécifiques de vos animaux. Bovins, moutons, chèvres — chaque formule est optimisée pour la santé et la croissance.",
+    details: ["Riches en protéines & vitamines", "Formules spécialisées par espèce", "Ingrédients de première qualité"],
+    image: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg",
+    brand: "GMO Agri",
+  },
 ];
+
+const WHATSAPP_URL = "https://wa.me/22676211633";
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group relative border border-obsidian/10 bg-white p-6 hover:border-gold/50 hover:shadow-lg transition-all duration-500"
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group relative bg-white border border-obsidian/8 flex flex-col overflow-hidden hover:shadow-xl transition-all duration-500"
     >
-      <span className="absolute top-3 right-3 font-body text-[10px] uppercase tracking-widest text-obsidian/25">
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      <div className="w-10 h-10 bg-obsidian flex items-center justify-center mb-5">
-        <span className="font-heading text-sm font-bold text-gmo-green">
-          {product.name.charAt(0)}
+      {/* Image */}
+      <div className="relative overflow-hidden bg-gray-50 aspect-[4/3]">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/10 transition-all duration-500" />
+        {/* Category badge */}
+        <span className="absolute top-3 left-3 font-body text-[10px] uppercase tracking-widest text-gmo-red bg-white/90 backdrop-blur-sm border border-gmo-red/20 px-3 py-1">
+          {product.category}
         </span>
       </div>
 
-      <h3 className="font-heading text-lg font-bold text-obsidian mb-2">
-        {product.name}
-      </h3>
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-6">
+        <p className="font-body text-[10px] uppercase tracking-widest text-gmo-green/60 mb-1">
+          {product.brand}
+        </p>
+        <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">
+          {product.name}
+        </h3>
+        <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">
+          {product.description}
+        </p>
 
-      <span className="font-body text-[10px] uppercase tracking-[0.2em] text-gmo-red/80 border border-gmo-red/20 px-3 py-1 inline-block">
-        {product.category}
-      </span>
+        {/* Expandable details */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-2 font-body text-xs uppercase tracking-widest text-gmo-green hover:text-gmo-green/70 transition-colors mb-3 text-left"
+        >
+          {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+          {expanded ? "Masquer" : "Voir les détails"}
+        </button>
 
-      <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-green w-0 group-hover:w-full transition-all duration-500" />
+        <AnimatePresence>
+          {expanded && (
+            <motion.ul
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden mb-4"
+            >
+              {product.details.map((d) => (
+                <li key={d} className="flex items-start gap-2 font-body text-xs text-obsidian/60 mb-1.5">
+                  <span className="w-1 h-1 rounded-full bg-gmo-green mt-1.5 flex-shrink-0" />
+                  {d}
+                </li>
+              ))}
+            </motion.ul>
+          )}
+        </AnimatePresence>
+
+        {/* Spacer to push CTA to bottom */}
+        <div className="flex-1" />
+
+        {/* CTA */}
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-xs uppercase tracking-widest px-4 py-3 hover:bg-gmo-green/80 transition-colors duration-300"
+        >
+          <MessageCircle className="w-4 h-4" />
+          Commander via WhatsApp
+        </a>
+      </div>
+
+      {/* Bottom accent line */}
+      <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-red w-0 group-hover:w-full transition-all duration-500" />
     </motion.div>
   );
 }
@@ -77,14 +184,49 @@ export default function ProductsSection() {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="h-[2px] bg-gmo-green mt-6"
           />
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.5 }}
+            className="font-body text-base text-obsidian/55 mt-6 max-w-2xl leading-relaxed"
+          >
+            Alimentaires, hygiène, confiserie et agriculture — GMO distribue une gamme complète de produits 
+            de grande consommation à travers tout le Burkina Faso.
+          </motion.p>
         </div>
 
         {/* Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {PRODUCTS.map((product, i) => (
             <ProductCard key={product.name} product={product} index={i} />
           ))}
         </div>
+
+        {/* WhatsApp CTA banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.8 }}
+          className="mt-16 bg-obsidian p-8 lg:p-12 flex flex-col lg:flex-row items-center justify-between gap-6"
+        >
+          <div>
+            <p className="font-body text-xs uppercase tracking-widest text-gmo-green/70 mb-2">
+              Besoin d'un devis ?
+            </p>
+            <h3 className="font-heading text-2xl lg:text-3xl font-bold text-concrete">
+              Contactez-nous directement sur WhatsApp
+            </h3>
+          </div>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 flex items-center gap-3 bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 hover:bg-gmo-green/80 transition-colors duration-300"
+          >
+            <MessageCircle className="w-5 h-5" />
+            +226 76 21 16 33
+          </a>
+        </motion.div>
       </div>
     </section>
   );
