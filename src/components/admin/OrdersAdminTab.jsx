@@ -1,8 +1,21 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityTable from "./EntityTable";
-import { LayoutGrid, List, ShoppingCart, Truck, Package, CheckCircle2, Clock, XCircle, ChevronRight } from "lucide-react";
+import { LayoutGrid, List, ShoppingCart, Truck, Package, CheckCircle2, Clock, XCircle, MessageSquare, Home, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+
+async function sendSmsForOrder(order, status) {
+  if (!order.client_phone) return false;
+  try {
+    await base44.functions.invoke("sendSmsNotification", {
+      phone: order.client_phone,
+      order_number: order.order_number,
+      status,
+      client_name: order.client_name,
+    });
+    return true;
+  } catch { return false; }
+}
 
 const STATUS_LABELS = {
   en_attente: "En attente", confirmee: "Confirmée", en_preparation: "En prép.",
@@ -41,8 +54,15 @@ function KanbanCard({ order, onStatusChange }) {
         </span>
       </div>
       {order.total_amount && (
-        <p className="font-heading text-sm font-bold text-gmo-green mb-2">{Number(order.total_amount).toLocaleString()} FCFA</p>
+        <p className="font-heading text-sm font-bold text-gmo-green mb-1">{Number(order.total_amount).toLocaleString()} FCFA</p>
       )}
+      <div className="flex items-center gap-1.5 mb-2">
+        {order.delivery_mode === "enlevement"
+          ? <span className="text-[9px] bg-gmo-green/10 text-gmo-green px-1.5 py-0.5 rounded font-body flex items-center gap-1"><Home className="w-2.5 h-2.5" />Enlèvement</span>
+          : <span className="text-[9px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded font-body flex items-center gap-1"><Truck className="w-2.5 h-2.5" />Livraison</span>
+        }
+        {order.client_phone && <span className="text-[9px] bg-purple-50 text-purple-500 px-1.5 py-0.5 rounded font-body flex items-center gap-1"><MessageSquare className="w-2.5 h-2.5" />SMS</span>}
+      </div>
       <p className="text-[10px] text-obsidian/30 font-body mb-2">{new Date(order.created_date).toLocaleDateString("fr-FR")}</p>
       <select
         value={order.status}
@@ -86,6 +106,8 @@ export default function OrdersAdminTab({ orders, setOrders }) {
   const updateStatus = async (order, status) => {
     await base44.entities.Order.update(order.id, { status });
     setOrders(prev => prev.map(o => o.id === order.id ? { ...o, status } : o));
+    // Auto SMS if client has phone
+    if (order.client_phone) sendSmsForOrder(order, status);
   };
 
   const COLUMNS = [

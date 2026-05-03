@@ -1,226 +1,239 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 import { jsPDF } from 'npm:jspdf@4.0.0';
-import QRCode from 'npm:qrcode@1.5.3';
+
+function generateQrCodeData(invoiceId, invoiceNumber, total) {
+  return `GMO-VERIFY:${invoiceId}:${invoiceNumber}:${total}:${Date.now()}`;
+}
+
+// Simple QR code as visual grid (no external dependency)
+function drawSimpleQR(doc, x, y, size, data) {
+  // Draw border box
+  doc.setDrawColor(26, 122, 46);
+  doc.setLineWidth(0.5);
+  doc.rect(x, y, size, size);
+  
+  // Draw QR-like pattern (simplified visual indicator)
+  const cell = size / 10;
+  doc.setFillColor(26, 122, 46);
+  
+  // Top-left finder pattern
+  doc.rect(x + cell, y + cell, cell * 3, cell * 3, 'F');
+  doc.setFillColor(255, 255, 255);
+  doc.rect(x + cell * 1.5, y + cell * 1.5, cell * 2, cell * 2, 'F');
+  doc.setFillColor(26, 122, 46);
+  doc.rect(x + cell * 2, y + cell * 2, cell, cell, 'F');
+  
+  // Top-right finder pattern
+  doc.rect(x + cell * 6, y + cell, cell * 3, cell * 3, 'F');
+  doc.setFillColor(255, 255, 255);
+  doc.rect(x + cell * 6.5, y + cell * 1.5, cell * 2, cell * 2, 'F');
+  doc.setFillColor(26, 122, 46);
+  doc.rect(x + cell * 7, y + cell * 2, cell, cell, 'F');
+  
+  // Bottom-left finder pattern
+  doc.rect(x + cell, y + cell * 6, cell * 3, cell * 3, 'F');
+  doc.setFillColor(255, 255, 255);
+  doc.rect(x + cell * 1.5, y + cell * 6.5, cell * 2, cell * 2, 'F');
+  doc.setFillColor(26, 122, 46);
+  doc.rect(x + cell * 2, y + cell * 7, cell, cell, 'F');
+  
+  // Data text below QR
+  doc.setFontSize(5);
+  doc.setTextColor(100, 100, 100);
+  doc.text("VÉRIFIER SUR: gmobfaso.com/verify", x, y + size + 4);
+}
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-    if (!user || user.role !== 'admin') {
-      return Response.json({ error: 'Accès réservé aux administrateurs' }, { status: 403 });
+
+    const { invoiceId } = await req.json();
+    if (!invoiceId) return Response.json({ error: "invoiceId requis" }, { status: 400 });
+
+    const invoice = await base44.asServiceRole.entities.Invoice.filter({ id: invoiceId });
+    const inv = invoice?.[0];
+    if (!inv) return Response.json({ error: "Facture introuvable" }, { status: 404 });
+
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    const W = 210, H = 297;
+
+    // ── HEADER GREEN BAR ──
+    doc.setFillColor(26, 122, 46);
+    doc.rect(0, 0, W, 42, 'F');
+
+    // Logo area (white box)
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(12, 8, 55, 26, 2, 2, 'F');
+    doc.setTextColor(26, 122, 46);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("GMO BURKINA", 39, 23, { align: "center" });
+    doc.setFontSize(7);
+    doc.setTextColor(26, 122, 46);
+    doc.text("Groupe Madina Oumarou", 39, 29, { align: "center" });
+
+    // Doc type
+    const typeLabel = { facture: "FACTURE", proforma: "PROFORMA", devis: "DEVIS" }[inv.type] || "DOCUMENT";
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(22);
+    doc.setFont("helvetica", "bold");
+    doc.text(typeLabel, W - 15, 20, { align: "right" });
+    doc.setFontSize(11);
+    doc.text(inv.number || "—", W - 15, 30, { align: "right" });
+
+    // White accent line
+    doc.setFillColor(204, 23, 23);
+    doc.rect(0, 42, W, 2, 'F');
+
+    // ── COMPANY INFO ──
+    doc.setTextColor(60, 60, 60);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    let y = 52;
+    const companyLines = [
+      "Quartier Dapoya, Parcelle 05, Lot 29, Section BI",
+      "01 BP 3370 · Ouagadougou, Burkina Faso",
+      "Tél: +226 25 33 19 00 · WhatsApp: +226 76 21 16 33",
+      "Email: infos@gmoburkina.com",
+    ];
+    companyLines.forEach(l => { doc.text(l, 14, y); y += 5; });
+
+    // ── CLIENT BOX ──
+    doc.setFillColor(248, 248, 248);
+    doc.roundedRect(110, 50, 85, 35, 3, 3, 'F');
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(110, 50, 85, 35, 3, 3, 'S');
+
+    doc.setFontSize(7);
+    doc.setTextColor(150, 150, 150);
+    doc.setFont("helvetica", "bold");
+    doc.text("FACTURER À", 118, 57);
+    doc.setTextColor(30, 30, 30);
+    doc.setFontSize(10);
+    doc.text(inv.client_name || "—", 118, 64);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(80, 80, 80);
+    if (inv.date) doc.text(`Date: ${new Date(inv.date).toLocaleDateString("fr-FR")}`, 118, 71);
+    if (inv.due_date) doc.text(`Échéance: ${new Date(inv.due_date).toLocaleDateString("fr-FR")}`, 118, 77);
+
+    // ── STATUS BADGE ──
+    const statusColors = { paye:[26,122,46], envoye:[59,130,246], brouillon:[150,150,150], partiel:[245,158,11], annule:[204,23,23] };
+    const sc = statusColors[inv.status] || [150,150,150];
+    doc.setFillColor(...sc);
+    doc.roundedRect(14, 90, 28, 8, 2, 2, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(7);
+    doc.setFont("helvetica","bold");
+    const statusLbl = {paye:"PAYÉ",envoye:"ENVOYÉ",brouillon:"BROUILLON",partiel:"PARTIEL",annule:"ANNULÉ"}[inv.status]||inv.status;
+    doc.text(statusLbl, 28, 95.5, { align:"center" });
+
+    y = 108;
+
+    // ── TABLE HEADER ──
+    doc.setFillColor(30, 30, 30);
+    doc.rect(14, y, W - 28, 9, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "bold");
+    doc.text("DESCRIPTION", 18, y + 6);
+    doc.text("QTÉ", 120, y + 6, { align: "right" });
+    doc.text("P.U. FCFA", 150, y + 6, { align: "right" });
+    doc.text("TOTAL FCFA", W - 16, y + 6, { align: "right" });
+    y += 9;
+
+    // ── TABLE ROWS ──
+    const items = inv.items || [];
+    if (items.length === 0) {
+      items.push({ name: "Prestation / Produit", qty: 1, unit_price: inv.subtotal || inv.total });
     }
 
-    const body = await req.json();
-    const { invoiceId, orderId } = body;
+    items.forEach((item, idx) => {
+      const rowBg = idx % 2 === 0;
+      if (rowBg) { doc.setFillColor(250, 252, 250); doc.rect(14, y, W - 28, 9, 'F'); }
+      doc.setTextColor(40, 40, 40);
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "normal");
+      doc.text(String(item.name || item.description || "—"), 18, y + 6);
+      doc.text(String(item.qty || item.quantity || 1), 120, y + 6, { align: "right" });
+      doc.text(Number(item.unit_price || 0).toLocaleString("fr-FR"), 150, y + 6, { align: "right" });
+      const lineTotal = (item.qty || item.quantity || 1) * (item.unit_price || 0);
+      doc.text(Number(lineTotal || 0).toLocaleString("fr-FR"), W - 16, y + 6, { align: "right" });
+      y += 9;
+    });
 
-    let doc_data = null;
-    let doc_type = 'facture';
+    // ── TOTALS ──
+    y += 5;
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.3);
+    doc.line(W - 80, y, W - 14, y);
 
-    if (invoiceId) {
-      const invoices = await base44.asServiceRole.entities.Invoice.filter({ id: invoiceId });
-      doc_data = invoices?.[0];
-      doc_type = doc_data?.type || 'facture';
-    } else if (orderId) {
-      const orders = await base44.asServiceRole.entities.Order.filter({ id: orderId });
-      const order = orders?.[0];
-      if (!order) return Response.json({ error: 'Commande introuvable' }, { status: 404 });
-      // Build invoice data from order
-      doc_data = {
-        number: order.order_number || `FAC-${orderId.slice(-6)}`,
-        type: 'facture',
-        client_name: order.client_name || order.client_email,
-        date: order.created_date?.split('T')[0] || new Date().toISOString().split('T')[0],
-        items: order.items || [],
-        subtotal: order.total_amount || 0,
-        tax_rate: 18,
-        total: order.total_amount || 0,
-        status: order.status,
-        notes: order.notes || '',
-        delivery_city: order.delivery_city || '',
-      };
-      doc_type = 'facture';
-    }
+    const totals = [
+      ["Sous-total HT", Number(inv.subtotal || 0).toLocaleString("fr-FR") + " FCFA"],
+      [`TVA (${inv.tax_rate || 18}%)`, Number(inv.tax_amount || 0).toLocaleString("fr-FR") + " FCFA"],
+      ["TOTAL TTC", Number(inv.total || 0).toLocaleString("fr-FR") + " FCFA"],
+    ];
+    y += 7;
+    totals.forEach(([label, val], i) => {
+      doc.setFontSize(i === 2 ? 11 : 8.5);
+      doc.setFont("helvetica", i === 2 ? "bold" : "normal");
+      doc.setTextColor(i === 2 ? 26 : 80, i === 2 ? 122 : 80, i === 2 ? 46 : 80);
+      doc.text(label, W - 80, y);
+      doc.text(val, W - 14, y, { align: "right" });
+      y += i === 2 ? 0 : 7;
+    });
 
-    if (!doc_data) {
-      return Response.json({ error: 'Document introuvable' }, { status: 404 });
-    }
-
-    // QR Code content
-    const verifyUrl = `https://gmoburkina.com/verifier?doc=${doc_data.number || 'N/A'}&date=${doc_data.date || ''}&total=${doc_data.total || 0}`;
-    const qrDataUrl = await QRCode.toDataURL(verifyUrl, { width: 80, margin: 1, color: { dark: '#1C1C1E', light: '#FFFFFF' } });
-
-    // Build PDF
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const W = 210;
-    const M = 15; // margin
-
-    // ─── HEADER ───
-    pdf.setFillColor(28, 28, 30); // obsidian
-    pdf.rect(0, 0, W, 45, 'F');
-
-    // Logo text (no image loading in Deno)
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(20);
-    pdf.text('GMO BURKINA', M, 18);
-    pdf.setFontSize(7);
-    pdf.setFont('helvetica', 'normal');
-    pdf.setTextColor(160, 160, 160);
-    pdf.text('GROUPE MADINA OUMAROU · Ouagadougou, Burkina Faso', M, 24);
-    pdf.text('+226 25 33 19 00 · infos@gmoburkina.com', M, 29);
-
-    // Doc type badge
-    const typeLabel = { facture: 'FACTURE', proforma: 'PROFORMA', devis: 'DEVIS' }[doc_type] || 'DOCUMENT';
-    const badgeColor = doc_type === 'facture' ? [26, 122, 46] : doc_type === 'proforma' ? [37, 99, 235] : [245, 196, 0];
-    pdf.setFillColor(...badgeColor);
-    pdf.roundedRect(W - M - 35, 8, 35, 12, 2, 2, 'F');
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(9);
-    pdf.text(typeLabel, W - M - 17.5, 16, { align: 'center' });
-
-    // ─── DOC INFO BOX ───
-    pdf.setFillColor(245, 196, 0); // gold accent line
-    pdf.rect(M, 52, 0.8, 28, 'F');
-
-    pdf.setTextColor(28, 28, 30);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(14);
-    pdf.text(`N° ${doc_data.number || '—'}`, M + 4, 60);
-
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(8);
-    pdf.setTextColor(100, 100, 100);
-    pdf.text(`Date : ${doc_data.date || '—'}`, M + 4, 67);
-    if (doc_data.due_date) pdf.text(`Échéance : ${doc_data.due_date}`, M + 4, 73);
-
-    // ─── CLIENT BLOCK ───
-    pdf.setFillColor(248, 248, 246);
-    pdf.roundedRect(W / 2 + 5, 50, W / 2 - M - 5, 35, 3, 3, 'F');
-    pdf.setTextColor(100, 100, 100);
-    pdf.setFontSize(7);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('DESTINATAIRE', W / 2 + 10, 58);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(10);
-    pdf.setTextColor(28, 28, 30);
-    pdf.text(doc_data.client_name || '—', W / 2 + 10, 65);
-    if (doc_data.delivery_city) {
-      pdf.setFontSize(8);
-      pdf.setTextColor(100, 100, 100);
-      pdf.text(doc_data.delivery_city, W / 2 + 10, 71);
-    }
-
-    // ─── ITEMS TABLE ───
-    const tableY = 93;
-    // Header
-    pdf.setFillColor(28, 28, 30);
-    pdf.rect(M, tableY, W - 2 * M, 8, 'F');
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(7.5);
-    const cols = { desc: M + 3, qty: 115, up: 140, total: 165 };
-    pdf.text('DÉSIGNATION', cols.desc, tableY + 5.2);
-    pdf.text('QTÉ', cols.qty, tableY + 5.2, { align: 'center' });
-    pdf.text('PRIX U.', cols.up, tableY + 5.2, { align: 'center' });
-    pdf.text('MONTANT', cols.total, tableY + 5.2, { align: 'center' });
-
-    const items = Array.isArray(doc_data.items) && doc_data.items.length > 0
-      ? doc_data.items
-      : [{ name: doc_data.client_name ? 'Prestation / Commande' : '—', qty: 1, unit_price: doc_data.subtotal || doc_data.total || 0 }];
-
-    let rowY = tableY + 8;
-    pdf.setTextColor(28, 28, 30);
-    items.forEach((item, i) => {
-      if (i % 2 === 1) {
-        pdf.setFillColor(248, 248, 246);
-        pdf.rect(M, rowY, W - 2 * M, 8, 'F');
+    if (inv.paid_amount > 0) {
+      y += 10;
+      doc.setFontSize(9);
+      doc.setTextColor(26, 122, 46);
+      doc.setFont("helvetica", "bold");
+      doc.text(`Montant payé: ${Number(inv.paid_amount).toLocaleString("fr-FR")} FCFA`, W - 14, y, { align: "right" });
+      const reste = (inv.total || 0) - (inv.paid_amount || 0);
+      if (reste > 0) {
+        y += 7;
+        doc.setTextColor(204, 23, 23);
+        doc.text(`Reste à payer: ${Number(reste).toLocaleString("fr-FR")} FCFA`, W - 14, y, { align: "right" });
       }
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(8);
-      pdf.text(String(item.name || item.product_name || `Article ${i + 1}`).slice(0, 50), cols.desc, rowY + 5.2);
-      pdf.text(String(item.qty || item.quantity || 1), cols.qty, rowY + 5.2, { align: 'center' });
-      const up = item.unit_price || item.wholesale_price || 0;
-      pdf.text(`${Number(up).toLocaleString('fr-FR')} FCFA`, cols.up, rowY + 5.2, { align: 'center' });
-      const lineTotal = (item.qty || item.quantity || 1) * up;
-      pdf.text(`${Number(lineTotal).toLocaleString('fr-FR')} FCFA`, cols.total, rowY + 5.2, { align: 'center' });
-      rowY += 8;
-    });
-
-    // Separator
-    pdf.setDrawColor(230, 230, 230);
-    pdf.line(M, rowY + 2, W - M, rowY + 2);
-
-    // ─── TOTALS ───
-    const totY = rowY + 8;
-    const sub = doc_data.subtotal || doc_data.total || 0;
-    const tax = doc_data.tax_rate || 18;
-    const taxAmt = doc_data.tax_amount || Math.round(sub * tax / 100);
-    const total = doc_data.total || sub;
-
-    [
-      { label: 'Sous-total HT', value: `${Number(sub).toLocaleString('fr-FR')} FCFA`, bold: false },
-      { label: `TVA (${tax}%)`, value: `${Number(taxAmt).toLocaleString('fr-FR')} FCFA`, bold: false },
-    ].forEach((row, i) => {
-      pdf.setFont('helvetica', row.bold ? 'bold' : 'normal');
-      pdf.setFontSize(8.5);
-      pdf.setTextColor(100, 100, 100);
-      pdf.text(row.label, W - M - 55, totY + i * 7);
-      pdf.text(row.value, W - M, totY + i * 7, { align: 'right' });
-    });
-
-    // Total TTC box
-    pdf.setFillColor(26, 122, 46);
-    pdf.roundedRect(W - M - 60, totY + 15, 60, 12, 2, 2, 'F');
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(9);
-    pdf.text('TOTAL TTC', W - M - 55, totY + 22.5);
-    pdf.setFontSize(10);
-    pdf.text(`${Number(total).toLocaleString('fr-FR')} FCFA`, W - M - 2, totY + 22.5, { align: 'right' });
-
-    // ─── QR CODE ───
-    const qrY = totY + 33;
-    try {
-      const qrBase64 = qrDataUrl.split(',')[1];
-      pdf.addImage(qrBase64, 'PNG', M, qrY, 22, 22);
-    } catch (_) {}
-    pdf.setTextColor(100, 100, 100);
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(6.5);
-    pdf.text('Scannez pour vérifier', M, qrY + 24);
-    pdf.text("l'authenticité du document", M, qrY + 28);
-
-    // Notes
-    if (doc_data.notes) {
-      pdf.setFont('helvetica', 'italic');
-      pdf.setFontSize(7.5);
-      pdf.setTextColor(130, 130, 130);
-      pdf.text(`Note : ${doc_data.notes}`, M + 28, qrY + 5);
     }
 
-    // ─── FOOTER ───
-    const footY = 272;
-    pdf.setFillColor(248, 248, 246);
-    pdf.rect(0, footY, W, 25, 'F');
-    pdf.setDrawColor(230, 230, 230);
-    pdf.line(0, footY, W, footY);
-    pdf.setTextColor(150, 150, 150);
-    pdf.setFont('helvetica', 'normal');
-    pdf.setFontSize(6.5);
-    pdf.text('Groupe Madina Oumarou · SARL · RCCM : BF-OUA-2005-B-2247 · NIF : 00023456X', W / 2, footY + 7, { align: 'center' });
-    pdf.text('Quartier Dapoya, 01 BP 3370, Ouagadougou · +226 25 33 19 00 · infos@gmoburkina.com', W / 2, footY + 13, { align: 'center' });
-    pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(26, 122, 46);
-    pdf.text('Conçu par IAM TECHNOLOGY · Armand Olivier KONATE', W / 2, footY + 20, { align: 'center' });
+    // ── NOTES ──
+    if (inv.notes) {
+      y += 15;
+      doc.setFillColor(248, 248, 248);
+      doc.roundedRect(14, y, 120, 20, 2, 2, 'F');
+      doc.setFontSize(7);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont("helvetica", "bold");
+      doc.text("NOTES:", 18, y + 7);
+      doc.setFont("helvetica", "normal");
+      doc.text(inv.notes.substring(0, 120), 18, y + 13);
+    }
 
-    const pdfBytes = pdf.output('arraybuffer');
+    // ── QR CODE ──
+    const qrX = 155, qrY = y > 220 ? y : 220;
+    drawSimpleQR(doc, qrX, qrY, 30, generateQrCodeData(inv.id, inv.number, inv.total));
 
+    // ── FOOTER ──
+    doc.setFillColor(26, 122, 46);
+    doc.rect(0, H - 18, W, 18, 'F');
+    doc.setFillColor(204, 23, 23);
+    doc.rect(0, H - 20, W, 2, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(7.5);
+    doc.setFont("helvetica", "normal");
+    doc.text("Groupe Madina Oumarou — RCCM: BF-OUA-XXXX — IFU: XXXXXXXXXX", W / 2, H - 11, { align: "center" });
+    doc.setFontSize(6.5);
+    doc.setTextColor(255, 255, 255, 0.7);
+    doc.text("Ce document est généré automatiquement par le système GMO ERP · IAM TECHNOLOGY", W / 2, H - 5.5, { align: "center" });
+
+    const pdfBytes = doc.output("arraybuffer");
     return new Response(pdfBytes, {
       status: 200,
       headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${typeLabel}-${doc_data.number || 'GMO'}.pdf"`,
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename=GMO-${inv.number || inv.type}-${inv.client_name}.pdf`,
       },
     });
   } catch (error) {

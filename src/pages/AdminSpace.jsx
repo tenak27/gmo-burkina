@@ -15,6 +15,9 @@ import AccountingTab from "@/components/admin/AccountingTab";
 import HRTab from "@/components/admin/HRTab";
 import OrdersAdminTab from "@/components/admin/OrdersAdminTab";
 import UsersAdminTab from "@/components/admin/UsersAdminTab";
+import DriversTab from "@/components/admin/DriversTab";
+import PaymentsTab from "@/components/admin/PaymentsTab";
+import ReceivablesTab from "@/components/admin/ReceivablesTab";
 
 function AdminDashboard() {
   const [tab, setTab] = useState("dashboard");
@@ -31,6 +34,9 @@ function AdminDashboard() {
   const [movements, setMovements] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [entries, setEntries] = useState([]);
+  const [drivers, setDrivers] = useState([]);
+  const [payments, setPayments] = useState([]);
+  const [receivables, setReceivables] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { loadAll(); }, []);
@@ -49,7 +55,7 @@ function AdminDashboard() {
 
   const loadAll = async () => {
     setLoading(true);
-    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent] = await Promise.all([
+    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent, drv, pay, rec] = await Promise.all([
       base44.entities.User.list("-created_date", 100),
       base44.entities.Client.list("-created_date", 100),
       base44.entities.Supplier.list("-created_date", 100),
@@ -62,6 +68,9 @@ function AdminDashboard() {
       base44.entities.StockMovement.list("-created_date", 100),
       base44.entities.Employee.list("last_name", 100),
       base44.entities.AccountEntry.list("-date", 100),
+      base44.entities.Driver.list("last_name", 50),
+      base44.entities.Payment.list("-date", 100),
+      base44.entities.Receivable.list("-created_date", 100),
     ]);
     setUsers(u || []);
     setClients(c || []);
@@ -75,15 +84,18 @@ function AdminDashboard() {
     setMovements(mov || []);
     setEmployees(emp || []);
     setEntries(ent || []);
+    setDrivers(drv || []);
+    setPayments(pay || []);
+    setReceivables(rec || []);
     setLoading(false);
   };
 
   const pendingOrders = orders.filter(o => o.status === "en_attente").length;
-  const allData = { users, clients, suppliers, products, orders, invoices, employees, entries };
+  const allData = { users, clients, suppliers, products, orders, invoices, employees, entries, drivers, payments, receivables };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#1C1C1E] flex items-center justify-center">
+      <div className="min-h-screen bg-[#161618] flex items-center justify-center">
         <div className="text-center">
           <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin mx-auto mb-4" />
           <p className="text-xs text-white/30 font-body uppercase tracking-widest">Chargement ERP…</p>
@@ -94,26 +106,26 @@ function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#F2F4F7] flex flex-col lg:flex-row">
-      {/* Sidebar */}
       <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} />
-
-      {/* Main content */}
       <main className="flex-1 min-w-0 overflow-x-hidden">
         <div className="max-w-full px-4 sm:px-6 py-5">
           <div key={tab} className="page-enter">
-            {tab === "dashboard"  && <DashboardVisual data={allData} setTab={setTab} />}
-            {tab === "clients"    && <ClientsTab clients={clients} setClients={setClients} />}
-            {tab === "suppliers"  && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
-            {tab === "invoices"   && <InvoicesTab invoices={invoices} setInvoices={setInvoices} />}
-            {tab === "delivery"   && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
-            {tab === "products"   && <ProductsTab products={products} setProducts={setProducts} />}
-            {tab === "categories" && <CategoriesTab categories={categories} setCategories={setCategories} />}
-            {tab === "warehouses" && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
-            {tab === "stock"      && <StockTab movements={movements} setMovements={setMovements} />}
-            {tab === "accounting" && <AccountingTab entries={entries} setEntries={setEntries} />}
-            {tab === "hr"         && <HRTab employees={employees} setEmployees={setEmployees} />}
-            {tab === "orders"     && <OrdersAdminTab orders={orders} setOrders={setOrders} />}
-            {tab === "users"      && <UsersAdminTab users={users} />}
+            {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
+            {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
+            {tab === "suppliers"    && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
+            {tab === "invoices"     && <InvoicesTab invoices={invoices} setInvoices={setInvoices} />}
+            {tab === "delivery"     && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
+            {tab === "drivers"      && <DriversTab drivers={drivers} setDrivers={setDrivers} />}
+            {tab === "products"     && <ProductsTab products={products} setProducts={setProducts} />}
+            {tab === "categories"   && <CategoriesTab categories={categories} setCategories={setCategories} />}
+            {tab === "warehouses"   && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
+            {tab === "stock"        && <StockTab movements={movements} setMovements={setMovements} />}
+            {tab === "accounting"   && <AccountingTab entries={entries} setEntries={setEntries} />}
+            {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} />}
+            {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} />}
+            {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
+            {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} />}
+            {tab === "users"        && <UsersAdminTab users={users} />}
           </div>
           <p className="text-center text-[9px] text-obsidian/15 font-body mt-8 uppercase tracking-widest">
             GMO Burkina ERP · IAM Technology · Développé par Armand Olivier KONATE

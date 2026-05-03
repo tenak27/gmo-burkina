@@ -156,7 +156,7 @@ export default function HeroSection() {
               )}
               <a
                 href="tel:+22625331900"
-                className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-gmo-green/90 hover:shadow-lg hover:shadow-gmo-green/30 transition-all"
+                className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg btn-glow-green"
               >
                 <Phone className="w-4 h-4" />
                 Appeler
@@ -279,7 +279,7 @@ export default function HeroSection() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => scrollTo("#contact")}
-              className="group bg-gmo-green text-white font-heading font-bold text-sm px-7 py-3.5 rounded-lg hover:bg-gmo-green/90 transition-all duration-300 flex items-center gap-2 shadow-xl shadow-gmo-green/30 hover:-translate-y-0.5"
+              className="group bg-gmo-green text-white font-heading font-bold text-sm px-7 py-3.5 rounded-lg flex items-center gap-2 btn-glow-green"
             >
               Demander un devis
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

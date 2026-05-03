@@ -105,7 +105,7 @@ export default function Navbar({ heroHeight }) {
               )}
               <a
                 href="tel:+22625331900"
-                className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-gmo-green/90 hover:shadow-lg hover:shadow-gmo-green/25 transition-all"
+                className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg btn-glow-green"
               >
                 <Phone className="w-4 h-4" />
                 Appeler

@@ -4,7 +4,8 @@ import { useAuth } from "@/lib/AuthContext";
 import {
   LayoutDashboard, Users, UserCheck, FileText, Truck, Package,
   Tag, Warehouse, BarChart2, BookOpen, Users2, ShoppingCart,
-  Shield, Globe, Bell, LogOut, ChevronRight, Menu, X, Search, Command
+  Shield, Globe, Bell, LogOut, ChevronRight, Menu, X, Search, Command,
+  DollarSign, TrendingDown
 } from "lucide-react";
 
 const GROUPS = [
@@ -24,7 +25,6 @@ const GROUPS = [
     items: [
       { id: "orders", label: "Commandes", icon: ShoppingCart, badge: true },
       { id: "invoices", label: "Devis / Factures", icon: FileText },
-      { id: "delivery", label: "Bons de livraison", icon: Truck },
     ],
   },
   {
@@ -37,8 +37,19 @@ const GROUPS = [
     ],
   },
   {
+    label: "Livraison",
+    items: [
+      { id: "delivery", label: "Bons de livraison", icon: Truck },
+      { id: "drivers", label: "Chauffeurs", icon: Truck },
+    ],
+  },
+  {
     label: "Finance",
-    items: [{ id: "accounting", label: "Comptabilité", icon: BookOpen }],
+    items: [
+      { id: "accounting", label: "Comptabilité", icon: BookOpen },
+      { id: "payments", label: "Paiements", icon: DollarSign },
+      { id: "receivables", label: "Créances", icon: TrendingDown },
+    ],
   },
   {
     label: "RH & Admin",

@@ -4,7 +4,7 @@ import {
   Users, Package, ShoppingCart, TrendingUp, AlertTriangle,
   Eye, Globe, FileText, Truck, UserCheck, DollarSign,
   Warehouse, Users2, Tag, CheckCircle2, ArrowUpRight, ArrowDownRight,
-  BarChart2, Activity
+  BarChart2, Activity, CreditCard, AlertCircle
 } from "lucide-react";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -103,7 +103,7 @@ function RecentActivity({ orders, invoices }) {
 }
 
 export default function DashboardVisual({ data, setTab }) {
-  const { users, products, orders, clients, suppliers, invoices, employees, entries } = data;
+  const { users, products, orders, clients, suppliers, invoices, employees, entries, drivers, payments, receivables } = data;
 
   const totalRevenue = (invoices || []).filter(i => i.status === "paye").reduce((s, i) => s + (i.total || 0), 0);
   const pendingInvoices = (invoices || []).filter(i => i.status === "envoye" || i.status === "partiel");
@@ -170,6 +170,20 @@ export default function DashboardVisual({ data, setTab }) {
       border: lowStock.length > 0 ? "border-amber-200" : "border-green-100",
       tab: "stock"
     },
+    {
+      label: "Créances actives",
+      value: (receivables||[]).filter(r=>r.status!=="soldee").length,
+      unit: "clients",
+      icon: AlertCircle, color: "text-red-500", bg: "from-red-50 to-red-50/40", border: "border-red-100",
+      tab: "receivables"
+    },
+    {
+      label: "Paiements en attente",
+      value: (payments||[]).filter(p=>p.status==="en_attente").length,
+      unit: "à valider",
+      icon: CreditCard, color: "text-violet-600", bg: "from-violet-50 to-violet-50/40", border: "border-violet-100",
+      tab: "payments"
+    },
   ];
 
   const modules = [
@@ -184,6 +198,9 @@ export default function DashboardVisual({ data, setTab }) {
     { id:"hr", label:"RH", icon:Users2, color:"bg-pink-500", count:(employees||[]).length },
     { id:"orders", label:"Commandes", icon:ShoppingCart, color:"bg-amber-500", count:(orders||[]).length },
     { id:"categories", label:"Catégories", icon:Tag, color:"bg-rose-500", count:null },
+    { id:"drivers", label:"Chauffeurs", icon:Truck, color:"bg-orange-500", count:(drivers||[]).length },
+    { id:"payments", label:"Paiements", icon:CreditCard, color:"bg-violet-500", count:(payments||[]).length },
+    { id:"receivables", label:"Créances", icon:AlertCircle, color:"bg-red-500", count:(receivables||[]).length },
     { id:"users", label:"Utilisateurs", icon:Users, color:"bg-gray-600", count:(users||[]).length },
   ];
 

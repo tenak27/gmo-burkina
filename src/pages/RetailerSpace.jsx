@@ -5,7 +5,7 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Package, Truck, LogOut, Star, RefreshCw, Phone,
-  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send
+  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send, MapPin, Home
 } from "lucide-react";
 import StocksView from "@/components/retailer/StocksView";
 import ProductGallery from "@/components/retailer/ProductGallery";
@@ -27,6 +27,8 @@ function RetailerDashboard() {
   const [cart, setCart] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [deliveryMode, setDeliveryMode] = useState("livraison"); // "livraison" | "enlevement"
+  const [deliveryAddress, setDeliveryAddress] = useState("");
 
   useEffect(() => {
     loadProducts();
@@ -91,6 +93,9 @@ function RetailerDashboard() {
       items,
       total_amount: cartTotal,
       status: "en_attente",
+      delivery_mode: deliveryMode,
+      delivery_address: deliveryMode === "livraison" ? deliveryAddress : "Enlèvement au dépôt",
+      notes: deliveryMode === "enlevement" ? "Client viendra récupérer au dépôt GMO" : "",
     });
     setCart({});
     setSubmitting(false);
@@ -302,6 +307,35 @@ function RetailerDashboard() {
                         </div>
                       </div>
                     )}
+                    {/* Delivery mode selector */}
+                    <div className="mb-4">
+                      <p className="text-[10px] uppercase tracking-widest font-heading text-obsidian/40 mb-2">Mode de récupération</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button onClick={() => setDeliveryMode("livraison")}
+                          className={`flex flex-col items-center gap-1 py-3 rounded-xl border text-xs font-body transition-all ${deliveryMode === "livraison" ? "border-gmo-red bg-gmo-red/5 text-gmo-red" : "border-gray-200 text-obsidian/40 hover:border-gmo-red/30"}`}>
+                          <Truck className="w-4 h-4" />
+                          Livraison
+                        </button>
+                        <button onClick={() => setDeliveryMode("enlevement")}
+                          className={`flex flex-col items-center gap-1 py-3 rounded-xl border text-xs font-body transition-all ${deliveryMode === "enlevement" ? "border-gmo-green bg-gmo-green/5 text-gmo-green" : "border-gray-200 text-obsidian/40 hover:border-gmo-green/30"}`}>
+                          <Home className="w-4 h-4" />
+                          Enlèvement
+                        </button>
+                      </div>
+                      {deliveryMode === "livraison" && (
+                        <input
+                          value={deliveryAddress}
+                          onChange={e => setDeliveryAddress(e.target.value)}
+                          placeholder="Adresse de livraison..."
+                          className="mt-2 w-full border border-gray-200 rounded-xl px-3 py-2 text-xs font-body focus:outline-none focus:border-gmo-red"
+                        />
+                      )}
+                      {deliveryMode === "enlevement" && (
+                        <p className="mt-2 text-[10px] text-gmo-green font-body bg-gmo-green/5 border border-gmo-green/20 rounded-lg p-2">
+                          📍 À retirer au dépôt GMO — Quartier Dapoya, Ouagadougou
+                        </p>
+                      )}
+                    </div>
                     <button
                       onClick={submitOrder}
                       disabled={cartCount === 0 || submitting}

@@ -14,6 +14,10 @@
       "type": "string",
       "description": "Nom du client"
     },
+    "client_phone": {
+      "type": "string",
+      "description": "T\u00e9l\u00e9phone du client"
+    },
     "client_type": {
       "type": "string",
       "enum": [
@@ -45,11 +49,47 @@
       ],
       "default": "en_attente"
     },
+    "delivery_mode": {
+      "type": "string",
+      "enum": [
+        "livraison",
+        "enlevement"
+      ],
+      "default": "livraison"
+    },
     "delivery_address": {
       "type": "string"
     },
     "delivery_city": {
       "type": "string"
+    },
+    "driver_id": {
+      "type": "string",
+      "description": "Chauffeur assign\u00e9"
+    },
+    "driver_name": {
+      "type": "string"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "especes",
+        "cheque",
+        "mobile_money",
+        "virement",
+        "credit",
+        "partiel"
+      ],
+      "default": "especes"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "non_paye",
+        "partiel",
+        "paye"
+      ],
+      "default": "non_paye"
     },
     "notes": {
       "type": "string"
