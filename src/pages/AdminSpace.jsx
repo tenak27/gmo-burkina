@@ -127,8 +127,8 @@ function AdminDashboard() {
             {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} />}
             {tab === "users"        && <UsersAdminTab users={users} />}
           </div>
-          <p className="text-center text-[9px] text-obsidian/15 font-body mt-8 uppercase tracking-widest">
-            GMO Burkina ERP · IAM Technology · Développé par Armand Olivier KONATE
+          <p className="text-center text-[9px] text-obsidian/10 font-body mt-8">
+            GMO Burkina ERP · <span className="text-gmo-green/30">IAM Technology</span>
           </p>
         </div>
       </main>

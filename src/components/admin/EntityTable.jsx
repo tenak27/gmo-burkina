@@ -89,7 +89,7 @@ export default function EntityTable({
           {onAdd && (
             <button
               onClick={onAdd}
-              className="flex items-center gap-1.5 bg-gmo-green text-white text-xs font-heading font-bold px-3 py-2 rounded-lg hover:bg-gmo-green/90 transition-colors shadow-sm shadow-gmo-green/20"
+              className="flex items-center gap-1.5 bg-gmo-green text-white text-xs font-heading font-bold px-3 py-2 rounded-lg btn-glow-green"
             >
               <Plus className="w-3.5 h-3.5" /> {addLabel}
             </button>
@@ -98,7 +98,7 @@ export default function EntityTable({
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden card-hover">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
             <div className="w-8 h-8 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin" />

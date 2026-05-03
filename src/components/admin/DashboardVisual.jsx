@@ -72,7 +72,7 @@ function RecentActivity({ orders, invoices }) {
   ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
       <div className="flex items-center gap-2 mb-4">
         <Activity className="w-4 h-4 text-obsidian/30" />
         <h3 className="font-heading text-sm font-bold text-obsidian">Activité récente</h3>
@@ -229,7 +229,7 @@ export default function DashboardVisual({ data, setTab }) {
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         {kpis.map(k => (
           <button key={k.label} onClick={() => setTab(k.tab)}
-            className={`bg-gradient-to-br ${k.bg} rounded-2xl p-4 border ${k.border} shadow-sm hover:shadow-md transition-all duration-200 text-left group hover:-translate-y-0.5`}>
+            className={`bg-gradient-to-br ${k.bg} rounded-2xl p-4 border ${k.border} shadow-sm hover:shadow-lg card-glow transition-all duration-200 text-left group hover:-translate-y-1`}>
             <div className="flex items-start justify-between mb-2">
               <div className={`w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-200`}>
                 <k.icon className={`w-4 h-4 ${k.color}`} />
@@ -255,7 +255,7 @@ export default function DashboardVisual({ data, setTab }) {
       {/* Charts */}
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Revenue chart */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-heading text-sm font-bold text-obsidian">Revenus vs Dépenses</h3>
@@ -290,7 +290,7 @@ export default function DashboardVisual({ data, setTab }) {
 
         {/* Pie + Activity */}
         <div className="space-y-4">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
             <h3 className="font-heading text-sm font-bold text-obsidian mb-1">Statuts commandes</h3>
             <p className="text-[10px] text-obsidian/35 font-body mb-3">{(orders||[]).length} total</p>
             {orderPie.length === 0 ? (
@@ -315,7 +315,7 @@ export default function DashboardVisual({ data, setTab }) {
         <RecentActivity orders={orders} invoices={invoices} />
 
         {/* Modules */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
           <h3 className="font-heading text-sm font-bold text-obsidian mb-4">Accès rapide</h3>
           <div className="grid grid-cols-3 gap-2">
             {modules.map(m => (

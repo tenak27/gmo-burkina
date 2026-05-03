@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import EntityTable from "./EntityTable";
 import EntityForm from "./EntityForm";
-import { Truck, Phone, MapPin, CheckCircle2, Clock, XCircle } from "lucide-react";
+import {
+  Truck, Phone, MapPin, CheckCircle2, Clock, XCircle,
+  Plus, Edit2, Trash2, RefreshCw, Zap, Navigation, User
+} from "lucide-react";
 
-const STATUS_STYLE = {
-  disponible: "bg-green-50 text-green-700 border border-green-200",
-  en_livraison: "bg-blue-50 text-blue-600 border border-blue-200",
-  inactif: "bg-gray-100 text-obsidian/40",
+const STATUS_CONFIG = {
+  disponible: {
+    label: "Disponible",
+    badge: "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30",
+    dot: "bg-emerald-400",
+    glow: "shadow-emerald-500/20",
+    ring: "ring-emerald-500/30",
+    icon: CheckCircle2,
+  },
+  en_livraison: {
+    label: "En livraison",
+    badge: "bg-blue-500/15 text-blue-400 border border-blue-500/30",
+    dot: "bg-blue-400",
+    glow: "shadow-blue-500/20",
+    ring: "ring-blue-500/30",
+    icon: Truck,
+  },
+  inactif: {
+    label: "Inactif",
+    badge: "bg-white/5 text-white/30 border border-white/10",
+    dot: "bg-white/20",
+    glow: "shadow-black/10",
+    ring: "ring-white/10",
+    icon: XCircle,
+  },
+};
+
+const VEHICLE_ICONS = {
+  moto: "🏍️", camionnette: "🚐", camion: "🚛", voiture: "🚗"
 };
 
 const FIELDS = [
@@ -27,42 +54,114 @@ const FIELDS = [
   { key: "is_active", label: "Actif", type: "checkbox" },
 ];
 
-const COLUMNS = [
-  { key: "first_name", label: "Chauffeur", render: (v, r) => (
-    <div className="flex items-center gap-2.5">
-      <div className="w-8 h-8 rounded-full bg-obsidian/5 flex items-center justify-center text-obsidian/50 font-heading font-bold text-sm flex-shrink-0">
-        {(v||"?").charAt(0)}{(r.last_name||"").charAt(0)}
-      </div>
-      <div>
-        <p className="font-heading text-xs font-bold text-obsidian">{v} {r.last_name}</p>
-        <p className="text-[10px] text-obsidian/40 font-body flex items-center gap-1">
-          <Phone className="w-2.5 h-2.5" />{r.phone}
-        </p>
-      </div>
-    </div>
-  )},
-  { key: "vehicle_type", label: "Véhicule", render: (v, r) => (
-    <div>
-      <p className="text-xs font-body text-obsidian/70 capitalize">{({moto:"🏍️ Moto",camionnette:"🚐 Camionnette",camion:"🚛 Camion",voiture:"🚗 Voiture"})[v]||v}</p>
-      {r.vehicle_plate && <p className="text-[10px] text-obsidian/35 font-body">{r.vehicle_plate}</p>}
-    </div>
-  )},
-  { key: "zone", label: "Zone", render: v => v ? (
-    <span className="flex items-center gap-1 text-xs text-obsidian/60 font-body"><MapPin className="w-3 h-3" />{v}</span>
-  ) : <span className="text-obsidian/20">—</span> },
-  { key: "status", label: "Statut", align: "center", render: v => (
-    <span className={`text-[10px] px-2.5 py-1 rounded-full font-body ${STATUS_STYLE[v]||""}`}>
-      {({disponible:"Disponible",en_livraison:"En livraison",inactif:"Inactif"})[v]||v}
-    </span>
-  )},
-];
-
 const EMPTY = { first_name:"", last_name:"", phone:"", vehicle_type:"moto", vehicle_plate:"", zone:"", status:"disponible", notes:"", is_active:true };
+
+function DriverCard({ driver, onEdit, onDelete, onStatusChange }) {
+  const cfg = STATUS_CONFIG[driver.status] || STATUS_CONFIG.inactif;
+  const Icon = cfg.icon;
+  const [changing, setChanging] = useState(false);
+
+  const changeStatus = async (newStatus) => {
+    setChanging(true);
+    await onStatusChange(driver, newStatus);
+    setChanging(false);
+  };
+
+  const nextStatuses = Object.keys(STATUS_CONFIG).filter(s => s !== driver.status);
+
+  return (
+    <div className={`relative bg-[#1E1E22] border border-white/[0.07] rounded-2xl p-4 flex flex-col gap-3 hover:border-white/[0.14] transition-all duration-200 shadow-lg ${cfg.glow}`}>
+      {/* Glow accent top */}
+      <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-full" />
+
+      {/* Header */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl bg-[#161618] ring-2 ${cfg.ring} flex items-center justify-center font-heading font-bold text-sm text-white/70 flex-shrink-0`}>
+            {(driver.first_name||"?").charAt(0)}{(driver.last_name||"").charAt(0)}
+          </div>
+          <div>
+            <p className="font-heading text-sm font-bold text-white/90">{driver.first_name} {driver.last_name}</p>
+            <p className="text-[10px] text-white/35 font-body flex items-center gap-1">
+              <Phone className="w-2.5 h-2.5" />{driver.phone}
+            </p>
+          </div>
+        </div>
+        <span className={`flex items-center gap-1.5 text-[10px] font-body px-2.5 py-1 rounded-full flex-shrink-0 ${cfg.badge}`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot} ${driver.status === "disponible" ? "animate-pulse" : ""}`} />
+          {cfg.label}
+        </span>
+      </div>
+
+      {/* Vehicle + Zone */}
+      <div className="flex items-center gap-3 text-[11px] font-body">
+        <span className="flex items-center gap-1.5 bg-white/5 border border-white/8 px-2.5 py-1 rounded-lg text-white/50">
+          <span>{VEHICLE_ICONS[driver.vehicle_type] || "🚗"}</span>
+          <span className="capitalize">{driver.vehicle_type}</span>
+          {driver.vehicle_plate && <span className="text-white/25 font-mono">· {driver.vehicle_plate}</span>}
+        </span>
+        {driver.zone && (
+          <span className="flex items-center gap-1 text-white/35">
+            <MapPin className="w-3 h-3" />{driver.zone}
+          </span>
+        )}
+      </div>
+
+      {/* Quick status changer */}
+      <div className="flex items-center gap-1.5">
+        {nextStatuses.map(s => {
+          const c = STATUS_CONFIG[s];
+          return (
+            <button
+              key={s}
+              onClick={() => changeStatus(s)}
+              disabled={changing}
+              className="flex-1 text-[9px] font-body uppercase tracking-wider border border-white/8 hover:border-white/20 text-white/30 hover:text-white/60 py-1.5 rounded-lg transition-all duration-150 disabled:opacity-40"
+            >
+              → {c.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center justify-between pt-1 border-t border-white/[0.05]">
+        {driver.notes ? (
+          <p className="text-[10px] text-white/25 font-body truncate flex-1 mr-2 italic">{driver.notes}</p>
+        ) : <span />}
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <button onClick={() => onEdit(driver)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/25 hover:text-white/70 transition-all">
+            <Edit2 className="w-3 h-3" />
+          </button>
+          <button onClick={() => onDelete(driver)} className="w-7 h-7 rounded-lg bg-white/5 hover:bg-gmo-red/15 flex items-center justify-center text-white/25 hover:text-gmo-red/70 transition-all">
+            <Trash2 className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function DriversTab({ drivers, setDrivers }) {
   const [form, setForm] = useState(null);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [filter, setFilter] = useState("all");
+  const [lastUpdate, setLastUpdate] = useState(new Date());
+
+  // Real-time subscription
+  useEffect(() => {
+    const unsub = base44.entities.Driver.subscribe(event => {
+      setDrivers(prev => {
+        if (event.type === "create") return [event.data, ...prev];
+        if (event.type === "update") return prev.map(d => d.id === event.id ? event.data : d);
+        if (event.type === "delete") return prev.filter(d => d.id !== event.id);
+        return prev;
+      });
+      setLastUpdate(new Date());
+    });
+    return unsub;
+  }, []);
 
   const openAdd = () => { setEditing(null); setForm({...EMPTY}); };
   const openEdit = r => { setEditing(r); setForm({...r}); };
@@ -87,35 +186,98 @@ export default function DriversTab({ drivers, setDrivers }) {
     setDrivers(prev => prev.filter(d => d.id !== r.id));
   };
 
+  const handleStatusChange = async (driver, newStatus) => {
+    await base44.entities.Driver.update(driver.id, { status: newStatus });
+    setDrivers(prev => prev.map(d => d.id === driver.id ? {...d, status: newStatus} : d));
+  };
+
   const available = drivers.filter(d => d.status === "disponible").length;
   const busy = drivers.filter(d => d.status === "en_livraison").length;
+  const inactive = drivers.filter(d => d.status === "inactif").length;
+
+  const filtered = filter === "all" ? drivers : drivers.filter(d => d.status === filter);
 
   return (
-    <div className="space-y-4 animate-fade-up">
-      <div className="grid grid-cols-3 gap-3">
-        {[
-          { label: "Disponibles", value: available, color: "text-green-600", bg: "bg-green-50", border: "border-green-200", icon: CheckCircle2 },
-          { label: "En livraison", value: busy, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-200", icon: Truck },
-          { label: "Total chauffeurs", value: drivers.filter(d => d.is_active !== false).length, color: "text-obsidian/70", bg: "bg-gray-50", border: "border-gray-200", icon: Clock },
-        ].map(s => (
-          <div key={s.label} className={`${s.bg} border ${s.border} rounded-2xl p-4 flex items-center gap-3`}>
-            <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm">
-              <s.icon className={`w-4 h-4 ${s.color}`} />
+    <div className="space-y-5 animate-fade-up">
+      {/* Dark header banner */}
+      <div className="bg-[#161618] rounded-2xl border border-white/[0.06] p-5 relative overflow-hidden">
+        {/* Glow */}
+        <div className="absolute top-0 right-0 w-64 h-32 bg-gmo-green/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-48 h-20 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[9px] text-emerald-400/70 uppercase tracking-[0.3em] font-body">Suivi temps réel</span>
+              <span className="text-[9px] text-white/20 font-body">· mis à jour {lastUpdate.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"})}</span>
             </div>
-            <div>
-              <p className={`font-heading text-2xl font-bold ${s.color}`}>{s.value}</p>
-              <p className="text-[10px] text-obsidian/40 font-body">{s.label}</p>
-            </div>
+            <h2 className="font-heading text-xl font-bold text-white">Chauffeurs-Livreurs</h2>
+            <p className="text-xs text-white/35 font-body mt-0.5">{drivers.length} chauffeur(s) enregistré(s)</p>
           </div>
-        ))}
+          <button onClick={openAdd}
+            className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-xl btn-glow-green">
+            <Plus className="w-4 h-4" /> Nouveau chauffeur
+          </button>
+        </div>
+
+        {/* KPI bar */}
+        <div className="relative z-10 grid grid-cols-3 gap-3 mt-5">
+          {[
+            { label: "Disponibles", value: available, color: "text-emerald-400", border: "border-emerald-500/20", bg: "bg-emerald-500/8", dot: "bg-emerald-400 animate-pulse", status: "disponible" },
+            { label: "En livraison", value: busy, color: "text-blue-400", border: "border-blue-500/20", bg: "bg-blue-500/8", dot: "bg-blue-400 animate-pulse", status: "en_livraison" },
+            { label: "Inactifs", value: inactive, color: "text-white/35", border: "border-white/8", bg: "bg-white/4", dot: "bg-white/20", status: "inactif" },
+          ].map(s => (
+            <button key={s.label} onClick={() => setFilter(filter === s.status ? "all" : s.status)}
+              className={`${s.bg} border ${s.border} rounded-xl p-3 flex items-center gap-3 transition-all hover:brightness-125 ${filter === s.status ? "ring-1 ring-white/20" : ""}`}>
+              <div className="flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
+                <p className={`font-heading text-2xl font-bold ${s.color}`}>{s.value}</p>
+              </div>
+              <p className="text-[10px] text-white/35 font-body leading-tight">{s.label}</p>
+            </button>
+          ))}
+        </div>
       </div>
-      <EntityTable
-        title="Chauffeurs livreurs"
-        subtitle={`${drivers.length} chauffeurs enregistrés`}
-        columns={COLUMNS} rows={drivers}
-        onAdd={openAdd} onEdit={openEdit} onDelete={del}
-        addLabel="Nouveau chauffeur"
-      />
+
+      {/* Filter pills */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {["all", "disponible", "en_livraison", "inactif"].map(f => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`text-[11px] font-body px-3 py-1.5 rounded-full border transition-all ${
+              filter === f
+                ? "bg-gmo-green text-white border-gmo-green shadow-sm shadow-gmo-green/25"
+                : "border-gray-200 text-obsidian/50 hover:border-gmo-green/40 hover:text-gmo-green"
+            }`}>
+            {f === "all" ? `Tous (${drivers.length})` : `${STATUS_CONFIG[f].label} (${drivers.filter(d=>d.status===f).length})`}
+          </button>
+        ))}
+        <span className="ml-auto text-[10px] text-obsidian/30 font-body flex items-center gap-1">
+          <Zap className="w-3 h-3 text-gmo-green/40" /> Temps réel actif
+        </span>
+      </div>
+
+      {/* Driver grid */}
+      {filtered.length === 0 ? (
+        <div className="bg-[#161618] rounded-2xl border border-white/[0.06] p-12 text-center">
+          <Truck className="w-10 h-10 text-white/10 mx-auto mb-3" />
+          <p className="text-sm text-white/30 font-body">Aucun chauffeur dans cette catégorie</p>
+          <button onClick={openAdd} className="mt-4 text-xs text-gmo-green font-body hover:underline">+ Ajouter un chauffeur</button>
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {filtered.map(d => (
+            <DriverCard
+              key={d.id}
+              driver={d}
+              onEdit={openEdit}
+              onDelete={del}
+              onStatusChange={handleStatusChange}
+            />
+          ))}
+        </div>
+      )}
+
       {form && (
         <EntityForm
           title="Chauffeur livreur" fields={FIELDS} data={form} onChange={onChange}
