@@ -10,6 +10,7 @@ import {
 import StocksView from "@/components/retailer/StocksView";
 import ProductGallery from "@/components/retailer/ProductGallery";
 import LiveChatWidget from "@/components/retailer/LiveChatWidget";
+import CoverageMap from "@/components/retailer/CoverageMap";
 
 const TABS = [
   { id: "accueil", label: "Accueil" },
@@ -17,6 +18,7 @@ const TABS = [
   { id: "stocks", label: "Stocks" },
   { id: "commande", label: "Commander" },
   { id: "livraisons", label: "Livraisons" },
+  { id: "zones", label: "🗺 Zones" },
 ];
 
 function RetailerDashboard() {
@@ -401,6 +403,35 @@ function RetailerDashboard() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ── ZONES DE COUVERTURE ── */}
+        {tab === "zones" && (
+          <div>
+            <div className="mb-5">
+              <h2 className="font-heading text-xl font-bold text-obsidian">Zones de livraison</h2>
+              <p className="text-xs text-obsidian/40 font-body mt-0.5">Visualisez les zones couvertes et planifiez vos livraisons</p>
+            </div>
+            <CoverageMap
+              onSelectZone={(zone) => {
+                if (zone.status !== "expansion") {
+                  setDeliveryMode("livraison");
+                  setDeliveryAddress(zone.name);
+                }
+              }}
+            />
+            <div className="mt-4 bg-gmo-green/5 border border-gmo-green/20 rounded-xl p-4 flex items-start gap-3">
+              <MapPin className="w-4 h-4 text-gmo-green mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-heading text-sm font-bold text-gmo-green">Planifier une livraison</p>
+                <p className="text-xs text-obsidian/55 font-body mt-0.5">Cliquez sur une zone active sur la carte, puis passez votre commande — l'adresse de livraison sera pré-remplie.</p>
+                <button onClick={() => setTab("commande")}
+                  className="mt-2 text-xs text-gmo-green font-heading font-semibold hover:underline">
+                  Passer une commande →
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
