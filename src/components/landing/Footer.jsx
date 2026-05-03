@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const NAV = ["Accueil", "Services", "À Propos", "Produits", "GMO Foot", "Galerie", "Contact"];
 const scrollTo = (label) => {
@@ -78,11 +79,15 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="font-body text-[11px] text-white/20 tracking-wider uppercase">
             © {new Date().getFullYear()} Groupe Madina Oumarou. Tous droits réservés.
           </p>
-          <p className="font-body text-[11px] text-white/12 tracking-wider">OHADA · BURKINA FASO</p>
+          <div className="flex items-center gap-5">
+            <Link to="/client" className="font-body text-[11px] text-white/20 hover:text-gmo-green transition-colors tracking-widest uppercase">Espace Client</Link>
+            <Link to="/detaillant" className="font-body text-[11px] text-white/20 hover:text-gmo-red transition-colors tracking-widest uppercase">Détaillants</Link>
+            <Link to="/admin" className="font-body text-[11px] text-white/20 hover:text-white transition-colors tracking-widest uppercase">Admin</Link>
+          </div>
         </div>
       </div>
     </footer>

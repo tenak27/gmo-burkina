@@ -6,6 +6,9 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Home from './pages/Home';
+import ClientSpace from './pages/ClientSpace';
+import RetailerSpace from './pages/RetailerSpace';
+import AdminSpace from './pages/AdminSpace';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -35,6 +38,9 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/client" element={<ClientSpace />} />
+      <Route path="/detaillant" element={<RetailerSpace />} />
+      <Route path="/admin" element={<AdminSpace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
