@@ -1,14 +1,15 @@
 import React from "react";
 import Navbar from "../components/landing/Navbar";
 import HeroSection from "../components/landing/HeroSection";
+import PartnersCarousel from "../components/landing/PartnersCarousel";
 import ServicesSection from "../components/landing/ServicesSection";
+import StatsSection from "../components/landing/StatsSection";
 import AboutSection from "../components/landing/AboutSection";
 import ProductsSection from "../components/landing/ProductsSection";
-import JourneyBanner from "../components/landing/JourneyBanner";
 import TestimonialsSection from "../components/landing/TestimonialsSection";
+import JourneyBanner from "../components/landing/JourneyBanner";
 import GallerySection from "../components/landing/GallerySection";
 import GMOFootSection from "../components/landing/GMOFootSection";
-import PartnersSection from "../components/landing/PartnersSection";
 import CoverageMap from "../components/landing/CoverageMap";
 import ContactSection from "../components/landing/ContactSection";
 import Footer from "../components/landing/Footer";
@@ -35,14 +36,15 @@ export default function Home() {
     <div className="bg-obsidian min-h-screen">
       <Navbar />
       <HeroSection heroImage={IMAGES.hero} />
+      <PartnersCarousel />
       <ServicesSection />
+      <StatsSection />
       <AboutSection />
       <ProductsSection />
       <TestimonialsSection />
       <JourneyBanner journeyImage={IMAGES.journey} />
       <GallerySection images={galleryImages} />
       <GMOFootSection />
-      <PartnersSection />
       <CoverageMap />
       <ContactSection />
       <Footer />
