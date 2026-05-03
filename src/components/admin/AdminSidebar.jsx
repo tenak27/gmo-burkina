@@ -131,7 +131,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
             />
             <div className="flex flex-col min-w-0">
               <span className="text-xs font-heading font-bold text-white whitespace-nowrap">GMO Burkina</span>
-              <span className="text-[9px] text-gmo-green uppercase tracking-[0.25em] font-body whitespace-nowrap">ERP Admin</span>
+              <span className="text-[9px] text-gmo-green uppercase tracking-[0.25em] font-body whitespace-nowrap">ERP · PDG</span>
             </div>
           </div>
         )}

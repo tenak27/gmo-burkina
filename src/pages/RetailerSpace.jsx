@@ -415,7 +415,7 @@ function RetailerDashboard() {
 
 export default function RetailerSpace() {
   return (
-    <RoleGuard roles={["detaillant", "admin"]}>
+    <RoleGuard roles={["detaillant", "pdg"]}>
       <RetailerDashboard />
     </RoleGuard>
   );

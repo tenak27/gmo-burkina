@@ -353,7 +353,7 @@ function OrderCard({ order }) {
 
 export default function ClientSpace() {
   return (
-    <RoleGuard roles={["user", "client", "admin"]}>
+    <RoleGuard roles={["client", "pdg"]}>
       <ClientDashboard />
     </RoleGuard>
   );

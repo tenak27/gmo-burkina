@@ -44,7 +44,8 @@ export default function RoleGuard({ roles, children }) {
 
   if (roles && !roles.includes(user.role)) {
     // Redirect to correct space
-    const redirect = user.role === "admin" ? "/admin" : user.role === "detaillant" ? "/detaillant" : "/client";
+    const ROLE_ROUTES = { pdg: "/admin", commercial: "/commercial", magasinier: "/magasinier", chauffeur: "/chauffeur", detaillant: "/detaillant", client: "/client" };
+    const redirect = ROLE_ROUTES[user.role] || "/client";
     return (
       <div className="min-h-screen bg-obsidian flex flex-col items-center justify-center px-6 text-center">
         <Shield className="w-12 h-12 text-gmo-red/60 mb-6" />

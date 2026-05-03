@@ -1,0 +1,21 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "description": "R\u00f4le de l'utilisateur dans l'application",
+      "enum": [
+        "pdg",
+        "commercial",
+        "magasinier",
+        "chauffeur",
+        "detaillant",
+        "client"
+      ]
+    }
+  },
+  "required": [
+    "role"
+  ]
+}

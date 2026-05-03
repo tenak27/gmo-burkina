@@ -9,6 +9,9 @@ import Home from './pages/Home';
 import ClientSpace from './pages/ClientSpace';
 import RetailerSpace from './pages/RetailerSpace';
 import AdminSpace from './pages/AdminSpace';
+import MagasinierSpace from './pages/MagasinierSpace';
+import CommercialSpace from './pages/CommercialSpace';
+import DriverSpace from './pages/DriverSpace';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -16,7 +19,10 @@ function RoleRedirect() {
   const { user, isAuthenticated, isLoadingAuth } = useAuth();
   if (isLoadingAuth) return null;
   if (!isAuthenticated || !user) return <Navigate to="/" replace />;
-  if (user.role === "admin") return <Navigate to="/admin" replace />;
+  if (user.role === "pdg") return <Navigate to="/admin" replace />;
+  if (user.role === "commercial") return <Navigate to="/commercial" replace />;
+  if (user.role === "magasinier") return <Navigate to="/magasinier" replace />;
+  if (user.role === "chauffeur") return <Navigate to="/chauffeur" replace />;
   if (user.role === "detaillant") return <Navigate to="/detaillant" replace />;
   return <Navigate to="/client" replace />;
 }
@@ -48,6 +54,9 @@ const AuthenticatedApp = () => {
       <Route path="/client" element={<ClientSpace />} />
       <Route path="/detaillant" element={<RetailerSpace />} />
       <Route path="/admin" element={<AdminSpace />} />
+      <Route path="/magasinier" element={<MagasinierSpace />} />
+      <Route path="/commercial" element={<CommercialSpace />} />
+      <Route path="/chauffeur" element={<DriverSpace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
