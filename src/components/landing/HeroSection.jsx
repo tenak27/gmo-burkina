@@ -212,8 +212,8 @@ export default function HeroSection() {
       {/* ── CONTENT ── */}
       <div className="relative z-10 h-full flex flex-col lg:flex-row">
 
-        {/* LEFT — text */}
-        <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-16 xl:px-20 pt-20 pb-16 lg:py-0 w-full lg:w-[440px] xl:w-[500px] flex-shrink-0">
+        {/* LEFT — text (50%) */}
+        <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 xl:px-16 pt-20 pb-16 lg:py-0 w-full lg:w-1/2 flex-shrink-0">
 
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
@@ -302,8 +302,8 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* RIGHT — vertical accordion panels */}
-        <div className="hidden lg:flex flex-1 min-w-0 gap-[6px] py-4 pr-4">
+        {/* RIGHT — vertical accordion panels (50%) */}
+        <div className="hidden lg:flex w-1/2 min-w-0 gap-[6px] py-4 pr-4">
           {PANELS.map((panel, i) => {
             const isActive = i === activeIdx;
             return (
