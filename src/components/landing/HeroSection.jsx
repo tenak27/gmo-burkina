@@ -75,7 +75,7 @@ export default function HeroSection() {
   const dashLink = getDashboardLink();
 
   return (
-    <section id="accueil" className="relative bg-gradient-to-br from-obsidian via-obsidian/95 to-black overflow-hidden" style={{ height: "100svh", minHeight: 620 }}>
+    <section id="accueil" className="relative bg-gradient-to-br from-slate-50 via-white to-concrete overflow-hidden" style={{ height: "100svh", minHeight: 620 }}>
 
       {/* BG transitions */}
       <AnimatePresence mode="sync">
@@ -85,7 +85,7 @@ export default function HeroSection() {
         >
           <img src={active.img} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{
-            background: "linear-gradient(105deg, rgba(28,28,30,0.95) 0%, rgba(28,28,30,0.80) 35%, rgba(28,28,30,0.25) 65%, rgba(28,28,30,0.08) 100%)"
+            background: "linear-gradient(105deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.85) 35%, rgba(245,245,243,0.35) 65%, rgba(245,245,243,0.12) 100%)"
           }} />
         </motion.div>
       </AnimatePresence>
@@ -99,7 +99,7 @@ export default function HeroSection() {
               <img
                 src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
                 alt="GMO"
-                className="h-10 w-auto object-contain brightness-0 invert"
+                className="h-10 w-auto object-contain"
               />
             </motion.div>
 
@@ -114,10 +114,10 @@ export default function HeroSection() {
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="font-body text-sm text-white/60 hover:text-white transition-colors relative group"
+                  className="font-body text-sm text-obsidian/60 hover:text-obsidian transition-colors relative group"
                 >
                   {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-white/60 group-hover:w-full transition-all duration-300 rounded-full" />
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-obsidian/40 group-hover:w-full transition-all duration-300 rounded-full" />
                 </button>
               ))}
             </motion.div>
@@ -133,14 +133,14 @@ export default function HeroSection() {
                 <>
                   <Link
                     to={dashLink.to}
-                    className="flex items-center gap-2 text-white/65 font-heading font-semibold text-sm hover:text-white border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:bg-white/8 transition-all"
+                    className="flex items-center gap-2 text-obsidian/65 font-heading font-semibold text-sm hover:text-obsidian border border-obsidian/15 px-4 py-2 rounded-lg hover:border-obsidian/30 hover:bg-obsidian/5 transition-all"
                   >
                     <User className="w-3.5 h-3.5" />
                     {dashLink.label}
                   </Link>
                   <button
                     onClick={() => logout()}
-                    className="font-body text-xs text-white/30 hover:text-white/70 transition-colors"
+                    className="font-body text-xs text-obsidian/40 hover:text-obsidian/70 transition-colors"
                   >
                     Déco.
                   </button>
@@ -148,7 +148,7 @@ export default function HeroSection() {
               ) : (
                 <button
                   onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="flex items-center gap-2 text-white/65 font-heading font-bold text-sm border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:text-white hover:bg-white/8 transition-all"
+                  className="flex items-center gap-2 text-obsidian/65 font-heading font-bold text-sm border border-obsidian/15 px-4 py-2 rounded-lg hover:border-obsidian/30 hover:text-obsidian hover:bg-obsidian/5 transition-all"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   Connexion
@@ -181,7 +181,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-20 bg-obsidian/95 backdrop-blur-md flex flex-col items-center justify-center gap-6"
+            className="absolute inset-0 z-20 bg-white/95 backdrop-blur-md flex flex-col items-center justify-center gap-6"
           >
             {NAV_LINKS.map((link, i) => (
               <motion.button
@@ -190,7 +190,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07 }}
                 onClick={() => scrollTo(link.href)}
-                className="font-heading text-3xl font-bold text-white/80 hover:text-white"
+                className="font-heading text-3xl font-bold text-obsidian/80 hover:text-obsidian"
               >
                 {link.label}
               </motion.button>
@@ -219,8 +219,8 @@ export default function HeroSection() {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
             className="flex items-center gap-3 mb-8"
           >
-            <div className="w-5 h-[2px] bg-gmo-green" />
-            <span className="font-body text-[10px] uppercase tracking-[0.3em] text-gmo-green whitespace-nowrap">
+            <div className="w-5 h-[2px] bg-gmo-red" />
+            <span className="font-body text-[10px] uppercase tracking-[0.3em] text-gmo-red whitespace-nowrap">
               Groupe Madina Oumarou · BF
             </span>
           </motion.div>
@@ -272,8 +272,8 @@ export default function HeroSection() {
             </span>
           </div>
 
-          <p className="font-body text-sm text-white/80 leading-relaxed max-w-xs mb-8">
-            <span className="text-white font-semibold">GMO Burkina</span> — votre partenaire de confiance pour la distribution, le transport et la logistique au Burkina Faso et en Afrique de l'Ouest. Plus de <span className="text-gmo-green font-semibold">15 ans</span> d'expertise au service de vos approvisionnements.
+          <p className="font-body text-sm text-obsidian/70 leading-relaxed max-w-xs mb-8">
+            <span className="text-obsidian font-semibold">GMO Burkina</span> — votre partenaire de confiance pour la distribution, le transport et la logistique au Burkina Faso et en Afrique de l'Ouest. Plus de <span className="text-gmo-red font-semibold">15 ans</span> d'expertise au service de vos approvisionnements.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -408,12 +408,12 @@ export default function HeroSection() {
       </div>
 
       {/* Ticker */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-white/6 bg-black/20 backdrop-blur-sm">
+      <div className="absolute bottom-0 left-0 right-0 z-20 border-t border-obsidian/10 bg-white/60 backdrop-blur-sm">
         <div className="overflow-hidden py-3">
           <div className="animate-ticker flex whitespace-nowrap">
             {[...TICKER, ...TICKER].map((item, i) => (
-              <span key={i} className="font-body text-[10px] uppercase tracking-[0.28em] text-white/60 mx-10">
-                {item}<span className="ml-10 text-gmo-red/50">●</span>
+              <span key={i} className="font-body text-[10px] uppercase tracking-[0.28em] text-obsidian/50 mx-10">
+                {item}<span className="ml-10 text-gmo-red/40">●</span>
               </span>
             ))}
           </div>

@@ -11,6 +11,7 @@ import TestimonialsSection from "../components/landing/TestimonialsSection";
 import JourneyBanner from "../components/landing/JourneyBanner";
 import GallerySection from "../components/landing/GallerySection";
 import LogisticsPartnersSection from "../components/landing/LogisticsPartnersSection";
+import NewsSection from "../components/landing/NewsSection";
 import BlogSection from "../components/landing/BlogSection";
 import GMOFootSection from "../components/landing/GMOFootSection";
 import CoverageMap from "../components/landing/CoverageMap";
@@ -48,6 +49,7 @@ export default function Home() {
       <JourneyBanner journeyImage={IMAGES.journey} />
       <LogisticsPartnersSection />
       <GallerySection images={galleryImages} />
+      <NewsSection />
       <BlogSection />
       <GMOFootSection />
       <CoverageMap />

@@ -14,14 +14,17 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
-        obsidian: '#1C1C1E',
+        obsidian: '#0F1419',
         gold: '#F5C400',
         'gmo-green': '#1A7A2E',
         'gmo-red': '#CC1717',
-        concrete: '#F8F8F6',
-        'light-gray': '#F2F4F7',
-        cream: '#FDFCF8',
+        concrete: '#F5F5F3',
+        'light-gray': '#EAEAEA',
+        cream: '#FAFAF8',
         amber: '#F5C400',
+        'slate-50': '#F8F8FA',
+        'slate-100': '#F0F1F4',
+        'slate-200': '#E8EAF0',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
