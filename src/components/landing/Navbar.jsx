@@ -56,9 +56,9 @@ export default function Navbar({ heroHeight }) {
             {/* Logo */}
             <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}>
               <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
                 alt="GMO"
-                className="h-10 w-auto object-contain"
+                className="h-14 w-auto object-contain"
               />
             </button>
 

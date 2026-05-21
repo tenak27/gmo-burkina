@@ -213,7 +213,7 @@ export default function HeroSection() {
       <div className="relative z-10 h-full flex flex-col lg:flex-row">
 
         {/* LEFT — text */}
-        <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-20 pt-24 pb-20 lg:py-0 w-full lg:w-[440px] xl:w-[500px] flex-shrink-0">
+        <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-16 xl:px-20 pt-20 pb-16 lg:py-0 w-full lg:w-[440px] xl:w-[500px] flex-shrink-0">
 
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
