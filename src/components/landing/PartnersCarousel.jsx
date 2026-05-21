@@ -71,7 +71,7 @@ const DOUBLED = [...PARTNERS, ...PARTNERS];
 
 export default function PartnersCarousel() {
   return (
-    <section className="bg-white py-14 border-t border-b border-gray-100 overflow-hidden">
+    <section className="bg-gradient-to-r from-concrete via-white/98 to-concrete py-14 border-t border-b border-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-8">
         <div className="flex items-center gap-3">
           <div className="w-6 h-[2px] bg-gmo-green" />

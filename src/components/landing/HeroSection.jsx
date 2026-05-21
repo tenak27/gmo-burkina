@@ -75,7 +75,7 @@ export default function HeroSection() {
   const dashLink = getDashboardLink();
 
   return (
-    <section id="accueil" className="relative bg-obsidian overflow-hidden" style={{ height: "100svh", minHeight: 620 }}>
+    <section id="accueil" className="relative bg-gradient-to-br from-obsidian via-obsidian/95 to-black overflow-hidden" style={{ height: "100svh", minHeight: 620 }}>
 
       {/* BG transitions */}
       <AnimatePresence mode="sync">
@@ -85,7 +85,7 @@ export default function HeroSection() {
         >
           <img src={active.img} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{
-            background: "linear-gradient(105deg, rgba(20,20,22,0.97) 0%, rgba(20,20,22,0.84) 36%, rgba(20,20,22,0.28) 68%, rgba(20,20,22,0.10) 100%)"
+            background: "linear-gradient(105deg, rgba(28,28,30,0.95) 0%, rgba(28,28,30,0.80) 35%, rgba(28,28,30,0.25) 65%, rgba(28,28,30,0.08) 100%)"
           }} />
         </motion.div>
       </AnimatePresence>
