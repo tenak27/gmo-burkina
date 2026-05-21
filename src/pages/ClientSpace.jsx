@@ -85,27 +85,39 @@ function ClientDashboard() {
   return (
     <div className="min-h-screen bg-[#F8F8F6]">
       {/* Header */}
-      <header className="bg-[#1C1C1E] sticky top-0 z-40">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 brightness-0 invert opacity-90" />
-            <span className="hidden sm:block text-[10px] text-white/30 uppercase tracking-[0.2em] font-body">Client</span>
+            <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png" alt="GMO" className="h-10 w-auto object-contain" />
+            <span className="hidden sm:block text-[10px] text-gmo-green uppercase tracking-[0.2em] font-body font-bold">Client</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-gmo-green flex items-center justify-center text-white text-[11px] font-bold font-heading">
+          <div className="flex items-center gap-3">
+            <nav className="hidden sm:flex gap-6">
+              {TABS.map(t => (
+                <button key={t.id} onClick={() => setTab(t.id)}
+                  className={`text-xs font-body uppercase tracking-widest transition-colors ${
+                    tab === t.id ? "text-gmo-green font-bold" : "text-obsidian/40 hover:text-gmo-green"
+                  }`}
+                >{t.label}</button>
+              ))}
+            </nav>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold font-heading">
               {user?.full_name?.charAt(0) || "C"}
             </div>
-            <span className="hidden sm:block text-xs text-white/50 font-body">{user?.full_name}</span>
-            <button onClick={() => logout()} className="ml-2 text-white/25 hover:text-red-400 transition-colors">
+            <span className="hidden sm:block text-xs text-obsidian/60 font-body">{user?.full_name}</span>
+            <button onClick={() => logout()} className="text-obsidian/30 hover:text-gmo-red transition-colors" title="Déconnexion">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
         </div>
-        <nav className="max-w-5xl mx-auto px-4 sm:px-6 flex gap-0 border-t border-white/5">
+        {/* Mobile nav */}
+        <nav className="sm:hidden max-w-5xl mx-auto px-4 flex gap-0 border-t border-gray-100">
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`px-4 py-2.5 text-[11px] font-body uppercase tracking-widest border-b-2 transition-colors ${
-                tab === t.id ? "border-gmo-green text-gmo-green" : "border-transparent text-white/30 hover:text-white/60"
+              className={`flex-1 px-4 py-2 text-[11px] font-body uppercase tracking-widest border-b-2 transition-colors text-center ${
+                tab === t.id ? "border-gmo-green text-gmo-green font-bold" : "border-transparent text-obsidian/30 hover:text-gmo-green"
               }`}
             >{t.label}</button>
           ))}
@@ -303,10 +315,37 @@ function ClientDashboard() {
           </div>
         )}
 
-        <p className="text-center text-[11px] text-obsidian/20 font-body mt-8">
-          <Link to="/" className="hover:text-gmo-green transition-colors">← Retour au site</Link>
-        </p>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-[#1C1C1E] text-white mt-12 border-t border-white/5">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
+            <div>
+              <p className="text-xs font-heading font-bold uppercase tracking-widest text-white/40 mb-3">Company</p>
+              <ul className="space-y-2 text-xs text-white/50 font-body hover:text-white">
+                <li><Link to="/" className="hover:text-gmo-green transition-colors">Accueil</Link></li>
+                <li><a href="https://gmobfaso.com" className="hover:text-gmo-green transition-colors">Site</a></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs font-heading font-bold uppercase tracking-widest text-white/40 mb-3">Support</p>
+              <ul className="space-y-2 text-xs text-white/50 font-body">
+                <li><a href="tel:+22625331900" className="hover:text-gmo-green transition-colors">+226 25 33 19 00</a></li>
+                <li><a href="https://wa.me/22676211633" target="_blank" rel="noopener noreferrer" className="hover:text-gmo-green transition-colors">WhatsApp</a></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs font-heading font-bold uppercase tracking-widest text-white/40 mb-3">Horaires</p>
+              <p className="text-xs text-white/50 font-body">Lun–Sam 8h30–18h</p>
+            </div>
+          </div>
+          <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png" alt="GMO" className="h-6 w-auto brightness-0 invert" />
+            <p className="text-xs text-white/30 font-body text-center">© 2026 GMO Burkina. Tous droits réservés.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
