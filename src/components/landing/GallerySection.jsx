@@ -11,7 +11,7 @@ export default function GallerySection({ images }) {
   const next = () => setLightbox((i) => (i + 1) % images.length);
 
   return (
-    <section id="galerie" className="bg-obsidian py-24 lg:py-32">
+    <section id="galerie" className="bg-gradient-to-b from-obsidian via-obsidian/98 to-obsidian/95 py-24 lg:py-32 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
         <div ref={ref} className="mb-16">

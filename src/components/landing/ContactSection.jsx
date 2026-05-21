@@ -50,7 +50,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="bg-light-gray py-24 lg:py-32">
+    <section id="contact" className="bg-gradient-to-b from-light-gray via-light-gray/98 to-light-gray/95 py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div ref={ref} className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left */}

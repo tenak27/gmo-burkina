@@ -83,7 +83,7 @@ export default function BlogSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="actualites" className="bg-white py-24 lg:py-32">
+    <section id="actualites" className="bg-gradient-to-b from-white via-white/98 to-white/95 py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         <div ref={ref} className="mb-14">
           <motion.div

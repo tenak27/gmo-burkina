@@ -36,7 +36,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="bg-obsidian min-h-screen">
+    <div className="bg-gradient-to-b from-obsidian via-obsidian/98 to-obsidian/95 min-h-screen">
       <Navbar />
       <HeroSection />
       <PartnersCarousel />

@@ -69,7 +69,7 @@ export default function CoverageMap() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <section className="bg-cream py-24 lg:py-32">
+    <section className="bg-gradient-to-b from-cream via-cream/98 to-cream/95 py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div ref={ref} className="mb-12">
           <motion.div

@@ -168,7 +168,7 @@ export default function ProductsSection() {
     : PRODUCTS.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="produits" className="bg-concrete py-24 lg:py-32">
+    <section id="produits" className="bg-gradient-to-b from-concrete via-concrete/98 to-concrete/95 py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
         <div ref={ref} className="mb-10">
@@ -255,7 +255,7 @@ export default function ProductsSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8 }}
-          className="mt-16 bg-obsidian p-8 lg:p-12 flex flex-col lg:flex-row items-center justify-between gap-6"
+          className="mt-16 bg-gradient-to-r from-obsidian to-obsidian/95 p-8 lg:p-12 flex flex-col lg:flex-row items-center justify-between gap-6 border border-white/5 shadow-xl shadow-obsidian/20"
         >
           <div>
             <p className="font-body text-xs uppercase tracking-widest text-gmo-green/70 mb-2">Besoin d'un devis groupé ?</p>

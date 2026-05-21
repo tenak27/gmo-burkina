@@ -45,7 +45,7 @@ export default function StatsSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="bg-obsidian py-20 lg:py-28 relative overflow-hidden">
+    <section className="bg-gradient-to-b from-obsidian via-obsidian/98 to-obsidian/95 py-20 lg:py-28 relative overflow-hidden border-t border-white/5">
       {/* Decorative */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
         {[...Array(8)].map((_, i) => (

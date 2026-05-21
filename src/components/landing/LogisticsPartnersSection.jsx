@@ -21,7 +21,7 @@ const STATS = [
 
 export default function LogisticsPartnersSection() {
   return (
-    <section className="bg-[#0F0F11] py-20 relative overflow-hidden">
+    <section className="bg-gradient-to-b from-obsidian via-obsidian/98 to-obsidian/95 py-20 relative overflow-hidden border-t border-white/5">
       {/* Ambient glows */}
       <div className="absolute top-0 left-1/3 w-96 h-64 bg-gmo-green/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-64 h-48 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />

@@ -40,7 +40,7 @@ export default function AboutSection() {
   const valuesInView = useInView(valuesRef, { once: true, margin: "-80px" });
 
   return (
-    <section id="apropos" className="bg-concrete overflow-hidden">
+    <section id="apropos" className="bg-gradient-to-b from-concrete via-concrete/98 to-concrete/95 overflow-hidden">
       {/* PDG Message */}
       <div className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -146,7 +146,7 @@ export default function AboutSection() {
       </div>
 
       {/* Values Grid */}
-      <div ref={valuesRef} className="bg-obsidian py-20 lg:py-28">
+      <div ref={valuesRef} className="bg-gradient-to-b from-obsidian via-obsidian/98 to-obsidian/95 py-20 lg:py-28 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

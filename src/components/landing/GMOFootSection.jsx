@@ -203,7 +203,7 @@ export default function GMOFootSection() {
   };
 
   return (
-    <section id="gmofoot" className="bg-light-gray py-24 lg:py-32 overflow-hidden">
+    <section id="gmofoot" className="bg-gradient-to-b from-light-gray via-light-gray/98 to-light-gray/95 py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header + Stats */}
         <div ref={ref} className="grid lg:grid-cols-2 gap-16 items-center mb-16">
