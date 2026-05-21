@@ -55,24 +55,24 @@ export default function EntityTable({
   return (
     <div className="animate-fade-up">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div>
-          <h2 className="font-heading text-lg font-bold text-obsidian">{title}</h2>
-          {subtitle && <p className="text-xs text-obsidian/40 font-body mt-0.5">{subtitle}</p>}
+          <h2 className="font-heading text-2xl font-bold text-obsidian">{title}</h2>
+          {subtitle && <p className="text-sm text-obsidian/50 font-body mt-1">{subtitle}</p>}
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap">
           {/* Search */}
           <div className="relative">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-obsidian/30" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-obsidian/40" />
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(1); }}
               placeholder="Rechercher..."
-              className="pl-8 pr-7 py-2 text-xs font-body border border-gray-200 rounded-lg focus:border-gmo-green focus:outline-none w-44 transition-colors"
+              className="pl-10 pr-8 py-2.5 text-sm font-body border border-gray-200 rounded-xl focus:border-gmo-green focus:outline-none w-52 transition-colors bg-white shadow-sm"
             />
             {search && (
-              <button onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-obsidian/30 hover:text-obsidian">
-                <X className="w-3 h-3" />
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-obsidian/40 hover:text-obsidian">
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
@@ -80,105 +80,105 @@ export default function EntityTable({
           <button
             onClick={() => exportCSV(columns, filtered, title)}
             title="Exporter en CSV"
-            className="flex items-center gap-1.5 border border-gray-200 text-obsidian/40 hover:border-gmo-green hover:text-gmo-green text-xs font-body px-3 py-2 rounded-lg transition-colors"
+            className="flex items-center gap-2 border border-gray-200 text-obsidian/60 hover:border-gmo-green hover:text-gmo-green text-sm font-body px-4 py-2.5 rounded-xl transition-colors bg-white shadow-sm"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Exporter</span>
           </button>
           {/* Add */}
           {onAdd && (
             <button
               onClick={onAdd}
-              className="flex items-center gap-1.5 bg-gmo-green text-white text-xs font-heading font-bold px-3 py-2 rounded-lg btn-glow-green"
+              className="flex items-center gap-2 bg-gmo-green text-white text-sm font-heading font-bold px-5 py-2.5 rounded-xl btn-glow-green shadow-sm"
             >
-              <Plus className="w-3.5 h-3.5" /> {addLabel}
+              <Plus className="w-4 h-4" /> {addLabel}
             </button>
           )}
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden card-hover">
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <div className="w-8 h-8 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin" />
-            <p className="text-xs text-obsidian/30 font-body">Chargement…</p>
+          <div className="flex flex-col items-center justify-center py-20 gap-3">
+            <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin" />
+            <p className="text-sm text-obsidian/40 font-body">Chargement…</p>
           </div>
         ) : (
           <>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50/80 border-b border-gray-100">
+                  <tr className="bg-gray-50 border-b border-gray-200">
                     {columns.map((c, i) => (
                       <th
                         key={`${c.key}-${i}`}
                         onClick={sortableKeys.has(c.key) ? () => handleSort(c.key) : undefined}
-                        className={`px-4 py-3 text-[10px] uppercase tracking-widest text-obsidian/40 font-heading select-none ${
+                        className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-obsidian/60 font-heading select-none ${
                           c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"
-                        } ${sortableKeys.has(c.key) ? "cursor-pointer hover:text-obsidian/70 group" : ""}`}
+                        } ${sortableKeys.has(c.key) ? "cursor-pointer hover:text-obsidian group" : ""}`}
                       >
-                        <span className="inline-flex items-center gap-1">
+                        <span className="inline-flex items-center gap-1.5">
                           {c.label}
                           {sortableKeys.has(c.key) && (
-                            <span className={`transition-opacity ${sortKey === c.key ? "opacity-100" : "opacity-0 group-hover:opacity-40"}`}>
+                            <span className={`transition-opacity ${sortKey === c.key ? "opacity-100" : "opacity-0 group-hover:opacity-50"}`}>
                               {sortKey === c.key && sortDir === "desc"
-                                ? <ChevronDown className="w-3 h-3" />
-                                : <ChevronUp className="w-3 h-3" />}
+                                ? <ChevronDown className="w-3.5 h-3.5" />
+                                : <ChevronUp className="w-3.5 h-3.5" />}
                             </span>
                           )}
                         </span>
                       </th>
                     ))}
                     {(onEdit || onDelete) && (
-                      <th className="px-4 py-3 text-right text-[10px] uppercase tracking-widest text-obsidian/40 font-heading">Actions</th>
+                      <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wider text-obsidian/60 font-heading">Actions</th>
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-100">
                   {paged.length === 0 ? (
                     <tr>
-                      <td colSpan={columns.length + 1} className="text-center py-14 text-xs text-obsidian/30 font-body">
-                        <div className="flex flex-col items-center gap-2">
-                          <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
-                            <Search className="w-4 h-4 text-obsidian/20" />
+                      <td colSpan={columns.length + 1} className="text-center py-16 font-body">
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+                            <Search className="w-5 h-5 text-obsidian/30" />
                           </div>
-                          {search ? `Aucun résultat pour "${search}"` : (emptyLabel || "Aucune donnée")}
+                          <p className="text-base text-obsidian/40">{search ? `Aucun résultat pour "${search}"` : (emptyLabel || "Aucune donnée")}</p>
                         </div>
                       </td>
                     </tr>
                   ) : paged.map((row, i) => (
                     <tr
                       key={row.id || i}
-                      className="hover:bg-gray-50/60 transition-colors duration-150 group"
+                      className="hover:bg-gray-50 transition-colors duration-100 group"
                     >
                       {columns.map((c, ci) => (
                         <td
                           key={`${c.key}-${ci}`}
-                          className={`px-4 py-3 ${c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : ""}`}
+                          className={`px-5 py-4 ${c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : ""}`}
                         >
                           {c.render ? c.render(row[c.key], row) : (
-                            <span className="text-xs text-obsidian/70 font-body">{row[c.key] ?? "—"}</span>
+                            <span className="text-sm text-obsidian/80 font-body">{row[c.key] ?? "—"}</span>
                           )}
                         </td>
                       ))}
                       {(onEdit || onDelete) && (
-                        <td className="px-4 py-3 text-right">
-                          <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <td className="px-5 py-4 text-right">
+                          <div className="flex items-center justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                             {onEdit && (
                               <button
                                 onClick={() => onEdit(row)}
-                                className="w-7 h-7 rounded-lg border border-transparent hover:border-gmo-green/30 hover:bg-gmo-green/5 flex items-center justify-center text-obsidian/30 hover:text-gmo-green transition-all"
+                                className="w-8 h-8 rounded-lg border border-transparent hover:border-gmo-green/40 hover:bg-gmo-green/8 flex items-center justify-center text-obsidian/40 hover:text-gmo-green transition-all"
                               >
-                                <Pencil className="w-3.5 h-3.5" />
+                                <Pencil className="w-4 h-4" />
                               </button>
                             )}
                             {onDelete && (
                               <button
                                 onClick={() => onDelete(row)}
-                                className="w-7 h-7 rounded-lg border border-transparent hover:border-red-200 hover:bg-red-50 flex items-center justify-center text-obsidian/30 hover:text-gmo-red transition-all"
+                                className="w-8 h-8 rounded-lg border border-transparent hover:border-red-200 hover:bg-red-50 flex items-center justify-center text-obsidian/40 hover:text-gmo-red transition-all"
                               >
-                                <Trash2 className="w-3.5 h-3.5" />
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             )}
                           </div>
@@ -191,26 +191,26 @@ export default function EntityTable({
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between px-4 py-3 border-t border-gray-50 bg-gray-50/30">
-              <span className="text-[11px] text-obsidian/35 font-body">
+            <div className="flex items-center justify-between px-5 py-4 border-t border-gray-100 bg-gray-50/50">
+              <span className="text-sm text-obsidian/50 font-body">
                 {search
                   ? <><span className="text-gmo-green font-semibold">{filtered.length}</span> résultat{filtered.length > 1 ? "s" : ""} sur {rows.length}</>
-                  : <><span className="font-semibold text-obsidian/50">{rows.length}</span> entrée{rows.length > 1 ? "s" : ""}</>
+                  : <><span className="font-semibold text-obsidian/70">{rows.length}</span> entrée{rows.length > 1 ? "s" : ""}</>
                 }
               </span>
               {pages > 1 && (
-                <div className="flex items-center gap-1">
-                  <button onClick={() => setPage(1)} disabled={safePage === 1} className="w-7 h-7 flex items-center justify-center rounded border border-gray-200 text-obsidian/30 hover:border-gmo-green hover:text-gmo-green disabled:opacity-20 transition-all text-[10px] font-body">1</button>
-                  <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage === 1} className="w-7 h-7 flex items-center justify-center rounded border border-gray-200 text-obsidian/40 hover:border-gmo-green hover:text-gmo-green disabled:opacity-20 transition-all">
-                    <ChevronLeft className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5">
+                  <button onClick={() => setPage(1)} disabled={safePage === 1} className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-obsidian/50 hover:border-gmo-green hover:text-gmo-green disabled:opacity-30 transition-all text-sm font-body">1</button>
+                  <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={safePage === 1} className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-obsidian/50 hover:border-gmo-green hover:text-gmo-green disabled:opacity-30 transition-all">
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span className="text-[11px] text-obsidian/50 font-body px-2 min-w-[48px] text-center">
-                    {safePage} <span className="text-obsidian/25">/ {pages}</span>
+                  <span className="text-sm text-obsidian/60 font-body px-3 min-w-[56px] text-center">
+                    {safePage} <span className="text-obsidian/30">/ {pages}</span>
                   </span>
-                  <button onClick={() => setPage(p => Math.min(pages, p + 1))} disabled={safePage === pages} className="w-7 h-7 flex items-center justify-center rounded border border-gray-200 text-obsidian/40 hover:border-gmo-green hover:text-gmo-green disabled:opacity-20 transition-all">
-                    <ChevronRight className="w-3.5 h-3.5" />
+                  <button onClick={() => setPage(p => Math.min(pages, p + 1))} disabled={safePage === pages} className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-obsidian/50 hover:border-gmo-green hover:text-gmo-green disabled:opacity-30 transition-all">
+                    <ChevronRight className="w-4 h-4" />
                   </button>
-                  <button onClick={() => setPage(pages)} disabled={safePage === pages} className="w-7 h-7 flex items-center justify-center rounded border border-gray-200 text-obsidian/30 hover:border-gmo-green hover:text-gmo-green disabled:opacity-20 transition-all text-[10px] font-body">{pages}</button>
+                  <button onClick={() => setPage(pages)} disabled={safePage === pages} className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-obsidian/50 hover:border-gmo-green hover:text-gmo-green disabled:opacity-30 transition-all text-sm font-body">{pages}</button>
                 </div>
               )}
             </div>

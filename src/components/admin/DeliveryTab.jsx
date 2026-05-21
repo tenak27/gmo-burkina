@@ -26,12 +26,12 @@ const FIELDS = [
 ];
 
 const COLUMNS = [
-  { key: "number", label: "N°", render: (v, r) => <div><p className="font-heading text-xs font-bold text-obsidian">{v || "—"}</p><span className="text-[9px] text-obsidian/40 font-body">{TYPE_LABELS[r.type] || r.type}</span></div> },
-  { key: "date", label: "Date", render: v => <span className="text-xs text-obsidian/50 font-body">{v ? new Date(v).toLocaleDateString("fr-FR") : "—"}</span> },
-  { key: "client_name", label: "Client / Dest.", render: v => <span className="text-xs text-obsidian/70 font-body">{v || "—"}</span> },
-  { key: "driver", label: "Chauffeur", render: v => <span className="text-xs text-obsidian/50 font-body">{v || "—"}</span> },
-  { key: "vehicle", label: "Véhicule", render: v => <span className="text-xs text-obsidian/50 font-body">{v || "—"}</span> },
-  { key: "status", label: "Statut", align: "center", render: v => <span className={`text-[10px] px-2 py-0.5 rounded-full font-body ${STATUS_STYLE[v] || "bg-gray-100 text-obsidian/40"}`}>{{brouillon:"Brouillon",valide:"Validé",livre:"Livré",annule:"Annulé"}[v]||v}</span> },
+  { key: "number", label: "N°", render: (v, r) => <div><p className="font-heading text-sm font-bold text-obsidian">{v || "—"}</p><span className="text-xs text-obsidian/50 font-body">{TYPE_LABELS[r.type] || r.type}</span></div> },
+  { key: "date", label: "Date", render: v => <span className="text-sm text-obsidian/60 font-body">{v ? new Date(v).toLocaleDateString("fr-FR") : "—"}</span> },
+  { key: "client_name", label: "Client / Dest.", render: v => <span className="text-sm text-obsidian/80 font-body font-medium">{v || "—"}</span> },
+  { key: "driver", label: "Chauffeur", render: v => <span className="text-sm text-obsidian/60 font-body">{v || "—"}</span> },
+  { key: "vehicle", label: "Véhicule", render: v => <span className="text-sm text-obsidian/60 font-body">{v || "—"}</span> },
+  { key: "status", label: "Statut", align: "center", render: v => <span className={`text-xs px-2.5 py-1 rounded-full font-semibold font-body ${STATUS_STYLE[v] || "bg-gray-100 text-obsidian/50"}`}>{{brouillon:"Brouillon",valide:"Validé",livre:"Livré",annule:"Annulé"}[v]||v}</span> },
   { key: "id", label: "PDF", align: "center", render: (v, r) => <DeliveryPdfButton deliveryId={v} number={r.number} /> },
 ];
 

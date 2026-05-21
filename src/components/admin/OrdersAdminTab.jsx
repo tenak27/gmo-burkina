@@ -37,35 +37,35 @@ const STATUS_ORDER = ["en_attente", "confirmee", "en_preparation", "en_livraison
 function KanbanCard({ order, onStatusChange, onEdit }) {
   return (
     <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
+      className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
     >
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="min-w-0">
-          <button onClick={() => onEdit(order)} className="font-heading text-xs font-bold text-obsidian truncate hover:text-gmo-green transition-colors cursor-pointer block">
+          <button onClick={() => onEdit(order)} className="font-heading text-sm font-bold text-obsidian truncate hover:text-gmo-green transition-colors cursor-pointer block">
             {order.order_number || `CMD-${order.id?.slice(-6)}`}
           </button>
-          <p className="text-[10px] text-obsidian/45 font-body truncate">{order.client_name || "—"}</p>
+          <p className="text-xs text-obsidian/55 font-body truncate mt-0.5">{order.client_name || "—"}</p>
         </div>
-        <span className={`text-[9px] px-1.5 py-0.5 rounded font-body flex-shrink-0 ${order.client_type === "detaillant" ? "bg-gmo-red/10 text-gmo-red" : "bg-gray-100 text-obsidian/40"}`}>
+        <span className={`text-xs px-2 py-0.5 rounded font-body flex-shrink-0 ${order.client_type === "detaillant" ? "bg-gmo-red/10 text-gmo-red" : "bg-gray-100 text-obsidian/50"}`}>
           {order.client_type || "client"}
         </span>
       </div>
       {order.total_amount && (
-        <p className="font-heading text-sm font-bold text-gmo-green mb-1">{Number(order.total_amount).toLocaleString()} FCFA</p>
+        <p className="font-heading text-base font-bold text-gmo-green mb-1.5">{Number(order.total_amount).toLocaleString()} FCFA</p>
       )}
       {order.items?.length > 0 && (
-        <p className="text-[10px] text-obsidian/35 font-body mb-1">{order.items.length} article(s)</p>
+        <p className="text-xs text-obsidian/45 font-body mb-1.5">{order.items.length} article(s)</p>
       )}
-      <div className="flex items-center gap-1.5 mb-2">
+      <div className="flex items-center gap-1.5 mb-2 flex-wrap">
         {order.delivery_mode === "enlevement"
-          ? <span className="text-[9px] bg-gmo-green/10 text-gmo-green px-1.5 py-0.5 rounded font-body flex items-center gap-1"><Home className="w-2.5 h-2.5" />Enlèvement</span>
-          : <span className="text-[9px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded font-body flex items-center gap-1"><Truck className="w-2.5 h-2.5" />Livraison</span>
+          ? <span className="text-xs bg-gmo-green/10 text-gmo-green px-2 py-0.5 rounded font-body flex items-center gap-1"><Home className="w-3 h-3" />Enlèvement</span>
+          : <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-body flex items-center gap-1"><Truck className="w-3 h-3" />Livraison</span>
         }
-        {order.driver_name && <span className="text-[9px] bg-purple-50 text-purple-500 px-1.5 py-0.5 rounded font-body truncate max-w-[70px]">{order.driver_name}</span>}
+        {order.driver_name && <span className="text-xs bg-purple-50 text-purple-600 px-2 py-0.5 rounded font-body truncate max-w-[90px]">{order.driver_name}</span>}
       </div>
-      <p className="text-[10px] text-obsidian/30 font-body mb-2">{new Date(order.created_date).toLocaleDateString("fr-FR")}</p>
+      <p className="text-xs text-obsidian/40 font-body mb-2.5">{new Date(order.created_date).toLocaleDateString("fr-FR")}</p>
       <select value={order.status} onChange={e => onStatusChange(order, e.target.value)}
-        className="w-full text-[10px] font-body text-obsidian/60 border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-gmo-green cursor-pointer bg-gray-50/50 transition-colors">
+        className="w-full text-sm font-body text-obsidian/70 border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-gmo-green cursor-pointer bg-gray-50 transition-colors">
         {Object.entries(STATUS_LABELS).map(([k, lbl]) => <option key={k} value={k}>{lbl}</option>)}
       </select>
     </motion.div>
@@ -75,19 +75,19 @@ function KanbanCard({ order, onStatusChange, onEdit }) {
 function KanbanColumn({ status, orders, onStatusChange, onEdit }) {
   const Icon = STATUS_ICONS[status] || Clock;
   return (
-    <div className="flex-1 min-w-[200px] max-w-[260px]">
-      <div className={`flex items-center gap-2 mb-3 px-3 py-2 rounded-xl ${STATUS_STYLE[status]}`}>
-        <Icon className="w-3.5 h-3.5 flex-shrink-0" />
-        <span className="text-[10px] font-heading font-bold uppercase tracking-wider flex-1">{STATUS_LABELS[status]}</span>
-        <span className="bg-white/70 text-[9px] font-bold font-heading px-1.5 py-0.5 rounded-full">{orders.length}</span>
+    <div className="flex-1 min-w-[230px] max-w-[280px]">
+      <div className={`flex items-center gap-2 mb-3 px-3 py-2.5 rounded-xl ${STATUS_STYLE[status]}`}>
+        <Icon className="w-4 h-4 flex-shrink-0" />
+        <span className="text-xs font-heading font-bold uppercase tracking-wider flex-1">{STATUS_LABELS[status]}</span>
+        <span className="bg-white/80 text-xs font-bold font-heading px-2 py-0.5 rounded-full">{orders.length}</span>
       </div>
-      <div className="space-y-2 min-h-[60px]">
+      <div className="space-y-2.5 min-h-[60px]">
         {orders.map(o => (
           <KanbanCard key={o.id} order={o} onStatusChange={onStatusChange} onEdit={onEdit} />
         ))}
         {orders.length === 0 && (
-          <div className="border-2 border-dashed border-gray-100 rounded-xl p-4 text-center">
-            <p className="text-[10px] text-obsidian/20 font-body">Aucune commande</p>
+          <div className="border-2 border-dashed border-gray-200 rounded-xl p-5 text-center">
+            <p className="text-sm text-obsidian/25 font-body">Aucune commande</p>
           </div>
         )}
       </div>
@@ -128,25 +128,25 @@ export default function OrdersAdminTab({ orders, setOrders, clients = [], produc
   const COLUMNS = [
     { key: "order_number", label: "N° Commande", render: (v, r) => (
       <div>
-        <button onClick={() => openEdit(r)} className="font-heading text-xs font-bold text-obsidian hover:text-gmo-green transition-colors cursor-pointer">{v || `CMD-${r.id?.slice(-6)}`}</button>
-        <span className={`block text-[9px] px-1.5 py-0.5 rounded font-body w-fit mt-0.5 ${r.client_type === "detaillant" ? "bg-gmo-red/10 text-gmo-red" : "bg-gray-100 text-obsidian/40"}`}>
+        <button onClick={() => openEdit(r)} className="font-heading text-sm font-bold text-obsidian hover:text-gmo-green transition-colors cursor-pointer">{v || `CMD-${r.id?.slice(-6)}`}</button>
+        <span className={`block text-xs px-2 py-0.5 rounded font-body w-fit mt-1 ${r.client_type === "detaillant" ? "bg-gmo-red/10 text-gmo-red" : "bg-gray-100 text-obsidian/50"}`}>
           {r.client_type || "client"}
         </span>
       </div>
     )},
     { key: "client_name", label: "Client", render: (v, r) => (
       <div>
-        <p className="text-xs text-obsidian/70 font-body">{v || "—"}</p>
-        <p className="text-[10px] text-obsidian/35 font-body">{r.client_phone || r.client_email}</p>
+        <p className="text-sm text-obsidian/80 font-body font-medium">{v || "—"}</p>
+        <p className="text-xs text-obsidian/45 font-body mt-0.5">{r.client_phone || r.client_email}</p>
       </div>
     )},
-    { key: "items", label: "Articles", render: v => <span className="text-xs text-obsidian/50 font-body">{Array.isArray(v) ? `${v.length} article(s)` : "—"}</span> },
-    { key: "created_date", label: "Date", render: v => <span className="text-xs text-obsidian/50 font-body">{v ? new Date(v).toLocaleDateString("fr-FR") : "—"}</span> },
-    { key: "total_amount", label: "Montant", align: "right", render: v => v ? <span className="font-heading text-xs font-bold text-obsidian">{Number(v).toLocaleString()} FCFA</span> : <span className="text-obsidian/25">—</span> },
-    { key: "status", label: "Statut", align: "center", render: v => <span className={`text-[10px] px-2 py-0.5 rounded-full font-body ${STATUS_STYLE[v] || ""}`}>{STATUS_LABELS[v] || v}</span> },
+    { key: "items", label: "Articles", render: v => <span className="text-sm text-obsidian/60 font-body">{Array.isArray(v) ? `${v.length} article(s)` : "—"}</span> },
+    { key: "created_date", label: "Date", render: v => <span className="text-sm text-obsidian/60 font-body">{v ? new Date(v).toLocaleDateString("fr-FR") : "—"}</span> },
+    { key: "total_amount", label: "Montant", align: "right", render: v => v ? <span className="font-heading text-sm font-bold text-obsidian">{Number(v).toLocaleString()} FCFA</span> : <span className="text-obsidian/25">—</span> },
+    { key: "status", label: "Statut", align: "center", render: v => <span className={`text-xs px-2.5 py-1 rounded-full font-semibold font-body ${STATUS_STYLE[v] || ""}`}>{STATUS_LABELS[v] || v}</span> },
     { key: "status", label: "Changer", align: "center", render: (v, r) => (
       <select value={v} onChange={e => updateStatus(r, e.target.value)}
-        className="text-[10px] font-body text-obsidian/60 border border-gray-200 rounded-lg px-2 py-1 focus:outline-none focus:border-gmo-green cursor-pointer">
+        className="text-sm font-body text-obsidian/70 border border-gray-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-gmo-green cursor-pointer bg-white">
         {Object.entries(STATUS_LABELS).map(([k, lbl]) => <option key={k} value={k}>{lbl}</option>)}
       </select>
     )},
@@ -160,40 +160,40 @@ export default function OrdersAdminTab({ orders, setOrders, clients = [], produc
   return (
     <div className="space-y-4 animate-fade-up">
       {/* KPIs */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: "En attente", value: pending, color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200", icon: Clock },
           { label: "En cours", value: inProgress, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-200", icon: Package },
           { label: "Livrées", value: delivered, color: "text-green-700", bg: "bg-green-50", border: "border-green-200", icon: CheckCircle2 },
           { label: "CA livré", value: `${(revenue / 1000).toFixed(0)}k FCFA`, color: "text-gmo-green", bg: "bg-green-50/50", border: "border-green-100", icon: ShoppingCart },
         ].map(s => (
-          <div key={s.label} className={`${s.bg} border ${s.border} rounded-2xl p-4 flex items-center gap-3`}>
-            <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-              <s.icon className={`w-4 h-4 ${s.color}`} />
+          <div key={s.label} className={`${s.bg} border ${s.border} rounded-2xl p-5 flex items-center gap-4`}>
+            <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+              <s.icon className={`w-5 h-5 ${s.color}`} />
             </div>
             <div>
-              <p className={`font-heading text-lg font-bold ${s.color}`}>{s.value}</p>
-              <p className="text-[10px] text-obsidian/40 font-body">{s.label}</p>
+              <p className={`font-heading text-2xl font-bold ${s.color}`}>{s.value}</p>
+              <p className="text-sm text-obsidian/50 font-body mt-0.5">{s.label}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="font-heading text-lg font-bold text-obsidian">
-          Commandes <span className="text-obsidian/30 font-normal text-base">({orders.length})</span>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <h2 className="font-heading text-2xl font-bold text-obsidian">
+          Commandes <span className="text-obsidian/30 font-normal text-xl">({orders.length})</span>
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
-            <button onClick={() => setView("kanban")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-body transition-all ${view === "kanban" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/40 hover:text-obsidian"}`}>
-              <LayoutGrid className="w-3.5 h-3.5" /> Kanban
+            <button onClick={() => setView("kanban")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "kanban" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
+              <LayoutGrid className="w-4 h-4" /> Kanban
             </button>
-            <button onClick={() => setView("table")} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-body transition-all ${view === "table" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/40 hover:text-obsidian"}`}>
-              <List className="w-3.5 h-3.5" /> Table
+            <button onClick={() => setView("table")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "table" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
+              <List className="w-4 h-4" /> Table
             </button>
           </div>
-          <button onClick={openNew} className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-4 py-2 rounded-xl btn-glow-green cursor-pointer">
+          <button onClick={openNew} className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-xl btn-glow-green cursor-pointer">
             <Plus className="w-4 h-4" /> Nouvelle commande
           </button>
         </div>

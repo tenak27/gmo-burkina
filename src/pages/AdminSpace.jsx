@@ -108,7 +108,7 @@ function AdminDashboard() {
     <div className="min-h-screen bg-[#F2F4F7] flex flex-col lg:flex-row">
       <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} />
       <main className="flex-1 min-w-0 overflow-x-hidden">
-        <div className="max-w-full px-4 sm:px-6 py-5">
+        <div className="max-w-full px-5 sm:px-8 py-7">
           <div key={tab} className="page-enter">
             {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
             {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
