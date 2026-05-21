@@ -1,83 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
-const CATEGORIES = ["Tous", "Alimentaire", "Confiserie", "Hygiène", "Agriculture"];
-
-const PRODUCTS = [
-  {
-    name: "Huile de coton MADINA",
-    category: "Alimentaire",
-    brand: "MADINA · SN CITEC",
-    description:
-      "L'huile de coton raffinée MADINA, enrichie en vitamine A, 100% huile végétale et sans cholestérol, est fortement recommandée pour sa qualité nutritionnelle.",
-    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% végétale", "Bidon 20L et 5L"],
-    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/678f80d25_huile.jpg",
-  },
-  {
-    name: "Farine de blé — Blé du Sahel",
-    category: "Alimentaire",
-    brand: "Blé du Sahel · GMO",
-    description:
-      "Pure farine de blé, résultat de la mouture de la graine du blé tendre ou froment. Produite par le Grand Moulin du Faso, distribuée par GMO.",
-    details: ["Pure farine de blé", "Grand Moulin du Faso", "Plusieurs formats"],
-    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/41c37a185_ble.jpg",
-  },
-  {
-    name: "Sucre blond & blanc",
-    category: "Alimentaire",
-    brand: "GAZELLE · CASCADE",
-    description:
-      "Sucre blond de canne sans aromatisants ni colorants, conditionné sous différents formats. Également disponible en sucre blanc sous la dénomination CASCADE.",
-    details: ["Sac 50 kg granulé", "Sachets 1 kg (lot 25–50 kg)", "Morceaux GAZELLE", "Sucre blanc CASCADE"],
-    image: "https://gmobfaso.com/assets/img/produits/sucre.jpg",
-  },
-  {
-    name: "Chewing-gum ETALON",
-    category: "Confiserie",
-    brand: "ETALON · COBUFA",
-    description:
-      "Explosion de saveurs avec nos délicieux chewing-gums produits par COBUFA. Ingrédients de qualité, saveurs fruitées pour toutes les occasions.",
-    details: ["Produit par COBUFA", "Différentes saveurs", "Conditionnement varié"],
-    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/51c70cd01_chewingum.jpg",
-  },
-  {
-    name: "Bonbons ZOODO",
-    category: "Confiserie",
-    brand: "ZOODO · COBUFA",
-    description:
-      "Les bonbons ZOODO, une œuvre d'art de couleur et de texture qui ravira vos papilles avec sa douceur sucrée et sa saveur fruitée incomparable.",
-    details: ["Produit par COBUFA", "Saveur fruitée unique", "Idéal pour tout âge"],
-    image: "https://gmobfaso.com/assets/img/produits/chewingum.jpg",
-  },
-  {
-    name: "Savon SN CITEC",
-    category: "Hygiène",
-    brand: "SN CITEC",
-    description:
-      "À partir de corps gras végétaux (karité, acide gras de palme), le savon SN CITEC est hypoallergénique et bactéricide — recommandé pour les peaux sensibles.",
-    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux", "Multi-usages", "Recommandé dermato"],
-    image: "https://gmobfaso.com/assets/img/produits/savon.jpg",
-  },
-  {
-    name: "Produits Axe",
-    category: "Hygiène",
-    brand: "AXE · GMO",
-    description:
-      "Gamme complète de produits d'hygiène Axe distribués par GMO à travers tout le Burkina Faso. Disponibles dans toutes les villes desservies.",
-    details: ["Déodorants & soins", "Distribution nationale", "Marque internationale"],
-    image: "https://gmobfaso.com/assets/img/produits/axe.jpg",
-  },
-  {
-    name: "Aliments pour bétail",
-    category: "Agriculture",
-    brand: "GMO Agri",
-    description:
-      "Large gamme d'aliments pour bétail conçus pour répondre aux besoins nutritionnels spécifiques. Bovins, moutons, chèvres — formules optimisées.",
-    details: ["Riches en protéines", "Formules spécialisées", "Ingrédients de qualité", "Vitamines & minéraux"],
-    image: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg",
-  },
-];
+const CATEGORY_MAP = {
+  alimentaire: "Alimentaire",
+  hygiène: "Hygiène",
+  boisson: "Boisson",
+  cereale: "Céréale",
+  autre: "Autre",
+};
 
 const WHATSAPP = "https://wa.me/22676211633";
 
@@ -162,10 +94,21 @@ export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeCategory, setActiveCategory] = useState("Tous");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    base44.entities.Product.list().then((data) => {
+      setProducts(data.filter(p => p.is_active !== false));
+      setLoading(false);
+    });
+  }, []);
+
+  const categories = ["Tous", ...new Set(products.map(p => CATEGORY_MAP[p.category] || p.category))];
+  
   const filtered = activeCategory === "Tous"
-    ? PRODUCTS
-    : PRODUCTS.filter((p) => p.category === activeCategory);
+    ? products
+    : products.filter((p) => (CATEGORY_MAP[p.category] || p.category) === activeCategory);
 
   return (
     <section id="produits" className="bg-gradient-to-b from-concrete via-concrete/98 to-concrete/95 py-24 lg:py-32">
@@ -214,24 +157,31 @@ export default function ProductsSection() {
           transition={{ delay: 0.5 }}
           className="flex flex-wrap gap-3 mb-12"
         >
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`font-body text-xs uppercase tracking-widest px-5 py-2.5 border transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-gmo-green text-white border-gmo-green"
-                  : "border-obsidian/15 text-obsidian/60 hover:border-gmo-green hover:text-gmo-green"
-              }`}
-            >
-              {cat}
-              {cat !== "Tous" && (
-                <span className="ml-2 opacity-50">
-                  {PRODUCTS.filter((p) => p.category === cat).length}
-                </span>
-              )}
-            </button>
-          ))}
+          {loading ? (
+            <div className="flex items-center gap-2 text-obsidian/40">
+              <div className="w-4 h-4 border-2 border-gmo-green/30 border-t-gmo-green rounded-full animate-spin" />
+              <span className="font-body text-xs">Chargement...</span>
+            </div>
+          ) : (
+            categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`font-body text-xs uppercase tracking-widest px-5 py-2.5 border transition-all duration-300 ${
+                  activeCategory === cat
+                    ? "bg-gmo-green text-white border-gmo-green"
+                    : "border-obsidian/15 text-obsidian/60 hover:border-gmo-green hover:text-gmo-green"
+                }`}
+              >
+                {cat}
+                {cat !== "Tous" && (
+                  <span className="ml-2 opacity-50">
+                    {filtered.filter((p) => (CATEGORY_MAP[p.category] || p.category) === cat).length}
+                  </span>
+                )}
+              </button>
+            ))
+          )}
         </motion.div>
 
         {/* Grid */}
@@ -244,9 +194,41 @@ export default function ProductsSection() {
             transition={{ duration: 0.3 }}
             className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
           >
-            {filtered.map((product, i) => (
-              <ProductCard key={product.name} product={product} index={i} />
-            ))}
+            {loading ? (
+              Array(8).fill(0).map((_, i) => (
+                <div key={i} className="bg-white border border-obsidian/8 rounded-2xl overflow-hidden">
+                  <div className="aspect-[4/3] bg-gray-100 animate-pulse" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-3 bg-gray-100 rounded w-1/3 animate-pulse" />
+                    <div className="h-5 bg-gray-100 rounded w-3/4 animate-pulse" />
+                    <div className="h-16 bg-gray-100 rounded w-full animate-pulse" />
+                  </div>
+                </div>
+              ))
+            ) : filtered.length === 0 ? (
+              <div className="col-span-full text-center py-20">
+                <p className="font-body text-sm text-obsidian/40">Aucun produit disponible dans cette catégorie.</p>
+              </div>
+            ) : (
+              filtered.map((product, i) => (
+                <ProductCard 
+                  key={product.id} 
+                  product={{
+                    name: product.name,
+                    category: CATEGORY_MAP[product.category] || product.category,
+                    brand: product.category ? `${product.category.toUpperCase()} · GMO` : "GMO",
+                    description: product.description || "Produit disponible sur demande.",
+                    details: [
+                      product.unit ? `Unité: ${product.unit}` : "Disponible",
+                      product.unit_price ? `Prix: ${product.unit_price.toLocaleString()} FCFA` : "Sur demande",
+                      product.stock_quantity > 0 ? "En stock" : "Sur commande",
+                    ].filter(Boolean),
+                    image: product.image_url || "https://via.placeholder.com/400x300?text=Produit+GMO",
+                  }} 
+                  index={i} 
+                />
+              ))
+            )}
           </motion.div>
         </AnimatePresence>
 
