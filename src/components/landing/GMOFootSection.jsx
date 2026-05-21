@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { Trophy, Users, Calendar } from "lucide-react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { motion, useInView, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { Trophy, Users, Calendar, X, ChevronLeft, ChevronRight, ZoomIn, Play, Pause } from "lucide-react";
 
 const GALLERY = Array.from({ length: 16 }, (_, i) => ({
   id: i + 1,
@@ -8,17 +8,205 @@ const GALLERY = Array.from({ length: 16 }, (_, i) => ({
   alt: `GMO Foot Tournoi ${i + 1}`,
 }));
 
+// Duplicate for infinite loop
+const LOOP = [...GALLERY, ...GALLERY, ...GALLERY];
+
+function PhotoCard({ img, index, onClick }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <motion.div
+      className="relative flex-shrink-0 w-60 h-44 lg:w-72 lg:h-52 rounded-2xl overflow-hidden cursor-pointer shadow-lg"
+      style={{ transformOrigin: "center bottom" }}
+      whileHover={{ scale: 1.06, zIndex: 10, y: -6, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      onClick={() => onClick(img)}
+    >
+      <img
+        src={img.src}
+        alt={img.alt}
+        className="w-full h-full object-cover transition-transform duration-700"
+        style={{ transform: hovered ? "scale(1.12)" : "scale(1)" }}
+        onError={(e) => { e.target.parentElement.style.display = "none"; }}
+      />
+      {/* Gradient overlay */}
+      <div className={`absolute inset-0 bg-gradient-to-t from-obsidian/70 via-transparent to-transparent transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`} />
+      {/* Bottom accent bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-gmo-green to-gmo-red rounded-b-2xl"
+        initial={{ width: 0 }}
+        animate={{ width: hovered ? "100%" : "0%" }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      />
+      {/* Zoom icon */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="bg-white/15 backdrop-blur-md border border-white/30 rounded-full p-3">
+              <ZoomIn className="w-5 h-5 text-white" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+function InfiniteStrip({ direction = 1, speed = 40, onClick }) {
+  const [paused, setPaused] = useState(false);
+  const x = useMotionValue(0);
+  const animRef = useRef(null);
+  const lastTimeRef = useRef(null);
+  const posRef = useRef(0);
+  const cardW = 300; // approx card width + gap
+  const totalWidth = GALLERY.length * cardW;
+
+  useEffect(() => {
+    const animate = (time) => {
+      if (!lastTimeRef.current) lastTimeRef.current = time;
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+
+      if (!paused) {
+        posRef.current -= (direction * speed * delta) / 1000;
+        if (posRef.current <= -totalWidth) posRef.current += totalWidth;
+        if (posRef.current >= 0) posRef.current -= totalWidth;
+        x.set(posRef.current);
+      }
+      animRef.current = requestAnimationFrame(animate);
+    };
+    animRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animRef.current);
+  }, [paused, direction, speed]);
+
+  return (
+    <div
+      className="overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <motion.div
+        className="flex gap-4 py-3"
+        style={{ x, width: `${LOOP.length * cardW}px` }}
+      >
+        {LOOP.map((img, i) => (
+          <PhotoCard key={`${img.id}-${i}`} img={img} index={i} onClick={onClick} />
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+function Lightbox({ images, startIndex, onClose }) {
+  const [current, setCurrent] = useState(startIndex);
+
+  const prev = useCallback(() => setCurrent(i => (i - 1 + images.length) % images.length), [images.length]);
+  const next = useCallback(() => setCurrent(i => (i + 1) % images.length), [images.length]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [prev, next, onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 z-50 bg-obsidian/96 backdrop-blur-xl flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 w-11 h-11 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full flex items-center justify-center text-white transition-all z-20"
+      >
+        <X className="w-5 h-5" />
+      </button>
+
+      {/* Prev */}
+      <button
+        onClick={(e) => { e.stopPropagation(); prev(); }}
+        className="absolute left-4 lg:left-8 w-14 h-14 bg-white/8 hover:bg-gmo-green/80 border border-white/15 hover:border-gmo-green rounded-full flex items-center justify-center text-white transition-all z-20"
+      >
+        <ChevronLeft className="w-7 h-7" />
+      </button>
+
+      {/* Image */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0, scale: 0.88, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: -10 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="relative max-w-4xl w-full px-16 lg:px-24"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <img
+              src={images[current].src}
+              alt={images[current].alt}
+              className="w-full max-h-[75vh] object-contain"
+            />
+            <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-obsidian/80 to-transparent flex items-end px-5 pb-4">
+              <span className="font-body text-xs text-white/50 tracking-widest">
+                GMO Foot — Photo {current + 1} / {images.length}
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Next */}
+      <button
+        onClick={(e) => { e.stopPropagation(); next(); }}
+        className="absolute right-4 lg:right-8 w-14 h-14 bg-white/8 hover:bg-gmo-green/80 border border-white/15 hover:border-gmo-green rounded-full flex items-center justify-center text-white transition-all z-20"
+      >
+        <ChevronRight className="w-7 h-7" />
+      </button>
+
+      {/* Thumbnails strip */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
+            className={`transition-all duration-300 rounded-full ${i === current ? "w-6 h-2 bg-gmo-green" : "w-2 h-2 bg-white/30 hover:bg-white/60"}`}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function GMOFootSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [showAll, setShowAll] = useState(false);
+  const [lightboxImg, setLightboxImg] = useState(null);
 
-  const displayed = showAll ? GALLERY : GALLERY.slice(0, 8);
+  const openLightbox = (img) => {
+    const idx = GALLERY.findIndex(g => g.id === img.id);
+    setLightboxImg(idx >= 0 ? idx : 0);
+  };
 
   return (
-    <section id="gmofoot" className="bg-light-gray py-24 lg:py-32">
+    <section id="gmofoot" className="bg-light-gray py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div ref={ref} className="grid lg:grid-cols-2 gap-16 items-center mb-14">
+        {/* Header + Stats */}
+        <div ref={ref} className="grid lg:grid-cols-2 gap-16 items-center mb-16">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -82,46 +270,38 @@ export default function GMOFootSection() {
             ))}
           </motion.div>
         </div>
-
-        {/* Gallery */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {displayed.map((img, i) => (
-            <motion.div
-              key={img.id}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.04 * i, duration: 0.5 }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              className="relative overflow-hidden rounded-xl group aspect-square shadow-sm"
-            >
-              <img
-                src={img.src}
-                alt={img.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                onError={(e) => { e.target.parentElement.style.display = "none"; }}
-              />
-              <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/25 transition-all duration-400 rounded-xl" />
-              <div className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-gmo-green to-gmo-red w-0 group-hover:w-full transition-all duration-500 rounded-b-xl" />
-            </motion.div>
-          ))}
-        </div>
-
-        {!showAll && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.8 }}
-            className="text-center mt-10"
-          >
-            <button
-              onClick={() => setShowAll(true)}
-              className="font-heading font-bold text-xs uppercase tracking-widest text-obsidian bg-white border border-gray-200 rounded-xl px-8 py-4 hover:border-gmo-green hover:text-gmo-green hover:shadow-md transition-all duration-300"
-            >
-              Voir toute la galerie ({GALLERY.length} photos)
-            </button>
-          </motion.div>
-        )}
       </div>
+
+      {/* Infinite scroll strips — full-width */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="space-y-5"
+      >
+        {/* Strip 1 — left to right */}
+        <InfiniteStrip direction={1} speed={38} onClick={openLightbox} />
+        {/* Strip 2 — right to left, slightly different speed */}
+        <InfiniteStrip direction={-1} speed={28} onClick={openLightbox} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ delay: 1.1 }}
+        className="text-center mt-10 px-6"
+      >
+        <p className="font-body text-sm text-obsidian/35 tracking-wide">
+          Survolez les photos pour les agrandir · Cliquez pour ouvrir la galerie complète
+        </p>
+      </motion.div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxImg !== null && (
+          <Lightbox images={GALLERY} startIndex={lightboxImg} onClose={() => setLightboxImg(null)} />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
