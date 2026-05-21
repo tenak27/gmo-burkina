@@ -48,7 +48,7 @@ export default function Navbar({ heroHeight }) {
         initial={{ y: 0, opacity: 1 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-md shadow-sm border-b border-gray-100"
+        className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-white to-white/98 backdrop-blur-md shadow-sm border-b border-gray-100"
         style={{ pointerEvents: "auto" }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
