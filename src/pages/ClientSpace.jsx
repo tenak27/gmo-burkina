@@ -145,7 +145,7 @@ function ClientDashboard() {
         {tab === "accueil" && (
           <div>
             {/* Welcome */}
-            <div className="bg-gradient-to-r from-obsidian to-gmo-green/80 rounded-2xl p-6 mb-6 text-white shadow-xl shadow-obsidian/20 border border-white/5">
+            <div className="bg-gradient-to-r from-[#1C1C1E] to-[#1A7A2E]/80 rounded-2xl p-6 mb-6 text-white">
               <p className="text-[11px] text-white/40 uppercase tracking-widest font-body mb-1">Bienvenue</p>
               <h1 className="font-heading text-2xl font-bold mb-1">{user?.full_name || "Cher Client"} 👋</h1>
               <p className="text-sm text-white/45 font-body">Gérez vos commandes depuis votre espace personnel.</p>
@@ -484,7 +484,7 @@ function ClientDashboard() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-b from-obsidian to-obsidian/95 text-white mt-12 border-t border-white/5">
+      <footer className="bg-[#1C1C1E] text-white mt-12 border-t border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
             <div>

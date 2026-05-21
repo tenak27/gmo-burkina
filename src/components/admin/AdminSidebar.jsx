@@ -71,8 +71,8 @@ function CommandPalette({ onNavigate, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-24 px-4">
-      <div className="absolute inset-0 bg-obsidian/80 backdrop-blur-md" onClick={onClose} />
-      <div className="relative w-full max-w-md bg-gradient-to-b from-obsidian to-obsidian/98 rounded-2xl shadow-2xl overflow-hidden border border-white/12">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-md bg-[#1E1E22] rounded-2xl shadow-2xl overflow-hidden border border-white/10">
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/8">
           <Search className="w-4 h-4 text-white/40 flex-shrink-0" />
           <input
@@ -163,7 +163,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
         </div>
       )}
 
-      <div className="h-px bg-white/10 mx-3 mb-2" />
+      <div className="h-px bg-white/8 mx-3 mb-2" />
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-0.5">
@@ -174,7 +174,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
                 {group.label}
               </p>
             )}
-            {group.label && collapsed && !mobile && <div className="h-px bg-white/10 mx-1 my-3" />}
+            {group.label && collapsed && !mobile && <div className="h-px bg-white/8 mx-1 my-3" />}
             {group.items.map(item => {
               const Icon = item.icon;
               const isActive = tab === item.id;
@@ -209,12 +209,12 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
         ))}
       </nav>
 
-      <div className="h-px bg-white/10 mx-3 mt-2" />
+      <div className="h-px bg-white/8 mx-3 mt-2" />
 
       {/* User footer */}
       <div className="flex-shrink-0 p-3">
         {(!collapsed || mobile) ? (
-          <div className="flex items-center gap-3 bg-white/8 hover:bg-white/12 rounded-xl px-3 py-2.5 transition-colors">
+          <div className="flex items-center gap-3 bg-white/6 rounded-xl px-3 py-2.5">
             <div className="w-8 h-8 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold font-heading flex-shrink-0">
               {user?.full_name?.charAt(0) || "A"}
             </div>
@@ -248,12 +248,12 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className={`hidden lg:flex flex-col bg-gradient-to-b from-obsidian to-obsidian/98 border-r border-white/[0.06] h-screen sticky top-0 transition-all duration-300 flex-shrink-0 ${collapsed ? "w-16" : "w-64"}`}>
+      <aside className={`hidden lg:flex flex-col bg-[#111113] border-r border-white/[0.07] h-screen sticky top-0 transition-all duration-300 flex-shrink-0 ${collapsed ? "w-16" : "w-64"}`}>
         <SidebarContent />
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden bg-gradient-to-b from-obsidian to-obsidian/98 border-b border-white/[0.06] sticky top-0 z-50 flex items-center justify-between px-4 h-14">
+      <div className="lg:hidden bg-[#111113] border-b border-white/[0.07] sticky top-0 z-50 flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="text-white/60 hover:text-white transition-colors">
             <Menu className="w-5 h-5" />
@@ -280,8 +280,8 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
       {/* Mobile drawer */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-obsidian/85 backdrop-blur-md" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 bg-gradient-to-b from-obsidian to-obsidian/98 flex shadow-2xl animate-slide-in-left">
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 bottom-0 bg-[#111113] flex shadow-2xl animate-slide-in-left">
             <SidebarContent mobile />
           </div>
         </div>

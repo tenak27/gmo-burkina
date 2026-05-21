@@ -72,7 +72,7 @@ export default function TestimonialsSection() {
   const t = TESTIMONIALS[index];
 
   return (
-    <section id="temoignages" className="bg-gradient-to-br from-obsidian via-obsidian/85 to-black py-20 relative overflow-hidden border-t border-white/5">
+    <section id="temoignages" className="bg-[#0F0F11] py-20 relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 left-1/3 w-96 h-64 bg-gmo-green/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-64 h-48 bg-amber-500/4 rounded-full blur-3xl pointer-events-none" />

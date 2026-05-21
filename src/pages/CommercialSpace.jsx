@@ -77,8 +77,8 @@ function CommercialDashboard() {
   return (
     <div className="min-h-screen bg-[#F2F4F7] flex flex-col lg:flex-row">
       {/* Sidebar desktop */}
-      <aside className="hidden lg:flex flex-col w-60 bg-gradient-to-b from-obsidian to-obsidian/98 border-r border-white/[0.06] h-screen sticky top-0">
-        <div className="px-5 py-5 flex items-center gap-3 border-b border-white/10">
+      <aside className="hidden lg:flex flex-col w-60 bg-[#111113] border-r border-white/[0.07] h-screen sticky top-0">
+        <div className="px-5 py-5 flex items-center gap-3 border-b border-white/8">
           <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 brightness-0 invert" />
           <div>
             <p className="text-xs font-heading font-bold text-white">GMO Burkina</p>
@@ -101,8 +101,8 @@ function CommercialDashboard() {
             );
           })}
         </nav>
-        <div className="border-t border-white/10 p-3">
-          <div className="flex items-center gap-3 bg-white/8 hover:bg-white/12 rounded-xl px-3 py-2.5 transition-colors">
+        <div className="border-t border-white/8 p-3">
+          <div className="flex items-center gap-3 bg-white/6 rounded-xl px-3 py-2.5">
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">{user?.full_name?.charAt(0) || "C"}</div>
             <div className="flex-1 min-w-0">
               <p className="text-xs text-white font-heading font-semibold truncate">{user?.full_name}</p>
@@ -115,7 +115,7 @@ function CommercialDashboard() {
       </aside>
 
       {/* Mobile header */}
-      <div className="lg:hidden bg-gradient-to-b from-obsidian to-obsidian/98 border-b border-white/[0.06] sticky top-0 z-50 flex items-center justify-between px-4 h-14">
+      <div className="lg:hidden bg-[#111113] border-b border-white/[0.07] sticky top-0 z-50 flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="text-white/60 hover:text-white"><Menu className="w-5 h-5" /></button>
           <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 brightness-0 invert opacity-90" />
@@ -127,9 +127,9 @@ function CommercialDashboard() {
       {/* Mobile drawer */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-obsidian/85 backdrop-blur-md" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-b from-obsidian to-obsidian/98 flex flex-col animate-slide-in-left">
-            <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 bottom-0 w-64 bg-[#111113] flex flex-col animate-slide-in-left">
+            <div className="flex items-center justify-between px-4 py-4 border-b border-white/8">
               <span className="text-sm font-heading font-bold text-white">Menu</span>
               <button onClick={() => setMobileOpen(false)} className="text-white/50"><X className="w-5 h-5" /></button>
             </div>

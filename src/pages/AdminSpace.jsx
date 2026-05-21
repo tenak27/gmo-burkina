@@ -95,10 +95,10 @@ function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-obsidian to-obsidian/95 flex items-center justify-center">
+      <div className="min-h-screen bg-[#161618] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-10 h-10 border-2 border-gmo-green/30 border-t-gmo-green rounded-full animate-spin mx-auto mb-4 shadow-lg shadow-gmo-green/10" />
-          <p className="text-xs text-white/40 font-body uppercase tracking-widest">Chargement ERP…</p>
+          <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-xs text-white/30 font-body uppercase tracking-widest">Chargement ERP…</p>
         </div>
       </div>
     );
