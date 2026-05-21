@@ -113,33 +113,35 @@ function RetailerDashboard() {
   return (
     <div className="min-h-screen bg-[#F2F4F7]">
       {/* Header */}
-      <header className="bg-[#1C1C1E] sticky top-0 z-40">
+      <header className="bg-gradient-to-br from-obsidian to-obsidian/95 sticky top-0 z-40 border-b border-white/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png" alt="GMO" className="h-7 brightness-0 invert opacity-90" />
             <span className="hidden sm:block text-[10px] text-gmo-red/70 uppercase tracking-[0.2em] font-body">Détaillant</span>
           </div>
           <div className="flex items-center gap-2">
-            {cartCount > 0 && (
-              <button onClick={() => setTab("commande")}
-                className="flex items-center gap-2 bg-gmo-red text-white text-[10px] font-heading font-bold px-3 py-1.5 rounded-lg">
-                <ShoppingCart className="w-3.5 h-3.5" /> {cartCount}
-              </button>
-            )}
-            <div className="w-7 h-7 rounded-full bg-gmo-red flex items-center justify-center text-white text-[11px] font-bold font-heading">
-              {user?.full_name?.charAt(0) || "D"}
-            </div>
-            <span className="hidden sm:block text-xs text-white/50 font-body">{user?.full_name}</span>
-            <button onClick={() => logout()} className="ml-2 text-white/25 hover:text-red-400 transition-colors">
-              <LogOut className="w-4 h-4" />
+          {cartCount > 0 && (
+            <button onClick={() => setTab("commande")}
+              className="flex items-center gap-2 bg-gradient-to-r from-gmo-red to-gmo-red/90 text-white text-[10px] font-heading font-bold px-3 py-1.5 rounded-lg shadow-lg shadow-gmo-red/20 hover:shadow-gmo-red/30 transition-all">
+              <ShoppingCart className="w-3.5 h-3.5" /> {cartCount}
             </button>
+          )}
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gmo-red to-gmo-red/80 flex items-center justify-center text-white text-[11px] font-bold font-heading shadow-md">
+            {user?.full_name?.charAt(0) || "D"}
+          </div>
+          <span className="hidden sm:block text-xs text-white/60 font-body">{user?.full_name}</span>
+          <button onClick={() => logout()} className="ml-2 text-white/30 hover:text-gmo-red transition-colors p-1.5 rounded-lg hover:bg-white/5">
+            <LogOut className="w-4 h-4" />
+          </button>
           </div>
         </div>
         <nav className="max-w-5xl mx-auto px-4 sm:px-6 flex border-t border-white/5 overflow-x-auto">
           {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`px-4 py-2.5 text-[11px] font-body uppercase tracking-widest border-b-2 transition-colors whitespace-nowrap ${
-                tab === t.id ? "border-gmo-red text-gmo-red" : "border-transparent text-white/30 hover:text-white/60"
+              className={`px-4 py-2.5 text-[11px] font-body uppercase tracking-widest border-b-2 transition-all whitespace-nowrap ${
+                tab === t.id
+                  ? "border-gmo-red text-gmo-red font-semibold"
+                  : "border-transparent text-white/30 hover:text-white/50 hover:border-white/10"
               }`}
             >{t.label}{t.id === "commande" && cartCount > 0 ? ` (${cartCount})` : ""}</button>
           ))}
@@ -161,7 +163,7 @@ function RetailerDashboard() {
         {/* ── ACCUEIL ── */}
         {tab === "accueil" && (
           <div>
-            <div className="bg-gradient-to-r from-[#1C1C1E] to-[#CC1717]/70 rounded-2xl p-6 mb-5 text-white">
+            <div className="bg-gradient-to-r from-obsidian via-obsidian/95 to-gmo-red/80 rounded-2xl p-6 mb-5 text-white shadow-xl shadow-obsidian/20 border border-white/5">
               <p className="text-[11px] text-white/40 uppercase tracking-widest font-body mb-1">Partenaire Détaillant</p>
               <h1 className="font-heading text-2xl font-bold mb-1">{user?.full_name || "Partenaire"} 👋</h1>
               <p className="text-sm text-white/45 font-body">Gérez vos stocks et réapprovisionnements.</p>

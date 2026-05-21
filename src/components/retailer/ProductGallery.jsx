@@ -38,21 +38,22 @@ export default function ProductGallery({ products, cart, setCart, onGoToCart }) 
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Rechercher un produit..."
-            className="w-full pl-10 pr-4 py-2.5 text-sm font-body border border-gray-200 rounded-xl focus:border-gmo-red focus:outline-none transition-colors bg-gray-50/50"
+            className="w-full pl-10 pr-10 py-2.5 text-sm font-body border border-gray-200 rounded-xl focus:border-gmo-red focus:outline-none transition-colors bg-gray-50/50"
           />
           {search && (
-            <button onClick={() => setSearch("")} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-obsidian/30 hover:text-obsidian">
+            <button onClick={() => setSearch("")} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-obsidian/30 hover:text-obsidian transition-colors">
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          <span className="text-[9px] uppercase tracking-widest font-heading text-obsidian/30 flex-shrink-0">Filtres:</span>
           {CATEGORIES.map(c => (
             <button key={c} onClick={() => setCategory(c)}
-              className={`text-[10px] font-body px-3 py-1.5 rounded-full border transition-all capitalize ${
+              className={`text-[10px] font-body px-3 py-1.5 rounded-full border transition-all capitalize flex-shrink-0 ${
                 category === c
-                  ? "border-gmo-red bg-gmo-red text-white font-semibold"
-                  : "border-gray-200 text-obsidian/40 hover:border-gray-300 hover:text-obsidian/60"
+                  ? "border-gmo-red bg-gradient-to-r from-gmo-red to-gmo-red/90 text-white font-semibold shadow-md shadow-gmo-red/20"
+                  : "border-gray-200 text-obsidian/50 hover:border-gmo-red/40 hover:text-gmo-red/70 bg-gray-50"
               }`}>
               {c}
             </button>
