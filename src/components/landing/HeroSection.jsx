@@ -236,15 +236,15 @@ export default function HeroSection() {
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               >
                 <h1
-                  className="font-heading font-black leading-none tracking-tight mb-4"
-                  style={{ fontSize: "clamp(3rem, 5.5vw, 6rem)", color: active.color }}
+                  className="font-heading font-black leading-none tracking-tight mb-4 drop-shadow-lg"
+                  style={{ fontSize: "clamp(3rem, 5.5vw, 6rem)", color: active.color, textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}
                 >
                   {active.label}
                 </h1>
-                <p className="font-heading text-white font-semibold text-xl mb-2 leading-snug">
+                <p className="font-heading text-white font-bold text-xl mb-2 leading-snug drop-shadow-md">
                   {active.sub}
                 </p>
-                <p className="font-body text-white/40 text-sm tracking-wide">
+                <p className="font-body text-white/75 text-sm tracking-wide drop-shadow">
                   {active.tagline}
                 </p>
               </motion.div>
@@ -272,8 +272,8 @@ export default function HeroSection() {
             </span>
           </div>
 
-          <p className="font-body text-sm text-white/38 leading-relaxed max-w-xs mb-8">
-            Leader de la distribution au Burkina Faso. Transport, logistique et distribution à travers l'Afrique de l'Ouest.
+          <p className="font-body text-sm text-white/80 leading-relaxed max-w-xs mb-8">
+            <span className="text-white font-semibold">GMO Burkina</span> — votre partenaire de confiance pour la distribution, le transport et la logistique au Burkina Faso et en Afrique de l'Ouest. Plus de <span className="text-gmo-green font-semibold">15 ans</span> d'expertise au service de vos approvisionnements.
           </p>
 
           <div className="flex flex-wrap gap-3">

@@ -5,7 +5,8 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Package, Clock, MapPin, ShoppingBag, Phone, LogOut,
-  ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus
+  ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus,
+  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp
 } from "lucide-react";
 import DeliveryProgress from "@/components/client/DeliveryProgress";
 import LogisticsTracker from "@/components/client/LogisticsTracker";
@@ -24,6 +25,7 @@ const TABS = [
   { id: "accueil", label: "Accueil" },
   { id: "commandes", label: "Commandes" },
   { id: "catalogue", label: "Catalogue" },
+  { id: "profil", label: "Mon Profil" },
 ];
 
 const SAMPLE_PRODUCTS = [
@@ -51,9 +53,16 @@ function ClientDashboard() {
   const [tab, setTab] = useState("accueil");
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
+  const [expandedOrder, setExpandedOrder] = useState(null);
+  const [clientInfo, setClientInfo] = useState(null);
 
   useEffect(() => {
-    if (tab === "commandes" && user) fetchOrders();
+    if (user) fetchOrders();
+  }, [user]);
+
+  useEffect(() => {
+    if (tab === "commandes" && user && orders.length === 0) fetchOrders();
+    if (tab === "profil" && user) fetchClientInfo();
   }, [tab, user]);
 
   // Real-time subscription
@@ -74,11 +83,17 @@ function ClientDashboard() {
 
   const fetchOrders = async () => {
     setLoadingOrders(true);
-    const data = await base44.entities.Order.filter({ client_email: user.email }, "-created_date", 20);
+    const data = await base44.entities.Order.filter({ client_email: user.email }, "-created_date", 30);
     setOrders(data || []);
     setLoadingOrders(false);
   };
 
+  const fetchClientInfo = async () => {
+    const data = await base44.entities.Client.filter({ email: user.email }, "-created_date", 1);
+    if (data && data.length > 0) setClientInfo(data[0]);
+  };
+
+  const totalSpent = orders.filter(o => o.status === "livree").reduce((s, o) => s + (o.total_amount || 0), 0);
   const activeOrders = orders.filter(o => !["livree","annulee"].includes(o.status));
   const doneOrders = orders.filter(o => ["livree","annulee"].includes(o.status));
 
@@ -147,16 +162,17 @@ function ClientDashboard() {
             </div>
 
             {/* Quick stats */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
               {[
-                { label: "Commandes actives", value: activeOrders.length || "—", icon: Truck, color: "text-gmo-green" },
-                { label: "Livrées", value: doneOrders.filter(o => o.status === "livree").length || "—", icon: CheckCircle2, color: "text-blue-600" },
-                { label: "Total commandes", value: orders.length || "—", icon: Package, color: "text-purple-600" },
+                { label: "Commandes actives", value: activeOrders.length || "0", icon: Truck, color: "text-gmo-green" },
+                { label: "Livrées", value: doneOrders.filter(o => o.status === "livree").length || "0", icon: CheckCircle2, color: "text-blue-600" },
+                { label: "Total commandes", value: orders.length || "0", icon: Package, color: "text-purple-600" },
+                { label: "Montant total", value: totalSpent > 0 ? `${(totalSpent/1000).toFixed(0)}k` : "0", icon: CreditCard, color: "text-amber-500" },
               ].map(s => (
-                <div key={s.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+                <div key={s.label} className="bg-white rounded-xl p-3 sm:p-4 border border-gray-100 shadow-sm">
                   <s.icon className={`w-4 h-4 ${s.color} mb-2`} />
                   <p className="font-heading text-xl font-bold text-obsidian">{s.value}</p>
-                  <p className="text-[11px] text-obsidian/40 font-body mt-0.5 leading-tight">{s.label}</p>
+                  <p className="text-[10px] sm:text-[11px] text-obsidian/40 font-body mt-0.5 leading-tight">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -242,16 +258,56 @@ function ClientDashboard() {
                   <>
                     <p className="text-[10px] uppercase tracking-widest text-obsidian/35 font-heading mb-2">En cours ({activeOrders.length})</p>
                     {activeOrders.map(o => (
-                      <div key={o.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                        <div className="flex items-start justify-between gap-3 mb-4">
-                          <div>
-                            <p className="font-heading text-sm font-bold text-obsidian">{o.order_number || `CMD-${o.id?.slice(-6)}`}</p>
-                            <p className="text-[11px] text-obsidian/40 font-body">{new Date(o.created_date).toLocaleDateString("fr-FR")}</p>
+                      <div key={o.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div className="p-4 sm:p-5">
+                          <div className="flex items-start justify-between gap-2 mb-3">
+                            <div className="min-w-0">
+                              <p className="font-heading text-sm font-bold text-obsidian">{o.order_number || `CMD-${o.id?.slice(-6)}`}</p>
+                              <p className="text-[11px] text-obsidian/40 font-body">{new Date(o.created_date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</p>
+                            </div>
+                            <StatusBadge status={o.status} />
                           </div>
-                          <StatusBadge status={o.status} />
+                          <OrderProgressBar status={o.status} />
+                          <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
+                            <div className="flex flex-wrap gap-x-4 gap-y-1">
+                              {o.delivery_mode && (
+                                <span className="text-[11px] text-obsidian/50 font-body flex items-center gap-1">
+                                  <Truck className="w-3 h-3" /> {o.delivery_mode === "livraison" ? "Livraison" : "Enlèvement"}
+                                </span>
+                              )}
+                              {o.delivery_city && (
+                                <span className="text-[11px] text-obsidian/50 font-body flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" /> {o.delivery_city}
+                                </span>
+                              )}
+                              {o.estimated_delivery && (
+                                <span className="text-[11px] text-obsidian/50 font-body flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" /> Est. {new Date(o.estimated_delivery).toLocaleDateString("fr-FR")}
+                                </span>
+                              )}
+                            </div>
+                            {o.total_amount && <p className="font-heading text-sm font-bold text-gmo-green">{o.total_amount.toLocaleString()} FCFA</p>}
+                          </div>
+                          {o.items?.length > 0 && (
+                            <button
+                              onClick={() => setExpandedOrder(expandedOrder === o.id ? null : o.id)}
+                              className="mt-3 flex items-center gap-1 text-[11px] text-gmo-green font-body hover:underline"
+                            >
+                              {o.items.length} article(s)
+                              {expandedOrder === o.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                            </button>
+                          )}
                         </div>
-                        <OrderProgressBar status={o.status} />
-                        {o.total_amount && <p className="font-heading text-sm font-bold text-obsidian mt-3 text-right">{o.total_amount.toLocaleString()} FCFA</p>}
+                        {expandedOrder === o.id && o.items?.length > 0 && (
+                          <div className="border-t border-gray-100 bg-gray-50 px-4 sm:px-5 py-3 space-y-1.5">
+                            {o.items.map((item, idx) => (
+                              <div key={idx} className="flex items-center justify-between text-xs font-body">
+                                <span className="text-obsidian/70">{item.name || item.product_name || `Article ${idx+1}`} <span className="text-obsidian/40">×{item.qty || item.quantity || 1}</span></span>
+                                {item.unit_price && <span className="font-semibold text-obsidian">{((item.unit_price) * (item.qty || 1)).toLocaleString()} FCFA</span>}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </>
@@ -278,6 +334,116 @@ function ClientDashboard() {
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ── PROFIL ── */}
+        {tab === "profil" && (
+          <div>
+            <div className="mb-5">
+              <h2 className="font-heading text-xl font-bold text-obsidian">Mon Profil</h2>
+              <p className="text-xs text-obsidian/40 font-body mt-0.5">Vos informations personnelles et compte</p>
+            </div>
+
+            {/* Identity card */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-gmo-green/10 flex items-center justify-center text-gmo-green text-2xl font-bold font-heading flex-shrink-0">
+                  {user?.full_name?.charAt(0) || "C"}
+                </div>
+                <div>
+                  <p className="font-heading text-lg font-bold text-obsidian">{user?.full_name || "—"}</p>
+                  <p className="text-xs text-obsidian/40 font-body">Client GMO Burkina</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                  <Mail className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[10px] text-obsidian/40 font-body uppercase tracking-wider">Email</p>
+                    <p className="text-sm font-body text-obsidian truncate">{user?.email || "—"}</p>
+                  </div>
+                </div>
+                {clientInfo?.phone && (
+                  <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                    <Phone className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+                    <div>
+                      <p className="text-[10px] text-obsidian/40 font-body uppercase tracking-wider">Téléphone</p>
+                      <p className="text-sm font-body text-obsidian">{clientInfo.phone}</p>
+                    </div>
+                  </div>
+                )}
+                {clientInfo?.address && (
+                  <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                    <MapPin className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+                    <div>
+                      <p className="text-[10px] text-obsidian/40 font-body uppercase tracking-wider">Adresse</p>
+                      <p className="text-sm font-body text-obsidian">{clientInfo.address}{clientInfo.city ? `, ${clientInfo.city}` : ""}</p>
+                    </div>
+                  </div>
+                )}
+                {clientInfo?.tax_id && (
+                  <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                    <Hash className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+                    <div>
+                      <p className="text-[10px] text-obsidian/40 font-body uppercase tracking-wider">IFU / NIF</p>
+                      <p className="text-sm font-body text-obsidian">{clientInfo.tax_id}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Stats récap */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+              <p className="font-heading text-sm font-bold text-obsidian mb-4">Récapitulatif de mon activité</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="font-heading text-2xl font-bold text-gmo-green">{orders.length}</p>
+                  <p className="text-[11px] text-obsidian/50 font-body mt-0.5">Commandes passées</p>
+                </div>
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="font-heading text-2xl font-bold text-gmo-green">{doneOrders.filter(o => o.status === "livree").length}</p>
+                  <p className="text-[11px] text-obsidian/50 font-body mt-0.5">Commandes livrées</p>
+                </div>
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="font-heading text-2xl font-bold text-amber-500">{activeOrders.length}</p>
+                  <p className="text-[11px] text-obsidian/50 font-body mt-0.5">En cours</p>
+                </div>
+                <div className="bg-gray-50 rounded-xl p-3 text-center">
+                  <p className="font-heading text-lg font-bold text-obsidian">{totalSpent > 0 ? `${totalSpent.toLocaleString()}` : "—"}</p>
+                  <p className="text-[11px] text-obsidian/50 font-body mt-0.5">FCFA dépensés</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Dernières commandes */}
+            {orders.length > 0 && (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-4">
+                <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                  <p className="font-heading text-sm font-bold text-obsidian">Dernières commandes</p>
+                  <button onClick={() => setTab("commandes")} className="text-xs text-gmo-green font-body hover:underline">
+                    Tout voir →
+                  </button>
+                </div>
+                <div className="divide-y divide-gray-50">
+                  {orders.slice(0, 5).map(o => (
+                    <div key={o.id} className="px-5 py-3 flex items-center gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-heading text-xs font-semibold text-obsidian truncate">{o.order_number || `CMD-${o.id?.slice(-6)}`}</p>
+                        <p className="text-[11px] text-obsidian/35 font-body">{new Date(o.created_date).toLocaleDateString("fr-FR")}</p>
+                      </div>
+                      {o.total_amount && <p className="text-xs font-bold text-obsidian font-heading whitespace-nowrap">{o.total_amount.toLocaleString()} FCFA</p>}
+                      <StatusBadge status={o.status} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button onClick={() => logout()} className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 font-heading font-bold text-sm py-3 rounded-xl hover:bg-red-50 transition-colors">
+              <LogOut className="w-4 h-4" /> Se déconnecter
+            </button>
           </div>
         )}
 
