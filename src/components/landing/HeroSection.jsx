@@ -412,8 +412,8 @@ export default function HeroSection() {
         <div className="overflow-hidden py-3">
           <div className="animate-ticker flex whitespace-nowrap">
             {[...TICKER, ...TICKER].map((item, i) => (
-              <span key={i} className="font-body text-[10px] uppercase tracking-[0.28em] text-white/22 mx-10">
-                {item}<span className="ml-10 text-gmo-red/35">●</span>
+              <span key={i} className="font-body text-[10px] uppercase tracking-[0.28em] text-white/60 mx-10">
+                {item}<span className="ml-10 text-gmo-red/50">●</span>
               </span>
             ))}
           </div>
