@@ -4,9 +4,10 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Truck, MapPin, CheckCircle2, Clock, Package, LogOut,
-  Phone, Navigation, AlertCircle, RefreshCw, ChevronRight, Globe
+  Phone, Navigation, AlertCircle, RefreshCw, ChevronRight, Globe, FileText
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DeliveryNoteCard from "@/components/driver/DeliveryNoteCard";
 
 const STATUS_ORDER = {
   en_attente: { label: "En attente", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200", next: "confirmee" },
@@ -117,19 +118,28 @@ function OrderDeliveryCard({ order, onUpdateStatus }) {
 function DriverDashboard() {
   const { user, logout } = useAuth();
   const [orders, setOrders] = useState([]);
+  const [deliveryNotes, setDeliveryNotes] = useState([]);
   const [filter, setFilter] = useState("active");
+  const [view, setView] = useState("orders"); // "orders" | "bons"
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadOrders = async () => {
     setRefreshing(true);
-    // Load orders assigned to this driver by name
-    const all = await base44.entities.Order.list("-created_date", 100);
+    const [all, allNotes] = await Promise.all([
+      base44.entities.Order.list("-created_date", 100),
+      base44.entities.DeliveryNote.list("-created_date", 50),
+    ]);
     const mine = (all || []).filter(o =>
       o.driver_name === user.full_name ||
       o.driver_id === user.id
     );
+    const myNotes = (allNotes || []).filter(n =>
+      n.driver === user.full_name ||
+      n.driver === user.email
+    );
     setOrders(mine);
+    setDeliveryNotes(myNotes);
     setLoading(false);
     setRefreshing(false);
   };
@@ -205,42 +215,81 @@ function DriverDashboard() {
           ))}
         </div>
 
-        {/* Filters + refresh */}
-        <div className="flex items-center justify-between mb-4 gap-3">
-          <div className="flex items-center gap-1 bg-white border border-gray-100 rounded-xl p-1 shadow-sm">
-            {[
-              { id: "active", label: `En cours (${active.length})` },
-              { id: "done", label: `Livrées (${done.length})` },
-              { id: "all", label: "Tout" },
-            ].map(f => (
-              <button key={f.id} onClick={() => setFilter(f.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all ${
-                  filter === f.id ? "bg-gmo-green text-white font-semibold" : "text-obsidian/50 hover:text-obsidian"
-                }`}>
-                {f.label}
-              </button>
-            ))}
-          </div>
-          <button onClick={loadOrders} disabled={refreshing}
-            className="flex items-center gap-1.5 text-xs text-obsidian/50 border border-gray-200 rounded-xl px-3 py-2 hover:border-gmo-green hover:text-gmo-green transition-colors">
-            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`} />
-            Actualiser
+        {/* View switcher */}
+        <div className="flex items-center gap-2 mb-4 bg-white border border-gray-100 rounded-xl p-1 shadow-sm w-fit">
+          <button onClick={() => setView("orders")}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-body transition-all ${view === "orders" ? "bg-gmo-green text-white font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
+            <Truck className="w-3.5 h-3.5" /> Livraisons
+          </button>
+          <button onClick={() => setView("bons")}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-body transition-all ${view === "bons" ? "bg-gmo-green text-white font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
+            <FileText className="w-3.5 h-3.5" /> Bons ({deliveryNotes.length})
           </button>
         </div>
 
-        {/* Orders */}
-        {displayed.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center">
-            {filter === "active"
-              ? <><Truck className="w-10 h-10 text-obsidian/10 mx-auto mb-3" /><p className="font-heading text-base font-semibold text-obsidian/40">Aucune livraison en cours</p><p className="text-sm text-obsidian/25 font-body mt-1">Vos livraisons assignées apparaîtront ici</p></>
-              : <><CheckCircle2 className="w-10 h-10 text-obsidian/10 mx-auto mb-3" /><p className="font-heading text-base font-semibold text-obsidian/40">Aucune livraison terminée</p></>
-            }
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {displayed.map(o => (
-              <OrderDeliveryCard key={o.id} order={o} onUpdateStatus={updateStatus} />
-            ))}
+        {view === "orders" && (
+          <>
+            {/* Filters + refresh */}
+            <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+              <div className="flex items-center gap-1 bg-white border border-gray-100 rounded-xl p-1 shadow-sm">
+                {[
+                  { id: "active", label: `En cours (${active.length})` },
+                  { id: "done", label: `Livrées (${done.length})` },
+                  { id: "all", label: "Tout" },
+                ].map(f => (
+                  <button key={f.id} onClick={() => setFilter(f.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-body transition-all whitespace-nowrap ${
+                      filter === f.id ? "bg-obsidian text-white font-semibold" : "text-obsidian/50 hover:text-obsidian"
+                    }`}>
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+              <button onClick={loadOrders} disabled={refreshing}
+                className="flex items-center gap-1.5 text-xs text-obsidian/50 border border-gray-200 rounded-xl px-3 py-2 hover:border-gmo-green hover:text-gmo-green transition-colors">
+                <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`} />
+                Actualiser
+              </button>
+            </div>
+            {displayed.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center">
+                {filter === "active"
+                  ? <><Truck className="w-10 h-10 text-obsidian/10 mx-auto mb-3" /><p className="font-heading text-base font-semibold text-obsidian/40">Aucune livraison en cours</p><p className="text-sm text-obsidian/25 font-body mt-1">Vos livraisons assignées apparaîtront ici</p></>
+                  : <><CheckCircle2 className="w-10 h-10 text-obsidian/10 mx-auto mb-3" /><p className="font-heading text-base font-semibold text-obsidian/40">Aucune livraison terminée</p></>
+                }
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {displayed.map(o => (
+                  <OrderDeliveryCard key={o.id} order={o} onUpdateStatus={updateStatus} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {view === "bons" && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-heading text-sm font-bold text-obsidian">{deliveryNotes.length} bon(s) assigné(s)</p>
+              <button onClick={loadOrders} disabled={refreshing}
+                className="flex items-center gap-1.5 text-xs text-obsidian/50 border border-gray-200 rounded-xl px-3 py-2 hover:border-gmo-green hover:text-gmo-green transition-colors">
+                <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`} /> Actualiser
+              </button>
+            </div>
+            {deliveryNotes.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center">
+                <FileText className="w-10 h-10 text-obsidian/10 mx-auto mb-3" />
+                <p className="font-heading text-base font-semibold text-obsidian/40">Aucun bon assigné</p>
+                <p className="text-sm text-obsidian/25 font-body mt-1">Vos bons de livraison apparaîtront ici</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {deliveryNotes.map(n => (
+                  <DeliveryNoteCard key={n.id} note={n} />
+                ))}
+              </div>
+            )}
           </div>
         )}
 

@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Building2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { base44 } from "@/api/base44Client";
 
 const LOCATIONS = [
   { city: "Ouagadougou", status: "active" },
@@ -20,15 +21,32 @@ export default function ContactSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [sending, setSending] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", email: "", company: "", subject: "", message: "" });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    setTimeout(() => {
-      setSending(false);
-      toast.success("Message envoyé avec succès !");
-      e.target.reset();
-    }, 1500);
+    await base44.integrations.Core.SendEmail({
+      to: "infos@gmoburkina.com",
+      subject: `[Contact Site] ${form.subject} — ${form.name}`,
+      body: `
+<h2>Nouveau message depuis le site GMO Burkina</h2>
+<p><strong>Nom :</strong> ${form.name}</p>
+<p><strong>Entreprise :</strong> ${form.company || "—"}</p>
+<p><strong>Email :</strong> ${form.email}</p>
+<p><strong>Téléphone :</strong> ${form.phone || "—"}</p>
+<p><strong>Sujet :</strong> ${form.subject}</p>
+<hr/>
+<p><strong>Message :</strong></p>
+<p>${form.message.replace(/\n/g, "<br/>")}</p>
+      `,
+      from_name: "GMO Burkina — Site Web",
+    });
+    setSending(false);
+    toast.success("Message envoyé ! Nous vous répondrons rapidement.");
+    setForm({ name: "", phone: "", email: "", company: "", subject: "", message: "" });
   };
 
   return (
@@ -121,36 +139,43 @@ export default function ContactSection() {
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.4, duration: 0.7 }}
-            className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+            className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100"
           >
-            <p className="font-heading text-lg font-bold text-obsidian mb-6">Envoyez-nous un message</p>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <p className="font-heading text-lg font-bold text-obsidian mb-1">Demande de devis / Contact</p>
+            <p className="text-xs text-obsidian/45 font-body mb-6">Remplissez ce formulaire, notre équipe vous répond sous 24h.</p>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Nom complet</label>
-                  <Input required placeholder="Votre nom" className="h-12 rounded-xl border-gray-200 focus:border-gmo-green focus:ring-gmo-green/20" />
+                  <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Nom complet *</label>
+                  <Input required name="name" value={form.name} onChange={handleChange} placeholder="Votre nom" className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
                 </div>
                 <div>
                   <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Téléphone</label>
-                  <Input placeholder="+226 ..." className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
+                  <Input name="phone" value={form.phone} onChange={handleChange} placeholder="+226 ..." className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">E-mail *</label>
+                  <Input type="email" required name="email" value={form.email} onChange={handleChange} placeholder="votre@email.com" className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
+                </div>
+                <div>
+                  <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Entreprise</label>
+                  <Input name="company" value={form.company} onChange={handleChange} placeholder="Nom de votre société" className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
                 </div>
               </div>
               <div>
-                <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">E-mail</label>
-                <Input type="email" required placeholder="votre@email.com" className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
+                <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Objet de la demande *</label>
+                <Input required name="subject" value={form.subject} onChange={handleChange} placeholder="Ex: Demande de devis transport, Partenariat distribution..." className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
               </div>
               <div>
-                <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Sujet</label>
-                <Input required placeholder="Objet de votre message" className="h-12 rounded-xl border-gray-200 focus:border-gmo-green" />
-              </div>
-              <div>
-                <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Message</label>
-                <Textarea required rows={4} placeholder="Décrivez votre besoin..." className="rounded-xl border-gray-200 focus:border-gmo-green resize-none" />
+                <label className="font-body text-[10px] uppercase tracking-widest text-obsidian/45 block mb-2">Message *</label>
+                <Textarea required name="message" value={form.message} onChange={handleChange} rows={5} placeholder="Décrivez votre besoin en détail : type de produits, volumes, zones de livraison, fréquence..." className="rounded-xl border-gray-200 focus:border-gmo-green resize-none" />
               </div>
               <Button
                 type="submit"
                 disabled={sending}
-                className="w-full bg-gmo-green text-white hover:bg-gmo-green/90 font-heading font-bold text-sm h-13 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gmo-green/25 hover:-translate-y-0.5"
+                className="w-full bg-gmo-green text-white hover:bg-gmo-green/90 font-heading font-bold text-sm h-12 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-gmo-green/25"
               >
                 {sending ? (
                   <span className="flex items-center gap-2">
@@ -159,11 +184,14 @@ export default function ContactSection() {
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    Envoyer le message
+                    Envoyer la demande
                     <Send className="w-4 h-4" />
                   </span>
                 )}
               </Button>
+              <p className="text-[10px] text-obsidian/30 font-body text-center">
+                En soumettant ce formulaire, vous acceptez d'être contacté par GMO Burkina.
+              </p>
             </form>
           </motion.div>
         </div>
