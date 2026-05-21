@@ -361,7 +361,7 @@ export default function HeroSection() {
                     >
                       <div className="w-px h-14 rounded-full" style={{ background: panel.color, opacity: 0.6 }} />
                       <p
-                        className="font-heading font-black text-white/75 text-[0.6rem] tracking-[0.45em] uppercase"
+                        className="font-heading font-black text-white text-[0.7rem] tracking-[0.45em] uppercase"
                         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
                       >
                         {panel.label}
