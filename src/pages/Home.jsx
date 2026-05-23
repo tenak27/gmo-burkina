@@ -9,6 +9,7 @@ import AboutSection from "../components/landing/AboutSection";
 import TeamSection from "../components/landing/TeamSection";
 import RSESection from "../components/landing/RSESection";
 import ProductsSection from "../components/landing/ProductsSection";
+import CatalogSection from "../components/landing/CatalogSection";
 import ProjectsSection from "../components/landing/ProjectsSection";
 import TestimonialsSection from "../components/landing/TestimonialsSection";
 import JourneyBanner from "../components/landing/JourneyBanner";
@@ -52,6 +53,7 @@ export default function Home() {
       <AboutSection />
       <TeamSection />
       <ProductsSection />
+      <CatalogSection />
       <ProjectsSection />
       <TestimonialsSection />
       <RSESection />
