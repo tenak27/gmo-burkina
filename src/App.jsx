@@ -12,6 +12,7 @@ import AdminSpace from './pages/AdminSpace';
 import MagasinierSpace from './pages/MagasinierSpace';
 import CommercialSpace from './pages/CommercialSpace';
 import DriverSpace from './pages/DriverSpace';
+import Careers from './pages/Careers';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -57,6 +58,7 @@ const AuthenticatedApp = () => {
       <Route path="/magasinier" element={<MagasinierSpace />} />
       <Route path="/commercial" element={<CommercialSpace />} />
       <Route path="/chauffeur" element={<DriverSpace />} />
+      <Route path="/carrieres" element={<Careers />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

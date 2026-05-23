@@ -52,7 +52,6 @@ export default function Home() {
       <ProjectsSection />
       <TestimonialsSection />
       <RSESection />
-      <CareersSection />
       <PartnersCarousel />
       <LogisticsPartnersSection />
       <GallerySection images={galleryImages} />

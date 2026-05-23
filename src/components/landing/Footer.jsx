@@ -11,7 +11,7 @@ const NAV = [
   { label: "Produits", id: "produits" },
   { label: "Projets", id: "projets" },
   { label: "Médias", id: "medias" },
-  { label: "Carrières", id: "carrieres" },
+  { label: "Carrières", href: "/carrieres" },
   { label: "GMO Foot", id: "gmofoot" },
   { label: "Contact", id: "contact" },
 ];
@@ -63,10 +63,9 @@ export default function Footer() {
             <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Navigation</p>
             <div className="space-y-2">
               {NAV.map(link => (
-                <button key={link.id} onClick={() => scrollTo(link.id)}
-                  className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
-                  {link.label}
-                </button>
+                link.href
+                  ? <Link key={link.href} to={link.href} className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">{link.label}</Link>
+                  : <button key={link.id} onClick={() => scrollTo(link.id)} className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">{link.label}</button>
               ))}
             </div>
           </div>
