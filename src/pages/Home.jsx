@@ -35,12 +35,12 @@ const IMAGES = {
 
 export default function Home() {
   const galleryImages = [
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9554d79d0_PHOTO-2026-05-23-22-33-152.jpg",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/2f88e438c_PHOTO-2026-05-23-22-33-153.jpg",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1aee300d1_PHOTO-2026-05-23-22-33-154.jpg",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/17cd2ca53_PHOTO-2026-05-23-22-33-155.jpg",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b1e8da805_PHOTO-2026-05-23-22-33-16.jpg",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/83d0a9988_PHOTO-2026-05-23-22-33-162.jpg",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a1f3d31df_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e25cd957_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/054ba89e1_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e4235e14e_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b4292e3bb_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/74fa03193_generated_image.png",
   ];
 
   return (
