@@ -6,66 +6,66 @@ const CATEGORIES = ["Tous", "Alimentaire", "Confiserie", "Hygiène", "Agricultur
 
 const PRODUCTS = [
   {
-    name: "Huile de coton MADINA",
+    name: "Huile de coton SAVOR",
     category: "Alimentaire",
-    brand: "MADINA · SN CITEC",
+    brand: "SAVOR · SN CITEC",
     description:
-      "L'huile de coton raffinée MADINA, enrichie en vitamine A, 100% huile végétale et sans cholestérol, est fortement recommandée pour sa qualité nutritionnelle.",
-    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% végétale", "Bidon 20L et 5L"],
-    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/678f80d25_huile.jpg",
+      "L'huile de coton raffinée SAVOR, enrichie en vitamine A, 100% huile végétale et sans cholestérol. SAVOR, la saveur enrichie de la bonne cuisine.",
+    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% végétale", "Recommandée par les gourmets"],
+    image: "https://gmobfaso.com/assets/img/produits/huile.jpg",
   },
   {
-    name: "Farine de blé — Blé du Sahel",
+    name: "Farine de blé",
     category: "Alimentaire",
-    brand: "Blé du Sahel · GMO",
+    brand: "Grand Moulin du Faso",
     description:
-      "Pure farine de blé, résultat de la mouture de la graine du blé tendre ou froment. Produite par le Grand Moulin du Faso, distribuée par GMO.",
-    details: ["Pure farine de blé", "Grand Moulin du Faso", "Plusieurs formats"],
-    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/41c37a185_ble.jpg",
+      "Pure farine de blé, résultat de la mouture de la graine du blé tendre. Produite par le Grand Moulin du Faso, distribuée par GMO au Burkina Faso.",
+    details: ["Pure farine de blé", "Grand Moulin du Faso", "Plusieurs formats disponibles"],
+    image: "https://gmobfaso.com/assets/img/produits/ble.jpg",
   },
   {
-    name: "Sucre blond & blanc",
+    name: "Sucre blond GAZELLE & blanc CASCADE",
     category: "Alimentaire",
-    brand: "GAZELLE · CASCADE",
+    brand: "GAZELLE · CASCADE · SN SOSUCO",
     description:
-      "Sucre blond de canne sans aromatisants ni colorants, conditionné sous différents formats. Également disponible en sucre blanc sous la dénomination CASCADE.",
-    details: ["Sac 50 kg granulé", "Sachets 1 kg (lot 25–50 kg)", "Morceaux GAZELLE", "Sucre blanc CASCADE"],
+      "Sucre blond de canne sans aromatisants ni colorants, conditionné sous différents formats. Disponible en sucre blanc sous la dénomination CASCADE.",
+    details: ["Sac 50 kg granulé", "Sachets 1 kg (lot 25–50 kg)", "Morceaux GAZELLE 1 kg & 500 g", "Sucre blanc CASCADE morceaux 1 kg"],
     image: "https://gmobfaso.com/assets/img/produits/sucre.jpg",
   },
   {
-    name: "Chewing-gum ETALON",
+    name: "Chewing-gum & Bonbons COBUFA",
     category: "Confiserie",
-    brand: "ETALON · COBUFA",
+    brand: "ETALON · ZOODO · COBUFA",
     description:
-      "Explosion de saveurs avec nos délicieux chewing-gums produits par COBUFA. Ingrédients de qualité, saveurs fruitées pour toutes les occasions.",
-    details: ["Produit par COBUFA", "Différentes saveurs", "Conditionnement varié"],
-    image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/51c70cd01_chewingum.jpg",
+      "Explosion de saveurs avec les chewing-gums et bonbons produits par COBUFA. Chaque pièce est une œuvre d'art de couleur et de texture fruitée.",
+    details: ["Produit par COBUFA", "Chewing-gums ETALON", "Bonbons ZOODO saveur fruitée", "Conditionnement varié"],
+    image: "https://gmobfaso.com/assets/img/produits/chewingum.jpg",
   },
   {
-    name: "Bonbons ZOODO",
+    name: "Bonbons ZOODO Gimgimbre",
     category: "Confiserie",
     brand: "ZOODO · COBUFA",
     description:
-      "Les bonbons ZOODO, une œuvre d'art de couleur et de texture qui ravira vos papilles avec sa douceur sucrée et sa saveur fruitée incomparable.",
-    details: ["Produit par COBUFA", "Saveur fruitée unique", "Idéal pour tout âge"],
-    image: "https://gmobfaso.com/assets/img/produits/chewingum.jpg",
+      "Les bonbons ZOODO au gingembre, une recette unique alliant la douceur sucrée et la saveur épicée du gingembre pour une expérience gustative unique.",
+    details: ["Saveur gingembre unique", "Produit par COBUFA", "Pour tout âge", "Distribution nationale"],
+    image: "https://gmobfaso.com/assets/img/produits/zoodo-gimgimbre.jpg",
   },
   {
     name: "Savon SN CITEC",
     category: "Hygiène",
     brand: "SN CITEC",
     description:
-      "À partir de corps gras végétaux (karité, acide gras de palme), le savon SN CITEC est hypoallergénique et bactéricide — recommandé pour les peaux sensibles.",
-    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux", "Multi-usages", "Recommandé dermato"],
+      "À partir de corps gras végétaux (karité, acide gras de palme), le savon SN CITEC hypoallergénique et bactéricide est recommandé pour les peaux sensibles.",
+    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux (karité, palme)", "Multi-usages : linge & corps", "Recommandé par les dermatologues"],
     image: "https://gmobfaso.com/assets/img/produits/savon.jpg",
   },
   {
-    name: "Produits Axe",
+    name: "Produits AXE",
     category: "Hygiène",
     brand: "AXE · GMO",
     description:
-      "Gamme complète de produits d'hygiène Axe distribués par GMO à travers tout le Burkina Faso. Disponibles dans toutes les villes desservies.",
-    details: ["Déodorants & soins", "Distribution nationale", "Marque internationale"],
+      "Gamme complète de produits d'hygiène AXE distribués par GMO à travers tout le Burkina Faso. Déodorants, soins — disponibles dans toutes les villes desservies.",
+    details: ["Déodorants & soins corps", "Distribution nationale GMO", "Marque internationale de confiance"],
     image: "https://gmobfaso.com/assets/img/produits/axe.jpg",
   },
   {
@@ -73,8 +73,8 @@ const PRODUCTS = [
     category: "Agriculture",
     brand: "GMO Agri",
     description:
-      "Large gamme d'aliments pour bétail conçus pour répondre aux besoins nutritionnels spécifiques. Bovins, moutons, chèvres — formules optimisées.",
-    details: ["Riches en protéines", "Formules spécialisées", "Ingrédients de qualité", "Vitamines & minéraux"],
+      "Large gamme d'aliments pour bétail conçus pour les besoins nutritionnels spécifiques des bovins, moutons, chèvres. Riches en protéines, vitamines et minéraux.",
+    details: ["Riches en protéines & vitamines", "Formules spécialisées par animal", "Ingrédients de première qualité", "Service conseil inclus"],
     image: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg",
   },
 ];

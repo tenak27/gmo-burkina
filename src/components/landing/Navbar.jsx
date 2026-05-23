@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: "GMO Foot", href: "#gmofoot" },
   { label: "Galerie", href: "#galerie" },
   { label: "Contact", href: "#contact" },
+  { label: "Rejoindre GMO", href: "/carrieres", isPage: true },
 ];
 
 export default function Navbar({ heroHeight }) {
@@ -65,14 +66,24 @@ export default function Navbar({ heroHeight }) {
             {/* Desktop links */}
             <div className="hidden lg:flex items-center gap-6">
               {NAV_LINKS.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollTo(link.href)}
-                  className="font-body text-sm text-obsidian/55 hover:text-gmo-green transition-colors relative group"
-                >
-                  {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-gmo-green group-hover:w-full transition-all duration-300 rounded-full" />
-                </button>
+                link.isPage ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="font-body text-sm font-semibold text-gmo-green hover:text-gmo-green/70 transition-colors relative group border border-gmo-green/30 px-3 py-1 rounded-full hover:bg-gmo-green/8"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={link.href}
+                    onClick={() => scrollTo(link.href)}
+                    className="font-body text-sm text-obsidian/55 hover:text-gmo-green transition-colors relative group"
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-[2px] bg-gmo-green group-hover:w-full transition-all duration-300 rounded-full" />
+                  </button>
+                )
               ))}
             </div>
 
@@ -135,16 +146,27 @@ export default function Navbar({ heroHeight }) {
           >
             <div className="flex flex-col gap-5 py-6">
               {NAV_LINKS.map((link, i) => (
-                <motion.button
-                  key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
-                  onClick={() => scrollTo(link.href)}
-                  className="font-heading text-2xl text-obsidian/80 hover:text-gmo-green text-left border-b border-gray-100 pb-4"
-                >
-                  {link.label}
-                </motion.button>
+                link.isPage ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="font-heading text-2xl text-gmo-green text-left border-b border-gray-100 pb-4"
+                  >
+                    {link.label} →
+                  </Link>
+                ) : (
+                  <motion.button
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                    onClick={() => scrollTo(link.href)}
+                    className="font-heading text-2xl text-obsidian/80 hover:text-gmo-green text-left border-b border-gray-100 pb-4"
+                  >
+                    {link.label}
+                  </motion.button>
+                )
               ))}
               {isAuthenticated && dashLink && (
                 <Link
