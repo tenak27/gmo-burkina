@@ -5,9 +5,8 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Package, Truck, LogOut, Star, RefreshCw, Phone,
-  ShoppingCart, AlertTriangle, CheckCircle2, Plus, Minus, Send, MapPin, Home, Download, FileText
+  ShoppingCart, CheckCircle2, Plus, Minus, Send, MapPin, Home, Download, FileText
 } from "lucide-react";
-import StocksView from "@/components/retailer/StocksView";
 import ProductGallery from "@/components/retailer/ProductGallery";
 import LiveChatWidget from "@/components/retailer/LiveChatWidget";
 import CoverageMap from "@/components/retailer/CoverageMap";
@@ -15,7 +14,6 @@ import CoverageMap from "@/components/retailer/CoverageMap";
 const TABS = [
   { id: "accueil", label: "Accueil" },
   { id: "catalogue", label: "Catalogue" },
-  { id: "stocks", label: "Stocks" },
   { id: "commande", label: "Commander" },
   { id: "livraisons", label: "Livraisons" },
   { id: "zones", label: "🗺 Zones" },
@@ -107,7 +105,6 @@ function RetailerDashboard() {
     setTab("livraisons");
   };
 
-  const lowStock = products.filter(p => p.stock_quantity <= p.stock_alert);
   const activeOrders = orders.filter(o => !["livree","annulee"].includes(o.status));
 
   return (
@@ -172,19 +169,15 @@ function RetailerDashboard() {
                   className="inline-flex items-center gap-2 bg-gmo-red text-white text-xs font-heading font-bold px-4 py-2 rounded-lg hover:bg-gmo-red/90">
                   <ShoppingCart className="w-3.5 h-3.5" /> Passer une commande
                 </button>
-                <button onClick={() => setTab("stocks")}
-                  className="inline-flex items-center gap-2 border border-white/20 text-white/60 text-xs font-body px-4 py-2 rounded-lg hover:border-white/40 hover:text-white transition-colors">
-                  <Package className="w-3.5 h-3.5" /> Voir les stocks
-                </button>
+
               </div>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
+            <div className="grid grid-cols-2 gap-3 mb-5">
               {[
                 { label: "Commandes actives", value: activeOrders.length || "0", icon: Truck, color: "text-gmo-red" },
-                { label: "Produits disponibles", value: products.filter(p => p.stock_quantity > 0).length || products.length, icon: Package, color: "text-gmo-green" },
-                { label: "Alertes stock", value: lowStock.length || "0", icon: AlertTriangle, color: "text-amber-500" },
+                { label: "Produits disponibles", value: products.length, icon: Package, color: "text-gmo-green" },
               ].map(s => (
                 <div key={s.label} className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
                   <s.icon className={`w-4 h-4 ${s.color} mb-2`} />
@@ -193,21 +186,6 @@ function RetailerDashboard() {
                 </div>
               ))}
             </div>
-
-            {/* Alerts */}
-            {lowStock.length > 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5">
-                <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-600" />
-                  <p className="font-heading text-sm font-bold text-amber-800">{lowStock.length} produit(s) en stock faible</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {lowStock.slice(0,4).map(p => (
-                    <span key={p.id} className="text-[11px] text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full font-body">{p.name}</span>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Fidélité */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex items-center gap-4">
@@ -249,11 +227,6 @@ function RetailerDashboard() {
               onGoToCart={() => setTab("commande")}
             />
           </div>
-        )}
-
-        {/* ── STOCKS ── */}
-        {tab === "stocks" && (
-          <StocksView products={products} loadingProducts={loadingProducts} onRefresh={loadProducts} />
         )}
 
         {/* ── COMMANDER ── */}
