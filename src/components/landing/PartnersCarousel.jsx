@@ -1,11 +1,11 @@
 import React from "react";
 
 const PARTNERS = [
-  { name: "SN CITEC", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/sncitec_logo.png" },
-  { name: "Imperial Tobacco", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/imperial_tobacco.png" },
-  { name: "Manicure", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/manicure_logo.png" },
-  { name: "COBIFA", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/cobifa_logo.png" },
-  { name: "Brakina", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/brakina_logo.png" },
+  { name: "SN CITEC", logo: "https://gmobfaso.com/assets/img/partenaires/sn-citec.jpg" },
+  { name: "Imperial Tobacco", logo: "https://gmobfaso.com/assets/img/partenaires/mabucig.jpg" },
+  { name: "SN SOSUCO", logo: "https://gmobfaso.com/assets/img/partenaires/sn-sosuco.jpg" },
+  { name: "COBIFA", logo: "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg" },
+  { name: "GMB", logo: "https://gmobfaso.com/assets/img/partenaires/gmb.jpg" },
 ];
 
 const DOUBLED = [...PARTNERS, ...PARTNERS];
