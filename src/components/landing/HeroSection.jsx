@@ -28,7 +28,7 @@ const PANELS = [
     color: "#F5C400",
   },
   {
-    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1e2be0905_generated_51987d61.png",
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/12a75595c_generated_image.png",
     label: "EXPANSION",
     sub: "Afrique de l'Ouest",
     tagline: "Côte d'Ivoire · Mali · Niger",
