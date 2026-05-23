@@ -11,6 +11,7 @@ import {
 import ProductGallery from "@/components/retailer/ProductGallery";
 import LiveChatWidget from "@/components/retailer/LiveChatWidget";
 import CoverageMap from "@/components/retailer/CoverageMap";
+import DevisPdfButton from "@/components/shared/DevisPdfButton";
 
 const TABS = [
   { id: "accueil", label: "Accueil" },
@@ -457,17 +458,7 @@ function RetailerDashboard() {
                             <div className="text-right flex-shrink-0 flex items-center gap-3">
                               {inv.total && <p className="font-heading text-sm font-bold text-gmo-green">{Number(inv.total).toLocaleString()} FCFA</p>}
                               <span className={`text-[10px] px-2 py-1 rounded-full border font-body ${statusCfg.cls}`}>{statusCfg.label}</span>
-                              <button
-                                onClick={async () => {
-                                  const res = await base44.functions.invoke('generateInvoicePdf', { invoiceId: inv.id });
-                                  if (res.data) {
-                                    const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
-                                    const a = document.createElement("a"); a.href = url; a.download = `GMO-${inv.number || inv.type}.pdf`; a.click();
-                                  }
-                                }}
-                                className="p-2 rounded-lg border border-gray-200 text-obsidian/40 hover:border-gmo-green hover:text-gmo-green transition-colors cursor-pointer">
-                                <Download className="w-3.5 h-3.5" />
-                              </button>
+                              <DevisPdfButton invoiceId={inv.id} number={inv.number} type={inv.type} />
                               {inv.type === "devis" && inv.status === "envoye" && (
                                 <a href={`/devis-validation?devis_id=${inv.id}`}
                                   className="text-xs text-amber-600 border border-amber-200 bg-amber-50 px-2.5 py-1.5 rounded-lg hover:bg-amber-100 transition-colors font-heading font-bold">

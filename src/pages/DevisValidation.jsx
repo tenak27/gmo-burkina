@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { CheckCircle2, FileText, Clock, Loader2, AlertCircle, ArrowRight, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import DevisPdfButton from '@/components/shared/DevisPdfButton';
 
 export default function DevisValidation() {
   const params = new URLSearchParams(window.location.search);
@@ -138,11 +139,14 @@ export default function DevisValidation() {
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-5 text-sm text-amber-800">{devis.notes}</div>
             )}
 
-            <button onClick={handleValidate} disabled={processing}
-              className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm py-4 rounded-xl transition-colors cursor-pointer disabled:opacity-60">
-              {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-              {processing ? 'Validation…' : 'Valider ce devis'}
-            </button>
+            <div className="flex flex-col gap-3">
+              <DevisPdfButton invoiceId={devisId} number={devis?.number} type="devis" variant="outlined" className="w-full justify-center" />
+              <button onClick={handleValidate} disabled={processing}
+                className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm py-4 rounded-xl transition-colors cursor-pointer disabled:opacity-60">
+                {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                {processing ? 'Validation…' : 'Valider ce devis'}
+              </button>
+            </div>
             <p className="text-xs text-gray-400 text-center mt-2">En validant, vous acceptez les conditions de vente GMO Burkina.</p>
           </div>
         </div>
@@ -200,10 +204,15 @@ export default function DevisValidation() {
             )}
           </div>
 
-          <Link to="/detaillant"
-            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors">
-            Mon espace détaillant <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {result?.facture_id && (
+              <DevisPdfButton invoiceId={result.facture_id} number={result.facture_number} type="facture" variant="outlined" />
+            )}
+            <Link to="/detaillant"
+              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors">
+              Mon espace détaillant <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       )}
 
