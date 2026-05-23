@@ -44,24 +44,24 @@ export default function Home() {
     <div className="bg-obsidian min-h-screen">
       <Navbar />
       <HeroSection />
-      <PartnersCarousel />
       <ServicesSection />
       <StatsSection />
       <AboutSection />
       <TeamSection />
-      <RSESection />
       <ProductsSection />
       <ProjectsSection />
       <TestimonialsSection />
-      <JourneyBanner journeyImage={IMAGES.journey} />
+      <RSESection />
+      <CareersSection />
+      <PartnersCarousel />
       <LogisticsPartnersSection />
       <GallerySection images={galleryImages} />
+      <JourneyBanner journeyImage={IMAGES.journey} />
       <MediaSection />
       <BlogSection />
-      <GMOFootSection />
-      <CareersSection />
-      <CoverageMap />
       <NewsletterSection />
+      <GMOFootSection />
+      <CoverageMap />
       <ContactSection />
       <Footer />
     </div>
