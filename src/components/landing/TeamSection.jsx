@@ -177,73 +177,73 @@ export default function TeamSection() {
     <section id="equipe" className="overflow-hidden">
 
       {/* ── EXECUTIVE BOARD ── */}
-      <div className="bg-concrete py-24 lg:py-32 hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 hidden">
+      
 
-          {/* Header */}
-          <div ref={execRef} className="mb-14">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={execInView ? { opacity: 1, x: 0 } : {}}
-              className="flex items-center gap-3 mb-4">
-              
-              <div className="w-6 h-[2px] bg-gmo-red" />
-              <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red">Notre équipe dirigeante</span>
-            </motion.div>
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-              <div>
-                <motion.h2
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={execInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-heading text-4xl lg:text-5xl font-bold text-obsidian">
-                  
-                  LES HOMMES &<br />
-                  <span className="text-gmo-green">FEMMES DE GMO</span>
-                </motion.h2>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={execInView ? { scaleX: 1 } : {}}
-                  transition={{ delay: 0.4, duration: 0.7 }}
-                  className="h-1 w-20 bg-gradient-to-r from-gmo-green to-gmo-red mt-5 origin-left rounded-full" />
-                
-              </div>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={execInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.3 }}
-                className="font-body text-sm text-obsidian/50 max-w-xs leading-relaxed">
-                
-                Une équipe de direction expérimentée et engagée, portée par des valeurs d'excellence et de service.
-              </motion.p>
-            </div>
-          </div>
 
-          {/* Cards grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {EXECUTIVE_BOARD.map((person, i) =>
-            <ExecutiveCard key={person.role} person={person} index={i} isInView={execInView} />
-            )}
-          </div>
 
-          {/* Stats bar */}
-          <div ref={statsRef} className="mt-12 grid grid-cols-3 gap-4">
-            {STATS.map((s, i) =>
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={statsInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-white border border-gray-100 rounded-2xl p-5 text-center shadow-sm">
-              
-                <s.icon className="w-5 h-5 text-gmo-green mx-auto mb-2" />
-                <p className="font-heading text-2xl lg:text-3xl font-black text-obsidian">{s.value}</p>
-                <p className="font-body text-xs text-obsidian/40 mt-1 uppercase tracking-widest">{s.label}</p>
-              </motion.div>
-            )}
-          </div>
-        </div>
-      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
 
       {/* ── OPERATIONAL TEAM ── */}
       <div ref={teamRef} className="bg-obsidian py-24 lg:py-32">
