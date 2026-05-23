@@ -1,66 +1,23 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Popup } from "react-leaflet";
-import { MapPin, Truck, Clock } from "lucide-react";
+import { MapPin, Globe } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 
 const CITIES = [
-  {
-    name: "Ouagadougou",
-    lat: 12.3714,
-    lng: -1.5197,
-    status: "active",
-    role: "Siège Social & Hub Principal",
-    details: "Centre de distribution principal, siège de GMO",
-  },
-  {
-    name: "Bobo-Dioulasso",
-    lat: 11.177,
-    lng: -4.2979,
-    status: "active",
-    role: "Antenne Régionale",
-    details: "2ème ville du Burkina, hub de distribution Ouest",
-  },
-  {
-    name: "Diébougou",
-    lat: 10.9618,
-    lng: -3.2514,
-    status: "active",
-    role: "Point de Distribution",
-    details: "Couverture de la région du Sud-Ouest",
-  },
-  {
-    name: "Ouahigouya",
-    lat: 13.5727,
-    lng: -2.4316,
-    status: "active",
-    role: "Point de Distribution",
-    details: "Couverture du Nord du Burkina",
-  },
-  {
-    name: "Banfora",
-    lat: 10.6338,
-    lng: -4.7605,
-    status: "coming",
-    role: "Expansion prévue",
-    details: "Ouverture prochaine",
-  },
-  {
-    name: "Dédougou",
-    lat: 12.4626,
-    lng: -3.461,
-    status: "coming",
-    role: "Expansion prévue",
-    details: "Couverture de la région de la Boucle du Mouhoun",
-  },
-  {
-    name: "Orodara",
-    lat: 10.9964,
-    lng: -4.9116,
-    status: "coming",
-    role: "Expansion prévue",
-    details: "Ouverture prochaine",
-  },
+  { name: "Ouagadougou", lat: 12.3714, lng: -1.5197, status: "active", role: "Siège Social & Hub Principal", details: "Centre de distribution principal, siège de GMO" },
+  { name: "Bobo-Dioulasso", lat: 11.177, lng: -4.2979, status: "active", role: "Antenne Régionale", details: "2ème ville du Burkina, hub de distribution Ouest" },
+  { name: "Diébougou", lat: 10.9618, lng: -3.2514, status: "active", role: "Point de Distribution", details: "Couverture de la région du Sud-Ouest" },
+  { name: "Pô", lat: 11.175, lng: -1.147, status: "active", role: "Point de Distribution", details: "Couverture de la région du Centre-Sud" },
+  { name: "Boromo", lat: 11.7444, lng: -2.9286, status: "active", role: "Point de Distribution", details: "Couverture de la région des Balé" },
+  { name: "Dori", lat: 14.0350, lng: -0.0350, status: "active", role: "Point de Distribution", details: "Couverture de la région du Sahel" },
+  { name: "Banfora", lat: 10.6338, lng: -4.7605, status: "coming", role: "Expansion prévue", details: "Ouverture bientôt" },
+];
+
+const INTERNATIONAL = [
+  { name: "Mali" },
+  { name: "Niger" },
+  { name: "Côte d'Ivoire" },
 ];
 
 export default function CoverageMap() {
@@ -107,12 +64,16 @@ export default function CoverageMap() {
               className="flex gap-6 flex-shrink-0"
             >
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-gmo-green animate-pulse-green" />
+                <div className="w-3 h-3 rounded-full bg-gmo-green" />
                 <span className="font-body text-xs text-obsidian/60 uppercase tracking-widest">Actif</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-gold border-2 border-gold/40" />
+                <div className="w-3 h-3 rounded-full bg-gold" />
                 <span className="font-body text-xs text-obsidian/60 uppercase tracking-widest">Bientôt</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-blue-500" />
+                <span className="font-body text-xs text-obsidian/60 uppercase tracking-widest">International</span>
               </div>
             </motion.div>
           </div>
@@ -207,11 +168,27 @@ export default function CoverageMap() {
               </motion.button>
             ))}
 
+            {/* International */}
+            <div className="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-xl">
+              <div className="flex items-center gap-2 mb-2">
+                <Globe className="w-3.5 h-3.5 text-blue-500" />
+                <p className="font-heading text-xs uppercase tracking-widest text-blue-500">Expansion internationale</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {INTERNATIONAL.map(c => (
+                  <span key={c.name} className="text-xs font-body bg-white border border-blue-200 text-blue-600 px-2.5 py-1 rounded-full">
+                    {c.name}
+                  </span>
+                ))}
+              </div>
+              <p className="text-[10px] text-blue-400 font-body mt-2">Très bientôt</p>
+            </div>
+
             {/* Stats */}
             <div className="mt-auto grid grid-cols-2 gap-3 pt-3">
               {[
-                { icon: MapPin, val: "4", label: "Villes actives" },
-                { icon: Truck, val: "3", label: "En expansion" },
+                { icon: MapPin, val: "6", label: "Villes actives" },
+                { icon: Globe, val: "3", label: "Pays cibles" },
               ].map((s) => (
                 <div key={s.label} className="bg-obsidian rounded-xl p-4 text-center">
                   <s.icon className="w-4 h-4 text-gmo-green mx-auto mb-1" />
