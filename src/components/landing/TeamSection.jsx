@@ -63,11 +63,11 @@ export default function TeamSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             className="text-center mb-16"
           >
-            <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red block mb-4">Notre Leadership</span>
+            <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red block mb-4">Notre équipe dirigeante</span>
             <h2 className="font-heading text-3xl lg:text-5xl font-bold text-obsidian leading-tight mb-6">
-              L'EXECUTIVE
+              DIRECTION
               <br />
-              <span className="text-gmo-green">BOARD</span>
+              <span className="text-gmo-green">GÉNÉRALE</span>
             </h2>
             <p className="font-body text-base text-obsidian/55 max-w-2xl mx-auto leading-relaxed">
               Une équipe de direction expérimentée, engagée à faire du Groupe Madina Oumarou le partenaire de référence de la distribution en Afrique de l'Ouest.
