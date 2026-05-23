@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { Bell, AlertTriangle, Globe, LogOut, ChevronDown } from "lucide-react";
+import { Bell, HelpCircle, Settings, ChevronDown, Globe, LogOut, Search } from "lucide-react";
 
 function LiveClock() {
   const [now, setNow] = useState(new Date());
@@ -9,14 +9,10 @@ function LiveClock() {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
-  const dateStr = now.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
-  const timeStr = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   return (
-    <div className="flex items-center gap-2 text-white/40 text-xs font-body tabular-nums">
-      <span className="text-white/20">{dateStr}</span>
-      <span className="text-white/10">·</span>
-      <span className="text-[#4ade80]/70 font-semibold">{timeStr}</span>
-    </div>
+    <span className="text-sm text-gray-500 tabular-nums hidden md:inline">
+      {now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+    </span>
   );
 }
 
@@ -25,77 +21,71 @@ export default function AdminTopbar({ pendingOrders, setTab }) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   return (
-    <div className="h-14 flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-40 border-b border-white/[0.06]"
-      style={{ background: "rgba(10,15,30,0.6)", backdropFilter: "blur(20px)" }}>
+    <div className="h-14 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-40 bg-white border-b border-gray-200">
 
-      {/* Left: page title */}
-      <div className="flex items-center gap-3">
-        <div className="hidden md:flex items-center gap-2 border-l border-white/[0.08] pl-4">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" style={{ boxShadow: "0 0 6px #4ade80" }} />
-          <span className="text-white/50 text-xs font-body">Système opérationnel</span>
+      {/* Left: Search */}
+      <div className="flex items-center gap-3 flex-1 max-w-sm">
+        <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-full">
+          <Search className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+          <span className="text-sm text-gray-400 select-none">Rechercher…</span>
         </div>
       </div>
 
-      {/* Center: clock */}
-      <div className="hidden md:flex items-center">
-        <LiveClock />
-      </div>
-
       {/* Right */}
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1">
+        <LiveClock />
+
+        <div className="w-px h-5 bg-gray-200 mx-2" />
+
         {/* Notifications */}
-        <button onClick={() => setTab && setTab("orders")} aria-label="Commandes en attente"
-          className="relative w-9 h-9 rounded-xl flex items-center justify-center text-white/30 hover:text-white hover:bg-white/[0.07] transition-all cursor-pointer">
+        <button onClick={() => setTab && setTab("orders")}
+          className="relative w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
           <Bell className="w-4 h-4" />
           {pendingOrders > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-3.5 h-3.5 rounded-full text-[7px] flex items-center justify-center font-bold text-[#0a0f1e]"
-              style={{ background: "#4ade80", boxShadow: "0 0 8px rgba(74,222,128,0.6)" }}>
-              {pendingOrders > 9 ? "9+" : pendingOrders}
-            </span>
+            <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-white" />
           )}
         </button>
 
-        <button aria-label="Alertes"
-          className="relative w-9 h-9 rounded-xl flex items-center justify-center text-white/30 hover:text-white hover:bg-white/[0.07] transition-all cursor-pointer">
-          <AlertTriangle className="w-4 h-4" />
+        <button className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
+          <HelpCircle className="w-4 h-4" />
         </button>
 
-        <div className="w-px h-5 bg-white/[0.08] mx-1" />
+        <button className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
+          <Settings className="w-4 h-4" />
+        </button>
+
+        <div className="w-px h-5 bg-gray-200 mx-1" />
 
         {/* User dropdown */}
         <div className="relative">
           <button onClick={() => setUserMenuOpen(s => !s)}
-            className="flex items-center gap-2 rounded-xl px-2.5 py-1.5 hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/[0.15] transition-all cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.04)" }}>
-            <div className="w-6 h-6 rounded-full flex items-center justify-center text-[#0a0f1e] text-[10px] font-bold font-heading flex-shrink-0"
-              style={{ background: "linear-gradient(135deg,#4ade80,#22c55e)" }}>
+            className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 transition-all cursor-pointer">
+            <div className="w-7 h-7 rounded-full bg-green-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {user?.full_name?.charAt(0) || "A"}
             </div>
-            <span className="hidden sm:block text-xs text-white/50 font-body max-w-[90px] truncate">
+            <span className="hidden sm:block text-sm text-gray-700 font-medium max-w-[80px] truncate">
               {user?.full_name?.split(" ")[0]}
             </span>
-            <ChevronDown className="w-3 h-3 text-white/25" />
+            <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
           </button>
 
           {userMenuOpen && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
-              <div className="absolute right-0 top-full mt-2 w-52 rounded-2xl shadow-2xl border border-white/10 overflow-hidden z-50"
-                style={{ background: "rgba(8,13,28,0.95)", backdropFilter: "blur(24px)" }}>
-                <div className="px-4 py-3.5 border-b border-white/[0.07]">
-                  <p className="text-[12px] font-heading font-bold text-white">{user?.full_name}</p>
-                  <p className="text-[10px] text-white/30 font-body truncate mt-0.5">{user?.email}</p>
-                  <span className="inline-block mt-1.5 text-[8px] uppercase tracking-widest font-heading rounded-md px-2 py-0.5"
-                    style={{ color: "#4ade80", background: "rgba(74,222,128,0.12)", border: "1px solid rgba(74,222,128,0.25)" }}>
+              <div className="absolute right-0 top-full mt-1.5 w-52 rounded-xl shadow-lg border border-gray-200 bg-white overflow-hidden z-50">
+                <div className="px-4 py-3 border-b border-gray-100">
+                  <p className="text-sm font-semibold text-gray-900">{user?.full_name}</p>
+                  <p className="text-xs text-gray-500 truncate mt-0.5">{user?.email}</p>
+                  <span className="inline-block mt-1.5 text-[10px] font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                     PDG · Admin
                   </span>
                 </div>
                 <Link to="/" onClick={() => setUserMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-body text-white/40 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer">
-                  <Globe className="w-3.5 h-3.5" /> Site public
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">
+                  <Globe className="w-3.5 h-3.5 text-gray-400" /> Site public
                 </Link>
                 <button onClick={() => logout()}
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-body text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
                   <LogOut className="w-3.5 h-3.5" /> Déconnexion
                 </button>
               </div>

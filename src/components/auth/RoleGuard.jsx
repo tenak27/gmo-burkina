@@ -9,46 +9,77 @@ export default function RoleGuard({ roles, children }) {
 
   if (isLoadingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center"
-        style={{ background: "linear-gradient(135deg, #0A0F1E 0%, #0D1A14 55%, #050D0A 100%)" }}>
-        <div className="w-8 h-8 border-2 border-[#4ade80]/20 border-t-[#4ade80] rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-8 h-8 border-2 border-green-600/30 border-t-green-600 rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!isAuthenticated || !user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0A0F1E 0%, #0D1A14 55%, #050D0A 100%)" }}>
-        {/* Ambient glows */}
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 rounded-full opacity-10 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #4ade80 0%, transparent 70%)", filter: "blur(80px)" }} />
-        <div className="absolute bottom-1/3 right-1/3 w-64 h-64 rounded-full opacity-8 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #22d3ee 0%, transparent 70%)", filter: "blur(60px)" }} />
-
-        <div className="relative z-10 w-full max-w-sm rounded-3xl p-10 flex flex-col items-center"
-          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", backdropFilter: "blur(20px)" }}>
-          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
-            style={{ background: "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)", boxShadow: "0 0 40px rgba(74,222,128,0.4)" }}>
-            <Shield className="w-10 h-10 text-[#0a0f1e]" />
+      <div className="min-h-screen flex bg-gray-50">
+        {/* Fake sidebar for visual consistency */}
+        <div className="hidden lg:flex flex-col w-[220px] border-r border-gray-200 bg-white h-screen sticky top-0">
+          <div className="px-5 py-4 flex items-center gap-2.5 border-b border-gray-100">
+            <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center flex-shrink-0">
+              <Shield className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-gray-900 text-sm font-bold leading-tight">GMO ERP</p>
+              <p className="text-green-600 text-[10px] font-medium">Administration</p>
+            </div>
           </div>
-          <h2 className="font-heading text-2xl font-bold text-white mb-3">Accès restreint</h2>
-          <p className="font-body text-sm text-white/40 mb-8 leading-relaxed">
-            Vous devez être connecté pour accéder à cet espace.
-          </p>
-          <div className="flex gap-3 w-full">
-            <button
-              onClick={() => base44.auth.redirectToLogin(window.location.href)}
-              className="flex-1 flex items-center justify-center gap-2 font-heading font-bold text-sm px-5 py-3 rounded-xl text-[#0a0f1e] cursor-pointer transition-all hover:opacity-90"
-              style={{ background: "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)", boxShadow: "0 4px 20px rgba(74,222,128,0.35)" }}
-            >
-              <LogIn className="w-4 h-4" /> Se connecter
-            </button>
-            <Link to="/"
-              className="flex items-center justify-center gap-2 font-heading font-bold text-sm px-4 py-3 rounded-xl text-white/50 hover:text-white transition-all cursor-pointer"
-              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(245,196,0,0.35)" }}>
-              <ArrowLeft className="w-4 h-4" /> Accueil
-            </Link>
+          <div className="px-3 py-3 space-y-0.5">
+            {["Tableau de bord", "Utilisateurs", "Sécurité", "Authentification", "Paramètres", "Facturation"].map((item, i) => (
+              <div key={item} className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] transition-all
+                ${i === 3 ? "bg-green-50 text-green-700 font-semibold border-l-[3px] border-green-600" : "text-gray-500 border-l-[3px] border-transparent"}`}>
+                <Shield className={`w-4 h-4 flex-shrink-0 ${i === 3 ? "text-green-600" : "text-gray-300"}`} />
+                {item}
+              </div>
+            ))}
+          </div>
+          <div className="mt-auto p-3 border-t border-gray-100">
+            <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg">
+              <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs font-bold flex-shrink-0">
+                A
+              </div>
+              <p className="text-[12px] text-gray-500">Profile</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="flex-1 flex flex-col">
+          {/* Topbar */}
+          <div className="h-14 bg-white border-b border-gray-200 flex items-center justify-end px-6 gap-3">
+            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-64">
+              <span className="text-sm text-gray-400">Rechercher…</span>
+            </div>
+          </div>
+
+          {/* Access Restricted Card */}
+          <div className="flex-1 p-6">
+            <h1 className="text-xl font-bold text-gray-900 mb-5">Accès Restreint</h1>
+            <div className="bg-white border border-gray-200 rounded-xl p-12 flex flex-col items-center text-center max-w-lg">
+              <div className="w-20 h-20 rounded-2xl border-2 border-green-600 flex items-center justify-center mb-6">
+                <Shield className="w-10 h-10 text-green-600" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">Accès restreint</h2>
+              <p className="text-sm text-gray-500 mb-8 leading-relaxed">
+                Vous devez être connecté pour accéder à cet espace.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg cursor-pointer transition-colors">
+                  <LogIn className="w-4 h-4" /> Se connecter
+                </button>
+                <Link to="/"
+                  className="flex items-center gap-2 border border-gray-200 text-gray-600 hover:bg-gray-50 font-medium text-sm px-4 py-2.5 rounded-lg cursor-pointer transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Accueil
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -59,24 +90,17 @@ export default function RoleGuard({ roles, children }) {
     const ROLE_ROUTES = { pdg: "/admin", commercial: "/commercial", magasinier: "/magasinier", chauffeur: "/chauffeur", detaillant: "/detaillant", client: "/client" };
     const redirect = ROLE_ROUTES[user.role] || "/client";
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0A0F1E 0%, #0D1A14 55%, #050D0A 100%)" }}>
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 rounded-full opacity-8 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #ef4444 0%, transparent 70%)", filter: "blur(80px)" }} />
-
-        <div className="relative z-10 w-full max-w-sm rounded-3xl p-10 flex flex-col items-center"
-          style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", backdropFilter: "blur(20px)" }}>
-          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
-            style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)" }}>
-            <Shield className="w-10 h-10 text-red-400" />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-12 flex flex-col items-center text-center max-w-sm w-full shadow-sm">
+          <div className="w-16 h-16 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center mb-5">
+            <Shield className="w-8 h-8 text-red-500" />
           </div>
-          <h2 className="font-heading text-2xl font-bold text-white mb-3">Accès non autorisé</h2>
-          <p className="font-body text-sm text-white/40 mb-8 leading-relaxed">
-            Votre rôle <span className="text-white/70 font-semibold">({user.role})</span> ne permet pas d'accéder à cet espace.
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Accès non autorisé</h2>
+          <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+            Votre rôle <span className="font-semibold text-gray-700">({user.role})</span> ne permet pas d'accéder à cet espace.
           </p>
           <Link to={redirect}
-            className="w-full flex items-center justify-center gap-2 font-heading font-bold text-sm px-5 py-3 rounded-xl text-[#0a0f1e] cursor-pointer transition-all hover:opacity-90"
-            style={{ background: "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)", boxShadow: "0 4px 20px rgba(74,222,128,0.3)" }}>
+            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg cursor-pointer transition-colors w-full">
             Aller à mon espace →
           </Link>
         </div>

@@ -31,31 +31,9 @@ function buildOrderStatusData(orders) {
   const counts = {};
   (orders || []).forEach(o => { counts[o.status] = (counts[o.status] || 0) + 1; });
   const labels = { en_attente:"Attente", confirmee:"Confirmée", en_preparation:"Prépa.", en_livraison:"Livraison", livree:"Livrée", annulee:"Annulée" };
-  const colors = ["#F5C400","#4ade80","#8B5CF6","#22d3ee","#10B981","#EF4444"];
+  const colors = ["#F59E0B","#16A34A","#7C3AED","#0EA5E9","#10B981","#EF4444"];
   return Object.entries(counts).map(([k, v], i) => ({ name: labels[k] || k, value: v, color: colors[i % colors.length] }));
 }
-
-function MiniChart({ data, color = "#4ade80" }) {
-  const series = [{ data }];
-  const options = {
-    chart: { type: "area", sparkline: { enabled: true }, toolbar: { show: false }, background: "transparent" },
-    stroke: { curve: "smooth", width: 1.5, colors: [color] },
-    fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.25, opacityTo: 0 } },
-    tooltip: { enabled: false },
-  };
-  return <Chart type="area" series={series} options={options} width="70" height="24" />;
-}
-
-const GLASS_CARD = {
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid rgba(255,255,255,0.08)",
-  backdropFilter: "blur(12px)",
-};
-
-const GLASS_CARD_HOVER = {
-  background: "rgba(255,255,255,0.07)",
-  border: "1px solid rgba(74,222,128,0.2)",
-};
 
 function RecentActivity({ orders, invoices }) {
   const items = [
@@ -76,24 +54,24 @@ function RecentActivity({ orders, invoices }) {
   ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
 
   return (
-    <div className="rounded-2xl p-5" style={GLASS_CARD}>
-      <h3 className="font-heading text-sm font-bold text-white mb-4">Activité récente</h3>
+    <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+      <h3 className="text-sm font-semibold text-gray-900 mb-4">Activité récente</h3>
       {items.length === 0 ? (
-        <p className="text-xs text-white/25 font-body text-center py-6">Aucune activité</p>
+        <p className="text-sm text-gray-400 text-center py-6">Aucune activité</p>
       ) : (
         <div className="space-y-3">
           {items.map((item, i) => (
             <div key={`${item.id}-${i}`} className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 text-sm ${item.type === "order" ? "bg-[#F5C400]/10" : "bg-cyan-400/10"}`}>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-sm ${item.type === "order" ? "bg-amber-50" : "bg-blue-50"}`}>
                 {item.type === "order" ? "🛒" : "📄"}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-white/80 truncate font-body">{item.label}</p>
-                <p className="text-[10px] text-white/30 truncate font-body">{item.sub}</p>
+                <p className="text-sm font-medium text-gray-800 truncate">{item.label}</p>
+                <p className="text-xs text-gray-400 truncate">{item.sub}</p>
               </div>
               <div className="text-right flex-shrink-0">
-                {item.amount && <p className="text-xs font-bold text-[#4ade80]">{(Number(item.amount)/1000).toFixed(1)}k</p>}
-                <p className="text-[10px] text-white/25 font-body">{item.date ? new Date(item.date).toLocaleDateString("fr-FR", { day:"numeric", month:"short" }) : "—"}</p>
+                {item.amount && <p className="text-sm font-semibold text-green-600">{(Number(item.amount)/1000).toFixed(1)}k</p>}
+                <p className="text-xs text-gray-400">{item.date ? new Date(item.date).toLocaleDateString("fr-FR", { day:"numeric", month:"short" }) : "—"}</p>
               </div>
             </div>
           ))}
@@ -116,149 +94,98 @@ export default function DashboardVisual({ data, setTab }) {
   const monthRevenue = useMemo(() => buildRevenueData(invoices, entries), [invoices, entries]);
   const orderPie = useMemo(() => buildOrderStatusData(orders), [orders]);
 
-  const clientSparkline = useMemo(() => {
-    const now = new Date();
-    return Array.from({ length: 6 }, (_, i) => {
-      const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1);
-      return (clients || []).filter(c => {
-        const cd = new Date(c.created_date);
-        return cd.getMonth() === d.getMonth() && cd.getFullYear() === d.getFullYear();
-      }).length;
-    });
-  }, [clients]);
-
   const revenueSparkline = monthRevenue.map(m => m.revenus);
   const lastMonthRev = revenueSparkline[4] || 0;
   const thisMonthRev = revenueSparkline[5] || 0;
   const revTrend = lastMonthRev > 0 ? ((thisMonthRev - lastMonthRev) / lastMonthRev * 100).toFixed(0) : null;
 
   const kpis = [
-    {
-      label: "Chiffre d'affaires", value: totalRevenue > 0 ? `${(totalRevenue / 1000).toFixed(0)}k` : "0",
-      icon: DollarSign, accent: "#4ade80", glow: "rgba(74,222,128,0.25)",
-      sparkline: revenueSparkline, sparkColor: "#4ade80", trend: revTrend, tab: "accounting"
-    },
-    {
-      label: "Commandes en attente", value: pendingOrders,
-      icon: ShoppingCart, accent: pendingOrders > 0 ? "#F5C400" : "#4ade80", glow: pendingOrders > 0 ? "rgba(245,196,0,0.2)" : "rgba(74,222,128,0.15)",
-      tab: "orders"
-    },
-    {
-      label: "Factures impayées", value: pendingInvoices.length,
-      icon: FileText, accent: pendingInvoices.length > 0 ? "#ef4444" : "#4ade80", glow: pendingInvoices.length > 0 ? "rgba(239,68,68,0.2)" : "rgba(74,222,128,0.15)",
-      tab: "invoices"
-    },
-    {
-      label: "Devis validés", value: validatedQuotes,
-      icon: CheckCircle2, accent: "#22d3ee", glow: "rgba(34,211,238,0.2)",
-      tab: "invoices"
-    },
-    {
-      label: "Clients actifs", value: activeClients,
-      icon: Users, accent: "#a78bfa", glow: "rgba(167,139,250,0.2)",
-      sparkline: clientSparkline, sparkColor: "#a78bfa", tab: "clients"
-    },
-    {
-      label: "Alertes stock", value: lowStock.length,
-      icon: AlertTriangle, accent: lowStock.length > 0 ? "#fb923c" : "#4ade80", glow: lowStock.length > 0 ? "rgba(251,146,60,0.2)" : "rgba(74,222,128,0.15)",
-      tab: "stock"
-    },
-    {
-      label: "Créances actives", value: (receivables||[]).filter(r=>r.status!=="soldee").length,
-      icon: AlertCircle, accent: "#f87171", glow: "rgba(248,113,113,0.2)",
-      tab: "receivables"
-    },
-    {
-      label: "Paiements en attente", value: (payments||[]).filter(p=>p.status==="en_attente").length,
-      icon: CreditCard, accent: "#c084fc", glow: "rgba(192,132,252,0.2)",
-      tab: "payments"
-    },
+    { label: "Chiffre d'affaires", value: totalRevenue > 0 ? `${(totalRevenue / 1000).toFixed(0)}k FCFA` : "0 FCFA", icon: DollarSign, accent: "#16A34A", bg: "bg-green-50", iconColor: "text-green-600", trend: revTrend, tab: "accounting" },
+    { label: "Commandes en attente", value: pendingOrders, icon: ShoppingCart, accent: pendingOrders > 0 ? "#F59E0B" : "#16A34A", bg: pendingOrders > 0 ? "bg-amber-50" : "bg-green-50", iconColor: pendingOrders > 0 ? "text-amber-600" : "text-green-600", tab: "orders" },
+    { label: "Factures impayées", value: pendingInvoices.length, icon: FileText, accent: pendingInvoices.length > 0 ? "#EF4444" : "#16A34A", bg: pendingInvoices.length > 0 ? "bg-red-50" : "bg-green-50", iconColor: pendingInvoices.length > 0 ? "text-red-500" : "text-green-600", tab: "invoices" },
+    { label: "Devis validés", value: validatedQuotes, icon: CheckCircle2, accent: "#0EA5E9", bg: "bg-sky-50", iconColor: "text-sky-500", tab: "invoices" },
+    { label: "Clients actifs", value: activeClients, icon: Users, accent: "#7C3AED", bg: "bg-violet-50", iconColor: "text-violet-600", tab: "clients" },
+    { label: "Alertes stock", value: lowStock.length, icon: AlertTriangle, accent: lowStock.length > 0 ? "#F97316" : "#16A34A", bg: lowStock.length > 0 ? "bg-orange-50" : "bg-green-50", iconColor: lowStock.length > 0 ? "text-orange-500" : "text-green-600", tab: "stock" },
+    { label: "Créances actives", value: (receivables||[]).filter(r=>r.status!=="soldee").length, icon: AlertCircle, accent: "#EF4444", bg: "bg-red-50", iconColor: "text-red-500", tab: "receivables" },
+    { label: "Paiements en attente", value: (payments||[]).filter(p=>p.status==="en_attente").length, icon: CreditCard, accent: "#7C3AED", bg: "bg-violet-50", iconColor: "text-violet-600", tab: "payments" },
   ];
 
   const modules = [
-    { id:"clients",    label:"Clients",      icon:Users,        accent:"#4ade80",  count:(clients||[]).length },
-    { id:"suppliers",  label:"Fournisseurs", icon:UserCheck,    accent:"#a78bfa",  count:(suppliers||[]).length },
-    { id:"invoices",   label:"Factures",     icon:FileText,     accent:"#22d3ee",  count:(invoices||[]).length },
-    { id:"delivery",   label:"Livraisons",   icon:Truck,        accent:"#fb923c",  count:null },
-    { id:"products",   label:"Produits",     icon:Package,      accent:"#34d399",  count:(products||[]).length },
-    { id:"warehouses", label:"Entrepôts",    icon:Warehouse,    accent:"#67e8f9",  count:null },
-    { id:"stock",      label:"Mouvements",   icon:BarChart2,    accent:"#818cf8",  count:null },
-    { id:"accounting", label:"Comptabilité", icon:BookOpen,     accent:"#4ade80",  count:(entries||[]).length },
-    { id:"hr",         label:"RH",           icon:Users2,       accent:"#f9a8d4",  count:(employees||[]).length },
-    { id:"orders",     label:"Commandes",    icon:ShoppingCart, accent:"#F5C400",  count:(orders||[]).length },
-    { id:"drivers",    label:"Chauffeurs",   icon:Navigation,   accent:"#fdba74",  count:(drivers||[]).length },
-    { id:"payments",   label:"Paiements",    icon:CreditCard,   accent:"#c084fc",  count:(payments||[]).length },
-    { id:"receivables",label:"Créances",     icon:TrendingDown, accent:"#f87171",  count:(receivables||[]).length },
-    { id:"applications",label:"Candidatures",icon:Briefcase,   accent:"#38bdf8",  count:null },
-    { id:"users",      label:"Utilisateurs", icon:Shield,       accent:"#94a3b8",  count:(users||[]).length },
+    { id:"clients",    label:"Clients",      icon:Users,        bg:"bg-green-50",  ic:"text-green-600",  count:(clients||[]).length },
+    { id:"suppliers",  label:"Fournisseurs", icon:UserCheck,    bg:"bg-violet-50", ic:"text-violet-600", count:(suppliers||[]).length },
+    { id:"invoices",   label:"Factures",     icon:FileText,     bg:"bg-sky-50",    ic:"text-sky-500",    count:(invoices||[]).length },
+    { id:"delivery",   label:"Livraisons",   icon:Truck,        bg:"bg-orange-50", ic:"text-orange-500", count:null },
+    { id:"products",   label:"Produits",     icon:Package,      bg:"bg-emerald-50",ic:"text-emerald-600",count:(products||[]).length },
+    { id:"warehouses", label:"Entrepôts",    icon:Warehouse,    bg:"bg-cyan-50",   ic:"text-cyan-600",   count:null },
+    { id:"stock",      label:"Mouvements",   icon:BarChart2,    bg:"bg-indigo-50", ic:"text-indigo-600", count:null },
+    { id:"accounting", label:"Comptabilité", icon:BookOpen,     bg:"bg-green-50",  ic:"text-green-600",  count:(entries||[]).length },
+    { id:"hr",         label:"RH",           icon:Users2,       bg:"bg-pink-50",   ic:"text-pink-500",   count:(employees||[]).length },
+    { id:"orders",     label:"Commandes",    icon:ShoppingCart, bg:"bg-amber-50",  ic:"text-amber-600",  count:(orders||[]).length },
+    { id:"drivers",    label:"Chauffeurs",   icon:Navigation,   bg:"bg-orange-50", ic:"text-orange-500", count:(drivers||[]).length },
+    { id:"payments",   label:"Paiements",    icon:CreditCard,   bg:"bg-violet-50", ic:"text-violet-600", count:(payments||[]).length },
+    { id:"receivables",label:"Créances",     icon:TrendingDown, bg:"bg-red-50",    ic:"text-red-500",    count:(receivables||[]).length },
+    { id:"applications",label:"Candidatures",icon:Briefcase,   bg:"bg-sky-50",    ic:"text-sky-500",    count:null },
+    { id:"users",      label:"Utilisateurs", icon:Shield,       bg:"bg-slate-100", ic:"text-slate-500",  count:(users||[]).length },
   ];
 
   return (
-    <div className="space-y-5 animate-fade-up">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="font-heading text-xl font-bold text-white">Tableau de bord</h1>
-          <p className="text-[11px] text-white/30 font-body mt-0.5">Groupe Madina Oumarou · Vue en temps réel</p>
+          <h1 className="text-xl font-bold text-gray-900">Tableau de bord</h1>
+          <p className="text-sm text-gray-500 mt-0.5">Groupe Madina Oumarou · Vue en temps réel</p>
         </div>
         <div className="flex gap-2">
-          <Link to="/client" className="text-[10px] text-white/30 hover:text-[#4ade80] font-body px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors border border-white/[0.08] hover:border-[#4ade80]/30 cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.03)" }}>
-            <Eye className="w-3 h-3" /> Client
+          <Link to="/client" className="text-sm text-gray-500 hover:text-green-600 px-3 py-1.5 rounded-lg border border-gray-200 hover:border-green-300 bg-white flex items-center gap-1.5 transition-colors cursor-pointer">
+            <Eye className="w-3.5 h-3.5" /> Client
           </Link>
-          <Link to="/detaillant" className="text-[10px] text-white/30 hover:text-[#F5C400] font-body px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors border border-white/[0.08] hover:border-[#F5C400]/30 cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.03)" }}>
-            <Eye className="w-3 h-3" /> Détaillant
+          <Link to="/detaillant" className="text-sm text-gray-500 hover:text-amber-600 px-3 py-1.5 rounded-lg border border-gray-200 hover:border-amber-300 bg-white flex items-center gap-1.5 transition-colors cursor-pointer">
+            <Eye className="w-3.5 h-3.5" /> Détaillant
           </Link>
-          <Link to="/" className="text-[10px] text-white/30 hover:text-white font-body px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors border border-white/[0.08] hover:border-white/20 cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.03)" }}>
-            <Globe className="w-3 h-3" /> Site
+          <Link to="/" className="text-sm text-gray-500 hover:text-gray-900 px-3 py-1.5 rounded-lg border border-gray-200 bg-white flex items-center gap-1.5 transition-colors cursor-pointer">
+            <Globe className="w-3.5 h-3.5" /> Site
           </Link>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map(k => (
           <button key={k.label} onClick={() => setTab(k.tab)}
-            className="rounded-2xl p-4 text-left transition-all duration-200 hover:scale-[1.02] cursor-pointer group"
-            style={GLASS_CARD}>
+            className="bg-white border border-gray-200 rounded-xl p-4 text-left shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group">
             <div className="flex items-start justify-between mb-3">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: `${k.accent}18`, border: `1px solid ${k.accent}30` }}>
-                <k.icon className="w-4.5 h-4.5" style={{ color: k.accent }} />
+              <div className={`w-10 h-10 rounded-xl ${k.bg} flex items-center justify-center`}>
+                <k.icon className={`w-5 h-5 ${k.iconColor}`} />
               </div>
-              {k.sparkline && <div className="opacity-60"><MiniChart data={k.sparkline} color={k.sparkColor} /></div>}
-            </div>
-            <p className="text-[10px] text-white/35 font-body mb-1 leading-tight">{k.label}</p>
-            <div className="flex items-end justify-between">
-              <p className="font-heading text-xl font-bold" style={{ color: k.accent }}>{k.value}</p>
               {k.trend !== null && k.trend !== undefined && (
-                <span className={`text-[9px] font-bold ${Number(k.trend) >= 0 ? "text-[#4ade80]" : "text-red-400"}`}>
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${Number(k.trend) >= 0 ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}>
                   {Number(k.trend) >= 0 ? "+" : ""}{k.trend}%
                 </span>
               )}
             </div>
+            <p className="text-xs text-gray-500 mb-1">{k.label}</p>
+            <p className="text-xl font-bold" style={{ color: k.accent }}>{k.value}</p>
           </button>
         ))}
       </div>
 
       {/* Charts */}
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 rounded-2xl p-5" style={GLASS_CARD}>
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
           <div className="mb-4">
-            <h3 className="font-heading text-sm font-bold text-white">Revenus vs Dépenses</h3>
-            <p className="text-[10px] text-white/30 font-body mt-0.5">6 derniers mois</p>
+            <h3 className="text-sm font-semibold text-gray-900">Revenus vs Dépenses</h3>
+            <p className="text-xs text-gray-400 mt-0.5">6 derniers mois</p>
           </div>
           <RevenueChart data={monthRevenue} />
         </div>
 
-        <div className="rounded-2xl p-5" style={GLASS_CARD}>
-          <h3 className="font-heading text-sm font-bold text-white mb-0.5">Statuts commandes</h3>
-          <p className="text-[10px] text-white/30 font-body mb-3">{(orders||[]).length} total</p>
+        <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-gray-900 mb-0.5">Statuts commandes</h3>
+          <p className="text-xs text-gray-400 mb-3">{(orders||[]).length} total</p>
           {orderPie.length === 0 ? (
             <div className="flex items-center justify-center h-40">
-              <p className="text-xs text-white/20 font-body">Aucune commande</p>
+              <p className="text-sm text-gray-400">Aucune commande</p>
             </div>
           ) : (
             <OrderChart data={orderPie} />
@@ -270,18 +197,17 @@ export default function DashboardVisual({ data, setTab }) {
       <div className="grid lg:grid-cols-2 gap-4">
         <RecentActivity orders={orders} invoices={invoices} />
 
-        <div className="rounded-2xl p-5" style={GLASS_CARD}>
-          <h3 className="font-heading text-sm font-bold text-white mb-4">Accès rapide</h3>
+        <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-gray-900 mb-4">Accès rapide</h3>
           <div className="grid grid-cols-5 gap-2">
             {modules.map(m => (
               <button key={m.id} onClick={() => setTab(m.id)}
-                className="flex flex-col items-center p-2.5 rounded-xl transition-all cursor-pointer group hover:bg-white/[0.05]">
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center mb-1.5 transition-all group-hover:scale-110"
-                  style={{ background: `${m.accent}15`, border: `1px solid ${m.accent}25` }}>
-                  <m.icon className="w-3.5 h-3.5" style={{ color: m.accent }} />
+                className="flex flex-col items-center p-2 rounded-xl hover:bg-gray-50 transition-all cursor-pointer group">
+                <div className={`w-9 h-9 rounded-xl ${m.bg} flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform`}>
+                  <m.icon className={`w-4 h-4 ${m.ic}`} />
                 </div>
-                <p className="font-body text-[9px] text-white/40 leading-tight text-center group-hover:text-white/70 transition-colors">{m.label}</p>
-                {m.count !== null && <p className="text-[9px] font-bold mt-0.5" style={{ color: m.accent }}>{m.count}</p>}
+                <p className="text-[10px] text-gray-500 leading-tight text-center group-hover:text-gray-700 transition-colors">{m.label}</p>
+                {m.count !== null && <p className={`text-[10px] font-bold mt-0.5 ${m.ic}`}>{m.count}</p>}
               </button>
             ))}
           </div>
@@ -290,18 +216,17 @@ export default function DashboardVisual({ data, setTab }) {
 
       {/* Stock alert */}
       {lowStock.length > 0 && (
-        <div className="rounded-2xl p-4 border border-[#fb923c]/20" style={{ background: "rgba(251,146,60,0.07)" }}>
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="w-4 h-4 text-[#fb923c]" />
-            <p className="font-heading text-sm font-bold text-[#fb923c]">{lowStock.length} produit(s) en stock critique</p>
-            <button onClick={() => setTab("stock")} className="ml-auto text-[10px] text-[#fb923c]/70 font-body border border-[#fb923c]/30 px-2.5 py-1 rounded-lg hover:bg-[#fb923c]/10 transition-colors cursor-pointer">
+            <AlertTriangle className="w-4 h-4 text-orange-500" />
+            <p className="text-sm font-semibold text-orange-700">{lowStock.length} produit(s) en stock critique</p>
+            <button onClick={() => setTab("stock")} className="ml-auto text-xs text-orange-600 border border-orange-300 px-2.5 py-1 rounded-lg hover:bg-orange-100 transition-colors cursor-pointer bg-white">
               Gérer →
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
             {lowStock.slice(0, 6).map(p => (
-              <span key={p.id} className="text-[10px] text-[#fb923c]/70 px-2.5 py-1 rounded-full font-body border border-[#fb923c]/20"
-                style={{ background: "rgba(251,146,60,0.08)" }}>
+              <span key={p.id} className="text-xs text-orange-600 px-2.5 py-1 rounded-full bg-white border border-orange-200">
                 {p.name} ({p.stock_quantity})
               </span>
             ))}
@@ -319,14 +244,14 @@ function RevenueChart({ data }) {
   ];
   const options = {
     chart: { type: "area", toolbar: { show: false }, background: "transparent" },
-    colors: ["#4ade80", "#f87171"],
+    colors: ["#16A34A", "#EF4444"],
     stroke: { curve: "smooth", width: 2 },
-    fill: { type: "gradient", gradient: { opacityFrom: 0.15, opacityTo: 0 } },
-    xaxis: { categories: data.map(d => d.month), labels: { style: { fontSize: "11px", colors: "rgba(255,255,255,0.3)" } }, axisBorder: { show: false }, axisTicks: { show: false } },
-    yaxis: { labels: { style: { fontSize: "11px", colors: "rgba(255,255,255,0.3)" }, formatter: v => `${(v/1000).toFixed(0)}k` } },
-    grid: { borderColor: "rgba(255,255,255,0.06)", strokeDashArray: 4 },
-    tooltip: { theme: "dark", y: { formatter: v => `${Number(v).toLocaleString()} FCFA` } },
-    legend: { position: "top", horizontalAlign: "left", labels: { colors: "rgba(255,255,255,0.5)" } }
+    fill: { type: "gradient", gradient: { opacityFrom: 0.12, opacityTo: 0 } },
+    xaxis: { categories: data.map(d => d.month), labels: { style: { fontSize: "12px", colors: "#9CA3AF" } }, axisBorder: { show: false }, axisTicks: { show: false } },
+    yaxis: { labels: { style: { fontSize: "12px", colors: "#9CA3AF" }, formatter: v => `${(v/1000).toFixed(0)}k` } },
+    grid: { borderColor: "#F3F4F6", strokeDashArray: 4 },
+    tooltip: { theme: "light", y: { formatter: v => `${Number(v).toLocaleString()} FCFA` } },
+    legend: { position: "top", horizontalAlign: "left", labels: { colors: "#6B7280" }, fontSize: "13px" }
   };
   return <Chart type="area" series={series} options={options} height={200} />;
 }
@@ -337,9 +262,9 @@ function OrderChart({ data }) {
     chart: { type: "donut", background: "transparent" },
     colors: data.map(d => d.color),
     labels: data.map(d => d.name),
-    legend: { position: "bottom", fontSize: "11px", labels: { colors: "rgba(255,255,255,0.4)" } },
-    tooltip: { theme: "dark", y: { formatter: v => `${v} commande(s)` } },
-    plotOptions: { pie: { donut: { size: "65%", labels: { show: true, total: { show: true, label: "Total", color: "rgba(255,255,255,0.4)", fontSize: "11px" } } } } },
+    legend: { position: "bottom", fontSize: "12px", labels: { colors: "#6B7280" } },
+    tooltip: { theme: "light", y: { formatter: v => `${v} commande(s)` } },
+    plotOptions: { pie: { donut: { size: "65%", labels: { show: true, total: { show: true, label: "Total", color: "#9CA3AF", fontSize: "12px" } } } } },
     dataLabels: { enabled: false }
   };
   return <Chart type="donut" series={series} options={options} height={200} />;
