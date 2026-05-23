@@ -28,13 +28,15 @@ const TABS = [
   { id: "profil", label: "Mon Profil" },
 ];
 
-const SAMPLE_PRODUCTS = [
-  { name: "Huile MADINA", cat: "Alimentaire", price: "3 500 FCFA", unit: "bidon", img: "https://gmobfaso.com/assets/img/produits/huile-madina.jpg" },
-  { name: "Sucre GAZELLE", cat: "Alimentaire", price: "1 200 FCFA", unit: "sac 2kg", img: "https://gmobfaso.com/assets/img/produits/sucre-gazelle.jpg" },
-  { name: "Farine Blé du Sahel", cat: "Alimentaire", price: "2 800 FCFA", unit: "sac", img: "https://gmobfaso.com/assets/img/produits/farine.jpg" },
-  { name: "Savon BURKINA", cat: "Hygiène", price: "4 500 FCFA", unit: "carton", img: "https://gmobfaso.com/assets/img/produits/savon.jpg" },
-  { name: "Lait Condensé", cat: "Alimentaire", price: "950 FCFA", unit: "boîte", img: "" },
-  { name: "Tomate Concentrée", cat: "Alimentaire", price: "750 FCFA", unit: "boîte", img: "" },
+const CATALOGUE_PRODUCTS = [
+  { name: "Huile de coton SAVOR", cat: "Alimentaire", brand: "SN CITEC", unit: "bidon", img: "https://gmobfaso.com/assets/img/produits/huile.jpg", desc: "100% végétale, enrichie en vitamine A, sans cholestérol." },
+  { name: "Farine de blé", cat: "Alimentaire", brand: "Grand Moulin du Faso", unit: "sac", img: "https://gmobfaso.com/assets/img/produits/ble.jpg", desc: "Pure farine de blé tendre, plusieurs formats disponibles." },
+  { name: "Sucre blond GAZELLE & blanc CASCADE", cat: "Alimentaire", brand: "SN SOSUCO", unit: "sac / paquet", img: "https://gmobfaso.com/assets/img/produits/sucre.jpg", desc: "Sucre de canne sans aromatisants. Formats sac 50 kg, sachets 1 kg." },
+  { name: "Chewing-gum & Bonbons COBUFA", cat: "Confiserie", brand: "COBUFA", unit: "lot", img: "https://gmobfaso.com/assets/img/produits/chewingum.jpg", desc: "Saveurs fruitées variées. Chewing-gums ETALON et bonbons ZOODO." },
+  { name: "Bonbons ZOODO Gimgimbre", cat: "Confiserie", brand: "COBUFA", unit: "lot", img: "https://gmobfaso.com/assets/img/produits/zoodo-gimgimbre.jpg", desc: "Bonbons au gingembre, saveur unique et naturelle." },
+  { name: "Savon SN CITEC", cat: "Hygiène", brand: "SN CITEC", unit: "carton", img: "https://gmobfaso.com/assets/img/produits/savon.jpg", desc: "Hypoallergénique, bactéricide. Corps gras végétaux (karité, palme)." },
+  { name: "Produits AXE", cat: "Hygiène", brand: "AXE", unit: "lot", img: "https://gmobfaso.com/assets/img/produits/axe.jpg", desc: "Gamme complète déodorants & soins, distribution nationale." },
+  { name: "Aliments pour bétail", cat: "Agriculture", brand: "GMO Agri", unit: "sac", img: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg", desc: "Riches en protéines, vitamines et minéraux. Bovins, ovins, caprins." },
 ];
 
 function StatusBadge({ status }) {
@@ -452,31 +454,39 @@ function ClientDashboard() {
           <div>
             <div className="mb-5">
               <h2 className="font-heading text-xl font-bold text-obsidian">Catalogue produits</h2>
-              <p className="text-xs text-obsidian/40 font-body mt-0.5">Disponibles à la commande</p>
+              <p className="text-xs text-obsidian/40 font-body mt-0.5">{CATALOGUE_PRODUCTS.length} produits disponibles à la commande</p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {SAMPLE_PRODUCTS.map(p => (
-                <div key={p.name} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="aspect-square bg-gray-50 overflow-hidden">
-                    {p.img ? (
-                      <img src={p.img} alt={p.name} className="w-full h-full object-cover" onError={e => { e.target.style.display="none"; }} />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Package className="w-8 h-8 text-obsidian/10" />
-                      </div>
-                    )}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {CATALOGUE_PRODUCTS.map(p => (
+                <div key={p.name} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
+                  <div className="aspect-[4/3] bg-gray-50 overflow-hidden relative">
+                    <img src={p.img} alt={p.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <span className="absolute top-2 left-2 text-[9px] font-heading uppercase tracking-widest text-gmo-red bg-white/90 border border-gmo-red/20 px-2 py-0.5 rounded-full">
+                      {p.cat}
+                    </span>
                   </div>
-                  <div className="p-3">
-                    <p className="font-heading text-xs font-bold text-obsidian">{p.name}</p>
-                    <p className="text-[10px] text-obsidian/35 font-body">{p.cat} · {p.unit}</p>
-                    <p className="font-heading text-sm font-bold text-gmo-green mt-1.5">{p.price}</p>
-                    <a href="https://wa.me/22676211633" target="_blank" rel="noopener noreferrer"
-                      className="mt-2 w-full flex justify-center items-center gap-1.5 bg-obsidian text-white text-[10px] font-heading font-bold py-1.5 rounded-lg hover:bg-gmo-green transition-colors">
+                  <div className="p-3 flex flex-col flex-1">
+                    <p className="text-[9px] text-gmo-green/70 font-body uppercase tracking-widest mb-0.5">{p.brand}</p>
+                    <p className="font-heading text-xs font-bold text-obsidian leading-tight mb-1">{p.name}</p>
+                    <p className="text-[10px] text-obsidian/40 font-body leading-relaxed mb-3 flex-1">{p.desc}</p>
+                    <p className="text-[10px] text-obsidian/30 font-body mb-2">Unité : {p.unit}</p>
+                    <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%2C%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="w-full flex justify-center items-center gap-1.5 bg-obsidian text-white text-[10px] font-heading font-bold py-2 rounded-xl hover:bg-gmo-green transition-colors duration-200">
                       Commander
                     </a>
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="mt-6 bg-gmo-green/8 border border-gmo-green/20 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div>
+                <p className="font-heading text-sm font-bold text-obsidian">Besoin d'un devis groupé ?</p>
+                <p className="text-xs text-obsidian/45 font-body mt-0.5">Contactez notre équipe commerciale pour des tarifs grossiste</p>
+              </div>
+              <a href="tel:+22625331900" className="flex-shrink-0 flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-4 py-2.5 rounded-xl hover:bg-gmo-green/80 transition-colors">
+                <Phone className="w-3.5 h-3.5" /> Appeler
+              </a>
             </div>
           </div>
         )}
