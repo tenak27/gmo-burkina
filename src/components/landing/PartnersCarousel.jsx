@@ -1,12 +1,11 @@
 import React from "react";
 
 const PARTNERS = [
-  { name: "SN CITEC",  desc: "Huiles & corps gras",     color: "#1A7A2E" },
-  { name: "MABUCIG",   desc: "Tabac & distribution",     color: "#CC1717" },
-  { name: "SN SOSUCO", desc: "Sucre GAZELLE",            color: "#F5C400" },
-  { name: "COBIFA",    desc: "Confiserie",               color: "#0EA5E9" },
-  { name: "GMB",       desc: "Grand Moulin du Faso",     color: "#7C3AED" },
-  { name: "BRAKINA",   desc: "Boissons & brasserie",     color: "#EA580C" },
+  { name: "SN CITEC", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/sncitec_logo.png" },
+  { name: "Imperial Tobacco", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/imperial_tobacco.png" },
+  { name: "Manicure", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/manicure_logo.png" },
+  { name: "COBIFA", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/cobifa_logo.png" },
+  { name: "Brakina", logo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/brakina_logo.png" },
 ];
 
 const DOUBLED = [...PARTNERS, ...PARTNERS];
@@ -31,16 +30,14 @@ export default function PartnersCarousel() {
           {DOUBLED.map((partner, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex flex-col items-center justify-center bg-white border border-gray-100 rounded-2xl px-8 py-5 w-48 hover:shadow-md hover:border-gray-200 transition-all duration-300 cursor-default h-24"
+              className="flex-shrink-0 flex flex-col items-center justify-center bg-white border border-gray-100 rounded-2xl px-8 py-6 w-56 hover:shadow-md hover:border-gray-200 transition-all duration-300 cursor-default"
             >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center mb-2 font-heading font-bold text-white text-xs"
-                style={{ backgroundColor: partner.color }}
-              >
-                {partner.name.slice(0, 2)}
-              </div>
-              <p className="font-heading text-xs font-bold text-obsidian tracking-widest uppercase leading-tight text-center">{partner.name}</p>
-              <p className="font-body text-[9px] text-obsidian/35 mt-0.5 text-center">{partner.desc}</p>
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="h-16 w-auto object-contain mb-3"
+              />
+              <p className="font-heading text-xs font-bold text-obsidian tracking-widest uppercase text-center">{partner.name}</p>
             </div>
           ))}
         </div>
