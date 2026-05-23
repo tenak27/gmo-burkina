@@ -28,16 +28,7 @@ const TABS = [
   { id: "profil", label: "Mon Profil" },
 ];
 
-const CATALOGUE_PRODUCTS = [
-  { name: "Huile de coton SAVOR", cat: "Alimentaire", brand: "SN CITEC", unit: "bidon", img: "https://gmobfaso.com/assets/img/produits/huile.jpg", desc: "100% végétale, enrichie en vitamine A, sans cholestérol." },
-  { name: "Farine de blé", cat: "Alimentaire", brand: "Grand Moulin du Faso", unit: "sac", img: "https://gmobfaso.com/assets/img/produits/ble.jpg", desc: "Pure farine de blé tendre, plusieurs formats disponibles." },
-  { name: "Sucre blond GAZELLE & blanc CASCADE", cat: "Alimentaire", brand: "SN SOSUCO", unit: "sac / paquet", img: "https://gmobfaso.com/assets/img/produits/sucre.jpg", desc: "Sucre de canne sans aromatisants. Formats sac 50 kg, sachets 1 kg." },
-  { name: "Chewing-gum & Bonbons COBUFA", cat: "Confiserie", brand: "COBUFA", unit: "lot", img: "https://gmobfaso.com/assets/img/produits/chewingum.jpg", desc: "Saveurs fruitées variées. Chewing-gums ETALON et bonbons ZOODO." },
-  { name: "Bonbons ZOODO Gimgimbre", cat: "Confiserie", brand: "COBUFA", unit: "lot", img: "https://gmobfaso.com/assets/img/produits/zoodo-gimgimbre.jpg", desc: "Bonbons au gingembre, saveur unique et naturelle." },
-  { name: "Savon SN CITEC", cat: "Hygiène", brand: "SN CITEC", unit: "carton", img: "https://gmobfaso.com/assets/img/produits/savon.jpg", desc: "Hypoallergénique, bactéricide. Corps gras végétaux (karité, palme)." },
-  { name: "Produits AXE", cat: "Hygiène", brand: "AXE", unit: "lot", img: "https://gmobfaso.com/assets/img/produits/axe.jpg", desc: "Gamme complète déodorants & soins, distribution nationale." },
-  { name: "Aliments pour bétail", cat: "Agriculture", brand: "GMO Agri", unit: "sac", img: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg", desc: "Riches en protéines, vitamines et minéraux. Bovins, ovins, caprins." },
-];
+
 
 function StatusBadge({ status }) {
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.en_attente;
@@ -57,6 +48,8 @@ function ClientDashboard() {
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [clientInfo, setClientInfo] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
     if (user) fetchOrders();
@@ -65,6 +58,7 @@ function ClientDashboard() {
   useEffect(() => {
     if (tab === "commandes" && user && orders.length === 0) fetchOrders();
     if (tab === "profil" && user) fetchClientInfo();
+    if (tab === "catalogue") fetchProducts();
   }, [tab, user]);
 
   // Real-time subscription
@@ -93,6 +87,11 @@ function ClientDashboard() {
   const fetchClientInfo = async () => {
     const data = await base44.entities.Client.filter({ email: user.email }, "-created_date", 1);
     if (data && data.length > 0) setClientInfo(data[0]);
+  };
+
+  const fetchProducts = async () => {
+    const data = await base44.entities.Product.filter({ is_active: true }, "-updated_date", 100);
+    setProducts(data || []);
   };
 
   const totalSpent = orders.filter(o => o.status === "livree").reduce((s, o) => s + (o.total_amount || 0), 0);
@@ -453,41 +452,92 @@ function ClientDashboard() {
         {tab === "catalogue" && (
           <div>
             <div className="mb-5">
-              <h2 className="font-heading text-xl font-bold text-obsidian">Catalogue produits</h2>
-              <p className="text-xs text-obsidian/40 font-body mt-0.5">{CATALOGUE_PRODUCTS.length} produits disponibles à la commande</p>
+              <h2 className="font-heading text-xl font-bold text-obsidian">Notre Catalogue</h2>
+              <p className="text-xs text-obsidian/40 font-body mt-0.5">Nos produits selon les catégories</p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {CATALOGUE_PRODUCTS.map(p => (
-                <div key={p.name} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
-                  <div className="aspect-[4/3] bg-gray-50 overflow-hidden relative">
-                    <img src={p.img} alt={p.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                    <span className="absolute top-2 left-2 text-[9px] font-heading uppercase tracking-widest text-gmo-red bg-white/90 border border-gmo-red/20 px-2 py-0.5 rounded-full">
-                      {p.cat}
-                    </span>
-                  </div>
-                  <div className="p-3 flex flex-col flex-1">
-                    <p className="text-[9px] text-gmo-green/70 font-body uppercase tracking-widest mb-0.5">{p.brand}</p>
-                    <p className="font-heading text-xs font-bold text-obsidian leading-tight mb-1">{p.name}</p>
-                    <p className="text-[10px] text-obsidian/40 font-body leading-relaxed mb-3 flex-1">{p.desc}</p>
-                    <p className="text-[10px] text-obsidian/30 font-body mb-2">Unité : {p.unit}</p>
-                    <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%2C%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="w-full flex justify-center items-center gap-1.5 bg-obsidian text-white text-[10px] font-heading font-bold py-2 rounded-xl hover:bg-gmo-green transition-colors duration-200">
-                      Commander
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 bg-gmo-green/8 border border-gmo-green/20 rounded-2xl p-4 flex items-center justify-between gap-4">
-              <div>
-                <p className="font-heading text-sm font-bold text-obsidian">Besoin d'un devis groupé ?</p>
-                <p className="text-xs text-obsidian/45 font-body mt-0.5">Contactez notre équipe commerciale pour des tarifs grossiste</p>
+
+            {/* Categories filter */}
+            {products.length > 0 && (
+              <div className="mb-5 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedCategory("all")}
+                  className={`px-4 py-2 rounded-lg text-xs font-body font-semibold uppercase tracking-widest transition-all ${
+                    selectedCategory === "all"
+                      ? "bg-gmo-green text-white"
+                      : "bg-gray-100 text-obsidian/60 hover:bg-gray-200"
+                  }`}
+                >
+                  Tous
+                </button>
+                {[...new Set(products.map(p => p.category))].filter(Boolean).map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-4 py-2 rounded-lg text-xs font-body font-semibold uppercase tracking-widest transition-all ${
+                      selectedCategory === cat
+                        ? "bg-gmo-green text-white"
+                        : "bg-gray-100 text-obsidian/60 hover:bg-gray-200"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
               </div>
-              <a href="tel:+22625331900" className="flex-shrink-0 flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-4 py-2.5 rounded-xl hover:bg-gmo-green/80 transition-colors">
-                <Phone className="w-3.5 h-3.5" /> Appeler
-              </a>
-            </div>
+            )}
+
+            {products.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-12 text-center">
+                <Package className="w-10 h-10 text-obsidian/10 mx-auto mb-3" />
+                <p className="font-heading text-base font-semibold text-obsidian/40 mb-1">Aucun produit disponible</p>
+                <p className="text-sm text-obsidian/25 font-body">Le catalogue sera disponible bientôt</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+                {products
+                  .filter(p => selectedCategory === "all" || p.category === selectedCategory)
+                  .map(p => (
+                    <div key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
+                      <div className="aspect-[4/3] bg-gray-50 overflow-hidden relative">
+                        {p.image_url ? (
+                          <img src={p.image_url} alt={p.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-300">
+                            <Package className="w-8 h-8" />
+                          </div>
+                        )}
+                        <span className="absolute top-2 left-2 text-[9px] font-heading uppercase tracking-widest text-gmo-red bg-white/90 border border-gmo-red/20 px-2 py-0.5 rounded-full">
+                          {p.category || "Autre"}
+                        </span>
+                      </div>
+                      <div className="p-3 flex flex-col flex-1">
+                        <p className="font-heading text-xs font-bold text-obsidian leading-tight mb-1">{p.name}</p>
+                        {p.description && <p className="text-[10px] text-obsidian/40 font-body leading-relaxed mb-3 flex-1">{p.description}</p>}
+                        <div className="text-[10px] text-obsidian/30 font-body mb-2">
+                          <p>{p.unit || "Unité"}</p>
+                          {p.unit_price && <p className="text-gmo-green font-semibold">{p.unit_price.toLocaleString()} FCFA</p>}
+                        </div>
+                        <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%2C%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}`}
+                          target="_blank" rel="noopener noreferrer"
+                          className="w-full flex justify-center items-center gap-1.5 bg-obsidian text-white text-[10px] font-heading font-bold py-2 rounded-xl hover:bg-gmo-green transition-colors duration-200">
+                          Commander
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {products.length > 0 && (
+              <div className="mt-6 bg-gmo-green/8 border border-gmo-green/20 rounded-2xl p-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-heading text-sm font-bold text-obsidian">Besoin d'un devis groupé ?</p>
+                  <p className="text-xs text-obsidian/45 font-body mt-0.5">Contactez notre équipe commerciale pour des tarifs grossiste</p>
+                </div>
+                <a href="tel:+22625331900" className="flex-shrink-0 flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-4 py-2.5 rounded-xl hover:bg-gmo-green/80 transition-colors">
+                  <Phone className="w-3.5 h-3.5" /> Appeler
+                </a>
+              </div>
+            )}
           </div>
         )}
 
