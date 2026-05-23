@@ -11,7 +11,7 @@ const CITIES = [
   { name: "Pô", lat: 11.175, lng: -1.147, status: "active", role: "Point de Distribution", details: "Couverture de la région du Centre-Sud" },
   { name: "Boromo", lat: 11.7444, lng: -2.9286, status: "active", role: "Point de Distribution", details: "Couverture de la région des Balé" },
   { name: "Dori", lat: 14.0350, lng: -0.0350, status: "active", role: "Point de Distribution", details: "Couverture de la région du Sahel" },
-  { name: "Banfora", lat: 10.6338, lng: -4.7605, status: "coming", role: "Expansion prévue", details: "Ouverture prochaine" },
+  { name: "Banfora", lat: 10.6338, lng: -4.7605, status: "coming", role: "Expansion prévue", details: "Ouverture bientôt" },
 ];
 
 const INTERNATIONAL = [
