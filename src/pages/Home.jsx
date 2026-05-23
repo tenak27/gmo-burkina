@@ -5,15 +5,20 @@ import PartnersCarousel from "../components/landing/PartnersCarousel";
 import ServicesSection from "../components/landing/ServicesSection";
 import StatsSection from "../components/landing/StatsSection";
 import AboutSection from "../components/landing/AboutSection";
+import TeamSection from "../components/landing/TeamSection";
+import RSESection from "../components/landing/RSESection";
 import ProductsSection from "../components/landing/ProductsSection";
+import ProjectsSection from "../components/landing/ProjectsSection";
 import TestimonialsSection from "../components/landing/TestimonialsSection";
-
 import JourneyBanner from "../components/landing/JourneyBanner";
-import GallerySection from "../components/landing/GallerySection";
 import LogisticsPartnersSection from "../components/landing/LogisticsPartnersSection";
+import GallerySection from "../components/landing/GallerySection";
+import MediaSection from "../components/landing/MediaSection";
 import BlogSection from "../components/landing/BlogSection";
 import GMOFootSection from "../components/landing/GMOFootSection";
+import CareersSection from "../components/landing/CareersSection";
 import CoverageMap from "../components/landing/CoverageMap";
+import NewsletterSection from "../components/landing/NewsletterSection";
 import ContactSection from "../components/landing/ContactSection";
 import Footer from "../components/landing/Footer";
 
@@ -43,14 +48,20 @@ export default function Home() {
       <ServicesSection />
       <StatsSection />
       <AboutSection />
+      <TeamSection />
+      <RSESection />
       <ProductsSection />
+      <ProjectsSection />
       <TestimonialsSection />
       <JourneyBanner journeyImage={IMAGES.journey} />
       <LogisticsPartnersSection />
       <GallerySection images={galleryImages} />
+      <MediaSection />
       <BlogSection />
       <GMOFootSection />
+      <CareersSection />
       <CoverageMap />
+      <NewsletterSection />
       <ContactSection />
       <Footer />
     </div>

@@ -6,7 +6,12 @@ const NAV = [
   { label: "Accueil", id: "accueil" },
   { label: "Services", id: "services" },
   { label: "À Propos", id: "apropos" },
+  { label: "Notre Équipe", id: "equipe" },
+  { label: "RSE", id: "rse" },
   { label: "Produits", id: "produits" },
+  { label: "Projets", id: "projets" },
+  { label: "Médias", id: "medias" },
+  { label: "Carrières", id: "carrieres" },
   { label: "GMO Foot", id: "gmofoot" },
   { label: "Contact", id: "contact" },
 ];
