@@ -1,0 +1,59 @@
+{
+  "name": "Application",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom du candidat"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email du candidat"
+    },
+    "phone": {
+      "type": "string",
+      "description": "T\u00e9l\u00e9phone"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Poste vis\u00e9"
+    },
+    "department": {
+      "type": "string",
+      "description": "D\u00e9partement"
+    },
+    "message": {
+      "type": "string",
+      "description": "Lettre de motivation"
+    },
+    "cv_url": {
+      "type": "string",
+      "description": "URL du CV"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "nouveau",
+        "en_cours",
+        "entretien",
+        "refuse",
+        "accepte"
+      ],
+      "default": "nouveau",
+      "description": "Statut de la candidature"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes RH"
+    },
+    "is_spontaneous": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "phone"
+  ]
+}

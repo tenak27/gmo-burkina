@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Users, UserCheck, FileText, Truck, Package,
   Tag, Warehouse, BarChart2, BookOpen, Users2, ShoppingCart,
   Shield, Globe, Bell, LogOut, Menu, Search,
-  DollarSign, TrendingDown, Navigation, Settings, ChevronDown, X
+  DollarSign, TrendingDown, Navigation, Settings, X, Briefcase, TrendingUp
 } from "lucide-react";
 
 const GROUPS = [
@@ -54,8 +54,15 @@ const GROUPS = [
   {
     label: "RH & Admin",
     items: [
-      { id: "hr",    label: "RH",            icon: Users2 },
-      { id: "users", label: "Utilisateurs",   icon: Shield },
+      { id: "hr",           label: "RH",            icon: Users2 },
+      { id: "applications", label: "Candidatures",   icon: Briefcase, badgeKey: "applications" },
+      { id: "users",        label: "Utilisateurs",   icon: Shield },
+    ],
+  },
+  {
+    label: "Analytics",
+    items: [
+      { id: "stats", label: "Statistiques", icon: TrendingUp },
     ],
   },
 ];
@@ -99,7 +106,7 @@ function CommandPalette({ onNavigate, onClose }) {
   );
 }
 
-export default function AdminSidebar({ tab, setTab, pendingOrders }) {
+export default function AdminSidebar({ tab, setTab, pendingOrders, newApplications }) {
   const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
@@ -142,7 +149,8 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
             {group.items.map(item => {
               const Icon = item.icon;
               const isActive = tab === item.id;
-              const showBadge = item.badge && pendingOrders > 0;
+              const showOrderBadge = item.badge && pendingOrders > 0;
+              const showAppBadge = item.badgeKey === "applications" && newApplications > 0;
               return (
                 <button key={item.id} onClick={() => navigate(item.id)}
                   className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all duration-150 group mb-0.5
@@ -155,9 +163,14 @@ export default function AdminSidebar({ tab, setTab, pendingOrders }) {
                   <span className={`text-[13px] font-body flex-1 truncate ${isActive ? "font-semibold" : ""}`}>
                     {item.label}
                   </span>
-                  {showBadge && (
+                  {showOrderBadge && (
                     <span className="bg-[#4ade80] text-[#0f1117] text-[8px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                       {pendingOrders}
+                    </span>
+                  )}
+                  {showAppBadge && (
+                    <span className="bg-blue-400 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                      {newApplications}
                     </span>
                   )}
                 </button>

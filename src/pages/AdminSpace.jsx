@@ -19,6 +19,8 @@ import UsersAdminTab from "@/components/admin/UsersAdminTab";
 import DriversTab from "@/components/admin/DriversTab";
 import PaymentsTab from "@/components/admin/PaymentsTab";
 import ReceivablesTab from "@/components/admin/ReceivablesTab";
+import ApplicationsTab from "@/components/admin/ApplicationsTab";
+import StatsChartsPanel from "@/components/admin/StatsChartsPanel";
 
 function AdminDashboard() {
   const [tab, setTab] = useState("dashboard");
@@ -38,6 +40,7 @@ function AdminDashboard() {
   const [drivers, setDrivers] = useState([]);
   const [payments, setPayments] = useState([]);
   const [receivables, setReceivables] = useState([]);
+  const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { loadAll(); }, []);
@@ -56,7 +59,7 @@ function AdminDashboard() {
 
   const loadAll = async () => {
     setLoading(true);
-    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent, drv, pay, rec] = await Promise.all([
+    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent, drv, pay, rec, apps] = await Promise.all([
       base44.entities.User.list("-created_date", 100),
       base44.entities.Client.list("-created_date", 100),
       base44.entities.Supplier.list("-created_date", 100),
@@ -72,6 +75,7 @@ function AdminDashboard() {
       base44.entities.Driver.list("last_name", 50),
       base44.entities.Payment.list("-date", 100),
       base44.entities.Receivable.list("-created_date", 100),
+      base44.entities.Application.list("-created_date", 100),
     ]);
     setUsers(u || []);
     setClients(c || []);
@@ -88,10 +92,12 @@ function AdminDashboard() {
     setDrivers(drv || []);
     setPayments(pay || []);
     setReceivables(rec || []);
+    setApplications(apps || []);
     setLoading(false);
   };
 
   const pendingOrders = orders.filter(o => o.status === "en_attente").length;
+  const newApplications = applications.filter(a => a.status === "nouveau").length;
   const allData = { users, clients, suppliers, products, orders, invoices, employees, entries, drivers, payments, receivables };
 
   if (loading) {
@@ -107,7 +113,7 @@ function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#f0f2f8] flex">
-      <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} />
+      <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} />
       <main className="flex-1 min-w-0 overflow-x-hidden flex flex-col">
         <AdminTopbar pendingOrders={pendingOrders} setTab={setTab} />
         <div className="flex-1 px-5 sm:px-8 py-6">
@@ -128,6 +134,8 @@ function AdminDashboard() {
             {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
             {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
             {tab === "users"        && <UsersAdminTab users={users} />}
+            {tab === "applications" && <ApplicationsTab applications={applications} setApplications={setApplications} />}
+            {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
           </div>
           <p className="text-center text-[9px] text-gray-400 font-body mt-8">
             GMO Burkina ERP · <span className="text-gmo-green/60">IAM Technology</span>

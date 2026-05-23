@@ -74,20 +74,24 @@ function ApplicationModal({ job, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    // Save to DB
+    await base44.entities.Application.create({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      job_title: job?.title || "Candidature spontanée",
+      department: job?.department || "",
+      message: form.message,
+      cv_url: form.cv_url,
+      is_spontaneous: !job,
+      status: "nouveau",
+    });
+    // Send notification email
     await base44.integrations.Core.SendEmail({
       to: "rh@gmoburkina.com",
       from_name: "GMO Carrières",
       subject: `Candidature — ${job?.title || "Candidature Spontanée"}`,
-      body: `
-Nouvelle candidature reçue via le site GMO.
-
-Poste : ${job?.title || "Candidature spontanée"}
-Nom : ${form.name}
-Email : ${form.email}
-Téléphone : ${form.phone}
-Message : ${form.message}
-CV : ${form.cv_url || "Non fourni"}
-      `.trim(),
+      body: `Nouvelle candidature reçue via le site GMO.\n\nPoste : ${job?.title || "Candidature spontanée"}\nNom : ${form.name}\nEmail : ${form.email}\nTéléphone : ${form.phone}\nMessage : ${form.message}\nCV : ${form.cv_url || "Non fourni"}`.trim(),
     });
     setSubmitting(false);
     setDone(true);
