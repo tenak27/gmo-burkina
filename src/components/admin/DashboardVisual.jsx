@@ -1,15 +1,12 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import Chart from "react-apexcharts";
 import {
   Users, Package, ShoppingCart, TrendingUp, AlertTriangle,
   Eye, Globe, FileText, Truck, UserCheck, DollarSign,
   Warehouse, Users2, Tag, CheckCircle2, ArrowUpRight, ArrowDownRight,
   BarChart2, Activity, CreditCard, AlertCircle
 } from "lucide-react";
-import {
-  AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend
-} from "recharts";
 
 const MONTHS = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
 
@@ -38,24 +35,22 @@ function buildOrderStatusData(orders) {
   return Object.entries(counts).map(([k, v], i) => ({ name: labels[k] || k, value: v, color: colors[i % colors.length] }));
 }
 
-function Sparkline({ data, color = "#1A7A2E" }) {
-  if (!data || data.length < 2) return <div className="h-8 w-16 flex items-center justify-center"><span className="text-[9px] text-obsidian/20 font-body">—</span></div>;
-  const max = Math.max(...data, 1);
-  const points = data.map((v, i) => `${(i / (data.length - 1)) * 60},${20 - (v / max) * 18}`).join(" ");
-  const filled = `${points} 60,20 0,20`;
-  return (
-    <svg width="60" height="20" viewBox="0 0 60 20" className="overflow-visible">
-      <polygon points={filled} fill={color} fillOpacity="0.12" />
-      <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+function MiniChart({ data, color = "#3B82F6" }) {
+  const series = [{ data }];
+  const options = {
+    chart: { type: "area", sparkline: { enabled: true }, toolbar: { show: false } },
+    stroke: { curve: "smooth", width: 1.5, colors: [color] },
+    fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.3, opacityTo: 0 } },
+    tooltip: { enabled: false },
+  };
+  return <Chart type="area" series={series} options={options} width="60" height="20" />;
 }
 
 function RecentActivity({ orders, invoices }) {
   const items = [
     ...(orders || []).slice(0, 3).map(o => ({
       id: o.id, type: "order",
-      label: `Commande ${o.order_number || o.id?.slice(-6)}`,
+      label: `CMD ${o.order_number || o.id?.slice(-6)}`,
       sub: o.client_name,
       amount: o.total_amount,
       date: o.created_date,
@@ -63,7 +58,7 @@ function RecentActivity({ orders, invoices }) {
     })),
     ...(invoices || []).slice(0, 3).map(i => ({
       id: i.id, type: "invoice",
-      label: i.number || i.type,
+      label: `FAC ${i.number || i.id?.slice(-4)}`,
       sub: i.client_name,
       amount: i.total,
       date: i.created_date,
@@ -72,27 +67,24 @@ function RecentActivity({ orders, invoices }) {
   ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
-      <div className="flex items-center gap-2 mb-4">
-        <Activity className="w-4 h-4 text-obsidian/30" />
-        <h3 className="font-heading text-sm font-bold text-obsidian">Activité récente</h3>
-      </div>
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5">
+      <h3 className="font-heading text-sm font-bold text-gray-900 mb-4">Activité récente</h3>
       {items.length === 0 ? (
-        <p className="text-xs text-obsidian/25 font-body text-center py-4">Aucune activité récente</p>
+        <p className="text-xs text-gray-400 font-body text-center py-4">Aucune activité</p>
       ) : (
         <div className="space-y-2.5">
           {items.map((item, i) => (
-            <div key={`${item.id}-${i}`} className="flex items-center gap-3">
-              <span className={`text-[9px] font-body px-2 py-0.5 rounded-full flex-shrink-0 ${item.color}`}>
-                {item.type === "order" ? "CMD" : "FAC"}
+            <div key={`${item.id}-${i}`} className="flex items-center gap-3 text-xs">
+              <span className={`px-2 py-0.5 rounded text-[10px] font-bold flex-shrink-0 ${item.color}`}>
+                {item.type === "order" ? "🔹 CMD" : "📄 FAC"}
               </span>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-heading font-semibold text-obsidian truncate">{item.label}</p>
-                <p className="text-[10px] text-obsidian/35 font-body truncate">{item.sub}</p>
+                <p className="font-semibold text-gray-900 truncate">{item.label}</p>
+                <p className="text-gray-500 truncate">{item.sub}</p>
               </div>
               <div className="text-right flex-shrink-0">
-                {item.amount && <p className="text-xs font-heading font-bold text-obsidian">{Number(item.amount).toLocaleString()}</p>}
-                <p className="text-[9px] text-obsidian/30 font-body">{item.date ? new Date(item.date).toLocaleDateString("fr-FR", { day:"numeric", month:"short" }) : "—"}</p>
+                {item.amount && <p className="font-bold text-gray-900">{(Number(item.amount)/1000).toFixed(1)}k</p>}
+                <p className="text-gray-400">{item.date ? new Date(item.date).toLocaleDateString("fr-FR", { day:"numeric", month:"short" }) : "—"}</p>
               </div>
             </div>
           ))}
@@ -229,23 +221,20 @@ export default function DashboardVisual({ data, setTab }) {
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         {kpis.map(k => (
           <button key={k.label} onClick={() => setTab(k.tab)}
-            className={`bg-gradient-to-br ${k.bg} rounded-2xl p-4 border ${k.border} shadow-sm hover:shadow-lg card-glow transition-all duration-200 text-left group hover:-translate-y-1`}>
-            <div className="flex items-start justify-between mb-2">
-              <div className={`w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-200`}>
-                <k.icon className={`w-4 h-4 ${k.color}`} />
+            className={`bg-white rounded-lg p-4 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 text-left group hover:-translate-y-0.5`}>
+            <div className="flex items-start justify-between mb-3">
+              <div className={`w-10 h-10 ${k.bg} rounded-lg flex items-center justify-center`}>
+                <k.icon className={`w-5 h-5 ${k.color}`} />
               </div>
-              {k.sparkline && <Sparkline data={k.sparkline} color={k.sparkColor} />}
+              {k.sparkline && <div className="w-16"><MiniChart data={k.sparkline} color={k.sparkColor} /></div>}
             </div>
+            <p className="text-xs text-gray-600 font-body mb-1">{k.label}</p>
             <div className="flex items-end justify-between">
-              <div>
-                <p className={`font-heading text-2xl font-bold ${k.color}`}>{k.value}</p>
-                <p className="text-[11px] text-obsidian/45 font-body mt-0.5 leading-tight">{k.label}</p>
-              </div>
+              <p className={`font-heading text-xl font-bold ${k.color}`}>{k.value}</p>
               {k.trend !== null && k.trend !== undefined && (
-                <div className={`flex items-center gap-0.5 text-[10px] font-heading font-bold mb-1 ${Number(k.trend) >= 0 ? "text-green-500" : "text-red-500"}`}>
-                  {Number(k.trend) >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                  {Math.abs(Number(k.trend))}%
-                </div>
+                <span className={`text-[9px] font-bold ${Number(k.trend) >= 0 ? "text-green-600" : "text-red-600"}`}>
+                  {Number(k.trend) >= 0 ? "+" : ""}{k.trend}%
+                </span>
               )}
             </div>
           </button>
@@ -255,77 +244,43 @@ export default function DashboardVisual({ data, setTab }) {
       {/* Charts */}
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Revenue chart */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
+        <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="font-heading text-sm font-bold text-obsidian">Revenus vs Dépenses</h3>
-              <p className="text-[10px] text-obsidian/35 font-body">6 derniers mois</p>
+              <h3 className="font-heading text-sm font-bold text-gray-900">Revenus vs Dépenses</h3>
+              <p className="text-xs text-gray-500 font-body">6 derniers mois</p>
             </div>
-            <TrendingUp className="w-4 h-4 text-gmo-green/40" />
           </div>
-          <ResponsiveContainer width="100%" height={190}>
-            <AreaChart data={monthRevenue} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
-              <defs>
-                <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1A7A2E" stopOpacity={0.18} />
-                  <stop offset="95%" stopColor="#1A7A2E" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="depGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#CC1717" stopOpacity={0.12} />
-                  <stop offset="95%" stopColor="#CC1717" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-              <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 9, fill: "#9ca3af" }} axisLine={false} tickLine={false} tickFormatter={v => v > 0 ? `${(v/1000).toFixed(0)}k` : "0"} />
-              <Tooltip
-                contentStyle={{ fontSize: 11, borderRadius: 12, border: "1px solid #e5e7eb", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}
-                formatter={v => [`${Number(v).toLocaleString()} FCFA`]}
-              />
-              <Area type="monotone" dataKey="revenus" stroke="#1A7A2E" strokeWidth={2.5} fill="url(#revGrad)" name="Revenus" dot={{ r: 3, fill: "#1A7A2E", strokeWidth: 0 }} activeDot={{ r: 5 }} />
-              <Area type="monotone" dataKey="depenses" stroke="#CC1717" strokeWidth={2} fill="url(#depGrad)" name="Dépenses" dot={{ r: 2.5, fill: "#CC1717", strokeWidth: 0 }} activeDot={{ r: 4 }} />
-            </AreaChart>
-          </ResponsiveContainer>
+          <RevenueChart data={monthRevenue} />
         </div>
 
-        {/* Pie + Activity */}
-        <div className="space-y-4">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
-            <h3 className="font-heading text-sm font-bold text-obsidian mb-1">Statuts commandes</h3>
-            <p className="text-[10px] text-obsidian/35 font-body mb-3">{(orders||[]).length} total</p>
-            {orderPie.length === 0 ? (
-              <div className="flex items-center justify-center h-28"><p className="text-xs text-obsidian/20 font-body">Aucune commande</p></div>
-            ) : (
-              <ResponsiveContainer width="100%" height={140}>
-                <PieChart>
-                  <Pie data={orderPie} cx="50%" cy="50%" innerRadius={38} outerRadius={58} dataKey="value" paddingAngle={3}>
-                    {orderPie.map((entry, index) => <Cell key={index} fill={entry.color} />)}
-                  </Pie>
-                  <Tooltip contentStyle={{ fontSize: 10, borderRadius: 8 }} />
-                  <Legend iconType="circle" iconSize={6} formatter={v => <span style={{ fontSize: 9, color: "#6b7280" }}>{v}</span>} />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-          </div>
+        {/* Pie chart */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5">
+          <h3 className="font-heading text-sm font-bold text-gray-900 mb-1">Statuts commandes</h3>
+          <p className="text-xs text-gray-500 font-body mb-4">{(orders||[]).length} total</p>
+          {orderPie.length === 0 ? (
+            <div className="flex items-center justify-center h-40"><p className="text-xs text-gray-400 font-body">Aucune commande</p></div>
+          ) : (
+            <OrderChart data={orderPie} />
+          )}
         </div>
       </div>
 
-      {/* Activity + low stock row */}
+      {/* Activity + Modules */}
       <div className="grid lg:grid-cols-2 gap-4">
         <RecentActivity orders={orders} invoices={invoices} />
 
-        {/* Modules */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 card-hover">
-          <h3 className="font-heading text-sm font-bold text-obsidian mb-4">Accès rapide</h3>
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5">
+          <h3 className="font-heading text-sm font-bold text-gray-900 mb-4">Accès rapide</h3>
           <div className="grid grid-cols-3 gap-2">
             {modules.map(m => (
               <button key={m.id} onClick={() => setTab(m.id)}
-                className="flex flex-col items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group text-center">
-                <div className={`w-8 h-8 ${m.color} rounded-xl flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform duration-200`}>
+                className="flex flex-col items-center p-3 rounded-lg hover:bg-gray-50 transition-colors text-center">
+                <div className={`w-8 h-8 ${m.color} rounded-lg flex items-center justify-center mb-1.5`}>
                   <m.icon className="w-3.5 h-3.5 text-white" />
                 </div>
-                <p className="font-body text-[10px] text-obsidian/60 leading-tight">{m.label}</p>
-                {m.count !== null && <p className="text-[9px] text-obsidian/30 font-body">{m.count}</p>}
+                <p className="font-body text-[10px] text-gray-700 leading-tight">{m.label}</p>
+                {m.count !== null && <p className="text-[9px] text-gray-500 font-body">{m.count}</p>}
               </button>
             ))}
           </div>
@@ -334,18 +289,18 @@ export default function DashboardVisual({ data, setTab }) {
 
       {/* Stock alert */}
       {lowStock.length > 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="w-4 h-4 text-amber-600" />
-            <p className="font-heading text-sm font-bold text-amber-800">{lowStock.length} produit(s) en stock critique</p>
-            <button onClick={() => setTab("stock")} className="ml-auto text-[10px] text-amber-600 hover:text-amber-800 font-body border border-amber-300 px-2 py-0.5 rounded-lg transition-colors flex items-center gap-1">
-              Gérer <ArrowUpRight className="w-3 h-3" />
+            <AlertTriangle className="w-4 h-4 text-orange-600" />
+            <p className="font-heading text-sm font-bold text-orange-800">{lowStock.length} produit(s) en stock critique</p>
+            <button onClick={() => setTab("stock")} className="ml-auto text-xs text-orange-600 font-body border border-orange-300 px-2 py-0.5 rounded transition-colors">
+              Gérer
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
             {lowStock.slice(0, 6).map(p => (
-              <span key={p.id} className="text-[11px] bg-white border border-amber-200 text-amber-700 px-2.5 py-0.5 rounded-full font-body">
-                {p.name} — {p.stock_quantity} {p.unit}
+              <span key={p.id} className="text-xs bg-white border border-orange-200 text-orange-700 px-2 py-0.5 rounded-full font-body">
+                {p.name} ({p.stock_quantity})
               </span>
             ))}
           </div>
@@ -353,4 +308,38 @@ export default function DashboardVisual({ data, setTab }) {
       )}
     </div>
   );
+}
+
+// Revenue Chart Component
+function RevenueChart({ data }) {
+  const series = [
+    { name: "Revenus", data: data.map(d => d.revenus) },
+    { name: "Dépenses", data: data.map(d => d.depenses) }
+  ];
+  const options = {
+    chart: { type: "area", toolbar: { show: false }, sparkline: { enabled: false } },
+    colors: ["#3B82F6", "#EF4444"],
+    stroke: { curve: "smooth", width: 2 },
+    fill: { type: "gradient", gradient: { opacityFrom: 0.2, opacityTo: 0 } },
+    xaxis: { categories: data.map(d => d.month), labels: { style: { fontSize: "12px", colors: "#9CA3AF" } } },
+    yaxis: { labels: { style: { fontSize: "12px", colors: "#9CA3AF" }, formatter: v => `${(v/1000).toFixed(0)}k` } },
+    grid: { borderColor: "#E5E7EB" },
+    tooltip: { y: { formatter: v => `${Number(v).toLocaleString()} FCFA` } },
+    legend: { position: "top", horizontalAlign: "left" }
+  };
+  return <Chart type="area" series={series} options={options} height={220} />;
+}
+
+// Order Status Chart Component
+function OrderChart({ data }) {
+  const series = data.map(d => d.value);
+  const options = {
+    chart: { type: "donut" },
+    colors: data.map(d => d.color),
+    labels: data.map(d => d.name),
+    legend: { position: "bottom", fontSize: "12px" },
+    tooltip: { y: { formatter: v => `${v} commande(s)` } },
+    plotOptions: { pie: { donut: { size: "65%" } } }
+  };
+  return <Chart type="donut" series={series} options={options} height={200} />;
 }
