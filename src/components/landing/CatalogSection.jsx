@@ -98,7 +98,8 @@ export default function CatalogSection() {
 
   useEffect(() => {
     base44.entities.Product.filter({ is_active: true }, "name", 100)
-      .then(data => { setProducts(data || []); setLoading(false); });
+      .then(data => { setProducts(data || []); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   const categories = ["all", ...Object.keys(CATEGORY_LABELS).filter(cat =>
