@@ -34,10 +34,10 @@ const IMAGES = {
 
 export default function Home() {
   const galleryImages = [
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/23a3257c2_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/108998fdf_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b9c4b900f_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ffa9d3f74_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a1f3d31df_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e25cd957_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/054ba89e1_generated_image.png",
+    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e4235e14e_generated_image.png",
     "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b4292e3bb_generated_image.png",
     "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/74fa03193_generated_image.png",
   ];
