@@ -55,59 +55,59 @@ export default function TeamSection() {
   return (
     <section id="equipe" className="bg-concrete overflow-hidden">
       {/* Executive Board */}
-      <div className="py-24 lg:py-32 hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="text-center mb-16">
-            
-            <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red block mb-4">Notre équipe dirigeante</span>
-            <h2 className="font-heading text-3xl lg:text-5xl font-bold text-obsidian leading-tight mb-6">
-              DIRECTION
-              <br />
-              <span className="text-gmo-green">GÉNÉRALE</span>
-            </h2>
-            <p className="font-body text-base text-obsidian/55 max-w-2xl mx-auto leading-relaxed">
-              Une équipe de direction expérimentée, engagée à faire du Groupe Madina Oumarou le partenaire de référence de la distribution en Afrique de l'Ouest.
-            </p>
-            <div className="w-16 h-[2px] bg-gmo-red mx-auto mt-8" />
-          </motion.div>
+      
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {EXECUTIVE_BOARD.map((member, i) =>
-            <motion.div
-              key={member.role}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.12 }}
-              className="group relative bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
-              
-                <div className="aspect-[3/4] overflow-hidden relative">
-                  <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700" />
-                
-                  <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <span className="inline-block font-heading text-[9px] uppercase tracking-[0.3em] text-gmo-green bg-gmo-green/15 border border-gmo-green/30 px-2.5 py-1 rounded-full mb-2">
-                      {member.role}
-                    </span>
-                    <p className="font-heading text-base font-bold text-white leading-tight">{member.name}</p>
-                    <p className="font-body text-[11px] text-white/60 mt-0.5">{member.title}</p>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <p className="font-body text-xs text-obsidian/55 leading-relaxed">{member.description}</p>
-                </div>
-                <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-green w-0 group-hover:w-full transition-all duration-500" />
-              </motion.div>
-            )}
-          </div>
-        </div>
-      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
 
       {/* Operational Team */}
       <div ref={teamRef} className="bg-obsidian py-20 lg:py-28">
