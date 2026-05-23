@@ -2,20 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/lib/AuthContext";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
-import { Package, Warehouse, BarChart2, Truck, LogOut, Globe, Menu, X, AlertTriangle } from "lucide-react";
+import { Package, Warehouse, BarChart2, Truck, LogOut, Globe, Menu, X, AlertTriangle, Edit3 } from "lucide-react";
 import ProductsTab from "@/components/admin/ProductsTab";
 import WarehousesTab from "@/components/admin/WarehousesTab";
 import StockTab from "@/components/admin/StockTab";
 import DeliveryTab from "@/components/admin/DeliveryTab";
 import StockAlertsView from "@/components/magasinier/StockAlertsView";
+import StockUpdateView from "@/components/magasinier/StockUpdateView";
 import { Link } from "react-router-dom";
 
 const TABS = [
-  { id: "alerts", label: "Alertes Stock", icon: AlertTriangle },
-  { id: "products", label: "Produits", icon: Package },
-  { id: "warehouses", label: "Entrepôts", icon: Warehouse },
-  { id: "stock", label: "Mouvements", icon: BarChart2 },
-  { id: "delivery", label: "Bons livraison", icon: Truck },
+  { id: "alerts",    label: "Alertes Stock",   icon: AlertTriangle },
+  { id: "stockedit", label: "Màj Stocks",       icon: Edit3 },
+  { id: "products",  label: "Produits",         icon: Package },
+  { id: "warehouses",label: "Entrepôts",        icon: Warehouse },
+  { id: "stock",     label: "Mouvements",       icon: BarChart2 },
+  { id: "delivery",  label: "Bons livraison",   icon: Truck },
 ];
 
 function MagasinierDashboard() {
@@ -126,6 +128,7 @@ function MagasinierDashboard() {
       <main className="flex-1 min-w-0 px-4 sm:px-6 py-5">
         <div key={tab} className="page-enter">
           {tab === "alerts"     && <StockAlertsView products={products} onRefresh={() => base44.entities.Product.list("name", 100).then(p => setProducts(p || []))} loading={loading} />}
+          {tab === "stockedit"  && <StockUpdateView products={products} setProducts={setProducts} />}
           {tab === "products"   && <ProductsTab products={products} setProducts={setProducts} />}
           {tab === "warehouses" && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
           {tab === "stock"      && <StockTab movements={movements} setMovements={setMovements} />}

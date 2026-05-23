@@ -6,8 +6,9 @@ import { base44 } from "@/api/base44Client";
 import {
   Package, Clock, MapPin, ShoppingBag, Phone, LogOut,
   ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus,
-  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp
+  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp, FileText
 } from "lucide-react";
+import QuoteForm from "@/components/client/QuoteForm";
 import DeliveryProgress from "@/components/client/DeliveryProgress";
 import LogisticsTracker from "@/components/client/LogisticsTracker";
 import OrderProgressBar from "@/components/client/OrderProgressBar";
@@ -22,10 +23,11 @@ const STATUS_CONFIG = {
 };
 
 const TABS = [
-  { id: "accueil", label: "Accueil" },
+  { id: "accueil",   label: "Accueil" },
   { id: "commandes", label: "Commandes" },
   { id: "catalogue", label: "Catalogue" },
-  { id: "profil", label: "Mon Profil" },
+  { id: "devis",     label: "Devis" },
+  { id: "profil",    label: "Mon Profil" },
 ];
 
 
@@ -58,7 +60,7 @@ function ClientDashboard() {
   useEffect(() => {
     if (tab === "commandes" && user && orders.length === 0) fetchOrders();
     if (tab === "profil" && user) fetchClientInfo();
-    if (tab === "catalogue") fetchProducts();
+    if (tab === "catalogue" || tab === "devis") fetchProducts();
   }, [tab, user]);
 
   // Real-time subscription
@@ -446,6 +448,11 @@ function ClientDashboard() {
               <LogOut className="w-4 h-4" /> Se déconnecter
             </button>
           </div>
+        )}
+
+        {/* ── DEVIS ── */}
+        {tab === "devis" && (
+          <QuoteForm products={products.length > 0 ? products : []} user={user} />
         )}
 
         {/* ── CATALOGUE ── */}
