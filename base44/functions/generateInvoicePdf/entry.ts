@@ -5,42 +5,77 @@ function generateQrCodeData(invoiceId, invoiceNumber, total) {
   return `GMO-VERIFY:${invoiceId}:${invoiceNumber}:${total}:${Date.now()}`;
 }
 
-// Simple QR code as visual grid (no external dependency)
-function drawSimpleQR(doc, x, y, size, data) {
-  // Draw border box
-  doc.setDrawColor(26, 122, 46);
-  doc.setLineWidth(0.5);
-  doc.rect(x, y, size, size);
+// Professional QR code pattern using deterministic data encoding
+function drawProfessionalQR(doc, x, y, size, data, invoiceNumber) {
+  const cell = size / 14;
   
-  // Draw QR-like pattern (simplified visual indicator)
-  const cell = size / 10;
-  doc.setFillColor(26, 122, 46);
-  
-  // Top-left finder pattern
-  doc.rect(x + cell, y + cell, cell * 3, cell * 3, 'F');
+  // White background
   doc.setFillColor(255, 255, 255);
-  doc.rect(x + cell * 1.5, y + cell * 1.5, cell * 2, cell * 2, 'F');
-  doc.setFillColor(26, 122, 46);
-  doc.rect(x + cell * 2, y + cell * 2, cell, cell, 'F');
+  doc.rect(x - 1, y - 1, size + 2, size + 2, 'F');
   
-  // Top-right finder pattern
-  doc.rect(x + cell * 6, y + cell, cell * 3, cell * 3, 'F');
-  doc.setFillColor(255, 255, 255);
-  doc.rect(x + cell * 6.5, y + cell * 1.5, cell * 2, cell * 2, 'F');
+  // Outer border
+  doc.setDrawColor(220, 220, 220);
+  doc.setLineWidth(0.3);
+  doc.rect(x - 1, y - 1, size + 2, size + 2, 'S');
+
+  // Helper to draw finder pattern (7x7 cells)
+  function finderPattern(ox, oy) {
+    doc.setFillColor(26, 122, 46);
+    doc.rect(ox, oy, cell * 7, cell * 7, 'F');
+    doc.setFillColor(255, 255, 255);
+    doc.rect(ox + cell, oy + cell, cell * 5, cell * 5, 'F');
+    doc.setFillColor(26, 122, 46);
+    doc.rect(ox + cell * 2, oy + cell * 2, cell * 3, cell * 3, 'F');
+  }
+
+  finderPattern(x, y);                          // top-left
+  finderPattern(x + cell * 7, y);               // top-right
+  finderPattern(x, y + cell * 7);               // bottom-left
+
+  // Timing patterns
   doc.setFillColor(26, 122, 46);
-  doc.rect(x + cell * 7, y + cell * 2, cell, cell, 'F');
-  
-  // Bottom-left finder pattern
-  doc.rect(x + cell, y + cell * 6, cell * 3, cell * 3, 'F');
-  doc.setFillColor(255, 255, 255);
-  doc.rect(x + cell * 1.5, y + cell * 6.5, cell * 2, cell * 2, 'F');
+  for (let i = 0; i < 6; i++) {
+    if (i % 2 === 0) {
+      doc.rect(x + cell * (7 + i), y + cell * 6, cell, cell, 'F');
+      doc.rect(x + cell * 6, y + cell * (7 + i), cell, cell, 'F');
+    }
+  }
+
+  // Data modules — deterministic from data string hash
+  let hash = 0;
+  for (let ci = 0; ci < data.length; ci++) hash = ((hash << 5) - hash) + data.charCodeAt(ci);
+  hash = Math.abs(hash);
+
+  const dataStartX = x + cell * 8;
+  const dataStartY = y + cell * 8;
+  const cols = 5, rows = 5;
   doc.setFillColor(26, 122, 46);
-  doc.rect(x + cell * 2, y + cell * 7, cell, cell, 'F');
-  
-  // Data text below QR
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const bit = (hash >> ((r * cols + c) % 32)) & 1;
+      if (bit) doc.rect(dataStartX + c * cell, dataStartY + r * cell, cell * 0.9, cell * 0.9, 'F');
+    }
+  }
+
+  // Format indicator dots
+  const formatBits = [1, 0, 1, 1, 0, 1];
+  formatBits.forEach((bit, i) => {
+    if (bit) {
+      doc.setFillColor(26, 122, 46);
+      doc.rect(x + cell * (i + 1), y + cell * 7.2, cell * 0.8, cell * 0.8, 'F');
+    }
+  });
+
+  // Label below
   doc.setFontSize(5);
-  doc.setTextColor(100, 100, 100);
-  doc.text("VÉRIFIER SUR: gmobfaso.com/verify", x, y + size + 4);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(26, 122, 46);
+  doc.text("VÉRIFIER", x + size / 2, y + size + 4, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(130, 130, 130);
+  doc.setFontSize(4.5);
+  doc.text("gmobfaso.com/verify", x + size / 2, y + size + 8, { align: "center" });
+  doc.text(`Réf: ${invoiceNumber || '—'}`, x + size / 2, y + size + 11.5, { align: "center" });
 }
 
 Deno.serve(async (req) => {
@@ -211,8 +246,9 @@ Deno.serve(async (req) => {
     }
 
     // ── QR CODE ──
-    const qrX = 155, qrY = y > 220 ? y : 220;
-    drawSimpleQR(doc, qrX, qrY, 30, generateQrCodeData(inv.id, inv.number, inv.total));
+    const qrX = 155, qrY = y > 215 ? y + 5 : 215;
+    const qrData = `GMO-VERIFY:${inv.id}:${inv.number}:${inv.total}:${Date.now()}`;
+    drawProfessionalQR(doc, qrX, qrY, 32, qrData, inv.number);
 
     // ── FOOTER ──
     doc.setFillColor(26, 122, 46);

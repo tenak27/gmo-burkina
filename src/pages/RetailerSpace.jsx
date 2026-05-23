@@ -5,7 +5,8 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Package, Truck, LogOut, Star, RefreshCw, Phone,
-  ShoppingCart, CheckCircle2, Plus, Minus, Send, MapPin, Home, Download, FileText
+  ShoppingCart, CheckCircle2, Plus, Minus, Send, MapPin, Home, Download, FileText,
+  Eye, QrCode, Clock, CheckCircle
 } from "lucide-react";
 import ProductGallery from "@/components/retailer/ProductGallery";
 import LiveChatWidget from "@/components/retailer/LiveChatWidget";
@@ -16,6 +17,7 @@ const TABS = [
   { id: "catalogue", label: "Catalogue" },
   { id: "commande", label: "Commander" },
   { id: "livraisons", label: "Livraisons" },
+  { id: "documents", label: "📄 Documents" },
   { id: "zones", label: "🗺 Zones" },
 ];
 
@@ -24,6 +26,9 @@ function RetailerDashboard() {
   const [tab, setTab] = useState("accueil");
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+  const [deliveryNotes, setDeliveryNotes] = useState([]);
+  const [loadingDocs, setLoadingDocs] = useState(false);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [cart, setCart] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -33,8 +38,27 @@ function RetailerDashboard() {
 
   useEffect(() => {
     loadProducts();
-    if (user) loadOrders();
+    if (user) { loadOrders(); loadDocuments(); }
   }, [user]);
+
+  const loadDocuments = async () => {
+    if (!user) return;
+    setLoadingDocs(true);
+    const [inv, bons] = await Promise.all([
+      base44.entities.Invoice.filter({ client_id: user.id }, "-created_date", 50),
+      base44.entities.DeliveryNote.filter({ client_id: user.id }, "-created_date", 50),
+    ]);
+    // Also fetch by client_name as fallback
+    const [inv2, bons2] = await Promise.all([
+      base44.entities.Invoice.filter({ client_name: user.full_name }, "-created_date", 50),
+      base44.entities.DeliveryNote.filter({ client_name: user.full_name }, "-created_date", 50),
+    ]);
+    const allInv = [...(inv || []), ...(inv2 || [])].filter((v, i, a) => a.findIndex(x => x.id === v.id) === i);
+    const allBons = [...(bons || []), ...(bons2 || [])].filter((v, i, a) => a.findIndex(x => x.id === v.id) === i);
+    setInvoices(allInv);
+    setDeliveryNotes(allBons);
+    setLoadingDocs(false);
+  };
 
   // Real-time order updates
   useEffect(() => {
@@ -376,6 +400,145 @@ function RetailerDashboard() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── DOCUMENTS ── */}
+        {tab === "documents" && (
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-heading text-xl font-bold text-obsidian">Mes documents</h2>
+                <p className="text-xs text-obsidian/40 font-body mt-0.5">Devis, factures, bons de livraison et d'enlèvement</p>
+              </div>
+              <button onClick={loadDocuments} disabled={loadingDocs}
+                className="flex items-center gap-1.5 text-xs text-obsidian/50 border border-gray-200 rounded-xl px-3 py-2 hover:border-gmo-green hover:text-gmo-green transition-colors">
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingDocs ? "animate-spin" : ""}`} /> Actualiser
+              </button>
+            </div>
+
+            {loadingDocs ? (
+              <div className="flex justify-center py-12"><div className="w-6 h-6 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin" /></div>
+            ) : (
+              <div className="space-y-6">
+                {/* Devis & Factures */}
+                <div>
+                  <p className="text-xs font-semibold text-obsidian/40 uppercase tracking-wider mb-3">Devis & Factures ({invoices.length})</p>
+                  {invoices.length === 0 ? (
+                    <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
+                      <FileText className="w-8 h-8 text-obsidian/10 mx-auto mb-2" />
+                      <p className="text-sm text-obsidian/35 font-body">Aucun document</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {invoices.map(inv => {
+                        const typeLabel = { facture: "Facture", devis: "Devis", proforma: "Proforma" }[inv.type] || "Document";
+                        const statusCfg = {
+                          brouillon: { label: "Brouillon", cls: "text-gray-500 bg-gray-50 border-gray-200" },
+                          envoye: { label: "À valider", cls: "text-amber-600 bg-amber-50 border-amber-200" },
+                          paye: { label: "Payé ✓", cls: "text-green-700 bg-green-50 border-green-200" },
+                          partiel: { label: "Partiel", cls: "text-blue-600 bg-blue-50 border-blue-200" },
+                          annule: { label: "Annulé", cls: "text-red-600 bg-red-50 border-red-200" },
+                        }[inv.status] || { label: inv.status, cls: "text-gray-500 bg-gray-50 border-gray-200" };
+                        return (
+                          <div key={inv.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-gmo-green/10 flex items-center justify-center flex-shrink-0">
+                              <FileText className="w-5 h-5 text-gmo-green" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-[10px] font-heading font-bold text-gmo-green uppercase">{typeLabel}</span>
+                                <p className="font-heading text-sm font-bold text-obsidian">{inv.number || inv.id?.slice(-8)}</p>
+                              </div>
+                              <p className="text-xs text-obsidian/40 font-body">{inv.date ? new Date(inv.date).toLocaleDateString("fr-FR") : "—"}</p>
+                            </div>
+                            <div className="text-right flex-shrink-0 flex items-center gap-3">
+                              {inv.total && <p className="font-heading text-sm font-bold text-gmo-green">{Number(inv.total).toLocaleString()} FCFA</p>}
+                              <span className={`text-[10px] px-2 py-1 rounded-full border font-body ${statusCfg.cls}`}>{statusCfg.label}</span>
+                              <button
+                                onClick={async () => {
+                                  const res = await base44.functions.invoke('generateInvoicePdf', { invoiceId: inv.id });
+                                  if (res.data) {
+                                    const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
+                                    const a = document.createElement("a"); a.href = url; a.download = `GMO-${inv.number || inv.type}.pdf`; a.click();
+                                  }
+                                }}
+                                className="p-2 rounded-lg border border-gray-200 text-obsidian/40 hover:border-gmo-green hover:text-gmo-green transition-colors cursor-pointer">
+                                <Download className="w-3.5 h-3.5" />
+                              </button>
+                              {inv.type === "devis" && inv.status === "envoye" && (
+                                <a href={`/devis-validation?devis_id=${inv.id}`}
+                                  className="text-xs text-amber-600 border border-amber-200 bg-amber-50 px-2.5 py-1.5 rounded-lg hover:bg-amber-100 transition-colors font-heading font-bold">
+                                  Valider
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Bons de livraison / enlèvement */}
+                <div>
+                  <p className="text-xs font-semibold text-obsidian/40 uppercase tracking-wider mb-3">Bons de livraison & enlèvement ({deliveryNotes.length})</p>
+                  {deliveryNotes.length === 0 ? (
+                    <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
+                      <Truck className="w-8 h-8 text-obsidian/10 mx-auto mb-2" />
+                      <p className="text-sm text-obsidian/35 font-body">Aucun bon de transport</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {deliveryNotes.map(bon => {
+                        const bonLabel = { bon_livraison: "Bon de livraison", bon_enlevement: "Bon d'enlèvement", bon_commande: "Bon de commande" }[bon.type] || "Bon";
+                        const bonStatus = { brouillon: { label: "Brouillon", cls: "text-gray-500 bg-gray-50 border-gray-200" }, valide: { label: "Validé", cls: "text-blue-600 bg-blue-50 border-blue-200" }, livre: { label: "Livré ✓", cls: "text-green-700 bg-green-50 border-green-200" }, annule: { label: "Annulé", cls: "text-red-600 bg-red-50 border-red-200" } }[bon.status] || { label: bon.status, cls: "text-gray-500 bg-gray-50 border-gray-200" };
+                        return (
+                          <div key={bon.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                              <Truck className="w-5 h-5 text-blue-500" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-[10px] font-heading font-bold text-blue-500 uppercase">{bonLabel}</span>
+                                <p className="font-heading text-sm font-bold text-obsidian">{bon.number || bon.id?.slice(-8)}</p>
+                              </div>
+                              <p className="text-xs text-obsidian/40 font-body">{bon.date ? new Date(bon.date).toLocaleDateString("fr-FR") : "—"} · {bon.items?.length || 0} article(s)</p>
+                            </div>
+                            <div className="flex items-center gap-3 flex-shrink-0">
+                              <span className={`text-[10px] px-2 py-1 rounded-full border font-body ${bonStatus.cls}`}>{bonStatus.label}</span>
+                              <button
+                                onClick={async () => {
+                                  const res = await base44.functions.invoke('generateDeliveryPdf', { deliveryId: bon.id });
+                                  if (res.data) {
+                                    const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
+                                    const a = document.createElement("a"); a.href = url; a.download = `GMO-BON-${bon.number || bon.id}.pdf`; a.click();
+                                  }
+                                }}
+                                className="p-2 rounded-lg border border-gray-200 text-obsidian/40 hover:border-blue-500 hover:text-blue-500 transition-colors cursor-pointer">
+                                <Download className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Vérification QR */}
+                <div className="bg-gmo-green/5 border border-gmo-green/20 rounded-xl p-4 flex items-start gap-3">
+                  <QrCode className="w-5 h-5 text-gmo-green mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-heading text-sm font-bold text-gmo-green">Vérifier un document</p>
+                    <p className="text-xs text-obsidian/55 font-body mt-0.5">Tous vos documents contiennent un QR code d'authenticité. Scannez-le ou vérifiez en ligne.</p>
+                    <a href="/verify" className="mt-2 inline-block text-xs text-gmo-green font-heading font-semibold hover:underline">
+                      Vérifier un document →
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
           </div>

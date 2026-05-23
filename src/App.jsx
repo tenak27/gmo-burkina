@@ -13,6 +13,8 @@ import MagasinierSpace from './pages/MagasinierSpace';
 import CommercialSpace from './pages/CommercialSpace';
 import DriverSpace from './pages/DriverSpace';
 import Careers from './pages/Careers';
+import DevisValidation from './pages/DevisValidation';
+import VerifyDocument from './pages/VerifyDocument';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -59,6 +61,8 @@ const AuthenticatedApp = () => {
       <Route path="/commercial" element={<CommercialSpace />} />
       <Route path="/chauffeur" element={<DriverSpace />} />
       <Route path="/carrieres" element={<Careers />} />
+      <Route path="/devis-validation" element={<DevisValidation />} />
+      <Route path="/verify" element={<VerifyDocument />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

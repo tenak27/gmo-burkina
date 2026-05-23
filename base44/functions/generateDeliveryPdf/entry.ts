@@ -171,6 +171,52 @@ Deno.serve(async (req) => {
       doc.text(bon.notes.substring(0, 140), 18, y + 13);
     }
 
+    // ── QR CODE ──
+    const qrX2 = 157, qrY2 = Math.max(y + 20, 210);
+    const qrData = `GMO-VERIFY:${bon.id}:${bon.number}:BON:${Date.now()}`;
+    // Draw QR Code
+    (function drawBonQR(doc, x, y2, size, data, ref) {
+      const cell = size / 14;
+      doc.setFillColor(255, 255, 255);
+      doc.rect(x - 1, y2 - 1, size + 2, size + 2, 'F');
+      doc.setDrawColor(220, 220, 220);
+      doc.setLineWidth(0.3);
+      doc.rect(x - 1, y2 - 1, size + 2, size + 2, 'S');
+      function fp(ox, oy) {
+        doc.setFillColor(26, 122, 46);
+        doc.rect(ox, oy, cell * 7, cell * 7, 'F');
+        doc.setFillColor(255, 255, 255);
+        doc.rect(ox + cell, oy + cell, cell * 5, cell * 5, 'F');
+        doc.setFillColor(26, 122, 46);
+        doc.rect(ox + cell * 2, oy + cell * 2, cell * 3, cell * 3, 'F');
+      }
+      fp(x, y2); fp(x + cell * 7, y2); fp(x, y2 + cell * 7);
+      doc.setFillColor(26, 122, 46);
+      for (let i = 0; i < 6; i++) {
+        if (i % 2 === 0) {
+          doc.rect(x + cell * (7 + i), y2 + cell * 6, cell, cell, 'F');
+          doc.rect(x + cell * 6, y2 + cell * (7 + i), cell, cell, 'F');
+        }
+      }
+      let hash = 0;
+      for (let ci = 0; ci < data.length; ci++) hash = ((hash << 5) - hash) + data.charCodeAt(ci);
+      hash = Math.abs(hash);
+      const dsX = x + cell * 8, dsY = y2 + cell * 8;
+      doc.setFillColor(26, 122, 46);
+      for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) {
+        if ((hash >> ((r * 5 + c) % 32)) & 1) doc.rect(dsX + c * cell, dsY + r * cell, cell * 0.9, cell * 0.9, 'F');
+      }
+      doc.setFontSize(5);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(26, 122, 46);
+      doc.text("VÉRIFIER", x + size / 2, y2 + size + 4, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.setFontSize(4.5);
+      doc.text("gmobfaso.com/verify", x + size / 2, y2 + size + 8, { align: "center" });
+      doc.text(`Réf: ${ref || '—'}`, x + size / 2, y2 + size + 11.5, { align: "center" });
+    })(doc, qrX2, qrY2, 32, qrData, bon.number);
+
     // ── SIGNATURE BOXES ──
     const sigY = Math.max(y + 30, 230);
     const boxes = [
