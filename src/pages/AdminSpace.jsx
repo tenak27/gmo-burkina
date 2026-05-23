@@ -105,10 +105,12 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F4F7] flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F5F7] flex">
       <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} />
       <main className="flex-1 min-w-0 overflow-x-hidden">
-        <div className="max-w-full px-5 sm:px-8 py-7">
+        {/* Spacer for fixed topbar on desktop */}
+        <div className="hidden lg:block h-14" />
+        <div className="px-5 sm:px-8 py-6">
           <div key={tab} className="page-enter">
             {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
             {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
@@ -127,8 +129,8 @@ function AdminDashboard() {
             {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
             {tab === "users"        && <UsersAdminTab users={users} />}
           </div>
-          <p className="text-center text-[9px] text-obsidian/10 font-body mt-8">
-            GMO Burkina ERP · <span className="text-gmo-green/30">IAM Technology</span>
+          <p className="text-center text-[9px] text-gray-300 font-body mt-8">
+            GMO Burkina ERP · <span className="text-gmo-green/40">IAM Technology</span>
           </p>
         </div>
       </main>
