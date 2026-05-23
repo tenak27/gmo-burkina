@@ -102,46 +102,59 @@ function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#161618] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: "linear-gradient(135deg, #0A0F1E 0%, #0D1A14 55%, #050D0A 100%)" }}>
         <div className="text-center">
-          <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-xs text-white/30 font-body uppercase tracking-widest">Chargement ERP…</p>
+          <div className="w-10 h-10 border-2 border-[#4ade80]/20 border-t-[#4ade80] rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-xs text-white/20 font-body uppercase tracking-widest">Chargement ERP…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f0f2f8] flex">
-      <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} />
-      <main className="flex-1 min-w-0 overflow-x-hidden flex flex-col">
-        <AdminTopbar pendingOrders={pendingOrders} setTab={setTab} />
-        <div className="flex-1 px-5 sm:px-8 py-6">
-          <div key={tab} className="page-enter">
-            {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
-            {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
-            {tab === "suppliers"    && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
-            {tab === "invoices"     && <InvoicesTab invoices={invoices} setInvoices={setInvoices} clients={clients} products={products} />}
-            {tab === "delivery"     && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
-            {tab === "drivers"      && <DriversTab drivers={drivers} setDrivers={setDrivers} />}
-            {tab === "products"     && <ProductsTab products={products} setProducts={setProducts} />}
-            {tab === "categories"   && <CategoriesTab categories={categories} setCategories={setCategories} />}
-            {tab === "warehouses"   && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
-            {tab === "stock"        && <StockTab movements={movements} setMovements={setMovements} />}
-            {tab === "accounting"   && <AccountingTab entries={entries} setEntries={setEntries} />}
-            {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} />}
-            {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} />}
-            {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
-            {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
-            {tab === "users"        && <UsersAdminTab users={users} />}
-            {tab === "applications" && <ApplicationsTab applications={applications} setApplications={setApplications} />}
-            {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
+    <div className="min-h-screen flex"
+      style={{ background: "linear-gradient(135deg, #0A0F1E 0%, #0D1A14 55%, #050D0A 100%)" }}>
+      {/* Ambient glow orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-10"
+          style={{ background: "radial-gradient(circle, #4ade80 0%, transparent 70%)", filter: "blur(60px)" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-8"
+          style={{ background: "radial-gradient(circle, #22d3ee 0%, transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full opacity-5"
+          style={{ background: "radial-gradient(circle, #a78bfa 0%, transparent 70%)", filter: "blur(60px)" }} />
+      </div>
+      <div className="relative z-10 flex w-full">
+        <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} />
+        <main className="flex-1 min-w-0 overflow-x-hidden flex flex-col">
+          <AdminTopbar pendingOrders={pendingOrders} setTab={setTab} />
+          <div className="flex-1 px-5 sm:px-7 py-6">
+            <div key={tab} className="page-enter">
+              {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
+              {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
+              {tab === "suppliers"    && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
+              {tab === "invoices"     && <InvoicesTab invoices={invoices} setInvoices={setInvoices} clients={clients} products={products} />}
+              {tab === "delivery"     && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
+              {tab === "drivers"      && <DriversTab drivers={drivers} setDrivers={setDrivers} />}
+              {tab === "products"     && <ProductsTab products={products} setProducts={setProducts} />}
+              {tab === "categories"   && <CategoriesTab categories={categories} setCategories={setCategories} />}
+              {tab === "warehouses"   && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
+              {tab === "stock"        && <StockTab movements={movements} setMovements={setMovements} />}
+              {tab === "accounting"   && <AccountingTab entries={entries} setEntries={setEntries} />}
+              {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} />}
+              {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} />}
+              {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
+              {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
+              {tab === "users"        && <UsersAdminTab users={users} />}
+              {tab === "applications" && <ApplicationsTab applications={applications} setApplications={setApplications} />}
+              {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
+            </div>
+            <p className="text-center text-[9px] text-white/15 font-body mt-10">
+              GMO Burkina ERP · <span className="text-[#4ade80]/40">IAM Technology</span>
+            </p>
           </div>
-          <p className="text-center text-[9px] text-gray-400 font-body mt-8">
-            GMO Burkina ERP · <span className="text-gmo-green/60">IAM Technology</span>
-          </p>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
