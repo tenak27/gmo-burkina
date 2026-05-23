@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../components/landing/Navbar";
 import HeroSection from "../components/landing/HeroSection";
 import PartnersCarousel from "../components/landing/PartnersCarousel";
+import PresenceSection from "../components/landing/PresenceSection";
 import ServicesSection from "../components/landing/ServicesSection";
 import StatsSection from "../components/landing/StatsSection";
 import AboutSection from "../components/landing/AboutSection";
@@ -44,6 +45,7 @@ export default function Home() {
     <div className="bg-obsidian min-h-screen">
       <Navbar />
       <HeroSection />
+      <PartnersCarousel />
       <ServicesSection />
       <StatsSection />
       <AboutSection />
@@ -52,7 +54,7 @@ export default function Home() {
       <ProjectsSection />
       <TestimonialsSection />
       <RSESection />
-      <PartnersCarousel />
+      <PresenceSection />
       <LogisticsPartnersSection />
       <GallerySection images={galleryImages} />
       <JourneyBanner journeyImage={IMAGES.journey} />
