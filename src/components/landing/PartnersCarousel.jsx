@@ -1,31 +1,12 @@
 import React from "react";
 
 const PARTNERS = [
-  {
-    name: "SN CITEC",
-    logo: "https://gmobfaso.com/assets/img/partenaires/sn-citec.jpg",
-    desc: "Huiles & corps gras",
-  },
-  {
-    name: "MABUCIG",
-    logo: "https://gmobfaso.com/assets/img/partenaires/mabucig.jpg",
-    desc: "Tabac & distribution",
-  },
-  {
-    name: "SN SOSUCO",
-    logo: "https://gmobfaso.com/assets/img/partenaires/sn-sosuco.jpg",
-    desc: "Sucre GAZELLE",
-  },
-  {
-    name: "COBIFA",
-    logo: "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg",
-    desc: "Confiserie",
-  },
-  {
-    name: "GMB",
-    logo: "https://gmobfaso.com/assets/img/partenaires/gmb.jpg",
-    desc: "Grand Moulin du Faso",
-  },
+  { name: "SN CITEC",  desc: "Huiles & corps gras",     color: "#1A7A2E" },
+  { name: "MABUCIG",   desc: "Tabac & distribution",     color: "#CC1717" },
+  { name: "SN SOSUCO", desc: "Sucre GAZELLE",            color: "#F5C400" },
+  { name: "COBIFA",    desc: "Confiserie",               color: "#0EA5E9" },
+  { name: "GMB",       desc: "Grand Moulin du Faso",     color: "#7C3AED" },
+  { name: "BRAKINA",   desc: "Boissons & brasserie",     color: "#EA580C" },
 ];
 
 const DOUBLED = [...PARTNERS, ...PARTNERS];
@@ -50,13 +31,16 @@ export default function PartnersCarousel() {
           {DOUBLED.map((partner, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex items-center justify-center bg-white border border-gray-100 rounded-2xl px-8 py-6 w-48 hover:shadow-md hover:border-gray-200 transition-all duration-300 cursor-default h-24"
+              className="flex-shrink-0 flex flex-col items-center justify-center bg-white border border-gray-100 rounded-2xl px-8 py-5 w-48 hover:shadow-md hover:border-gray-200 transition-all duration-300 cursor-default h-24"
             >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="max-w-full max-h-full object-contain"
-              />
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center mb-2 font-heading font-bold text-white text-xs"
+                style={{ backgroundColor: partner.color }}
+              >
+                {partner.name.slice(0, 2)}
+              </div>
+              <p className="font-heading text-xs font-bold text-obsidian tracking-widest uppercase leading-tight text-center">{partner.name}</p>
+              <p className="font-body text-[9px] text-obsidian/35 mt-0.5 text-center">{partner.desc}</p>
             </div>
           ))}
         </div>
