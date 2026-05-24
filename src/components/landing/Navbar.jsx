@@ -113,20 +113,25 @@ export default function Navbar({ heroHeight }) {
             {/* Logo - Centered with scroll animation */}
             <motion.button 
               onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-              className="flex-1 mx-8 relative overflow-hidden"
+              className="flex-1 mx-6 relative overflow-hidden"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="animate-ticker-fast flex items-center w-full">
+              <div className="animate-ticker-fast flex items-center">
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
                   alt="GMO"
-                  className="h-[120px] w-auto object-contain flex-shrink-0 mx-8"
+                  className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
                 />
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
                   alt="GMO"
-                  className="h-[120px] w-auto object-contain flex-shrink-0 mx-8"
+                  className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
+                />
+                <img
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  alt="GMO"
+                  className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
                 />
               </div>
             </motion.button>
