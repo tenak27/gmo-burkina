@@ -101,7 +101,15 @@ export default function Navbar({ heroHeight }) {
         style={{ pointerEvents: "auto" }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-center h-18 py-3 relative">
+          <div className="flex items-center justify-between h-18 py-3">
+            {/* Hamburger - Left side */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 text-obsidian"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
             {/* Logo - Centered */}
             <button 
               onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
@@ -114,13 +122,32 @@ export default function Navbar({ heroHeight }) {
               />
             </button>
 
-            {/* Hamburger - Right side */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="absolute right-0 p-2 text-obsidian"
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Client Space / Login - Right side */}
+            <div className="flex items-center gap-3">
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to={dashLink?.to || "/client"}
+                    className="font-heading text-sm font-bold text-gmo-green hover:text-gmo-green/70 transition-colors"
+                  >
+                    {dashLink?.label || "Mon Espace"}
+                  </Link>
+                  <button
+                    onClick={() => logout()}
+                    className="font-heading text-sm font-bold text-gmo-red hover:text-gmo-red/70 transition-colors"
+                  >
+                    Déconnexion
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                  className="font-heading text-sm font-bold text-obsidian hover:text-gmo-green transition-colors"
+                >
+                  Connexion
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </motion.nav>
