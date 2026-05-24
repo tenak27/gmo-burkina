@@ -100,14 +100,27 @@ function ImageUploadField({ value, onChange, previewClass = "w-full h-32 object-
 }
 
 // ─── PRODUITS VITRINE ────────────────────────────────────────────────────────
+const CAT_LABELS = { cigarette: "Cigarette", alimentaire: "Alimentaire", hygiene: "Hygiène", elevage: "Elevage" };
+const CAT_COLORS = {
+  cigarette: "bg-orange-100 text-orange-700",
+  alimentaire: "bg-green-100 text-green-700",
+  hygiene: "bg-blue-100 text-blue-700",
+  elevage: "bg-amber-100 text-amber-700",
+};
+
 function ProduitsVitrineManager() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState({});
   const [search, setSearch] = useState("");
+  const [editOrder, setEditOrder] = useState(null); // product id being edited
+  const [orderVal, setOrderVal] = useState("");
 
   useEffect(() => {
-    base44.entities.Product.list("name", 200).then(r => { setProducts(r || []); setLoading(false); });
+    base44.entities.Product.list("display_order", 200).then(r => {
+      setProducts((r || []).filter(p => p.is_active !== false));
+      setLoading(false);
+    });
   }, []);
 
   const toggleVitrine = async (product) => {
@@ -118,18 +131,18 @@ function ProduitsVitrineManager() {
     setSaving(s => ({ ...s, [product.id]: false }));
   };
 
-  const CATEGORY_COLORS = {
-    alimentaire: "bg-green-100 text-green-700",
-    hygiene: "bg-blue-100 text-blue-700",
-    boisson: "bg-cyan-100 text-cyan-700",
-    cereale: "bg-amber-100 text-amber-700",
-    autre: "bg-gray-100 text-gray-500",
+  const saveOrder = async (product) => {
+    const val = parseInt(orderVal);
+    if (isNaN(val)) return setEditOrder(null);
+    await base44.entities.Product.update(product.id, { display_order: val });
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, display_order: val } : p).sort((a,b) => (a.display_order||999) - (b.display_order||999)));
+    setEditOrder(null);
   };
 
-  const filtered = products.filter(p =>
+  const sorted = [...products].sort((a,b) => (a.display_order ?? 999) - (b.display_order ?? 999));
+  const filtered = sorted.filter(p =>
     !search || p.name?.toLowerCase().includes(search.toLowerCase()) || p.category?.toLowerCase().includes(search.toLowerCase())
   );
-
   const visibleCount = products.filter(p => p.show_on_vitrine).length;
 
   return (
@@ -137,7 +150,7 @@ function ProduitsVitrineManager() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h3 className="font-heading text-base font-bold text-obsidian">Produits affichés sur le site vitrine</h3>
-          <p className="text-[11px] text-obsidian/40 font-body">{visibleCount} produit(s) visible(s) sur {products.length} au total</p>
+          <p className="text-[11px] text-obsidian/40 font-body">{visibleCount} visible(s) sur {products.length} · Classez par ordre d'affichage (petit = premier)</p>
         </div>
         <div className="relative">
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher…"
@@ -149,45 +162,84 @@ function ProduitsVitrineManager() {
       {loading ? (
         <div className="py-16 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-teal-500" /></div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filtered.map(product => {
-            const visible = !!product.show_on_vitrine;
-            return (
-              <div key={product.id}
-                className={`relative bg-white rounded-xl border-2 transition-all ${visible ? "border-gmo-green shadow-md" : "border-gray-100 shadow-sm opacity-60"}`}>
-                <div className="flex gap-3 p-3">
-                  {product.image_url ? (
-                    <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-50" onError={e => e.target.style.display="none"} />
-                  ) : (
-                    <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 text-gray-300" />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-heading text-xs font-bold text-obsidian truncate">{product.name}</p>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-body capitalize mt-0.5 inline-block ${CATEGORY_COLORS[product.category] || "bg-gray-100 text-gray-500"}`}>
-                      {product.category || "—"}
-                    </span>
-                    <p className="text-[10px] text-obsidian/40 font-body mt-1">{(product.unit_price || 0).toLocaleString()} FCFA / {product.unit || "—"}</p>
-                  </div>
-                </div>
-                <div className="border-t border-gray-100 px-3 py-2 flex items-center justify-between">
-                  <span className={`text-[10px] font-bold flex items-center gap-1 ${visible ? "text-gmo-green" : "text-obsidian/30"}`}>
-                    {visible ? <><Eye className="w-3 h-3" /> Visible sur le site</> : <><EyeOff className="w-3 h-3" /> Masqué</>}
-                  </span>
-                  <button
-                    onClick={() => toggleVitrine(product)}
-                    disabled={!!saving[product.id]}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer disabled:opacity-50 ${visible ? "bg-gmo-green" : "bg-gray-200"}`}>
-                    {saving[product.id]
-                      ? <Loader2 className="w-3 h-3 animate-spin mx-auto text-white" />
-                      : <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${visible ? "translate-x-6" : "translate-x-1"}`} />
-                    }
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-100">
+                <th className="text-left px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider w-16">Ordre</th>
+                <th className="text-left px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Produit</th>
+                <th className="text-left px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Catégorie</th>
+                <th className="text-left px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Unité</th>
+                <th className="text-right px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Prix U.</th>
+                <th className="text-center px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Visible</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.map(product => {
+                const visible = !!product.show_on_vitrine;
+                return (
+                  <tr key={product.id} className={`hover:bg-gray-50/50 transition-colors ${!visible ? "opacity-50" : ""}`}>
+                    {/* Ordre */}
+                    <td className="px-4 py-3">
+                      {editOrder === product.id ? (
+                        <input
+                          autoFocus
+                          type="number"
+                          value={orderVal}
+                          onChange={e => setOrderVal(e.target.value)}
+                          onBlur={() => saveOrder(product)}
+                          onKeyDown={e => e.key === "Enter" && saveOrder(product)}
+                          className="w-14 border border-gmo-green rounded-lg px-2 py-1 text-xs font-heading font-bold text-center focus:outline-none"
+                        />
+                      ) : (
+                        <button
+                          onClick={() => { setEditOrder(product.id); setOrderVal(String(product.display_order ?? 999)); }}
+                          className="w-10 h-8 rounded-lg bg-gray-100 hover:bg-gmo-green/10 hover:text-gmo-green text-xs font-heading font-bold text-obsidian/50 transition-all cursor-pointer"
+                          title="Cliquer pour modifier l'ordre"
+                        >
+                          {product.display_order ?? "—"}
+                        </button>
+                      )}
+                    </td>
+                    {/* Produit */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {product.image_url
+                          ? <img src={product.image_url} alt={product.name} className="w-10 h-10 object-cover rounded-lg border border-gray-100 flex-shrink-0" onError={e => e.target.style.display="none"} />
+                          : <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0"><Package className="w-4 h-4 text-gray-300" /></div>
+                        }
+                        <p className="font-heading text-sm font-bold text-obsidian">{product.name}</p>
+                      </div>
+                    </td>
+                    {/* Catégorie */}
+                    <td className="px-4 py-3">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-body font-semibold ${CAT_COLORS[product.category] || "bg-gray-100 text-gray-500"}`}>
+                        {CAT_LABELS[product.category] || product.category || "—"}
+                      </span>
+                    </td>
+                    {/* Unité */}
+                    <td className="px-4 py-3 text-xs font-body text-obsidian/60">{product.unit || "—"}</td>
+                    {/* Prix */}
+                    <td className="px-4 py-3 text-right text-sm font-heading font-bold text-obsidian">
+                      {product.unit_price ? `${Number(product.unit_price).toLocaleString()} F` : <span className="text-obsidian/25 font-normal text-xs">—</span>}
+                    </td>
+                    {/* Toggle vitrine */}
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        onClick={() => toggleVitrine(product)}
+                        disabled={!!saving[product.id]}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer disabled:opacity-50 ${visible ? "bg-gmo-green" : "bg-gray-200"}`}>
+                        {saving[product.id]
+                          ? <Loader2 className="w-3 h-3 animate-spin mx-auto text-white" />
+                          : <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${visible ? "translate-x-6" : "translate-x-1"}`} />
+                        }
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
