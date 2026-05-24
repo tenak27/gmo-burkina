@@ -65,7 +65,7 @@ function AdminDashboard() {
       base44.entities.User.list("-created_date", 100),
       base44.entities.Client.list("-created_date", 100),
       base44.entities.Supplier.list("-created_date", 100),
-      base44.entities.Product.list("name", 100),
+      base44.entities.Product.list("name", 200),
       base44.entities.Order.list("-created_date", 100),
       base44.entities.Invoice.list("-created_date", 100),
       base44.entities.DeliveryNote.list("-created_date", 100),
