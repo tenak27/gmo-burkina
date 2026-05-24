@@ -113,11 +113,11 @@ export default function Navbar({ heroHeight }) {
             {/* Logo - Centered with scroll animation */}
             <motion.button 
               onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-              className="flex-1 mx-4 relative overflow-hidden"
+              className="flex-1 mx-8 relative overflow-hidden"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="animate-ticker-fast flex items-center">
+              <div className="animate-ticker-fast flex items-center w-full">
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
                   alt="GMO"
