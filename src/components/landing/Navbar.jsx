@@ -200,7 +200,18 @@ export default function Navbar({ heroHeight }) {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="fixed top-0 left-0 z-50 w-full max-w-sm h-full bg-white shadow-2xl overflow-y-auto"
             >
-            {/* Navigation links - ALL menu items in hamburger */}
+              {/* Close button header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <span className="font-heading text-sm font-bold text-obsidian">Menu</span>
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className="p-2 text-obsidian/50 hover:text-obsidian hover:bg-gray-100 rounded-xl transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Navigation links - ALL menu items in hamburger */}
             <div className="px-6 py-4 space-y-1">
               {NAV_LINKS.map((link, i) => (
                 link.label === "Produits" ? (
