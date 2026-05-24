@@ -102,26 +102,7 @@ export default function Navbar({ heroHeight }) {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-18 py-3">
-            {/* Hamburger Mobile */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-obsidian"
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-
-            {/* Logo Centered */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-              <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-                <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
-                  alt="GMO"
-                  className="h-[15.4px] w-auto object-contain"
-                />
-              </button>
-            </div>
-
-            {/* Desktop links */}
+            {/* Desktop links - Left side */}
             <div className="hidden lg:flex items-center gap-6">
               {NAV_LINKS.map((link) => (
                 link.label === "Produits" ? (
@@ -171,6 +152,17 @@ export default function Navbar({ heroHeight }) {
               ))}
             </div>
 
+            {/* Logo Centered */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+              <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                <img
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  alt="GMO"
+                  className="h-[15.4px] w-auto object-contain"
+                />
+              </button>
+            </div>
+
             {/* Right CTAs - Desktop only */}
             <div className="hidden lg:flex items-center gap-3">
               {isAuthenticated && dashLink ? (
@@ -211,8 +203,13 @@ export default function Navbar({ heroHeight }) {
               </a>
             </div>
 
-            {/* Spacer for mobile layout */}
-            <div className="lg:hidden w-10" />
+            {/* Hamburger Mobile - Right side */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden p-2 text-obsidian"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
       </motion.nav>
