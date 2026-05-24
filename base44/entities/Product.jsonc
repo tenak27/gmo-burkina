@@ -48,6 +48,11 @@
     "is_active": {
       "type": "boolean",
       "default": true
+    },
+    "show_on_vitrine": {
+      "type": "boolean",
+      "default": false,
+      "description": "Afficher ce produit sur le site vitrine public"
     }
   },
   "required": [

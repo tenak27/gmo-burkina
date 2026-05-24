@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import {
-  Image, Briefcase, Users, Newspaper, Trophy, Globe,
+  Image, Briefcase, Users, Newspaper, Trophy, Globe, Package,
   Plus, Trash2, Edit2, X, Loader2, Eye, Upload,
-  MapPin, Calendar, ExternalLink, CheckCircle2, Archive
+  MapPin, Calendar, ExternalLink, CheckCircle2, Archive, EyeOff
 } from "lucide-react";
 
 const TABS = [
+  { id: "produits",    label: "Produits vitrine", icon: Package,   color: "from-teal-500 to-green-600" },
   { id: "galerie",     label: "Galerie",          icon: Image,     color: "from-violet-500 to-purple-600" },
   { id: "partenaires", label: "Partenaires",       icon: Users,     color: "from-amber-500 to-orange-500" },
-  { id: "news",        label: "Dernières nouvelles", icon: Newspaper, color: "from-pink-500 to-rose-600" },
+  { id: "news",        label: "Actualités",        icon: Newspaper, color: "from-pink-500 to-rose-600" },
   { id: "offres",      label: "Offres d'emploi",  icon: Briefcase, color: "from-blue-500 to-indigo-600" },
   { id: "fasofoot",    label: "Faso Foot",         icon: Trophy,    color: "from-green-500 to-emerald-600" },
 ];
@@ -92,6 +93,101 @@ function ImageUploadField({ value, onChange, previewClass = "w-full h-32 object-
           <button onClick={() => onChange("")} className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 cursor-pointer">
             <X className="w-3 h-3" />
           </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── PRODUITS VITRINE ────────────────────────────────────────────────────────
+function ProduitsVitrineManager() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState({});
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    base44.entities.Product.list("name", 200).then(r => { setProducts(r || []); setLoading(false); });
+  }, []);
+
+  const toggleVitrine = async (product) => {
+    const newVal = !product.show_on_vitrine;
+    setSaving(s => ({ ...s, [product.id]: true }));
+    await base44.entities.Product.update(product.id, { show_on_vitrine: newVal });
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, show_on_vitrine: newVal } : p));
+    setSaving(s => ({ ...s, [product.id]: false }));
+  };
+
+  const CATEGORY_COLORS = {
+    alimentaire: "bg-green-100 text-green-700",
+    hygiene: "bg-blue-100 text-blue-700",
+    boisson: "bg-cyan-100 text-cyan-700",
+    cereale: "bg-amber-100 text-amber-700",
+    autre: "bg-gray-100 text-gray-500",
+  };
+
+  const filtered = products.filter(p =>
+    !search || p.name?.toLowerCase().includes(search.toLowerCase()) || p.category?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const visibleCount = products.filter(p => p.show_on_vitrine).length;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h3 className="font-heading text-base font-bold text-obsidian">Produits affichés sur le site vitrine</h3>
+          <p className="text-[11px] text-obsidian/40 font-body">{visibleCount} produit(s) visible(s) sur {products.length} au total</p>
+        </div>
+        <div className="relative">
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher…"
+            className="border border-gray-200 rounded-xl px-3 py-2 text-xs font-body focus:outline-none focus:border-gmo-green w-44 pl-8" />
+          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs">🔍</span>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="py-16 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-teal-500" /></div>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {filtered.map(product => {
+            const visible = !!product.show_on_vitrine;
+            return (
+              <div key={product.id}
+                className={`relative bg-white rounded-xl border-2 transition-all ${visible ? "border-gmo-green shadow-md" : "border-gray-100 shadow-sm opacity-60"}`}>
+                <div className="flex gap-3 p-3">
+                  {product.image_url ? (
+                    <img src={product.image_url} alt={product.name} className="w-16 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-50" onError={e => e.target.style.display="none"} />
+                  ) : (
+                    <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6 text-gray-300" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-heading text-xs font-bold text-obsidian truncate">{product.name}</p>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-body capitalize mt-0.5 inline-block ${CATEGORY_COLORS[product.category] || "bg-gray-100 text-gray-500"}`}>
+                      {product.category || "—"}
+                    </span>
+                    <p className="text-[10px] text-obsidian/40 font-body mt-1">{(product.unit_price || 0).toLocaleString()} FCFA / {product.unit || "—"}</p>
+                  </div>
+                </div>
+                <div className="border-t border-gray-100 px-3 py-2 flex items-center justify-between">
+                  <span className={`text-[10px] font-bold flex items-center gap-1 ${visible ? "text-gmo-green" : "text-obsidian/30"}`}>
+                    {visible ? <><Eye className="w-3 h-3" /> Visible sur le site</> : <><EyeOff className="w-3 h-3" /> Masqué</>}
+                  </span>
+                  <button
+                    onClick={() => toggleVitrine(product)}
+                    disabled={!!saving[product.id]}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer disabled:opacity-50 ${visible ? "bg-gmo-green" : "bg-gray-200"}`}>
+                    {saving[product.id]
+                      ? <Loader2 className="w-3 h-3 animate-spin mx-auto text-white" />
+                      : <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${visible ? "translate-x-6" : "translate-x-1"}`} />
+                    }
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -652,7 +748,7 @@ export default function SiteVitrineTab() {
       </div>
 
       {/* Tab selector */}
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-6 gap-2">
         {TABS.map(t => {
           const Icon = t.icon;
           return (
@@ -674,6 +770,7 @@ export default function SiteVitrineTab() {
           {currentTab?.label}
         </div>
 
+        {activeTab === "produits"    && <ProduitsVitrineManager />}
         {activeTab === "galerie"     && <GalerieManager />}
         {activeTab === "partenaires" && <PartenairesManager />}
         {activeTab === "news"        && <NewsManager type="actualite" color="from-pink-500 to-rose-600" label="Dernières nouvelles" />}

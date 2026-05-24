@@ -1,85 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
-
-const CATEGORIES = ["Tous", "Alimentaire", "Confiserie", "Hygiène", "Élevage"];
-
-const PRODUCTS = [
-  {
-    name: "Huile de coton SAVOR",
-    category: "Alimentaire",
-    brand: "SAVOR · SN CITEC",
-    description:
-      "L'huile de coton raffinée SAVOR, enrichie en vitamine A, 100% huile végétale et sans cholestérol. SAVOR, la saveur enrichie de la bonne cuisine.",
-    details: ["Enrichie en vitamine A", "0% Cholestérol", "100% végétale", "Recommandée par les gourmets"],
-    image: "https://gmobfaso.com/assets/img/produits/huile.jpg",
-  },
-  {
-    name: "Farine de blé",
-    category: "Alimentaire",
-    brand: "Grand Moulin du Faso",
-    description:
-      "Pure farine de blé, résultat de la mouture de la graine du blé tendre. Produite par le Grand Moulin du Faso, distribuée par GMO au Burkina Faso.",
-    details: ["Pure farine de blé", "Grand Moulin du Faso", "Plusieurs formats disponibles"],
-    image: "https://gmobfaso.com/assets/img/produits/ble.jpg",
-  },
-  {
-    name: "Sucre blond GAZELLE & blanc CASCADE",
-    category: "Alimentaire",
-    brand: "GAZELLE · CASCADE · SN SOSUCO",
-    description:
-      "Sucre blond de canne sans aromatisants ni colorants, conditionné sous différents formats. Disponible en sucre blanc sous la dénomination CASCADE.",
-    details: ["Sac 50 kg granulé", "Sachets 1 kg (lot 25–50 kg)", "Morceaux GAZELLE 1 kg & 500 g", "Sucre blanc CASCADE morceaux 1 kg"],
-    image: "https://gmobfaso.com/assets/img/produits/sucre.jpg",
-  },
-  {
-    name: "Chewing-gum & Bonbons COBUFA",
-    category: "Confiserie",
-    brand: "ETALON · ZOODO · COBUFA",
-    description:
-      "Explosion de saveurs avec les chewing-gums et bonbons produits par COBUFA. Chaque pièce est une œuvre d'art de couleur et de texture fruitée.",
-    details: ["Produit par COBUFA", "Chewing-gums ETALON", "Bonbons ZOODO saveur fruitée", "Conditionnement varié"],
-    image: "https://gmobfaso.com/assets/img/produits/chewingum.jpg",
-  },
-  {
-    name: "Bonbons ZOODO Gimgimbre",
-    category: "Confiserie",
-    brand: "ZOODO · COBUFA",
-    description:
-      "Les bonbons ZOODO au gingembre, une recette unique alliant la douceur sucrée et la saveur épicée du gingembre pour une expérience gustative unique.",
-    details: ["Saveur gingembre unique", "Produit par COBUFA", "Pour tout âge", "Distribution nationale"],
-    image: "https://gmobfaso.com/assets/img/produits/zoodo-gimgimbre.jpg",
-  },
-  {
-    name: "Savon SN CITEC",
-    category: "Hygiène",
-    brand: "SN CITEC",
-    description:
-      "À partir de corps gras végétaux (karité, acide gras de palme), le savon SN CITEC hypoallergénique et bactéricide est recommandé pour les peaux sensibles.",
-    details: ["Hypoallergénique & bactéricide", "Corps gras végétaux (karité, palme)", "Multi-usages : linge & corps", "Recommandé par les dermatologues"],
-    image: "https://gmobfaso.com/assets/img/produits/savon.jpg",
-  },
-  {
-    name: "Produits AXE",
-    category: "Hygiène",
-    brand: "AXE · GMO",
-    description:
-      "Gamme complète de produits d'hygiène AXE distribués par GMO à travers tout le Burkina Faso. Déodorants, soins — disponibles dans toutes les villes desservies.",
-    details: ["Déodorants & soins corps", "Distribution nationale GMO", "Marque internationale de confiance"],
-    image: "https://gmobfaso.com/assets/img/produits/axe.jpg",
-  },
-  {
-    name: "Aliments pour bétail",
-    category: "Élevage",
-    brand: "GMO Agri",
-    description:
-      "Large gamme d'aliments pour bétail conçus pour les besoins nutritionnels spécifiques des bovins, moutons, chèvres. Riches en protéines, vitamines et minéraux.",
-    details: ["Riches en protéines & vitamines", "Formules spécialisées par animal", "Ingrédients de première qualité", "Service conseil inclus"],
-    image: "https://gmobfaso.com/assets/img/produits/produits-animaux.jpg",
-  },
-];
+import { base44 } from "@/api/base44Client";
 
 const WHATSAPP = "https://wa.me/22676211633";
+
+// Mappe category DB → label affiché
+const CAT_LABEL = { alimentaire: "Alimentaire", hygiene: "Hygiène", boisson: "Boisson", cereale: "Céréales", autre: "Autre" };
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
@@ -162,6 +89,29 @@ export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeCategory, setActiveCategory] = useState("Tous");
+  const [dbProducts, setDbProducts] = useState([]);
+
+  useEffect(() => {
+    base44.entities.Product.list("name", 200).then(data => {
+      setDbProducts((data || []).filter(p => p.show_on_vitrine && p.is_active !== false));
+    });
+  }, []);
+
+  // Normalise les produits DB pour correspondre à la structure ProductCard
+  const PRODUCTS = dbProducts.map(p => ({
+    name: p.name,
+    category: CAT_LABEL[p.category] || p.category || "Autre",
+    brand: p.description?.split(".")[0] || p.name,
+    description: p.description || "",
+    details: [
+      p.unit ? `Unité : ${p.unit}` : null,
+      p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : null,
+      p.stock_quantity ? `Stock disponible : ${p.stock_quantity}` : null,
+    ].filter(Boolean),
+    image: p.image_url || "",
+  }));
+
+  const categories = ["Tous", ...new Set(PRODUCTS.map(p => p.category))];
 
   const filtered = activeCategory === "Tous"
     ? PRODUCTS
@@ -214,7 +164,7 @@ export default function ProductsSection() {
           transition={{ delay: 0.5 }}
           className="flex flex-wrap gap-3 mb-12"
         >
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
