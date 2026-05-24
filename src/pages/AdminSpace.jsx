@@ -135,7 +135,7 @@ function AdminDashboard() {
             {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} clients={clients} />}
             {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
             {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
-            {tab === "users"        && <UsersAdminTab users={users} />}
+            {tab === "users"        && <UsersAdminTab users={users} setUsers={setUsers} />}
             {tab === "applications" && <ApplicationsTab applications={applications} setApplications={setApplications} />}
             {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
             {tab === "settings"     && <SettingsTab />}
