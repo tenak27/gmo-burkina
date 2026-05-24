@@ -612,10 +612,10 @@ function ClientDashboard() {
                           <p>{p.unit || "Unité"}</p>
                           {p.unit_price && <p className="text-gmo-green font-semibold">{p.unit_price.toLocaleString()} FCFA</p>}
                         </div>
-                        <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%2C%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}`}
+                        <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%20Burkina%2C%20je%20suis%20${encodeURIComponent(user?.full_name || "")}%20et%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}${p.unit_price ? "%20(%20" + encodeURIComponent(p.unit_price.toLocaleString()) + "%20FCFA)" : ""}%0AVeuillez%20me%20contacter%20pour%20finaliser%20ma%20commande.`}
                           target="_blank" rel="noopener noreferrer"
-                          className="w-full flex justify-center items-center gap-1.5 bg-obsidian text-white text-[10px] font-heading font-bold py-2 rounded-xl hover:bg-gmo-green transition-colors duration-200">
-                          Commander
+                          className="w-full flex justify-center items-center gap-1.5 bg-gmo-green text-white text-[10px] font-heading font-bold py-2.5 rounded-xl hover:bg-gmo-green/80 active:scale-95 transition-all duration-200 shadow-sm shadow-gmo-green/30">
+                          🛒 Commander via WhatsApp
                         </a>
                       </div>
                     </div>
