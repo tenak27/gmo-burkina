@@ -82,7 +82,7 @@ function ServiceCard({ service, index }) {
       className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl border border-gray-100 hover:border-gmo-green/20 transition-all duration-400 overflow-hidden">
       
       {/* Background gradient on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gmo-green/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl hidden" />
+      
 
       {/* Number */}
       <span className="absolute top-5 right-5 font-heading text-xs text-gray-100 tracking-widest font-bold">
