@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import EntityTable from "./EntityTable";
-import { Shield, Package, ShoppingCart, Truck, Users, Star } from "lucide-react";
+import { Shield, Package, ShoppingCart, Truck, Users, Star, UserPlus, X, Loader2, CheckCircle2 } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 const ROLE_CONFIG = {
   pdg: {
@@ -122,7 +123,90 @@ const badgeMap = {
   red: "bg-gmo-red/10 text-gmo-red", gray: "bg-gray-100 text-obsidian/50",
 };
 
+const INVITE_ROLES = [
+  { value: "pdg",        label: "PDG — Accès complet ERP" },
+  { value: "commercial", label: "Commercial — Ventes & CRM" },
+  { value: "magasinier", label: "Magasinier — Gestion stock" },
+  { value: "chauffeur",  label: "Chauffeur — Livraisons" },
+  { value: "detaillant", label: "Détaillant — Espace partenaire" },
+  { value: "user",       label: "Client — Espace client" },
+];
+
+function InviteModal({ onClose }) {
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("user");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleInvite = async () => {
+    if (!email.trim()) return setError("Veuillez saisir un email.");
+    setLoading(true);
+    setError("");
+    await base44.users.inviteUser(email.trim(), role);
+    setLoading(false);
+    setSuccess(true);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div className="flex items-center gap-2">
+            <UserPlus className="w-4 h-4 text-gmo-green" />
+            <h4 className="font-heading text-base font-bold text-obsidian">Inviter un utilisateur</h4>
+          </div>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer"><X className="w-5 h-5" /></button>
+        </div>
+
+        {success ? (
+          <div className="px-6 py-10 text-center">
+            <CheckCircle2 className="w-12 h-12 text-gmo-green mx-auto mb-3" />
+            <p className="font-heading text-base font-bold text-obsidian mb-1">Invitation envoyée !</p>
+            <p className="text-sm font-body text-obsidian/50 mb-6">{email} recevra un email d'invitation.</p>
+            <button onClick={onClose} className="bg-gmo-green text-white text-sm font-heading font-bold px-6 py-2.5 rounded-xl cursor-pointer hover:opacity-90">Fermer</button>
+          </div>
+        ) : (
+          <div className="px-6 py-5 space-y-4">
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Adresse email *</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => { setEmail(e.target.value); setError(""); }}
+                placeholder="exemple@email.com"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-body text-obsidian focus:outline-none focus:border-gmo-green transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Rôle</label>
+              <select
+                value={role}
+                onChange={e => setRole(e.target.value)}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-body text-obsidian focus:outline-none focus:border-gmo-green transition-colors"
+              >
+                {INVITE_ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+              </select>
+            </div>
+            {error && <p className="text-xs text-red-500 font-body">{error}</p>}
+            <div className="flex gap-3 pt-2">
+              <button onClick={onClose} className="flex-1 border border-gray-200 text-sm font-heading font-semibold py-2.5 rounded-xl cursor-pointer hover:bg-gray-50">Annuler</button>
+              <button onClick={handleInvite} disabled={loading}
+                className="flex-1 bg-gmo-green text-white text-sm font-heading font-bold py-2.5 rounded-xl cursor-pointer disabled:opacity-50 hover:opacity-90 flex items-center justify-center gap-2">
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+                {loading ? "Envoi…" : "Envoyer l'invitation"}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function UsersAdminTab({ users }) {
+  const [showInvite, setShowInvite] = useState(false);
+
   return (
     <div className="space-y-5 animate-fade-up">
       {/* Permissions matrix */}
@@ -156,12 +240,25 @@ export default function UsersAdminTab({ users }) {
       </div>
 
       {/* Users table */}
-      <EntityTable
-        title="Utilisateurs de l'application"
-        subtitle={`${users.length} comptes enregistrés`}
-        columns={COLUMNS}
-        rows={users}
-      />
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <div />
+          <button
+            onClick={() => setShowInvite(true)}
+            className="flex items-center gap-2 bg-gmo-green text-white text-xs font-heading font-bold px-4 py-2.5 rounded-xl shadow-md hover:opacity-90 cursor-pointer transition-all"
+          >
+            <UserPlus className="w-3.5 h-3.5" /> Inviter un utilisateur
+          </button>
+        </div>
+        <EntityTable
+          title="Utilisateurs de l'application"
+          subtitle={`${users.length} comptes enregistrés`}
+          columns={COLUMNS}
+          rows={users}
+        />
+      </div>
+
+      {showInvite && <InviteModal onClose={() => setShowInvite(false)} />}
     </div>
   );
 }
