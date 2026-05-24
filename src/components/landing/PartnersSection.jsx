@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 
-const FALLBACK_PARTNERS = ["SN CITEC", "MABUCIG", "SN SOSUCO", "COBIFA", "GMB"];
+const FALLBACK_PARTNERS = ["Impérial Tobacco", "GMF Alien de GMB", "SN CITEC", "SN SUSUCO", "COBIFA"];
 
 export default function PartnersSection() {
   const ref = useRef(null);
@@ -12,7 +12,9 @@ export default function PartnersSection() {
   useEffect(() => {
     base44.entities.Category.list("name", 200).then(data => {
       const dynamic = (data || []).filter(d => d.code === "PARTENAIRE");
-      setPartners(dynamic);
+      const order = ["Impérial Tobacco", "GMF Alien de GMB", "SN CITEC", "SN SUSUCO", "COBIFA"];
+      const sorted = dynamic.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
+      setPartners(sorted);
     }).catch(() => {});
   }, []);
 
