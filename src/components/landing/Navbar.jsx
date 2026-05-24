@@ -339,6 +339,43 @@ export default function Navbar({ heroHeight }) {
                 </motion.div>
               )}
 
+              {/* Login/Logout for mobile */}
+              {isAuthenticated ? (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="border-b border-gray-100"
+                >
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileOpen(false);
+                    }}
+                    className="w-full py-4 font-heading text-lg text-gmo-red hover:text-gmo-red/70 transition-colors text-left"
+                  >
+                    Déconnexion
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="border-b border-gray-100"
+                >
+                  <button
+                    onClick={() => {
+                      base44.auth.redirectToLogin(window.location.href);
+                      setMobileOpen(false);
+                    }}
+                    className="w-full py-4 font-heading text-lg text-obsidian hover:text-gmo-green transition-colors text-left"
+                  >
+                    Connexion
+                  </button>
+                </motion.div>
+              )}
+
               {/* WhatsApp button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
