@@ -1,0 +1,68 @@
+{
+  "name": "JournalEntry",
+  "type": "object",
+  "properties": {
+    "fiscal_year_id": {
+      "type": "string"
+    },
+    "journal_code": {
+      "type": "string",
+      "enum": [
+        "VT",
+        "AC",
+        "BQ",
+        "CS",
+        "OD",
+        "AN",
+        "CL"
+      ],
+      "default": "OD",
+      "description": "VT=Ventes, AC=Achats, BQ=Banque, CS=Caisse, OD=Op\u00e9rations Diverses, AN=\u00c0-nouveaux, CL=Cl\u00f4ture"
+    },
+    "entry_number": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "piece_ref": {
+      "type": "string",
+      "description": "R\u00e9f\u00e9rence pi\u00e8ce justificative"
+    },
+    "libelle": {
+      "type": "string"
+    },
+    "account_code": {
+      "type": "string"
+    },
+    "account_label": {
+      "type": "string"
+    },
+    "debit": {
+      "type": "number",
+      "default": 0
+    },
+    "credit": {
+      "type": "number",
+      "default": 0
+    },
+    "invoice_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brouillon",
+        "valide",
+        "cloture"
+      ],
+      "default": "brouillon"
+    }
+  },
+  "required": [
+    "date",
+    "account_code",
+    "libelle"
+  ]
+}

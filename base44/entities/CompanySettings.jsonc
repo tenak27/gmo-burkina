@@ -1,0 +1,86 @@
+{
+  "name": "CompanySettings",
+  "type": "object",
+  "properties": {
+    "raison_sociale": {
+      "type": "string"
+    },
+    "sigle": {
+      "type": "string"
+    },
+    "capital_social": {
+      "type": "string"
+    },
+    "ifu": {
+      "type": "string"
+    },
+    "rccm": {
+      "type": "string"
+    },
+    "cnss": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "bp": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "default": "Burkina Faso"
+    },
+    "regime_fiscal": {
+      "type": "string"
+    },
+    "direction_fiscale": {
+      "type": "string"
+    },
+    "tva_default": {
+      "type": "number",
+      "default": 18
+    },
+    "taux_bic": {
+      "type": "number",
+      "default": 2
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "bank_name": {
+      "type": "string"
+    },
+    "bank_account": {
+      "type": "string"
+    },
+    "bank_rib": {
+      "type": "string"
+    },
+    "invoice_footer": {
+      "type": "string"
+    },
+    "invoice_prefix": {
+      "type": "string",
+      "default": "FAC"
+    },
+    "devis_prefix": {
+      "type": "string",
+      "default": "DEV"
+    }
+  },
+  "required": [
+    "raison_sociale"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "FiscalYear",
+  "type": "object",
+  "properties": {
+    "year": {
+      "type": "number",
+      "description": "Exercice ex: 2026"
+    },
+    "label": {
+      "type": "string",
+      "description": "Ex: Exercice 2026"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ouvert",
+        "cloture"
+      ],
+      "default": "ouvert"
+    },
+    "closed_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "closed_by": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "year",
+    "start_date",
+    "end_date"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "AccountPlan",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Num\u00e9ro de compte OHADA ex: 411000"
+    },
+    "label": {
+      "type": "string",
+      "description": "Libell\u00e9 du compte"
+    },
+    "class": {
+      "type": "string",
+      "description": "Classe OHADA 1-9"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "actif",
+        "passif",
+        "charge",
+        "produit",
+        "r\u00e9sultat"
+      ],
+      "default": "charge"
+    },
+    "nature": {
+      "type": "string",
+      "enum": [
+        "bilan",
+        "r\u00e9sultat",
+        "hors_bilan"
+      ],
+      "default": "r\u00e9sultat"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "parent_code": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "label"
+  ]
+}

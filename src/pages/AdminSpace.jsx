@@ -129,7 +129,7 @@ function AdminDashboard() {
             {tab === "categories"   && <CategoriesTab categories={categories} setCategories={setCategories} />}
             {tab === "warehouses"   && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
             {tab === "stock"        && <StockTab movements={movements} setMovements={setMovements} />}
-            {tab === "accounting"   && <AccountingTab entries={entries} setEntries={setEntries} />}
+            {tab === "accounting"   && <AccountingTab entries={entries} setEntries={setEntries} invoices={invoices} />}
             {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} />}
             {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} />}
             {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
