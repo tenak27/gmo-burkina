@@ -9,11 +9,10 @@
     "category": {
       "type": "string",
       "enum": [
+        "cigarette",
         "alimentaire",
         "hygiene",
-        "boisson",
-        "cereale",
-        "autre"
+        "elevage"
       ],
       "default": "alimentaire"
     },
