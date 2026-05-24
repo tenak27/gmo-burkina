@@ -1,0 +1,76 @@
+{
+  "name": "Payslip",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "employee_name": {
+      "type": "string"
+    },
+    "month": {
+      "type": "number"
+    },
+    "year": {
+      "type": "number"
+    },
+    "salary_base": {
+      "type": "number",
+      "default": 0
+    },
+    "primes": {
+      "type": "number",
+      "default": 0
+    },
+    "heures_sup": {
+      "type": "number",
+      "default": 0
+    },
+    "indemnites": {
+      "type": "number",
+      "default": 0
+    },
+    "brut": {
+      "type": "number",
+      "default": 0
+    },
+    "cnss_employee": {
+      "type": "number",
+      "default": 0
+    },
+    "its": {
+      "type": "number",
+      "default": 0
+    },
+    "cotisation_retraite": {
+      "type": "number",
+      "default": 0
+    },
+    "net": {
+      "type": "number",
+      "default": 0
+    },
+    "cnss_employer": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brouillon",
+        "valide",
+        "paye"
+      ],
+      "default": "brouillon"
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "employee_id",
+    "month",
+    "year"
+  ]
+}

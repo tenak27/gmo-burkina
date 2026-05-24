@@ -1,83 +1,85 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { Bell, HelpCircle, Settings, ChevronDown, Globe, LogOut, Search } from "lucide-react";
-
-function LiveClock() {
-  const [now, setNow] = useState(new Date());
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  return (
-    <span className="text-sm text-gray-500 tabular-nums hidden md:inline">
-      {now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
-    </span>
-  );
-}
+import { Bell, Moon, Sun, Globe, LogOut, Search, Building2, ChevronDown } from "lucide-react";
 
 export default function AdminTopbar({ pendingOrders, setTab }) {
   const { user, logout } = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [companyName, setCompanyName] = useState("GMO Burkina");
+
+  useEffect(() => {
+    import("@/api/base44Client").then(({ base44 }) => {
+      base44.entities.CompanySettings.list("-created_date", 1).then(arr => {
+        if (arr?.[0]?.raison_sociale) setCompanyName(arr[0].sigle || arr[0].raison_sociale);
+      }).catch(() => {});
+    });
+  }, []);
+
+  const roleLabel = { pdg: "Administrateur", commercial: "Commercial", magasinier: "Magasinier", chauffeur: "Chauffeur" }[user?.role] || user?.role || "Utilisateur";
 
   return (
-    <div className="h-14 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-40 bg-white border-b border-gray-200">
-
-      {/* Left: Search */}
-      <div className="flex items-center gap-3 flex-1 max-w-sm">
-        <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-full">
-          <Search className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
-          <span className="text-sm text-gray-400 select-none">Rechercher…</span>
-        </div>
+    <div className="h-14 flex items-center justify-between px-5 flex-shrink-0 sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
+      {/* Search */}
+      <div className="flex items-center gap-2 bg-gray-100 border border-gray-200 rounded-xl px-3 py-2 w-56">
+        <Search className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+        <span className="text-xs text-gray-400 select-none">Rechercher…</span>
       </div>
 
-      {/* Right */}
-      <div className="flex items-center gap-1">
-        <LiveClock />
+      {/* Right cluster */}
+      <div className="flex items-center gap-2">
+        {/* Company chip */}
+        <div className="hidden md:flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-1.5 bg-gray-50">
+          <div className="w-5 h-5 rounded bg-gmo-green/10 flex items-center justify-center">
+            <Building2 className="w-3 h-3 text-gmo-green" />
+          </div>
+          <div>
+            <p className="text-[10px] text-obsidian/40 font-body leading-none">Société active</p>
+            <p className="text-xs font-bold text-obsidian leading-none mt-0.5 max-w-[100px] truncate">{companyName}</p>
+          </div>
+        </div>
 
-        <div className="w-px h-5 bg-gray-200 mx-2" />
+        {/* Dark mode toggle */}
+        <button onClick={() => setDarkMode(d => !d)}
+          className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-all cursor-pointer">
+          {darkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4" />}
+        </button>
 
         {/* Notifications */}
         <button onClick={() => setTab && setTab("orders")}
-          className="relative w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
+          className="relative w-8 h-8 rounded-xl flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-all cursor-pointer">
           <Bell className="w-4 h-4" />
           {pendingOrders > 0 && (
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-amber-500 border-2 border-white" />
+            <span className="absolute top-1 right-1 min-w-[14px] h-[14px] px-0.5 rounded-full bg-gmo-red text-white text-[9px] font-bold flex items-center justify-center border border-white">
+              {pendingOrders > 9 ? "9+" : pendingOrders}
+            </span>
           )}
         </button>
 
-        <button className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
-          <HelpCircle className="w-4 h-4" />
-        </button>
-
-        <button className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all cursor-pointer">
-          <Settings className="w-4 h-4" />
-        </button>
-
-        <div className="w-px h-5 bg-gray-200 mx-1" />
-
-        {/* User dropdown */}
+        {/* User */}
         <div className="relative">
           <button onClick={() => setUserMenuOpen(s => !s)}
-            className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 transition-all cursor-pointer">
-            <div className="w-7 h-7 rounded-full bg-green-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            className="flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 hover:bg-gray-100 transition-all cursor-pointer border border-transparent hover:border-gray-200">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-gmo-green to-emerald-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {user?.full_name?.charAt(0) || "A"}
             </div>
-            <span className="hidden sm:block text-sm text-gray-700 font-medium max-w-[80px] truncate">
-              {user?.full_name?.split(" ")[0]}
-            </span>
-            <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+            <div className="hidden sm:block text-left">
+              <p className="text-xs font-bold text-obsidian leading-none">{user?.full_name?.split(" ").slice(0,2).join(" ")}</p>
+              <p className="text-[10px] text-obsidian/40 leading-none mt-0.5">{roleLabel}</p>
+            </div>
+            <ChevronDown className="w-3 h-3 text-gray-400 hidden sm:block" />
           </button>
 
           {userMenuOpen && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
-              <div className="absolute right-0 top-full mt-1.5 w-52 rounded-xl shadow-lg border border-gray-200 bg-white overflow-hidden z-50">
-                <div className="px-4 py-3 border-b border-gray-100">
-                  <p className="text-sm font-semibold text-gray-900">{user?.full_name}</p>
-                  <p className="text-xs text-gray-500 truncate mt-0.5">{user?.email}</p>
-                  <span className="inline-block mt-1.5 text-[10px] font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">
-                    PDG · Admin
+              <div className="absolute right-0 top-full mt-1.5 w-52 rounded-2xl shadow-xl border border-gray-100 bg-white overflow-hidden z-50">
+                <div className="px-4 py-3 border-b border-gray-50 bg-gray-50/50">
+                  <p className="text-sm font-bold text-obsidian">{user?.full_name}</p>
+                  <p className="text-xs text-obsidian/40 truncate mt-0.5">{user?.email}</p>
+                  <span className="inline-block mt-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gmo-green/10 text-gmo-green">
+                    {roleLabel}
                   </span>
                 </div>
                 <Link to="/" onClick={() => setUserMenuOpen(false)}

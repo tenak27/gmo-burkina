@@ -1,0 +1,61 @@
+{
+  "name": "LeaveRequest",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "employee_name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "conge_annuel",
+        "conge_maladie",
+        "conge_maternite",
+        "conge_paternite",
+        "conge_sans_solde",
+        "conge_exceptionnel",
+        "rtt"
+      ],
+      "default": "conge_annuel"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "days": {
+      "type": "number",
+      "default": 1
+    },
+    "reason": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en_attente",
+        "approuve",
+        "refuse",
+        "annule"
+      ],
+      "default": "en_attente"
+    },
+    "approved_by": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "employee_id",
+    "start_date",
+    "end_date"
+  ]
+}

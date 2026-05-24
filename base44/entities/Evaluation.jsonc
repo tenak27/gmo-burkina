@@ -1,0 +1,59 @@
+{
+  "name": "Evaluation",
+  "type": "object",
+  "properties": {
+    "employee_id": {
+      "type": "string"
+    },
+    "employee_name": {
+      "type": "string"
+    },
+    "evaluator": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string"
+    },
+    "year": {
+      "type": "number"
+    },
+    "score": {
+      "type": "number",
+      "description": "Score sur 20"
+    },
+    "objectifs_atteints": {
+      "type": "number",
+      "description": "%"
+    },
+    "ponctualite": {
+      "type": "number"
+    },
+    "competences": {
+      "type": "number"
+    },
+    "travail_equipe": {
+      "type": "number"
+    },
+    "initiative": {
+      "type": "number"
+    },
+    "commentaire": {
+      "type": "string"
+    },
+    "objectifs_prochain": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "brouillon",
+        "finalise"
+      ],
+      "default": "brouillon"
+    }
+  },
+  "required": [
+    "employee_id",
+    "year"
+  ]
+}
