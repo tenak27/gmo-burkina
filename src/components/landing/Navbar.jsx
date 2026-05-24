@@ -110,7 +110,7 @@ export default function Navbar({ heroHeight }) {
               <img
                 src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
                 alt="GMO"
-                className="h-[15.4px] w-auto object-contain"
+                className="h-[20.8px] w-auto object-contain"
               />
             </button>
 
