@@ -166,11 +166,11 @@ export default function Navbar({ heroHeight }) {
               className="fixed inset-0 bg-black/30 z-40 backdrop-blur-sm cursor-pointer"
             />
             <motion.div
-              initial={{ opacity: 0, x: "100%" }}
+              initial={{ opacity: 0, x: "-100%" }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "100%" }}
+              exit={{ opacity: 0, x: "-100%" }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed top-0 right-0 z-50 w-full max-w-sm h-full bg-white shadow-2xl overflow-y-auto"
+              className="fixed top-0 left-0 z-50 w-full max-w-sm h-full bg-white shadow-2xl overflow-y-auto"
             >
             {/* Navigation links - ALL menu items in hamburger */}
             <div className="px-6 py-4 space-y-1">
