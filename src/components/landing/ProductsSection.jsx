@@ -5,8 +5,31 @@ import { base44 } from "@/api/base44Client";
 
 const WHATSAPP = "https://wa.me/22676211633";
 
-// Mappe category DB → label affiché
-const CAT_LABEL = { alimentaire: "Alimentaire", hygiene: "Hygiène", boisson: "Boisson", cereale: "Céréales", autre: "Autre" };
+// Mappe category DB → catégories affichées
+const CATEGORY_MAP = {
+  "hamilton light": "Cigarette",
+  "hamilton classic": "Cigarette",
+  "excellence": "Cigarette",
+  "dunhill light": "Cigarette",
+  "dunhill classic": "Cigarette",
+  "farine etalon": "Alimentaire",
+  "huile de soja": "Alimentaire",
+  "huile savor": "Alimentaire",
+  "sucre": "Alimentaire",
+  "savon": "Hygiène",
+  "cobifa": "Alimentaire",
+  "tourteaux": "Elevage",
+};
+
+const getCategoryForProduct = (name) => {
+  const normalized = name.toLowerCase();
+  for (const [key, cat] of Object.entries(CATEGORY_MAP)) {
+    if (normalized.includes(key)) return cat;
+  }
+  return "Alimentaire";
+};
+
+const CATEGORIES_ORDER = ["Cigarette", "Alimentaire", "Hygiène", "Elevage"];
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
@@ -125,7 +148,7 @@ export default function ProductsSection() {
   const rawProducts = dbProducts.map(p => ({
     _key: normalizeKey(p.name),
     name: p.name,
-    category: CAT_LABEL[p.category] || p.category || "Autre",
+    category: getCategoryForProduct(p.name),
     brand: p.description?.split(".")[0] || p.name,
     description: p.description || "",
     details: [
@@ -145,7 +168,7 @@ export default function ProductsSection() {
     return ia - ib;
   });
 
-  const categories = ["Tous", ...new Set(PRODUCTS.map(p => p.category))];
+  const categories = ["Tous", ...CATEGORIES_ORDER.filter(cat => PRODUCTS.some(p => p.category === cat))];
 
   const filtered = activeCategory === "Tous"
     ? PRODUCTS
