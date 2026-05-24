@@ -13,7 +13,13 @@ export default function PartnersSection() {
     base44.entities.Category.list("name", 200).then(data => {
       const dynamic = (data || []).filter(d => d.code === "PARTENAIRE");
       const order = ["Impérial Tobacco", "GMF Alien de GMB", "SN CITEC", "SN SUSUCO", "COBIFA"];
-      const sorted = dynamic.sort((a, b) => order.indexOf(a.name) - order.indexOf(b.name));
+      const norm = s => s?.toLowerCase().replace(/[éèê]/g, "e").trim();
+      const normOrder = order.map(norm);
+      const sorted = dynamic.sort((a, b) => {
+        const ia = normOrder.indexOf(norm(a.name));
+        const ib = normOrder.indexOf(norm(b.name));
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+      });
       setPartners(sorted);
     }).catch(() => {});
   }, []);
