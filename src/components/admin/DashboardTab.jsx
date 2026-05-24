@@ -22,17 +22,17 @@ export default function DashboardTab({ data, setTab }) {
   ];
 
   const modules = [
-    { id: "clients", label: "Clients", icon: Users, color: "bg-blue-500", count: (clients||[]).length },
-    { id: "suppliers", label: "Fournisseurs", icon: UserCheck, color: "bg-purple-500", count: (suppliers||[]).length },
-    { id: "invoices", label: "Devis / Factures", icon: FileText, color: "bg-gmo-green", count: (invoices||[]).length },
-    { id: "delivery", label: "Bons de livraison", icon: Truck, color: "bg-orange-500", count: null },
-    { id: "products", label: "Catalogue produits", icon: Package, color: "bg-teal-500", count: (products||[]).length },
-    { id: "warehouses", label: "Entrepôts", icon: Warehouse, color: "bg-cyan-500", count: null },
-    { id: "stock", label: "Mouvements stock", icon: TrendingUp, color: "bg-indigo-500", count: null },
-    { id: "accounting", label: "Comptabilité", icon: DollarSign, color: "bg-emerald-500", count: (entries||[]).length },
-    { id: "hr", label: "Ressources humaines", icon: Users, color: "bg-pink-500", count: (employees||[]).length },
-    { id: "orders", label: "Commandes clients", icon: ShoppingCart, color: "bg-amber-500", count: pendingOrders > 0 ? `${pendingOrders} en attente` : (orders||[]).length },
-    { id: "users", label: "Utilisateurs app", icon: Users, color: "bg-gray-600", count: (users||[]).length },
+    { id: "clients",    label: "Clients",            icon: Users,       color: "from-blue-500 to-cyan-500",       count: (clients||[]).length },
+    { id: "suppliers",  label: "Fournisseurs",        icon: UserCheck,   color: "from-purple-500 to-violet-500",   count: (suppliers||[]).length },
+    { id: "invoices",   label: "Devis / Factures",    icon: FileText,    color: "from-gmo-green to-emerald-500",   count: (invoices||[]).length },
+    { id: "delivery",   label: "Bons de livraison",   icon: Truck,       color: "from-orange-500 to-amber-400",    count: null },
+    { id: "products",   label: "Catalogue produits",  icon: Package,     color: "from-teal-500 to-green-500",      count: (products||[]).length },
+    { id: "warehouses", label: "Entrepôts",           icon: Warehouse,   color: "from-cyan-500 to-sky-500",        count: null },
+    { id: "stock",      label: "Mouvements stock",    icon: TrendingUp,  color: "from-indigo-500 to-blue-500",     count: null },
+    { id: "accounting", label: "Comptabilité",        icon: DollarSign,  color: "from-gmo-green to-teal-500",      count: (entries||[]).length },
+    { id: "hr",         label: "Ressources humaines", icon: Users,       color: "from-pink-500 to-rose-500",       count: (employees||[]).length },
+    { id: "orders",     label: "Commandes clients",   icon: ShoppingCart,color: "from-amber-500 to-yellow-400",    count: pendingOrders > 0 ? `${pendingOrders} en attente` : (orders||[]).length },
+    { id: "users",      label: "Utilisateurs app",    icon: Users,       color: "from-slate-500 to-gray-600",      count: (users||[]).length },
   ];
 
   return (
@@ -62,7 +62,7 @@ export default function DashboardTab({ data, setTab }) {
         {modules.map(m => (
           <button key={m.id} onClick={() => setTab(m.id)}
             className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-gmo-green/20 transition-all text-left group">
-            <div className={`w-9 h-9 ${m.color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+            <div className={`w-9 h-9 bg-gradient-to-br ${m.color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-sm`}>
               <m.icon className="w-4 h-4 text-white" />
             </div>
             <p className="font-heading text-sm font-bold text-obsidian">{m.label}</p>
