@@ -98,25 +98,6 @@ Factures payées: ${invoices.filter(i => i.status === "paye").length}
 
   return (
     <>
-      {/* Floating button — Bulle avec animation d'interpellation */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-5 py-3 rounded-2xl shadow-lg font-semibold text-sm cursor-pointer transition-all
-          bg-gradient-to-r from-gmo-green to-emerald-500 text-white hover:shadow-xl hover:-translate-y-1
-          ${pulsing ? "animate-bounce" : ""}`}
-        style={pulsing ? {
-          animation: "pulse-glow 4s ease-in-out forwards",
-        } : {}}
-      >
-        <div className="flex items-center gap-2.5 relative">
-          <div className={`w-4 h-4 flex items-center justify-center transition-transform ${pulsing ? "animate-spin" : ""}`}>
-            <Bot className="w-4 h-4" />
-          </div>
-          <span>Agent Comptable</span>
-          <Zap className={`w-3.5 h-3.5 transition-all ${pulsing ? "text-yellow-300 animate-pulse" : "text-amber-200"}`} />
-        </div>
-      </button>
-
       <style>{`
         @keyframes pulse-glow {
           0% { box-shadow: 0 0 0 0 rgba(26, 122, 46, 0.7); }
@@ -124,6 +105,28 @@ Factures payées: ${invoices.filter(i => i.status === "paye").length}
           100% { box-shadow: 0 0 0 0 rgba(26, 122, 46, 0); }
         }
       `}</style>
+
+      {/* Floating button — Bulle avec animation d'interpellation */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className={`fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-5 py-3 rounded-2xl shadow-lg font-semibold text-sm cursor-pointer transition-all
+            bg-gradient-to-r from-gmo-green to-emerald-500 text-white hover:shadow-xl hover:-translate-y-1
+            ${pulsing ? "animate-bounce" : ""}`}
+          style={pulsing ? {
+            animation: "pulse-glow 4s ease-in-out forwards",
+          } : {}}
+        >
+          <div className="flex items-center gap-2.5 relative">
+            <div className={`w-4 h-4 flex items-center justify-center transition-transform ${pulsing ? "animate-spin" : ""}`}>
+              <Bot className="w-4 h-4" />
+            </div>
+            <span>Agent Comptable</span>
+            <Zap className={`w-3.5 h-3.5 transition-all ${pulsing ? "text-yellow-300 animate-pulse" : "text-amber-200"}`} />
+          </div>
+        </button>
+      )}
+
 
       {/* Panel */}
       {isOpen && (

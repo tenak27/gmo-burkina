@@ -5,15 +5,15 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 const MONTHS = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
 
 const MODULES = [
-  { id:"journal",        label:"Journal comptable",  sub:"Saisie des écritures",    icon:"📒", color:"from-indigo-50 to-blue-50",    border:"border-indigo-100",  ic:"text-indigo-500",  bg:"bg-indigo-100" },
-  { id:"grandlivre",     label:"Grand Livre",        sub:"Par compte",              icon:"📋", color:"from-purple-50 to-violet-50",  border:"border-purple-100",  ic:"text-purple-500",  bg:"bg-purple-100" },
-  { id:"balance",        label:"Balance",            sub:"Débit / Crédit",          icon:"⚖️", color:"from-cyan-50 to-sky-50",       border:"border-cyan-100",    ic:"text-cyan-600",    bg:"bg-cyan-100" },
-  { id:"plan",           label:"Plan comptable",     sub:"Gestion des comptes",     icon:"📚", color:"from-teal-50 to-green-50",     border:"border-teal-100",    ic:"text-teal-600",    bg:"bg-teal-100" },
-  { id:"transactions",   label:"Transactions",       sub:"Flux financiers",         icon:"↔️", color:"from-blue-50 to-indigo-50",    border:"border-blue-100",    ic:"text-blue-500",    bg:"bg-blue-100" },
-  { id:"rapports",       label:"Rapports",           sub:"Bilan / Résultat",        icon:"📊", color:"from-green-50 to-emerald-50",  border:"border-green-100",   ic:"text-emerald-600", bg:"bg-emerald-100" },
-  { id:"rapprochement",  label:"Rapprochement",      sub:"Bancaire",                icon:"🔄", color:"from-amber-50 to-yellow-50",   border:"border-amber-100",   ic:"text-amber-600",   bg:"bg-amber-100" },
-  { id:"immobilisations",label:"Immobilisations",    sub:"Actifs & amortissements", icon:"🏢", color:"from-orange-50 to-amber-50",   border:"border-orange-100",  ic:"text-orange-500",  bg:"bg-orange-100" },
-  { id:"cheques",        label:"Gestion chèques",    sub:"Émis & reçus",            icon:"🪙", color:"from-red-50 to-pink-50",       border:"border-red-100",     ic:"text-red-500",     bg:"bg-red-100" },
+  { id:"journal",        label:"Journal comptable",  sub:"Saisie des écritures",    icon:"📒", color:"from-gmo-green/5 to-emerald-50",    border:"border-gmo-green/20",  ic:"text-gmo-green",  bg:"bg-gmo-green/10" },
+  { id:"grandlivre",     label:"Grand Livre",        sub:"Par compte",              icon:"📋", color:"from-blue-50 to-cyan-50",        border:"border-blue-100",      ic:"text-blue-600",    bg:"bg-blue-100" },
+  { id:"balance",        label:"Balance",            sub:"Débit / Crédit",          icon:"⚖️", color:"from-amber-50 to-yellow-50",    border:"border-amber-100",     ic:"text-amber-600",   bg:"bg-amber-100" },
+  { id:"plan",           label:"Plan comptable",     sub:"Gestion des comptes",     icon:"📚", color:"from-purple-50 to-violet-50",   border:"border-purple-100",    ic:"text-purple-600",  bg:"bg-purple-100" },
+  { id:"transactions",   label:"Transactions",       sub:"Flux financiers",         icon:"↔️", color:"from-slate-50 to-gray-50",     border:"border-gray-100",      ic:"text-gray-600",    bg:"bg-gray-100" },
+  { id:"rapports",       label:"Rapports",           sub:"Bilan / Résultat",        icon:"📊", color:"from-orange-50 to-amber-50",   border:"border-orange-100",    ic:"text-orange-600",  bg:"bg-orange-100" },
+  { id:"rapprochement",  label:"Rapprochement",      sub:"Bancaire",                icon:"🔄", color:"from-teal-50 to-green-50",     border:"border-teal-100",      ic:"text-teal-600",    bg:"bg-teal-100" },
+  { id:"immobilisations",label:"Immobilisations",    sub:"Actifs & amortissements", icon:"🏢", color:"from-indigo-50 to-blue-50",    border:"border-indigo-100",    ic:"text-indigo-600",  bg:"bg-indigo-100" },
+  { id:"cheques",        label:"Gestion chèques",    sub:"Émis & reçus",            icon:"🪙", color:"from-rose-50 to-pink-50",      border:"border-rose-100",      ic:"text-rose-600",    bg:"bg-rose-100" },
 ];
 
 export default function AccountingDashboard({ entries, invoices, setActiveModule, openYear }) {
@@ -84,7 +84,7 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
               <XAxis dataKey="month" tick={{fontSize:11,fill:"#9ca3af"}} axisLine={false} tickLine={false} />
               <YAxis tick={{fontSize:10,fill:"#9ca3af"}} axisLine={false} tickLine={false} tickFormatter={v=>`${(v/1000).toFixed(0)}k`} />
               <Tooltip contentStyle={{fontSize:11,borderRadius:10}} formatter={v=>`${Number(v).toLocaleString()} FCFA`} />
-              <Bar dataKey="value" fill="#6366f1" radius={[4,4,0,0]} name="Encaissements" />
+              <Bar dataKey="value" fill="#1A7A2E" radius={[4,4,0,0]} name="Encaissements" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -92,7 +92,7 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-heading text-sm font-bold text-obsidian">Dernières écritures</h3>
-            <button onClick={()=>setActiveModule("journal")} className="text-xs text-indigo-600 font-semibold hover:underline flex items-center gap-1 cursor-pointer">
+            <button onClick={()=>setActiveModule("journal")} className="text-xs text-gmo-green font-semibold hover:underline flex items-center gap-1 cursor-pointer">
               Journal <ArrowRight className="w-3 h-3" />
             </button>
           </div>
@@ -106,7 +106,7 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
                     <p className="text-xs font-semibold text-obsidian truncate">{e.libelle}</p>
                     <p className="text-[10px] text-obsidian/40 font-body">{e.account_code} / {e.journal_code || "OD"}</p>
                   </div>
-                  <p className={`text-sm font-bold font-heading whitespace-nowrap ${e.debit>0?"text-indigo-600":"text-gmo-green"}`}>
+                  <p className={`text-sm font-bold font-heading whitespace-nowrap ${e.debit>0?"text-blue-600":"text-gmo-green"}`}>
                     {(e.debit||e.credit||0).toLocaleString("fr-FR")} FCFA
                   </p>
                 </div>
