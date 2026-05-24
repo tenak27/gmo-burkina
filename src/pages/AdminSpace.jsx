@@ -113,7 +113,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="min-h-screen flex" style={{ background: "linear-gradient(135deg, #0f1a10 0%, #1a1a1e 40%, #0d1f10 100%)" }}>
       <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} />
       <main className="flex-1 min-w-0 overflow-x-hidden flex flex-col">
         <AdminTopbar pendingOrders={pendingOrders} setTab={setTab} />
@@ -139,8 +139,8 @@ function AdminDashboard() {
             {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
             {tab === "settings"     && <SettingsTab />}
           </div>
-          <p className="text-center text-xs text-gray-400 mt-10">
-            GMO Burkina ERP · <span className="text-green-600">IAM Technology</span>
+          <p className="text-center text-xs text-white/20 mt-10">
+            GMO Burkina ERP · <span className="text-gmo-green">IAM Technology</span>
           </p>
         </div>
       </main>
