@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, LogIn, User } from "lucide-react";
+import { Menu, X, Phone, LogIn, User, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
@@ -15,10 +15,45 @@ const NAV_LINKS = [
   { label: "Rejoindre GMO", href: "/carrieres", isPage: true },
 ];
 
+const CATEGORY_MAP = {
+  "hamilton": "Cigarettes",
+  "excellence": "Cigarettes",
+  "dunhill": "Cigarettes",
+  "farine gmf": "Alimentaire",
+  "farine": "Alimentaire",
+  "huile sn citec": "Alimentaire",
+  "huile savor": "Alimentaire",
+  "sucre": "Alimentaire",
+  "savon citec": "Hygiène",
+  "savon n°": "Hygiène",
+  "cobifa": "Alimentaire",
+  "tourteaux": "Embauche",
+  "betail": "Embauche",
+};
+
+const getCategoryForProduct = (name) => {
+  const normalized = name.toLowerCase();
+  for (const [key, cat] of Object.entries(CATEGORY_MAP)) {
+    if (normalized.includes(key)) return cat;
+  }
+  return "Alimentaire";
+};
+
 export default function Navbar({ heroHeight }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
   const { user, isAuthenticated, logout } = useAuth();
+
+  useEffect(() => {
+    base44.entities.Product.list("name", 200).then(data => {
+      const products = (data || []).filter(p => p.show_on_vitrine && p.is_active !== false);
+      const cats = new Set();
+      products.forEach(p => cats.add(getCategoryForProduct(p.name)));
+      setCategories(["Tous", ...Array.from(cats)]);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const threshold = heroHeight || window.innerHeight * 0.85;
@@ -67,19 +102,55 @@ export default function Navbar({ heroHeight }) {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between h-18 py-3">
-            {/* Logo */}
-            <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-              <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
-                alt="GMO"
-                className="h-14 w-auto object-contain"
-              />
+            {/* Hamburger Mobile */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden p-2 text-obsidian"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
+
+            {/* Logo Centered */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+              <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                <img
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  alt="GMO"
+                  className="h-[15.4px] w-auto object-contain"
+                />
+              </button>
+            </div>
 
             {/* Desktop links */}
             <div className="hidden lg:flex items-center gap-6">
               {NAV_LINKS.map((link) => (
-                link.isPage ? (
+                link.label === "Produits" ? (
+                  <div key={link.href} className="relative">
+                    <button
+                      onClick={() => setCategoriesOpen(!categoriesOpen)}
+                      className="font-body text-sm text-obsidian/55 hover:text-gmo-green transition-colors flex items-center gap-1 group"
+                    >
+                      {link.label}
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${categoriesOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {categoriesOpen && (
+                      <div className="absolute top-full left-0 mt-2 bg-white border border-gray-100 rounded-xl shadow-lg py-2 min-w-[180px] z-50">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => {
+                              scrollTo("#produits");
+                              setCategoriesOpen(false);
+                            }}
+                            className="w-full text-left px-4 py-2 text-sm text-obsidian/70 hover:bg-gmo-green/5 hover:text-gmo-green transition-colors"
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : link.isPage ? (
                   <Link
                     key={link.href}
                     to={link.href}
@@ -140,13 +211,48 @@ export default function Navbar({ heroHeight }) {
               </a>
             </div>
 
-            {/* Mobile toggle */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-obsidian"
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Right CTAs - Desktop only */}
+            <div className="hidden lg:flex items-center gap-3">
+              {isAuthenticated && dashLink ? (
+                <>
+                  <Link
+                    to={dashLink.to}
+                    className="flex items-center gap-2 font-heading font-bold text-sm text-obsidian/70 hover:text-gmo-green transition-colors px-4 py-2 rounded-lg hover:bg-gmo-green/8"
+                  >
+                    <User className="w-4 h-4" />
+                    {dashLink.label}
+                  </Link>
+                  <button
+                    onClick={() => logout()}
+                    className="font-body text-xs text-obsidian/35 hover:text-gmo-red transition-colors"
+                  >
+                    Déconnexion
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                  className="flex items-center gap-2 border border-gray-200 text-obsidian/60 font-heading font-bold text-sm px-4 py-2 rounded-lg hover:border-gmo-green hover:text-gmo-green transition-all"
+                >
+                  <LogIn className="w-4 h-4" />
+                  Connexion
+                </button>
+              )}
+              <a
+                href="https://wa.me/+22670213831"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="+226 70 21 38 31"
+                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-heading font-bold text-sm px-3 py-2.5 rounded-lg transition-colors"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z"/>
+                </svg>
+              </a>
+            </div>
+
+            {/* Spacer for mobile layout */}
+            <div className="lg:hidden w-10" />
           </div>
         </div>
       </motion.nav>
@@ -163,7 +269,36 @@ export default function Navbar({ heroHeight }) {
           >
             <div className="flex flex-col gap-5 py-6">
               {NAV_LINKS.map((link, i) => (
-                link.isPage ? (
+                link.label === "Produits" ? (
+                  <div key={link.href}>
+                    <motion.button
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.06 }}
+                      onClick={() => setCategoriesOpen(!categoriesOpen)}
+                      className="font-heading text-2xl text-obsidian/80 hover:text-gmo-green text-left border-b border-gray-100 pb-4 w-full flex items-center justify-between"
+                    >
+                      {link.label}
+                      <ChevronDown className={`w-5 h-5 transition-transform ${categoriesOpen ? 'rotate-180' : ''}`} />
+                    </motion.button>
+                    {categoriesOpen && (
+                      <div className="pl-4 py-2 space-y-3">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => {
+                              scrollTo("#produits");
+                              setCategoriesOpen(false);
+                            }}
+                            className="block w-full text-left font-heading text-lg text-obsidian/60 hover:text-gmo-green"
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : link.isPage ? (
                   <Link
                     key={link.href}
                     to={link.href}
