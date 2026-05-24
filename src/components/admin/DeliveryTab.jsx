@@ -16,7 +16,7 @@ const FIELDS = [
   { key: "type", label: "Type de bon", type: "select", required: true, options: [{value:"bon_livraison",label:"Bon de Livraison"},{value:"bon_enlevement",label:"Bon d'Enlèvement"},{value:"bon_commande",label:"Bon de Commande"}] },
   { key: "number", label: "Numéro" },
   { key: "date", label: "Date", type: "date" },
-  { key: "client_name", label: "Client / Destinataire" },
+  { key: "client_name", label: "Client / Destinataire", type: "client_select" },
   { key: "supplier_name", label: "Fournisseur (si applicable)" },
   { key: "warehouse_name", label: "Entrepôt" },
   { key: "driver", label: "Chauffeur" },
@@ -37,7 +37,7 @@ const COLUMNS = [
 
 const EMPTY = { type: "bon_livraison", number: "", date: "", client_name: "", supplier_name: "", warehouse_name: "", driver: "", vehicle: "", status: "brouillon", notes: "" };
 
-export default function DeliveryTab({ deliveries, setDeliveries }) {
+export default function DeliveryTab({ deliveries, setDeliveries, clients = [] }) {
   const [form, setForm] = useState(null);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -67,7 +67,7 @@ export default function DeliveryTab({ deliveries, setDeliveries }) {
   return (
     <>
       <EntityTable title="Bons de livraison / enlèvement / commande" subtitle={`${deliveries.length} bons`} columns={COLUMNS} rows={deliveries} onAdd={openAdd} onEdit={openEdit} onDelete={del} addLabel="Nouveau bon" />
-      {form && <EntityForm title="Bon de transport" fields={FIELDS} data={form} onChange={onChange} onSave={save} onClose={() => { setForm(null); setEditing(null); }} saving={saving} isEdit={!!editing} />}
+      {form && <EntityForm title="Bon de transport" fields={FIELDS} data={form} onChange={onChange} onSave={save} onClose={() => { setForm(null); setEditing(null); }} saving={saving} isEdit={!!editing} clients={clients} />}
     </>
   );
 }

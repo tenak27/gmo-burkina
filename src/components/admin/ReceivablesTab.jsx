@@ -12,7 +12,7 @@ const STATUS_STYLE = {
 };
 
 const FIELDS = [
-  { key: "client_name", label: "Client", required: true },
+  { key: "client_name", label: "Client", type: "client_select", required: true },
   { key: "invoice_number", label: "N° Facture" },
   { key: "original_amount", label: "Montant original (FCFA)", type: "number", required: true },
   { key: "paid_amount", label: "Montant payé (FCFA)", type: "number" },
@@ -48,7 +48,7 @@ const COLUMNS = [
 
 const EMPTY = { client_name:"", invoice_number:"", original_amount:0, paid_amount:0, remaining_amount:0, due_date:"", status:"en_cours", notes:"" };
 
-export default function ReceivablesTab({ receivables, setReceivables }) {
+export default function ReceivablesTab({ receivables, setReceivables, clients = [] }) {
   const [form, setForm] = useState(null);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -114,7 +114,7 @@ export default function ReceivablesTab({ receivables, setReceivables }) {
         <EntityForm
           title="Créance client" fields={FIELDS} data={form} onChange={onChange}
           onSave={save} onClose={() => { setForm(null); setEditing(null); }}
-          saving={saving} isEdit={!!editing}
+          saving={saving} isEdit={!!editing} clients={clients}
         />
       )}
     </div>

@@ -124,15 +124,15 @@ function AdminDashboard() {
             {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
             {tab === "suppliers"    && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
             {tab === "invoices"     && <InvoicesTab invoices={invoices} setInvoices={setInvoices} clients={clients} products={products} />}
-            {tab === "delivery"     && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} />}
+            {tab === "delivery"     && <DeliveryTab deliveries={deliveries} setDeliveries={setDeliveries} clients={clients} />}
             {tab === "drivers"      && <DriversTab drivers={drivers} setDrivers={setDrivers} />}
             {tab === "products"     && <ProductsTab products={products} setProducts={setProducts} />}
             {tab === "categories"   && <CategoriesTab categories={categories} setCategories={setCategories} />}
             {tab === "warehouses"   && <WarehousesTab warehouses={warehouses} setWarehouses={setWarehouses} />}
             {tab === "stock"        && <StockTab movements={movements} setMovements={setMovements} />}
             {tab === "accounting"   && <AccountingTab entries={entries} setEntries={setEntries} invoices={invoices} />}
-            {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} />}
-            {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} />}
+            {tab === "payments"     && <PaymentsTab payments={payments} setPayments={setPayments} clients={clients} />}
+            {tab === "receivables"  && <ReceivablesTab receivables={receivables} setReceivables={setReceivables} clients={clients} />}
             {tab === "hr"           && <HRTab employees={employees} setEmployees={setEmployees} />}
             {tab === "orders"       && <OrdersAdminTab orders={orders} setOrders={setOrders} clients={clients} products={products} drivers={drivers} />}
             {tab === "users"        && <UsersAdminTab users={users} />}

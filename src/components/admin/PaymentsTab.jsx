@@ -23,7 +23,7 @@ const STATUS_STYLE = {
 
 const FIELDS = [
   { key: "reference", label: "Référence" },
-  { key: "client_name", label: "Client", required: true },
+  { key: "client_name", label: "Client", type: "client_select", required: true },
   { key: "invoice_number", label: "N° Facture liée" },
   { key: "amount", label: "Montant (FCFA)", type: "number", required: true },
   { key: "payment_method", label: "Mode de paiement", type: "select", required: true, options: Object.entries(METHOD_CONFIG).map(([v,c]) => ({value:v,label:c.label})) },
@@ -58,7 +58,7 @@ const COLUMNS = [
 
 const EMPTY = { reference:"", client_name:"", invoice_number:"", amount:0, payment_method:"especes", date: new Date().toISOString().split("T")[0], due_date:"", cheque_number:"", mobile_number:"", status:"en_attente", notes:"" };
 
-export default function PaymentsTab({ payments, setPayments }) {
+export default function PaymentsTab({ payments, setPayments, clients = [] }) {
   const [form, setForm] = useState(null);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -143,7 +143,7 @@ export default function PaymentsTab({ payments, setPayments }) {
         <EntityForm
           title="Paiement" fields={FIELDS} data={form} onChange={onChange}
           onSave={save} onClose={() => { setForm(null); setEditing(null); }}
-          saving={saving} isEdit={!!editing}
+          saving={saving} isEdit={!!editing} clients={clients}
         />
       )}
     </div>

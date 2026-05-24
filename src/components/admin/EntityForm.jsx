@@ -1,8 +1,65 @@
-import React, { useEffect, useRef } from "react";
-import { X, Save, AlertCircle, CheckCircle2 } from "lucide-react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { X, Save, AlertCircle, CheckCircle2, Search, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function EntityForm({ title, fields, data, onChange, onSave, onClose, saving, isEdit }) {
+function ClientSelectField({ f, data, onChange, clients, invalid }) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase();
+    return (clients || []).filter(c => c.name?.toLowerCase().includes(q) || c.email?.toLowerCase().includes(q)).slice(0, 8);
+  }, [clients, search]);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="flex items-center gap-1.5">
+        <span className={`text-sm font-semibold font-heading ${invalid ? "text-gmo-red" : "text-obsidian/70"}`}>{f.label}</span>
+        {f.required && <span className="text-gmo-red text-sm font-bold">*</span>}
+      </label>
+      <div className="relative">
+        <button type="button" onClick={() => setOpen(o => !o)}
+          className={`w-full border rounded-xl px-4 py-3 text-base font-body text-left flex items-center justify-between transition-all ${
+            invalid ? "border-red-300 bg-red-50/20" : "border-gray-300 hover:border-gray-400 focus:border-gmo-green"
+          }`}>
+          <span className={data[f.key] ? "text-obsidian" : "text-obsidian/35"}>
+            {data[f.key] || "— Sélectionner un client —"}
+          </span>
+          <ChevronDown className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+        </button>
+        {open && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-30 overflow-hidden">
+            <div className="p-2 border-b border-gray-100">
+              <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
+                <Search className="w-3.5 h-3.5 text-obsidian/30" />
+                <input autoFocus value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher un client…"
+                  className="flex-1 text-xs font-body bg-transparent focus:outline-none text-obsidian" />
+              </div>
+            </div>
+            <div className="max-h-48 overflow-y-auto">
+              {filtered.length === 0
+                ? <p className="text-xs text-obsidian/30 text-center py-4 font-body">Aucun client trouvé</p>
+                : filtered.map(c => (
+                  <button key={c.id} onMouseDown={() => { onChange(f.key, c.name); if (f.onSelectExtra) f.onSelectExtra(c); setOpen(false); setSearch(""); }}
+                    className="w-full text-left px-4 py-2.5 hover:bg-gmo-green/5 flex items-center gap-3 transition-colors cursor-pointer">
+                    <div className="w-7 h-7 rounded-full bg-gmo-green/15 flex items-center justify-center text-gmo-green font-bold text-xs flex-shrink-0">
+                      {c.name?.charAt(0)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-heading font-bold text-obsidian truncate">{c.name}</p>
+                      <p className="text-[10px] text-obsidian/40 font-body truncate">{c.email || c.phone || c.city || ""}</p>
+                    </div>
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function EntityForm({ title, fields, data, onChange, onSave, onClose, saving, isEdit, clients = [] }) {
   const panelRef = useRef(null);
 
   useEffect(() => {
@@ -30,6 +87,9 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
 
   const renderField = (f) => {
     const invalid = isEmpty(f);
+    if (f.type === "client_select") {
+      return <ClientSelectField key={f.key} f={f} data={data} onChange={onChange} clients={clients} invalid={invalid} />;
+    }
     return (
       <div key={f.key} className="flex flex-col gap-2">
         <label className="flex items-center gap-1.5">
