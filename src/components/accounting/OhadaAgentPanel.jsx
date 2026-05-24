@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { Bot, Send, Sparkles, AlertTriangle, CheckCircle2, Loader2, X, RefreshCw } from "lucide-react";
+import { Bot, Send, Sparkles, AlertTriangle, CheckCircle2, Loader2, X, RefreshCw, Zap } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 const QUICK_CHECKS = [
@@ -18,7 +18,18 @@ export default function OhadaAgentPanel({ entries, invoices = [], fiscalYears = 
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [pulsing, setPulsing] = useState(false);
   const bottomRef = useRef(null);
+
+  // Animation de bulle qui interpelle toutes les 30 secondes (si ferméé)
+  useEffect(() => {
+    if (isOpen) return;
+    const interval = setInterval(() => {
+      setPulsing(true);
+      setTimeout(() => setPulsing(false), 4000); // animation 4s
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [isOpen]);
 
   const openYear = fiscalYears.find(y => y.status === "ouvert");
 
@@ -87,41 +98,58 @@ Factures payées: ${invoices.filter(i => i.status === "paye").length}
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button — Bulle avec animation d'interpellation */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 bg-obsidian text-white px-5 py-3 rounded-2xl shadow-2xl hover:bg-obsidian/90 transition-all font-semibold text-sm cursor-pointer"
+        className={`fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-5 py-3 rounded-2xl shadow-lg font-semibold text-sm cursor-pointer transition-all
+          bg-gradient-to-r from-gmo-green to-emerald-500 text-white hover:shadow-xl hover:-translate-y-1
+          ${pulsing ? "animate-bounce" : ""}`}
+        style={pulsing ? {
+          animation: "pulse-glow 4s ease-in-out forwards",
+        } : {}}
       >
-        <Bot className="w-4 h-4" />
-        <span>Agent Comptable IA</span>
-        <Sparkles className="w-3.5 h-3.5 text-gold" />
+        <div className="flex items-center gap-2.5 relative">
+          <div className={`w-4 h-4 flex items-center justify-center transition-transform ${pulsing ? "animate-spin" : ""}`}>
+            <Bot className="w-4 h-4" />
+          </div>
+          <span>Agent Comptable</span>
+          <Zap className={`w-3.5 h-3.5 transition-all ${pulsing ? "text-yellow-300 animate-pulse" : "text-amber-200"}`} />
+        </div>
       </button>
+
+      <style>{`
+        @keyframes pulse-glow {
+          0% { box-shadow: 0 0 0 0 rgba(26, 122, 46, 0.7); }
+          50% { box-shadow: 0 0 0 20px rgba(26, 122, 46, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(26, 122, 46, 0); }
+        }
+      `}</style>
 
       {/* Panel */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-end p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg h-[85vh] flex flex-col overflow-hidden">
-            {/* Header */}
-            <div className="bg-obsidian px-5 py-4 flex items-center gap-3 flex-shrink-0">
-              <div className="w-9 h-9 rounded-xl bg-gmo-green/20 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-gmo-green" />
-              </div>
-              <div className="flex-1">
-                <p className="font-heading text-sm font-bold text-white">Agent Comptable OHADA</p>
-                <p className="text-[10px] text-white/50 font-body">SYSCOHADA révisé — Analyse IA</p>
-              </div>
+           {/* Header — dégradé GMO */}
+           <div className="bg-gradient-to-r from-gmo-green to-emerald-500 px-5 py-4 flex items-center gap-3 flex-shrink-0">
+             <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+               <Bot className="w-4 h-4 text-white" />
+             </div>
+             <div className="flex-1">
+               <p className="font-heading text-sm font-bold text-white">Agent Comptable OHADA</p>
+               <p className="text-[10px] text-white/60 font-body">Analyse IA — SYSCOHADA</p>
+             </div>
               <button onClick={() => setIsOpen(false)} className="text-white/50 hover:text-white transition-colors cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Quick actions */}
-            <div className="px-4 py-3 border-b border-gray-100 flex-shrink-0">
-              <p className="text-[10px] text-obsidian/40 font-body uppercase tracking-wider mb-2">Analyses rapides</p>
+            <div className="px-4 py-3 border-b border-green-100 bg-gmo-green/5 flex-shrink-0">
+              <p className="text-[10px] text-gmo-green font-body uppercase tracking-wider font-bold mb-2">Analyses rapides</p>
               <div className="flex flex-wrap gap-1.5">
                 {QUICK_CHECKS.map(qc => (
                   <button key={qc.label} onClick={() => handleQuick(qc.prompt)} disabled={loading}
-                    className="text-[10px] px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-gmo-green/10 hover:text-gmo-green text-gray-600 font-body transition-colors cursor-pointer disabled:opacity-40">
+                    className="text-[10px] px-2.5 py-1 rounded-lg bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-body transition-colors cursor-pointer disabled:opacity-40 border border-gmo-green/20">
                     {qc.label}
                   </button>
                 ))}
@@ -132,23 +160,25 @@ Factures payées: ${invoices.filter(i => i.status === "paye").length}
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
               {messages.length === 0 && (
                 <div className="py-8 text-center">
-                  <Sparkles className="w-10 h-10 text-gold/40 mx-auto mb-3" />
-                  <p className="font-heading text-sm font-semibold text-obsidian/40">Demandez une analyse comptable</p>
-                  <p className="text-xs text-obsidian/25 font-body mt-1">L'agent vérifie les incohérences, calcule les indicateurs et donne des recommandations SYSCOHADA.</p>
+                  <div className="w-16 h-16 rounded-full bg-gmo-green/10 flex items-center justify-center mx-auto mb-3">
+                    <Sparkles className="w-8 h-8 text-gmo-green" />
+                  </div>
+                  <p className="font-heading text-sm font-bold text-gmo-green">Demandez une analyse comptable</p>
+                  <p className="text-xs text-obsidian/40 font-body mt-1">L'agent vérifie les incohérences, calcule les indicateurs et donne des recommandations SYSCOHADA.</p>
                 </div>
               )}
               {messages.map((msg, i) => (
                 <div key={i} className={`flex gap-2.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   {msg.role !== "user" && (
-                    <div className="w-7 h-7 rounded-lg bg-obsidian flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-7 h-7 rounded-lg bg-gmo-green/20 flex items-center justify-center flex-shrink-0 mt-0.5 border border-gmo-green/30">
                       <Bot className="w-3.5 h-3.5 text-gmo-green" />
                     </div>
                   )}
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${msg.role === "user" ? "bg-gmo-green text-white" : "bg-gray-100"}`}>
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 border ${msg.role === "user" ? "bg-gmo-green text-white border-gmo-green" : "bg-gmo-green/5 text-obsidian border-gmo-green/10"}`}>
                     {msg.role === "user" ? (
                       <p className="text-sm text-white font-body">{msg.content?.split("[CONTEXTE")[0]}</p>
                     ) : (
-                      <ReactMarkdown className="text-sm text-obsidian/80 font-body prose prose-sm max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                      <ReactMarkdown className="text-sm text-obsidian font-body prose prose-sm max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_strong]:text-gmo-green [&_strong]:font-bold">
                         {msg.content}
                       </ReactMarkdown>
                     )}
@@ -157,11 +187,11 @@ Factures payées: ${invoices.filter(i => i.status === "paye").length}
               ))}
               {loading && (
                 <div className="flex gap-2.5 justify-start">
-                  <div className="w-7 h-7 rounded-lg bg-obsidian flex items-center justify-center flex-shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-gmo-green/20 flex items-center justify-center flex-shrink-0 border border-gmo-green/30">
                     <Loader2 className="w-3.5 h-3.5 text-gmo-green animate-spin" />
                   </div>
-                  <div className="bg-gray-100 rounded-2xl px-4 py-3">
-                    <p className="text-xs text-obsidian/40 font-body">Analyse en cours…</p>
+                  <div className="bg-gmo-green/5 border border-gmo-green/10 rounded-2xl px-4 py-3">
+                    <p className="text-xs text-gmo-green font-body font-semibold">Analyse en cours…</p>
                   </div>
                 </div>
               )}
@@ -169,16 +199,16 @@ Factures payées: ${invoices.filter(i => i.status === "paye").length}
             </div>
 
             {/* Input */}
-            <div className="px-4 py-3 border-t border-gray-100 flex-shrink-0">
+            <div className="px-4 py-3 border-t border-green-100 bg-gmo-green/5 flex-shrink-0">
               <div className="flex gap-2">
                 <input
                   value={input} onChange={e => setInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage(input))}
                   placeholder="Posez une question comptable…"
-                  className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-gmo-green font-body"
+                  className="flex-1 border border-gmo-green/20 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-gmo-green focus:ring-1 focus:ring-gmo-green/30 font-body"
                 />
                 <button onClick={() => sendMessage(input)} disabled={loading || !input.trim()}
-                  className="w-10 h-10 rounded-xl bg-gmo-green flex items-center justify-center hover:bg-gmo-green/90 transition-colors cursor-pointer disabled:opacity-40 flex-shrink-0">
+                  className="w-10 h-10 rounded-xl bg-gradient-to-r from-gmo-green to-emerald-500 flex items-center justify-center hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer disabled:opacity-40 flex-shrink-0">
                   <Send className="w-4 h-4 text-white" />
                 </button>
               </div>
