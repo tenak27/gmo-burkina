@@ -19,6 +19,7 @@ const CATEGORY_MAP = {
   "savon n°": "Hygiène",
   "cobifa": "Alimentaire",
   "tourteaux": "Embauche",
+  "betail": "Embauche",
 };
 
 const getCategoryForProduct = (name) => {
