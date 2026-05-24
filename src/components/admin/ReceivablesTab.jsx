@@ -92,13 +92,14 @@ export default function ReceivablesTab({ receivables, setReceivables }) {
     <div className="space-y-4 animate-fade-up">
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Créances actives", value: `${(totalCreances/1000).toFixed(0)}k FCFA`, color:"text-gmo-red", bg:"from-red-50 to-red-50/20", border:"border-red-100" },
-          { label: "En retard", value: enRetard, color:"text-amber-600", bg:"from-amber-50 to-amber-50/20", border:"border-amber-100" },
-          { label: "Soldées", value: soldees, color:"text-green-600", bg:"from-green-50 to-green-50/20", border:"border-green-100" },
+          { label: "Créances actives", value: `${(totalCreances/1000).toFixed(0)}k FCFA`, grad:"from-red-500 to-rose-600" },
+          { label: "En retard", value: enRetard, grad:"from-orange-400 to-amber-500" },
+          { label: "Soldées", value: soldees, grad:"from-green-500 to-emerald-600" },
         ].map(k => (
-          <div key={k.label} className={`bg-gradient-to-br ${k.bg} border ${k.border} rounded-2xl p-4`}>
-            <p className={`font-heading text-2xl font-bold ${k.color}`}>{k.value}</p>
-            <p className="text-[11px] text-obsidian/40 font-body mt-0.5">{k.label}</p>
+          <div key={k.label} className={`bg-gradient-to-br ${k.grad} rounded-2xl p-4 shadow-md relative overflow-hidden`}>
+            <div className="absolute top-1 right-2 text-white/20 text-3xl select-none pointer-events-none">○</div>
+            <p className="font-heading text-2xl font-bold text-white">{k.value}</p>
+            <p className="text-[11px] text-white/70 font-body mt-0.5">{k.label}</p>
           </div>
         ))}
       </div>

@@ -434,11 +434,27 @@ export default function HRTab({ employees, setEmployees }) {
     <div className="space-y-5 animate-fade-up">
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <KpiCard icon={UserCheck} label="Actifs" value={actif} sub={`/${employees.length} total`} color="text-gmo-green" bg="bg-green-100" onClick={()=>setActiveTab("effectif")} />
-        <KpiCard icon={DollarSign} label="Masse salariale brute" value={`${(masseSalariale/1000).toFixed(0)}k`} sub="FCFA/mois" color="text-blue-600" bg="bg-blue-100" onClick={()=>setActiveTab("paie")} />
-        <KpiCard icon={DollarSign} label="Net total estimé" value={`${(netTotal/1000).toFixed(0)}k`} sub="FCFA/mois" color="text-gmo-green" bg="bg-green-100" onClick={()=>setActiveTab("paie")} />
-        <KpiCard icon={Calendar} label="Congés en attente" value={congeCount} sub="à traiter" color={congeCount>0?"text-amber-600":"text-gmo-green"} bg={congeCount>0?"bg-amber-100":"bg-green-100"} onClick={()=>setActiveTab("conges")} />
-        <KpiCard icon={Shield} label="Conformité BF" value={`${compliance.filter(c=>c.ok).length}/${compliance.length}`} sub="contrôles OK" color="text-purple-600" bg="bg-purple-100" onClick={()=>setActiveTab("conformite")} />
+        {[
+          { icon: UserCheck, label: "Actifs", value: actif, sub: `/${employees.length} total`, grad: "from-green-500 to-emerald-600", tab: "effectif" },
+          { icon: DollarSign, label: "Masse salariale brute", value: `${(masseSalariale/1000).toFixed(0)}k`, sub: "FCFA/mois", grad: "from-blue-500 to-indigo-600", tab: "paie" },
+          { icon: DollarSign, label: "Net total estimé", value: `${(netTotal/1000).toFixed(0)}k`, sub: "FCFA/mois", grad: "from-teal-500 to-green-600", tab: "paie" },
+          { icon: Calendar, label: "Congés en attente", value: congeCount, sub: "à traiter", grad: congeCount>0?"from-orange-400 to-amber-500":"from-green-500 to-green-600", tab: "conges" },
+          { icon: Shield, label: "Conformité BF", value: `${compliance.filter(c=>c.ok).length}/${compliance.length}`, sub: "contrôles OK", grad: "from-violet-500 to-purple-600", tab: "conformite" },
+        ].map(k => {
+          const Icon = k.icon;
+          return (
+            <button key={k.label} onClick={() => setActiveTab(k.tab)}
+              className={`bg-gradient-to-br ${k.grad} rounded-2xl p-4 text-left shadow-md cursor-pointer hover:opacity-90 transition-all hover:-translate-y-0.5 relative overflow-hidden`}>
+              <div className="absolute top-1 right-2 text-white/20 text-3xl select-none pointer-events-none">○</div>
+              <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center mb-2">
+                <Icon className="w-4 h-4 text-white" />
+              </div>
+              <p className="font-heading text-xl font-bold text-white">{k.value}</p>
+              <p className="text-xs text-white/70 font-body mt-0.5">{k.label}</p>
+              {k.sub && <p className="text-[10px] text-white/50 font-body">{k.sub}</p>}
+            </button>
+          );
+        })}
       </div>
 
       {/* Tabs */}

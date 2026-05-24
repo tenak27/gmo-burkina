@@ -213,18 +213,19 @@ export default function DriversTab({ drivers, setDrivers }) {
       {/* KPI bar */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Disponibles", value: available, color: "text-emerald-600", border: "border-emerald-100", bg: "bg-emerald-50", dot: "bg-emerald-400", status: "disponible" },
-          { label: "En livraison", value: busy, color: "text-blue-600", border: "border-blue-100", bg: "bg-blue-50", dot: "bg-blue-500", status: "en_livraison" },
-          { label: "Inactifs", value: inactive, color: "text-gray-500", border: "border-gray-100", bg: "bg-gray-50", dot: "bg-gray-300", status: "inactif" },
+          { label: "Disponibles", value: available, grad: "from-green-500 to-emerald-600", status: "disponible" },
+          { label: "En livraison", value: busy, grad: "from-blue-500 to-indigo-600", status: "en_livraison" },
+          { label: "Inactifs", value: inactive, grad: "from-slate-400 to-slate-500", status: "inactif" },
         ].map(s => (
           <button key={s.label} onClick={() => setFilter(filter === s.status ? "all" : s.status)}
-            className={`${s.bg} border ${s.border} rounded-2xl p-4 flex items-center gap-3 transition-all hover:shadow-sm cursor-pointer ${filter === s.status ? "ring-2 ring-gmo-green/30" : ""}`}>
-            <div className={`w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0`}>
-              <span className={`w-3 h-3 rounded-full ${s.dot}`} />
+            className={`bg-gradient-to-br ${s.grad} rounded-2xl p-4 flex items-center gap-3 shadow-md cursor-pointer transition-all hover:opacity-90 relative overflow-hidden ${filter === s.status ? "ring-2 ring-white/40" : ""}`}>
+            <div className="absolute top-1 right-2 text-white/20 text-3xl select-none pointer-events-none">○</div>
+            <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="w-3 h-3 rounded-full bg-white" />
             </div>
             <div>
-              <p className={`font-heading text-xl font-bold ${s.color}`}>{s.value}</p>
-              <p className="text-[10px] text-obsidian/45 font-body">{s.label}</p>
+              <p className="font-heading text-xl font-bold text-white">{s.value}</p>
+              <p className="text-[10px] text-white/70 font-body">{s.label}</p>
             </div>
           </button>
         ))}

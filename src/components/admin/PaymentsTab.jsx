@@ -103,14 +103,15 @@ export default function PaymentsTab({ payments, setPayments }) {
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: "Encaissé", value: `${(totalValid/1000).toFixed(0)}k`, unit:"FCFA", color:"text-green-600", bg:"from-green-50 to-green-50/20", border:"border-green-100" },
-          { label: "En attente", value: `${(totalPending/1000).toFixed(0)}k`, unit:"FCFA", color:"text-amber-500", bg:"from-amber-50 to-amber-50/20", border:"border-amber-100" },
-          { label: "Paiements validés", value: payments.filter(p=>p.status==="valide").length, unit:"", color:"text-blue-600", bg:"from-blue-50 to-blue-50/20", border:"border-blue-100" },
-          { label: "Total paiements", value: payments.length, unit:"", color:"text-obsidian/60", bg:"from-gray-50 to-gray-50/20", border:"border-gray-100" },
+          { label: "Encaissé", value: `${(totalValid/1000).toFixed(0)}k`, unit:"FCFA", grad:"from-green-500 to-green-600" },
+          { label: "En attente", value: `${(totalPending/1000).toFixed(0)}k`, unit:"FCFA", grad:"from-orange-400 to-amber-500" },
+          { label: "Paiements validés", value: payments.filter(p=>p.status==="valide").length, unit:"", grad:"from-blue-500 to-indigo-600" },
+          { label: "Total paiements", value: payments.length, unit:"", grad:"from-violet-500 to-purple-600" },
         ].map(k => (
-          <div key={k.label} className={`bg-gradient-to-br ${k.bg} border ${k.border} rounded-2xl p-4`}>
-            <p className={`font-heading text-2xl font-bold ${k.color}`}>{k.value} <span className="text-sm">{k.unit}</span></p>
-            <p className="text-[11px] text-obsidian/40 font-body mt-0.5">{k.label}</p>
+          <div key={k.label} className={`bg-gradient-to-br ${k.grad} rounded-2xl p-4 shadow-md relative overflow-hidden`}>
+            <div className="absolute top-1 right-2 text-white/20 text-3xl select-none pointer-events-none">○</div>
+            <p className="font-heading text-2xl font-bold text-white">{k.value} <span className="text-sm text-white/80">{k.unit}</span></p>
+            <p className="text-[11px] text-white/70 font-body mt-0.5">{k.label}</p>
           </div>
         ))}
       </div>

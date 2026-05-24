@@ -101,17 +101,18 @@ export default function ApplicationsTab({ applications, setApplications }) {
       {/* KPI bar */}
       <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
         {[
-          { key: "all", label: "Toutes", color: "text-gray-700", bg: "bg-gray-100" },
-          { key: "nouveau", label: "Nouvelles", color: "text-blue-700", bg: "bg-blue-50" },
-          { key: "en_cours", label: "En cours", color: "text-amber-700", bg: "bg-amber-50" },
-          { key: "entretien", label: "Entretien", color: "text-purple-700", bg: "bg-purple-50" },
-          { key: "refuse", label: "Refusés", color: "text-red-700", bg: "bg-red-50" },
-          { key: "accepte", label: "Acceptés", color: "text-green-700", bg: "bg-green-50" },
+          { key: "all", label: "Toutes", grad: "from-slate-400 to-slate-500" },
+          { key: "nouveau", label: "Nouvelles", grad: "from-blue-500 to-indigo-600" },
+          { key: "en_cours", label: "En cours", grad: "from-orange-400 to-amber-500" },
+          { key: "entretien", label: "Entretien", grad: "from-violet-500 to-purple-600" },
+          { key: "refuse", label: "Refusés", grad: "from-red-500 to-rose-600" },
+          { key: "accepte", label: "Acceptés", grad: "from-green-500 to-emerald-600" },
         ].map(f => (
           <button key={f.key} onClick={() => setFilter(f.key)}
-            className={`rounded-lg p-3 text-center transition-all border ${filter === f.key ? "border-gray-300 shadow-sm" : "border-transparent hover:border-gray-200"} ${f.bg}`}>
-            <p className={`font-heading text-lg font-bold ${f.color}`}>{counts[f.key]}</p>
-            <p className={`text-[10px] font-body ${f.color} opacity-80`}>{f.label}</p>
+            className={`bg-gradient-to-br ${f.grad} rounded-xl p-3 text-center cursor-pointer transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 relative overflow-hidden ${filter === f.key ? "ring-2 ring-white/40 shadow-lg" : "opacity-80 hover:opacity-100"}`}>
+            <div className="absolute top-0 right-1 text-white/15 text-2xl select-none pointer-events-none">○</div>
+            <p className="font-heading text-xl font-bold text-white">{counts[f.key]}</p>
+            <p className="text-[10px] font-body text-white/80">{f.label}</p>
           </button>
         ))}
       </div>

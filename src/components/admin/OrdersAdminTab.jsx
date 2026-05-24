@@ -162,18 +162,19 @@ export default function OrdersAdminTab({ orders, setOrders, clients = [], produc
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "En attente", value: pending, color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-100", icon: Clock },
-          { label: "En cours", value: inProgress, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Package },
-          { label: "Livrées", value: delivered, color: "text-green-700", bg: "bg-green-50", border: "border-green-100", icon: CheckCircle2 },
-          { label: "CA livré", value: `${(revenue / 1000).toFixed(0)}k FCFA`, color: "text-gmo-green", bg: "bg-white", border: "border-gray-100", icon: ShoppingCart },
+          { label: "En attente", value: pending, grad: "from-orange-400 to-orange-500", icon: Clock },
+          { label: "En cours", value: inProgress, grad: "from-blue-500 to-indigo-600", icon: Package },
+          { label: "Livrées", value: delivered, grad: "from-green-500 to-green-600", icon: CheckCircle2 },
+          { label: "CA livré", value: `${(revenue / 1000).toFixed(0)}k FCFA`, grad: "from-violet-500 to-purple-600", icon: ShoppingCart },
         ].map(s => (
-          <div key={s.label} className={`${s.bg} border ${s.border} rounded-2xl p-5 flex items-center gap-4 shadow-sm`}>
-            <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-              <s.icon className={`w-5 h-5 ${s.color}`} />
+          <div key={s.label} className={`bg-gradient-to-br ${s.grad} rounded-2xl p-5 flex items-center gap-4 shadow-md relative overflow-hidden`}>
+            <div className="absolute top-2 right-3 text-white/20 text-4xl select-none pointer-events-none">○</div>
+            <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <s.icon className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className={`font-heading text-2xl font-bold ${s.color}`}>{s.value}</p>
-              <p className="text-sm text-obsidian/50 font-body mt-0.5">{s.label}</p>
+              <p className="font-heading text-2xl font-bold text-white">{s.value}</p>
+              <p className="text-sm text-white/70 font-body mt-0.5">{s.label}</p>
             </div>
           </div>
         ))}

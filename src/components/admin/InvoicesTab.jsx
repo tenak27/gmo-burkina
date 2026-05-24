@@ -83,18 +83,19 @@ export default function InvoicesTab({ invoices, setInvoices, clients = [], produ
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: "CA facturé", value: `${(totalCA/1000).toFixed(0)}k FCFA`, color: "text-gmo-green", bg: "from-green-50 to-green-50/20", border: "border-green-100", icon: TrendingUp },
-          { label: "En attente de paiement", value: `${(totalPending/1000).toFixed(0)}k FCFA`, color: "text-amber-500", bg: "from-amber-50 to-amber-50/20", border: "border-amber-100", icon: Clock },
-          { label: "Brouillons", value: countBrouillon, color: "text-obsidian/50", bg: "from-gray-50 to-gray-50/20", border: "border-gray-100", icon: FileText },
-          { label: "En retard", value: countLate, color: countLate > 0 ? "text-gmo-red" : "text-green-600", bg: countLate > 0 ? "from-red-50 to-red-50/20" : "from-green-50 to-green-50/20", border: countLate > 0 ? "border-red-100" : "border-green-100", icon: AlertCircle },
+          { label: "CA facturé", value: `${(totalCA/1000).toFixed(0)}k FCFA`, grad: "from-green-500 to-green-600", icon: TrendingUp },
+          { label: "En attente de paiement", value: `${(totalPending/1000).toFixed(0)}k FCFA`, grad: "from-orange-400 to-amber-500", icon: Clock },
+          { label: "Brouillons", value: countBrouillon, grad: "from-slate-400 to-slate-500", icon: FileText },
+          { label: "En retard", value: countLate, grad: countLate > 0 ? "from-red-500 to-rose-600" : "from-green-500 to-teal-600", icon: AlertCircle },
         ].map(k => (
-          <div key={k.label} className={`bg-gradient-to-br ${k.bg} border ${k.border} rounded-2xl p-4 flex items-center gap-3`}>
-            <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
-              <k.icon className={`w-4 h-4 ${k.color}`} />
+          <div key={k.label} className={`bg-gradient-to-br ${k.grad} rounded-2xl p-4 flex items-center gap-3 shadow-md relative overflow-hidden`}>
+            <div className="absolute top-2 right-3 text-white/20 text-3xl select-none pointer-events-none">○</div>
+            <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <k.icon className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className={`font-heading text-lg font-bold ${k.color}`}>{k.value}</p>
-              <p className="text-[10px] text-obsidian/40 font-body">{k.label}</p>
+              <p className="font-heading text-lg font-bold text-white">{k.value}</p>
+              <p className="text-[10px] text-white/70 font-body">{k.label}</p>
             </div>
           </div>
         ))}

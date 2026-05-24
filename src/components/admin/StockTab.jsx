@@ -70,13 +70,14 @@ export default function StockTab({ movements, setMovements }) {
       {/* Summary strip */}
       <div className="grid grid-cols-3 gap-3 mb-4">
         {[
-          { label: "Total Entrées", value: `+${totalIn}`, color: "text-green-600" },
-          { label: "Total Sorties", value: `-${totalOut}`, color: "text-red-500" },
-          { label: "Mouvements", value: movements.length, color: "text-obsidian" },
+          { label: "Total Entrées", value: `+${totalIn}`, grad: "from-green-500 to-emerald-600" },
+          { label: "Total Sorties", value: `-${totalOut}`, grad: "from-red-500 to-rose-600" },
+          { label: "Mouvements", value: movements.length, grad: "from-violet-500 to-purple-600" },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-3 border border-gray-100 shadow-sm text-center">
-            <p className={`font-heading text-lg font-bold ${s.color}`}>{s.value}</p>
-            <p className="text-[10px] text-obsidian/40 font-body">{s.label}</p>
+          <div key={s.label} className={`bg-gradient-to-br ${s.grad} rounded-2xl p-4 text-center shadow-md relative overflow-hidden`}>
+            <div className="absolute top-1 right-2 text-white/20 text-3xl select-none pointer-events-none">○</div>
+            <p className="font-heading text-xl font-bold text-white">{s.value}</p>
+            <p className="text-[10px] text-white/70 font-body mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
