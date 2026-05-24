@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import {
   Image, Briefcase, Users, Newspaper, Trophy, Globe,
@@ -39,6 +39,64 @@ function Field({ label, children }) {
 }
 
 const inputCls = "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-body text-obsidian focus:outline-none focus:border-gmo-green transition-colors";
+
+// ─── Upload d'image (fichier OU URL) ─────────────────────────────────────────
+function ImageUploadField({ value, onChange, previewClass = "w-full h-32 object-cover" }) {
+  const [uploading, setUploading] = useState(false);
+  const inputRef = React.useRef(null);
+
+  const handleFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    onChange(file_url);
+    setUploading(false);
+  };
+
+  return (
+    <div className="space-y-2">
+      {/* Zone de dépôt / bouton upload */}
+      <div
+        onClick={() => inputRef.current?.click()}
+        className="relative border-2 border-dashed border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-gmo-green hover:bg-green-50/30 transition-all group min-h-[80px]"
+      >
+        {uploading ? (
+          <Loader2 className="w-6 h-6 animate-spin text-gmo-green" />
+        ) : (
+          <>
+            <Upload className="w-5 h-5 text-gray-400 group-hover:text-gmo-green transition-colors" />
+            <p className="text-xs font-body text-gray-400 group-hover:text-gmo-green text-center transition-colors">
+              Cliquer pour uploader une image
+            </p>
+          </>
+        )}
+        <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+      </div>
+      {/* Ou coller une URL */}
+      <div className="flex items-center gap-2">
+        <div className="h-px flex-1 bg-gray-100" />
+        <span className="text-[10px] text-gray-400 font-body">ou URL directe</span>
+        <div className="h-px flex-1 bg-gray-100" />
+      </div>
+      <input
+        value={value || ""}
+        onChange={e => onChange(e.target.value)}
+        placeholder="https://..."
+        className={inputCls}
+      />
+      {/* Aperçu */}
+      {value && (
+        <div className="relative">
+          <img src={value} alt="aperçu" className={`${previewClass} rounded-xl border border-gray-100`} onError={e => e.target.style.display="none"} />
+          <button onClick={() => onChange("")} className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 cursor-pointer">
+            <X className="w-3 h-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ─── GALERIE ─────────────────────────────────────────────────────────────────
 function GalerieManager() {
@@ -131,9 +189,8 @@ function GalerieManager() {
             <Field label="Titre / Légende *">
               <input value={form.name || ""} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Ex: Nos produits en entrepôt" className={inputCls} />
             </Field>
-            <Field label="URL de l'image *">
-              <input value={form.url || ""} onChange={e => setForm(f => ({ ...f, url: e.target.value }))} placeholder="https://..." className={inputCls} />
-              {form.url && <img src={form.url} alt="aperçu" className="mt-2 w-full h-32 object-cover rounded-xl border border-gray-100" onError={e => e.target.style.display="none"} />}
+            <Field label="Image *">
+              <ImageUploadField value={form.url || ""} onChange={v => setForm(f => ({ ...f, url: v }))} />
             </Field>
             <Field label="Catégorie (optionnel)">
               <input value={form.categorie || ""} onChange={e => setForm(f => ({ ...f, categorie: e.target.value }))} placeholder="Ex: Produits, Événement, Équipe..." className={inputCls} />
@@ -242,9 +299,8 @@ function PartenairesManager() {
             <Field label="Nom du partenaire *">
               <input value={form.name || ""} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Ex: SN CITEC, COBIFA..." className={inputCls} />
             </Field>
-            <Field label="URL du logo">
-              <input value={form.logo_url || ""} onChange={e => setForm(f => ({ ...f, logo_url: e.target.value }))} placeholder="https://..." className={inputCls} />
-              {form.logo_url && <img src={form.logo_url} alt="logo" className="mt-2 h-16 object-contain rounded-lg border border-gray-100 p-2" onError={e => e.target.style.display="none"} />}
+            <Field label="Logo">
+              <ImageUploadField value={form.logo_url || ""} onChange={v => setForm(f => ({ ...f, logo_url: v }))} previewClass="h-20 object-contain" />
             </Field>
             <Field label="Site web (optionnel)">
               <input value={form.website || ""} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://www.partenaire.com" className={inputCls} />
@@ -375,9 +431,8 @@ function NewsManager({ type = "actualite", color = "from-pink-500 to-rose-600", 
               <textarea value={form.content || ""} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={5}
                 placeholder="Contenu de l'article…" className={`${inputCls} resize-none`} />
             </Field>
-            <Field label="URL image">
-              <input value={form.image_url || ""} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} placeholder="https://..." className={inputCls} />
-              {form.image_url && <img src={form.image_url} alt="" className="mt-2 w-full h-32 object-cover rounded-xl border border-gray-100" onError={e => e.target.style.display="none"} />}
+            <Field label="Image">
+              <ImageUploadField value={form.image_url || ""} onChange={v => setForm(f => ({ ...f, image_url: v }))} />
             </Field>
             <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
               <input type="checkbox" id="published" checked={form.published !== false} onChange={e => setForm(f => ({ ...f, published: e.target.checked }))} className="w-4 h-4 accent-gmo-green cursor-pointer" />
