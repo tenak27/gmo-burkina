@@ -110,17 +110,26 @@ export default function Navbar({ heroHeight }) {
               {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
 
-            {/* Logo - Centered */}
-            <button 
+            {/* Logo - Centered with scroll animation */}
+            <motion.button 
               onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-              className="flex-shrink-0"
+              className="flex-shrink-0 relative overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
             >
-              <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
-                alt="GMO"
-                className="h-[100px] w-auto object-contain"
-              />
-            </button>
+              <div className="animate-ticker flex">
+                <img
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  alt="GMO"
+                  className="h-[100px] w-auto object-contain flex-shrink-0"
+                />
+                <img
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  alt="GMO"
+                  className="h-[100px] w-auto object-contain flex-shrink-0"
+                />
+              </div>
+            </motion.button>
 
             {/* Client Space / Login / WhatsApp - Right side */}
             <div className="flex items-center gap-3">
