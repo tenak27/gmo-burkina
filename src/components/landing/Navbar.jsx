@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, LogIn, User, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, LogIn, User, ChevronDown, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
@@ -122,31 +122,45 @@ export default function Navbar({ heroHeight }) {
               />
             </button>
 
-            {/* Client Space / Login - Right side */}
+            {/* Client Space / Login / WhatsApp - Right side */}
             <div className="flex items-center gap-3">
               {isAuthenticated ? (
                 <>
                   <Link
                     to={dashLink?.to || "/client"}
-                    className="font-heading text-sm font-bold text-gmo-green hover:text-gmo-green/70 transition-colors"
+                    className="inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer"
                   >
+                    <User className="w-3.5 h-3.5" />
                     {dashLink?.label || "Mon Espace"}
                   </Link>
                   <button
                     onClick={() => logout()}
-                    className="font-heading text-sm font-bold text-gmo-red hover:text-gmo-red/70 transition-colors"
+                    className="inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer"
                   >
+                    <LogIn className="w-3.5 h-3.5 rotate-180" />
                     Déconnexion
                   </button>
                 </>
               ) : (
                 <button
                   onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="font-heading text-sm font-bold text-obsidian hover:text-gmo-green transition-colors"
+                  className="inline-flex items-center gap-1.5 bg-obsidian/5 hover:bg-obsidian/10 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer"
                 >
+                  <LogIn className="w-3.5 h-3.5" />
                   Connexion
                 </button>
               )}
+              {/* WhatsApp button */}
+              <a
+                href="https://wa.me/+22670213831"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer"
+                title="+226 70 21 38 31"
+              >
+                <MessageCircle className="w-3.5 h-3.5 fill-current" />
+                WhatsApp
+              </a>
             </div>
           </div>
         </div>
