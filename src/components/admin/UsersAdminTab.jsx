@@ -143,9 +143,14 @@ function InviteModal({ onClose }) {
     if (!email.trim()) return setError("Veuillez saisir un email.");
     setLoading(true);
     setError("");
-    await base44.users.inviteUser(email.trim(), role);
-    setLoading(false);
-    setSuccess(true);
+    try {
+      await base44.users.inviteUser(email.trim(), role);
+      setSuccess(true);
+    } catch (e) {
+      setError(e?.message || "Erreur lors de l'envoi. Vérifiez l'email et réessayez.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
