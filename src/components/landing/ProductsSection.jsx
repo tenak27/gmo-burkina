@@ -18,7 +18,7 @@ const CATEGORY_MAP = {
   "savon citec": "Hygiène",
   "savon n°": "Hygiène",
   "cobifa": "Alimentaire",
-  "tourteaux": "Elevage",
+  "tourteaux": "Embauche",
 };
 
 const getCategoryForProduct = (name) => {
@@ -29,7 +29,7 @@ const getCategoryForProduct = (name) => {
   return "Alimentaire";
 };
 
-const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Elevage"];
+const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
