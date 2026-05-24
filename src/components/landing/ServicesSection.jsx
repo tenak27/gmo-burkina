@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Truck, Package, MapPin, Shield, Clock, Zap } from "lucide-react";
+import { Truck, Package, MapPin, Shield, Clock, Zap, Gauge, Rocket } from "lucide-react";
 
 const SERVICES = [
   {
@@ -43,6 +43,27 @@ const SERVICES = [
     title: "Innovation",
     description: "Application mobile en développement pour commander et suivre vos livraisons directement depuis votre téléphone.",
     specs: ["App mobile (bientôt)", "Commande en ligne"],
+    color: "bg-gold",
+  },
+  {
+    icon: Gauge,
+    title: "Quantité & Fiabilité",
+    description: "Garantie de livraison complète et intégrité des produits. Respect strict des délais et des normes de qualité.",
+    specs: ["100% conformité", "Délais garantis"],
+    color: "bg-gmo-green",
+  },
+  {
+    icon: Rocket,
+    title: "Service Express",
+    description: "Livraison rapide et prioritaire pour les commandes urgentes. Livraison le même jour disponible dans les zones couvertes.",
+    specs: ["Livraison rapide", "Prioritaire"],
+    color: "bg-gmo-red",
+  },
+  {
+    icon: Clock,
+    title: "Service 6j/7 8h-24h",
+    description: "Disponibilité maximale pour vos besoins. Ouvert 6 jours sur 7 de 8h à minuit pour assurer votre satisfaction.",
+    specs: ["6 jours par semaine", "8h à minuit"],
     color: "bg-gold",
   },
 ];
