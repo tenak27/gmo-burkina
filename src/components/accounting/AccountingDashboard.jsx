@@ -50,8 +50,8 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="font-heading text-xl font-bold text-white">Comptabilité</h2>
-        <p className="text-xs text-white/35 font-body mt-0.5">
+        <h2 className="font-heading text-xl font-bold text-obsidian">Comptabilité</h2>
+        <p className="text-xs text-obsidian/40 font-body mt-0.5">
           Vue d'ensemble financière et comptable
           {openYear && <span className="ml-2 text-gmo-green font-semibold">• {openYear.label}</span>}
         </p>
@@ -62,13 +62,13 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
         {kpis.map(k=>{
           const Icon = k.icon;
           return (
-            <div key={k.label} className="rounded-2xl p-5" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+            <div key={k.label} className={`bg-white rounded-2xl border ${k.border} shadow-sm p-5`}>
               <div className={`w-9 h-9 rounded-xl ${k.bg} flex items-center justify-center mb-3`}>
                 <Icon className={`w-4 h-4 ${k.color}`} />
               </div>
               <p className={`font-heading text-xl font-bold ${k.color}`}>{k.val.toLocaleString("fr-FR")} FCFA</p>
-              <p className="text-xs text-white/40 font-body mt-0.5">{k.label}</p>
-              {k.sub && <p className="text-[11px] text-white/25 font-body">{k.sub}</p>}
+              <p className="text-xs text-obsidian/50 font-body mt-0.5">{k.label}</p>
+              {k.sub && <p className="text-[11px] text-obsidian/30 font-body">{k.sub}</p>}
             </div>
           );
         })}
@@ -76,8 +76,8 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
 
       {/* Chart + Last entries */}
       <div className="grid lg:grid-cols-2 gap-4">
-        <div className="rounded-2xl p-5" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-          <h3 className="font-heading text-sm font-bold text-white mb-4">Encaissements — 6 derniers mois</h3>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 className="font-heading text-sm font-bold text-obsidian mb-4">Encaissements — 6 derniers mois</h3>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={monthlyData} margin={{left:-20}}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
@@ -89,22 +89,22 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
           </ResponsiveContainer>
         </div>
 
-        <div className="rounded-2xl p-5" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading text-sm font-bold text-white">Dernières écritures</h3>
+            <h3 className="font-heading text-sm font-bold text-obsidian">Dernières écritures</h3>
             <button onClick={()=>setActiveModule("journal")} className="text-xs text-gmo-green font-semibold hover:underline flex items-center gap-1 cursor-pointer">
               Journal <ArrowRight className="w-3 h-3" />
             </button>
           </div>
           {lastEntries.length===0 ? (
-            <div className="py-6 text-center text-sm text-white/25">Aucune écriture</div>
+            <div className="py-6 text-center text-sm text-obsidian/30">Aucune écriture</div>
           ) : (
             <div className="space-y-3">
               {lastEntries.map(e=>(
                 <div key={e.id} className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-white/80 truncate">{e.libelle}</p>
-                    <p className="text-[10px] text-white/30 font-body">{e.account_code} / {e.journal_code || "OD"}</p>
+                    <p className="text-xs font-semibold text-obsidian truncate">{e.libelle}</p>
+                    <p className="text-[10px] text-obsidian/40 font-body">{e.account_code} / {e.journal_code || "OD"}</p>
                   </div>
                   <p className={`text-sm font-bold font-heading whitespace-nowrap ${e.debit>0?"text-blue-600":"text-gmo-green"}`}>
                     {(e.debit||e.credit||0).toLocaleString("fr-FR")} FCFA
@@ -118,19 +118,16 @@ export default function AccountingDashboard({ entries, invoices, setActiveModule
 
       {/* Module grid */}
       <div>
-        <h3 className="font-heading text-sm font-bold text-white mb-4">Modules comptables</h3>
+        <h3 className="font-heading text-sm font-bold text-obsidian mb-4">Modules comptables</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {MODULES.map(mod=>(
             <button key={mod.id} onClick={()=>setActiveModule(mod.id)}
-              className="rounded-2xl p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)" }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(26,122,46,0.12)"}
-              onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}>
+              className={`bg-gradient-to-br ${mod.color} border ${mod.border} rounded-2xl p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group`}>
               <div className={`w-9 h-9 rounded-xl ${mod.bg} flex items-center justify-center mb-3 text-lg`}>
                 {mod.icon}
               </div>
-              <p className={`text-sm font-bold text-white/80 group-hover:${mod.ic} transition-colors`}>{mod.label}</p>
-              <p className="text-[11px] text-white/30 font-body mt-0.5">{mod.sub}</p>
+              <p className={`text-sm font-bold text-obsidian group-hover:${mod.ic} transition-colors`}>{mod.label}</p>
+              <p className="text-[11px] text-obsidian/40 font-body mt-0.5">{mod.sub}</p>
             </button>
           ))}
         </div>

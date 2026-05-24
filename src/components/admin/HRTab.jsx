@@ -47,17 +47,16 @@ const LEAVE_TYPES = [
 ];
 
 // ── Sub-components ──
-function KpiCard({ icon: Icon, label, value, sub, color = "text-white/70", bg = "bg-white/5", onClick }) {
+function KpiCard({ icon: Icon, label, value, sub, color = "text-obsidian", bg = "bg-gray-50", onClick }) {
   return (
     <button onClick={onClick}
-      className="rounded-2xl p-4 text-left hover:-translate-y-0.5 transition-all cursor-pointer w-full"
-      style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+      className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer w-full">
       <div className={`w-9 h-9 rounded-xl ${bg} flex items-center justify-center mb-3`}>
         <Icon className={`w-4 h-4 ${color}`} />
       </div>
       <p className={`font-heading text-xl font-bold ${color}`}>{value}</p>
-      <p className="text-xs text-white/50 font-body mt-0.5">{label}</p>
-      {sub && <p className="text-[10px] text-white/25 font-body mt-0.5">{sub}</p>}
+      <p className="text-xs text-obsidian/60 font-body mt-0.5">{label}</p>
+      {sub && <p className="text-[10px] text-obsidian/30 font-body mt-0.5">{sub}</p>}
     </button>
   );
 }
@@ -66,8 +65,8 @@ function SectionHeader({ title, subtitle, action }) {
   return (
     <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
       <div>
-        <h3 className="font-heading text-base font-bold text-white">{title}</h3>
-        {subtitle && <p className="text-xs text-white/40 font-body mt-0.5">{subtitle}</p>}
+        <h3 className="font-heading text-base font-bold text-obsidian">{title}</h3>
+        {subtitle && <p className="text-xs text-obsidian/40 font-body mt-0.5">{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -443,12 +442,12 @@ export default function HRTab({ employees, setEmployees }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 flex-wrap rounded-2xl p-1" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      <div className="flex gap-1 flex-wrap bg-gray-100/60 rounded-2xl p-1">
         {HR_TABS.map(tab=>{
           const Icon=tab.icon;
           return (
             <button key={tab.id} onClick={()=>setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${activeTab===tab.id?"bg-gmo-green text-white shadow-lg":"text-white/40 hover:text-white/70"}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${activeTab===tab.id?"bg-white text-obsidian shadow-sm":"text-obsidian/50 hover:text-obsidian/80"}`}>
               <Icon className="w-3.5 h-3.5" />{tab.label}
             </button>
           );
@@ -499,23 +498,23 @@ export default function HRTab({ employees, setEmployees }) {
               </ResponsiveContainer>
             </div>
           </div>
-          <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr style={{ background: "rgba(26,122,46,0.1)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+                <tr className="bg-gray-50 border-b border-gray-100">
                   {["Employé","Poste","Département","Contrat","Salaire brut","Net estimé","CNSS","Statut","Actions"].map(h=>(
-                    <th key={h} className="text-left px-4 py-2.5 text-[10px] font-bold text-white/40 uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-gray-50">
                 {filtered.length===0 ? (
-                  <tr><td colSpan={9} className="py-10 text-center text-sm text-white/25 font-body">Aucun employé</td></tr>
+                  <tr><td colSpan={9} className="py-10 text-center text-sm text-obsidian/30 font-body">Aucun employé</td></tr>
                 ) : filtered.map(e=>{
                   const p=calcPayslip(e.salary||0);
                   const underSmig=(e.salary||0)<SMIG_BF&&e.status==="actif";
                   return (
-                    <tr key={e.id} className="transition-colors" style={{}} onMouseEnter={ev=>ev.currentTarget.style.background="rgba(26,122,46,0.08)"} onMouseLeave={ev=>ev.currentTarget.style.background=""}>
+                    <tr key={e.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
                           <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{background:`hsl(${e.first_name?.charCodeAt(0)*5||200}deg 60% 55%)`}}>
@@ -564,23 +563,23 @@ export default function HRTab({ employees, setEmployees }) {
           <SectionHeader title="Gestion des congés" subtitle={`Droit légal BF : ${CONGE_ANNUEL_DAYS} jours/an | Maternité : 98 jours | Paternité : 3 jours`}
             action={<button onClick={()=>setShowLeave(true)} className="flex items-center gap-2 bg-gmo-green text-white text-xs font-semibold px-4 py-2 rounded-xl cursor-pointer"><Plus className="w-3.5 h-3.5"/>Demande de congé</button>}
           />
-          <div className="rounded-xl overflow-hidden" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr style={{ background: "rgba(26,122,46,0.1)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+                <tr className="bg-gray-50 border-b border-gray-100">
                   {["Employé","Type","Du","Au","Jours","Statut","Actions"].map(h=>(
-                    <th key={h} className="text-left px-4 py-2.5 text-[10px] font-bold text-white/40 uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left px-4 py-2.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-gray-50">
                 {leaves.length===0 ? (
-                  <tr><td colSpan={7} className="py-10 text-center text-sm text-white/25">Aucune demande de congé</td></tr>
+                  <tr><td colSpan={7} className="py-10 text-center text-sm text-obsidian/30">Aucune demande de congé</td></tr>
                 ) : leaves.map(l=>{
                   const typeLabel = LEAVE_TYPES.find(t=>t.value===l.type)?.label||l.type;
                   const statusColors = {en_attente:"bg-amber-100 text-amber-700",approuve:"bg-green-100 text-green-700",refuse:"bg-red-100 text-red-600",annule:"bg-gray-100 text-gray-500"};
                   return (
-                    <tr key={l.id} className="transition-colors" onMouseEnter={ev=>ev.currentTarget.style.background="rgba(26,122,46,0.08)"} onMouseLeave={ev=>ev.currentTarget.style.background=""}>
+                    <tr key={l.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-4 py-3 text-xs font-bold text-obsidian">{l.employee_name}</td>
                       <td className="px-4 py-3 text-xs text-obsidian/60">{typeLabel}</td>
                       <td className="px-4 py-3 text-xs text-obsidian/50">{l.start_date?new Date(l.start_date).toLocaleDateString("fr-FR"):"—"}</td>
@@ -706,8 +705,8 @@ export default function HRTab({ employees, setEmployees }) {
       {activeTab==="conformite" && (
         <div className="space-y-4">
           <div>
-            <h3 className="font-heading text-base font-bold text-white">Conformité — Droit du Travail Burkina Faso</h3>
-            <p className="text-xs text-white/40 font-body mt-0.5">Code du Travail BF · Loi 028-2008/AN · Décret SMIG · CNSS</p>
+            <h3 className="font-heading text-base font-bold text-obsidian">Conformité — Droit du Travail Burkina Faso</h3>
+            <p className="text-xs text-obsidian/40 font-body mt-0.5">Code du Travail BF · Loi 028-2008/AN · Décret SMIG · CNSS</p>
           </div>
           <div className="grid grid-cols-1 gap-3">
             {compliance.map((c,i)=>(
@@ -724,8 +723,8 @@ export default function HRTab({ employees, setEmployees }) {
               </div>
             ))}
           </div>
-          <div className="rounded-2xl p-5" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <h4 className="font-heading text-sm font-bold text-white mb-4">Récapitulatif légal — Burkina Faso</h4>
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <h4 className="font-heading text-sm font-bold text-obsidian mb-4">Récapitulatif légal — Burkina Faso</h4>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 {label:"SMIG mensuel", val:`${SMIG_BF.toLocaleString()} FCFA`, law:"Décret 2014-679"},
@@ -738,9 +737,9 @@ export default function HRTab({ employees, setEmployees }) {
                 {label:"Heures sup. taux", val:"+25% (jour) +50% (nuit/férié)", law:"Art.116 Code Travail"},
                 {label:"Préavis CDI ≥ 5 ans", val:"3 mois minimum", law:"Art.73 Code Travail"},
               ].map(item=>(
-                <div key={item.label} className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                  <p className="text-[10px] text-white/30 uppercase tracking-wider font-body mb-0.5">{item.label}</p>
-                  <p className="text-sm font-bold text-white/80 font-heading">{item.val}</p>
+                <div key={item.label} className="border border-gray-100 rounded-xl p-3">
+                  <p className="text-[10px] text-obsidian/40 uppercase tracking-wider font-body mb-0.5">{item.label}</p>
+                  <p className="text-sm font-bold text-obsidian font-heading">{item.val}</p>
                   <p className="text-[10px] text-gmo-green font-body mt-1">{item.law}</p>
                 </div>
               ))}

@@ -46,18 +46,44 @@ function buildProjection(monthly) {
   return [...monthly.map(m=>({month:m.month, value:m.facture, proj:false})), ...proj];
 }
 
-// Weather widget (static for Ouagadougou season)
+// Weather widget animated
 function WeatherWidget() {
+  const [phase, setPhase] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setPhase(p => (p + 1) % 3), 2000);
+    return () => clearInterval(t);
+  }, []);
+
   return (
     <div className="flex items-center gap-3 text-white/80">
-      <Sun className="w-6 h-6 text-yellow-300" />
-      <div>
-        <p className="text-lg font-bold text-white leading-none">28°C</p>
-        <p className="text-[11px] text-white/60">Ensoleillé</p>
+      <div className="relative w-8 h-8">
+        {/* Rotating sun rays */}
+        <div className="absolute inset-0 flex items-center justify-center" style={{ animation: "spin 8s linear infinite" }}>
+          <Sun className="w-7 h-7 text-yellow-300 drop-shadow-lg" style={{ filter: "drop-shadow(0 0 6px rgba(253,224,71,0.8))" }} />
+        </div>
+        {/* Floating cloud overlay */}
+        <div className="absolute -bottom-1 -right-2 transition-all duration-1000"
+          style={{ opacity: phase === 2 ? 1 : 0, transform: `translateX(${phase === 2 ? 0 : 8}px)` }}>
+          <Cloud className="w-4 h-4 text-white/60" />
+        </div>
       </div>
-      <div className="text-[11px] text-white/50 ml-1">
-        <div>💧 52%</div>
-        <div>🌬 11 km/h</div>
+      <div>
+        <p className="text-lg font-bold text-white leading-none" style={{ textShadow: "0 0 12px rgba(253,224,71,0.5)" }}>
+          {phase === 0 ? "28°C" : phase === 1 ? "29°C" : "27°C"}
+        </p>
+        <p className="text-[11px] text-white/60 transition-all duration-500">
+          {phase === 2 ? "Légèrement nuageux" : "Ensoleillé ☀️"}
+        </p>
+      </div>
+      <div className="text-[11px] text-white/50 ml-1 space-y-0.5">
+        <div className="flex items-center gap-1">
+          <span style={{ animation: "bounce 2s infinite", display: "inline-block" }}>💧</span>
+          <span>{phase === 1 ? "55%" : "52%"}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span style={{ animation: "pulse 1.5s ease-in-out infinite", display: "inline-block" }}>🌬</span>
+          <span>{phase === 0 ? "11" : phase === 1 ? "14" : "9"} km/h</span>
+        </div>
       </div>
     </div>
   );
@@ -152,7 +178,7 @@ export default function DashboardVisual({ data, setTab }) {
           <h1 className="font-heading text-2xl font-bold text-obsidian">Tableau de bord — Direction</h1>
           <p className="text-sm text-obsidian/40 font-body">{dateLabel.toLowerCase()}</p>
         </div>
-        <button onClick={()=>window.location.reload()} className="flex items-center gap-2 border border-gray-200 text-sm text-obsidian/50 px-4 py-2 rounded-xl hover:border-gmo-green hover:text-gmo-green transition-colors cursor-pointer bg-white">
+        <button onClick={()=>window.location.reload()} className="flex items-center gap-2 border border-gray-200 text-sm text-obsidian/50 px-4 py-2 rounded-xl hover:border-gmo-green hover:text-gmo-green transition-colors cursor-pointer bg-white/90">
           <RefreshCw className="w-4 h-4" /> Actualiser
         </button>
       </div>
@@ -230,7 +256,7 @@ export default function DashboardVisual({ data, setTab }) {
           { icon:"🛒", label:"Devis actifs", val:devisActifs.length, tab:"invoices" },
         ].map(chip => (
           <button key={chip.label} onClick={()=>setTab(chip.tab)}
-            className="bg-white rounded-2xl border border-gray-100 shadow-sm px-5 py-4 flex items-center gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer text-left">
+            className="bg-white/90 rounded-2xl border border-gray-100 shadow-sm px-5 py-4 flex items-center gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer text-left">
             <span className="text-xl">{chip.icon}</span>
             <div>
               <p className="font-heading text-xl font-bold text-obsidian">{chip.val}</p>
@@ -256,7 +282,7 @@ export default function DashboardVisual({ data, setTab }) {
 
       {/* Charts row */}
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="lg:col-span-2 bg-white/90 rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="font-heading text-sm font-bold text-obsidian">Évolution du Chiffre d'Affaires</h3>
@@ -269,7 +295,7 @@ export default function DashboardVisual({ data, setTab }) {
           <CAChart data={monthly} />
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="bg-white/90 rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
             <p className="font-heading text-sm font-bold text-obsidian">Alertes Stock</p>
             <span className="text-[10px] text-obsidian/30 font-body">Temps réel</span>
@@ -300,7 +326,7 @@ export default function DashboardVisual({ data, setTab }) {
       </div>
 
       {/* Predictive analysis */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+      <div className="bg-white/90 rounded-2xl border border-gray-100 shadow-sm p-5">
         <div className="flex items-center gap-2 mb-1">
           <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
             <span className="text-purple-600 text-xs font-bold">ꟻ</span>
@@ -367,7 +393,7 @@ export default function DashboardVisual({ data, setTab }) {
       </div>
 
       {/* Last invoices */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white/90 rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 flex items-center justify-between border-b border-gray-50">
           <h3 className="font-heading text-sm font-bold text-obsidian">Dernières factures</h3>
           <button onClick={()=>setTab("invoices")} className="text-xs text-gmo-green font-semibold hover:underline cursor-pointer">Voir tout</button>

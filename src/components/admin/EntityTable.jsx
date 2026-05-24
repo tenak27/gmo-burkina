@@ -57,22 +57,21 @@ export default function EntityTable({
       {/* Header */}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div>
-          <h2 className="font-heading text-2xl font-bold text-white">{title}</h2>
-          {subtitle && <p className="text-sm text-white/40 font-body mt-1">{subtitle}</p>}
+          <h2 className="font-heading text-2xl font-bold text-obsidian">{title}</h2>
+          {subtitle && <p className="text-sm text-obsidian/50 font-body mt-1">{subtitle}</p>}
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           {/* Search */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-obsidian/40" />
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(1); }}
               placeholder="Rechercher..."
-              className="pl-10 pr-8 py-2.5 text-sm font-body rounded-xl focus:border-gmo-green focus:outline-none w-52 transition-colors text-white/80 placeholder:text-white/30"
-              style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
+              className="pl-10 pr-8 py-2.5 text-sm font-body border border-gray-200 rounded-xl focus:border-gmo-green focus:outline-none w-52 transition-colors bg-white shadow-sm"
             />
             {search && (
-              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white">
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-obsidian/40 hover:text-obsidian">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
@@ -81,8 +80,7 @@ export default function EntityTable({
           <button
             onClick={() => exportCSV(columns, filtered, title)}
             title="Exporter en CSV"
-            className="flex items-center gap-2 text-white/50 hover:text-gmo-green text-sm font-body px-4 py-2.5 rounded-xl transition-colors"
-            style={{ border: "1px solid rgba(255,255,255,0.12)" }}
+            className="flex items-center gap-2 border border-gray-200 text-obsidian/60 hover:border-gmo-green hover:text-gmo-green text-sm font-body px-4 py-2.5 rounded-xl transition-colors bg-white shadow-sm"
           >
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Exporter</span>
@@ -100,23 +98,23 @@ export default function EntityTable({
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(4px)" }}>
+      <div className="rounded-2xl overflow-hidden bg-white shadow-sm" style={{ border: "1px solid rgba(0,0,0,0.07)" }}>
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin" />
-            <p className="text-sm text-white/30 font-body">Chargement…</p>
+            <p className="text-sm text-obsidian/40 font-body">Chargement…</p>
           </div>
         ) : (
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr style={{ background: "rgba(26,122,46,0.12)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                  <tr className="bg-gray-50/80 border-b border-gray-100">
                     {columns.map((c, i) => (
                       <th
                         key={`${c.key}-${i}`}
                         onClick={sortableKeys.has(c.key) ? () => handleSort(c.key) : undefined}
-                        className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-white/50 font-heading select-none ${
+                        className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-obsidian/50 font-heading select-none ${
                           c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"
                         } ${sortableKeys.has(c.key) ? "cursor-pointer hover:text-obsidian group" : ""}`}
                       >
@@ -133,29 +131,26 @@ export default function EntityTable({
                       </th>
                     ))}
                     {(onEdit || onDelete) && (
-                      <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wider text-white/50 font-heading">Actions</th>
+                      <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wider text-obsidian/50 font-heading">Actions</th>
                     )}
                   </tr>
                 </thead>
-                <tbody style={{ borderColor: "rgba(255,255,255,0.06)" }} className="divide-y divide-white/5">
+                <tbody className="divide-y divide-gray-50">
                   {paged.length === 0 ? (
                     <tr>
                       <td colSpan={columns.length + 1} className="text-center py-16 font-body">
                         <div className="flex flex-col items-center gap-3">
-                          <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
-                            <Search className="w-5 h-5 text-white/20" />
+                          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+                            <Search className="w-5 h-5 text-obsidian/30" />
                           </div>
-                          <p className="text-base text-white/30">{search ? `Aucun résultat pour "${search}"` : (emptyLabel || "Aucune donnée")}</p>
+                          <p className="text-base text-obsidian/40">{search ? `Aucun résultat pour "${search}"` : (emptyLabel || "Aucune donnée")}</p>
                         </div>
                       </td>
                     </tr>
                   ) : paged.map((row, i) => (
                     <tr
                       key={row.id || i}
-                      className="transition-colors duration-100 group"
-                      style={{ background: i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent" }}
-                      onMouseEnter={e => e.currentTarget.style.background = "rgba(26,122,46,0.08)"}
-                      onMouseLeave={e => e.currentTarget.style.background = i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent"}
+                      className="hover:bg-gmo-green/5 transition-colors duration-100 group"
                     >
                       {columns.map((c, ci) => (
                         <td
@@ -196,11 +191,11 @@ export default function EntityTable({
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between px-5 py-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "rgba(26,122,46,0.05)" }}>
-              <span className="text-sm text-white/40 font-body">
+            <div className="flex items-center justify-between px-5 py-4 border-t border-gray-100 bg-gray-50/50">
+              <span className="text-sm text-obsidian/50 font-body">
                 {search
                   ? <><span className="text-gmo-green font-semibold">{filtered.length}</span> résultat{filtered.length > 1 ? "s" : ""} sur {rows.length}</>
-                  : <><span className="font-semibold text-white/60">{rows.length}</span> entrée{rows.length > 1 ? "s" : ""}</>
+                  : <><span className="font-semibold text-obsidian/70">{rows.length}</span> entrée{rows.length > 1 ? "s" : ""}</>
                 }
               </span>
               {pages > 1 && (

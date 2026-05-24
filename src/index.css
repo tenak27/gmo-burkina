@@ -190,6 +190,11 @@
     animation: slideInLeft 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
   /* Smooth tab fade-in */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }

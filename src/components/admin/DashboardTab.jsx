@@ -38,41 +38,35 @@ export default function DashboardTab({ data, setTab }) {
   return (
     <div>
       <div className="mb-5">
-        <h1 className="font-heading text-xl font-bold text-white">Tableau de bord ERP</h1>
-        <p className="text-xs text-white/30 font-body mt-0.5">GMO Burkina · IAM TECHNOLOGY · Développé par Armand Olivier KONATE</p>
+        <h1 className="font-heading text-xl font-bold text-obsidian">Tableau de bord ERP</h1>
+        <p className="text-xs text-obsidian/40 font-body mt-0.5">GMO Burkina · IAM TECHNOLOGY · Développé par Armand Olivier KONATE</p>
       </div>
 
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {kpis.map(k => (
           <button key={k.label} onClick={() => setTab(k.tab)}
-            className="rounded-xl p-4 text-left transition-all hover:-translate-y-0.5 cursor-pointer"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-            onMouseEnter={e => e.currentTarget.style.background = "rgba(26,122,46,0.12)"}
-            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}>
+            className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-gmo-green/20 transition-all text-left cursor-pointer">
             <div className={`w-8 h-8 ${k.bg} rounded-lg flex items-center justify-center mb-2`}>
               <k.icon className={`w-4 h-4 ${k.color}`} />
             </div>
             <p className={`font-heading text-xl font-bold ${k.color}`}>{k.value}</p>
-            <p className="text-[11px] text-white/40 font-body leading-tight">{k.label}</p>
+            <p className="text-[11px] text-obsidian/40 font-body leading-tight">{k.label}</p>
           </button>
         ))}
       </div>
 
       {/* Modules grid */}
-      <p className="text-[10px] uppercase tracking-widest text-white/25 font-heading mb-3">Modules de gestion</p>
+      <p className="text-[10px] uppercase tracking-widest text-obsidian/30 font-heading mb-3">Modules de gestion</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
         {modules.map(m => (
           <button key={m.id} onClick={() => setTab(m.id)}
-            className="rounded-xl p-4 text-left group cursor-pointer transition-all hover:-translate-y-0.5"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)" }}
-            onMouseEnter={e => e.currentTarget.style.background = "rgba(26,122,46,0.12)"}
-            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.04)"}>
+            className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-gmo-green/20 transition-all text-left group cursor-pointer hover:-translate-y-0.5">
             <div className={`w-9 h-9 bg-gradient-to-br ${m.color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-sm`}>
               <m.icon className="w-4 h-4 text-white" />
             </div>
-            <p className="font-heading text-sm font-bold text-white/80">{m.label}</p>
-            {m.count !== null && <p className="text-[11px] text-white/30 font-body mt-0.5">{m.count} enregistrements</p>}
+            <p className="font-heading text-sm font-bold text-obsidian">{m.label}</p>
+            {m.count !== null && <p className="text-[11px] text-obsidian/35 font-body mt-0.5">{m.count} enregistrements</p>}
           </button>
         ))}
       </div>
@@ -95,13 +89,13 @@ export default function DashboardTab({ data, setTab }) {
       )}
 
       <div className="flex flex-wrap gap-2 mt-4">
-        <Link to="/client" className="text-[11px] text-white/30 hover:text-gmo-green font-body px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors" style={{ border: "1px solid rgba(255,255,255,0.1)" }}>
+        <Link to="/client" className="text-[11px] text-obsidian/40 hover:text-gmo-green font-body border border-gray-200 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
           <Eye className="w-3 h-3" /> Vue Client
         </Link>
-        <Link to="/detaillant" className="text-[11px] text-white/30 hover:text-gmo-red font-body px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors" style={{ border: "1px solid rgba(255,255,255,0.1)" }}>
+        <Link to="/detaillant" className="text-[11px] text-obsidian/40 hover:text-gmo-red font-body border border-gray-200 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
           <Eye className="w-3 h-3" /> Vue Détaillant
         </Link>
-        <Link to="/" className="text-[11px] text-white/30 hover:text-white font-body px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors" style={{ border: "1px solid rgba(255,255,255,0.1)" }}>
+        <Link to="/" className="text-[11px] text-obsidian/40 hover:text-obsidian font-body border border-gray-200 px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
           <Globe className="w-3 h-3" /> Site public
         </Link>
       </div>

@@ -37,15 +37,14 @@ const STATUS_ORDER = ["en_attente", "confirmee", "en_preparation", "en_livraison
 function KanbanCard({ order, onStatusChange, onEdit }) {
 return (
   <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-    className="rounded-xl p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
-    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+    className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5"
   >
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="min-w-0">
-          <button onClick={() => onEdit(order)} className="font-heading text-sm font-bold text-white/80 truncate hover:text-gmo-green transition-colors cursor-pointer block">
+          <button onClick={() => onEdit(order)} className="font-heading text-sm font-bold text-obsidian truncate hover:text-gmo-green transition-colors cursor-pointer block">
             {order.order_number || `CMD-${order.id?.slice(-6)}`}
           </button>
-          <p className="text-xs text-white/40 font-body truncate mt-0.5">{order.client_name || "—"}</p>
+          <p className="text-xs text-obsidian/55 font-body truncate mt-0.5">{order.client_name || "—"}</p>
         </div>
         <span className={`text-xs px-2 py-0.5 rounded font-body flex-shrink-0 ${order.client_type === "detaillant" ? "bg-gmo-red/10 text-gmo-red" : "bg-gray-100 text-obsidian/50"}`}>
           {order.client_type || "client"}
@@ -64,10 +63,9 @@ return (
         }
         {order.driver_name && <span className="text-xs bg-purple-50 text-purple-600 px-2 py-0.5 rounded font-body truncate max-w-[90px]">{order.driver_name}</span>}
       </div>
-      <p className="text-xs text-white/30 font-body mb-2.5">{new Date(order.created_date).toLocaleDateString("fr-FR")}</p>
+      <p className="text-xs text-obsidian/40 font-body mb-2.5">{new Date(order.created_date).toLocaleDateString("fr-FR")}</p>
       <select value={order.status} onChange={e => onStatusChange(order, e.target.value)}
-        className="w-full text-sm font-body text-white/70 rounded-lg px-2.5 py-2 focus:outline-none focus:border-gmo-green cursor-pointer transition-colors"
-        style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.15)" }}>
+        className="w-full text-sm font-body text-obsidian/70 border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-gmo-green cursor-pointer bg-gray-50 transition-colors">
         {Object.entries(STATUS_LABELS).map(([k, lbl]) => <option key={k} value={k}>{lbl}</option>)}
       </select>
     </motion.div>
@@ -164,12 +162,12 @@ export default function OrdersAdminTab({ orders, setOrders, clients = [], produc
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "En attente", value: pending, color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200", icon: Clock },
-          { label: "En cours", value: inProgress, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-200", icon: Package },
-          { label: "Livrées", value: delivered, color: "text-green-700", bg: "bg-green-50", border: "border-green-200", icon: CheckCircle2 },
-          { label: "CA livré", value: `${(revenue / 1000).toFixed(0)}k FCFA`, color: "text-gmo-green", bg: "bg-green-50/50", border: "border-green-100", icon: ShoppingCart },
+          { label: "En attente", value: pending, color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-100", icon: Clock },
+          { label: "En cours", value: inProgress, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", icon: Package },
+          { label: "Livrées", value: delivered, color: "text-green-700", bg: "bg-green-50", border: "border-green-100", icon: CheckCircle2 },
+          { label: "CA livré", value: `${(revenue / 1000).toFixed(0)}k FCFA`, color: "text-gmo-green", bg: "bg-white", border: "border-gray-100", icon: ShoppingCart },
         ].map(s => (
-          <div key={s.label} className={`${s.bg} border ${s.border} rounded-2xl p-5 flex items-center gap-4`}>
+          <div key={s.label} className={`${s.bg} border ${s.border} rounded-2xl p-5 flex items-center gap-4 shadow-sm`}>
             <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
               <s.icon className={`w-5 h-5 ${s.color}`} />
             </div>
@@ -183,15 +181,15 @@ export default function OrdersAdminTab({ orders, setOrders, clients = [], produc
 
       {/* Toolbar */}
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="font-heading text-2xl font-bold text-white">
-          Commandes <span className="text-white/30 font-normal text-xl">({orders.length})</span>
+        <h2 className="font-heading text-2xl font-bold text-obsidian">
+          Commandes <span className="text-obsidian/30 font-normal text-xl">({orders.length})</span>
         </h2>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
-            <button onClick={() => setView("kanban")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "kanban" ? "bg-gmo-green text-white font-semibold shadow-lg" : "text-white/40 hover:text-white"}`}>
+          <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
+            <button onClick={() => setView("kanban")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "kanban" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
               <LayoutGrid className="w-4 h-4" /> Kanban
             </button>
-            <button onClick={() => setView("table")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "table" ? "bg-gmo-green text-white font-semibold shadow-lg" : "text-white/40 hover:text-white"}`}>
+            <button onClick={() => setView("table")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "table" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
               <List className="w-4 h-4" /> Table
             </button>
           </div>
