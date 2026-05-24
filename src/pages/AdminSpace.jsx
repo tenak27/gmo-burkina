@@ -21,6 +21,7 @@ import PaymentsTab from "@/components/admin/PaymentsTab";
 import ReceivablesTab from "@/components/admin/ReceivablesTab";
 import ApplicationsTab from "@/components/admin/ApplicationsTab";
 import StatsChartsPanel from "@/components/admin/StatsChartsPanel";
+import SettingsTab from "@/components/admin/SettingsTab";
 
 function AdminDashboard() {
   const [tab, setTab] = useState("dashboard");
@@ -136,6 +137,7 @@ function AdminDashboard() {
             {tab === "users"        && <UsersAdminTab users={users} />}
             {tab === "applications" && <ApplicationsTab applications={applications} setApplications={setApplications} />}
             {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
+            {tab === "settings"     && <SettingsTab />}
           </div>
           <p className="text-center text-xs text-gray-400 mt-10">
             GMO Burkina ERP · <span className="text-green-600">IAM Technology</span>

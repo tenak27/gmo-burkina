@@ -6,12 +6,13 @@ import { base44 } from "@/api/base44Client";
 import {
   Package, Clock, MapPin, ShoppingBag, Phone, LogOut,
   ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus,
-  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp, FileText
+  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp, FileText, Loader2
 } from "lucide-react";
 import QuoteForm from "@/components/client/QuoteForm";
 import DeliveryProgress from "@/components/client/DeliveryProgress";
 import LogisticsTracker from "@/components/client/LogisticsTracker";
 import OrderProgressBar from "@/components/client/OrderProgressBar";
+import { openPdfWindow } from "@/components/shared/PdfGenerator";
 
 const STATUS_CONFIG = {
   en_attente:     { label: "En attente",     color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200",  icon: Circle },
@@ -25,9 +26,10 @@ const STATUS_CONFIG = {
 const TABS = [
   { id: "accueil",   label: "Accueil" },
   { id: "commandes", label: "Commandes" },
+  { id: "factures",  label: "Factures" },
   { id: "catalogue", label: "Catalogue" },
   { id: "devis",     label: "Devis" },
-  { id: "profil",    label: "Mon Profil" },
+  { id: "profil",    label: "Profil" },
 ];
 
 
@@ -52,6 +54,8 @@ function ClientDashboard() {
   const [clientInfo, setClientInfo] = useState(null);
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [pdfLoading, setPdfLoading] = useState(null);
+  const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
     if (user) fetchOrders();
@@ -61,6 +65,7 @@ function ClientDashboard() {
     if (tab === "commandes" && user && orders.length === 0) fetchOrders();
     if (tab === "profil" && user) fetchClientInfo();
     if (tab === "catalogue" || tab === "devis") fetchProducts();
+    if (tab === "factures" && user) fetchInvoices();
   }, [tab, user]);
 
   // Real-time subscription
@@ -89,6 +94,25 @@ function ClientDashboard() {
   const fetchClientInfo = async () => {
     const data = await base44.entities.Client.filter({ email: user.email }, "-created_date", 1);
     if (data && data.length > 0) setClientInfo(data[0]);
+  };
+
+  const fetchInvoices = async () => {
+    const data = await base44.entities.Invoice.filter({ client_id: clientInfo?.id || "" }, "-date", 50);
+    // Also try by client_name match
+    if (!data || data.length === 0) {
+      const byName = await base44.entities.Invoice.list("-date", 100);
+      const mine = (byName || []).filter(inv => inv.client_name?.toLowerCase() === user.full_name?.toLowerCase() || inv.client_email === user.email);
+      setInvoices(mine);
+    } else {
+      setInvoices(data || []);
+    }
+  };
+
+  const handlePdfInvoice = async (invoiceId) => {
+    setPdfLoading(invoiceId);
+    const res = await base44.functions.invoke("generateInvoicePdf", { invoiceId });
+    setPdfLoading(null);
+    if (res?.data?.invoice) openPdfWindow(res.data.invoice);
   };
 
   const fetchProducts = async () => {
@@ -447,6 +471,71 @@ function ClientDashboard() {
             <button onClick={() => logout()} className="w-full flex items-center justify-center gap-2 border border-red-200 text-red-500 font-heading font-bold text-sm py-3 rounded-xl hover:bg-red-50 transition-colors">
               <LogOut className="w-4 h-4" /> Se déconnecter
             </button>
+          </div>
+        )}
+
+        {/* ── FACTURES ── */}
+        {tab === "factures" && (
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-heading text-xl font-bold text-obsidian">Mes Factures & Devis</h2>
+                <p className="text-xs text-obsidian/40 font-body mt-0.5">Historique de vos documents</p>
+              </div>
+              <button onClick={fetchInvoices}
+                className="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-2 text-xs font-body text-obsidian/60 hover:border-gmo-green hover:text-gmo-green transition-colors">
+                <RefreshCw className="w-3.5 h-3.5" /> Actualiser
+              </button>
+            </div>
+
+            {invoices.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center">
+                <FileText className="w-10 h-10 text-obsidian/10 mx-auto mb-3" />
+                <p className="font-heading text-base font-semibold text-obsidian/40 mb-1">Aucun document</p>
+                <p className="text-sm text-obsidian/25 font-body">Vos factures et devis apparaîtront ici</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="divide-y divide-gray-50">
+                  {invoices.map(inv => {
+                    const typeColors = { facture: "text-gmo-green bg-green-50 border-green-200", devis: "text-blue-600 bg-blue-50 border-blue-200", proforma: "text-purple-600 bg-purple-50 border-purple-200" };
+                    const typeLabels = { facture: "Facture", devis: "Devis", proforma: "Proforma" };
+                    const statusColors = { brouillon: "text-gray-500", envoye: "text-amber-600", paye: "text-green-600", partiel: "text-blue-600", annule: "text-red-500" };
+                    const statusLabels = { brouillon: "Brouillon", envoye: "Envoyé", paye: "Payé", partiel: "Partiel", annule: "Annulé" };
+                    return (
+                      <div key={inv.id} className="px-5 py-4 flex items-center gap-3 hover:bg-gray-50/50 transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                          <FileText className="w-4 h-4 text-gray-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="font-heading text-sm font-bold text-obsidian">{inv.number || `DOC-${inv.id?.slice(-6)}`}</p>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${typeColors[inv.type] || typeColors.facture}`}>
+                              {typeLabels[inv.type] || inv.type}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 mt-0.5">
+                            <p className="text-[11px] text-obsidian/40 font-body">{inv.date ? new Date(inv.date).toLocaleDateString("fr-FR") : "—"}</p>
+                            {inv.status && <span className={`text-[11px] font-semibold ${statusColors[inv.status] || "text-gray-500"}`}>{statusLabels[inv.status] || inv.status}</span>}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          {inv.total > 0 && <p className="font-heading text-sm font-bold text-obsidian whitespace-nowrap">{inv.total.toLocaleString()} FCFA</p>}
+                          <button
+                            onClick={() => handlePdfInvoice(inv.id)}
+                            disabled={pdfLoading === inv.id}
+                            title="Télécharger / Imprimer"
+                            className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 text-xs font-body text-obsidian/60 hover:border-gmo-green hover:text-gmo-green transition-colors disabled:opacity-50">
+                            {pdfLoading === inv.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+                            PDF
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

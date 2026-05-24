@@ -118,6 +118,12 @@ export function generateInvoiceHtml(inv) {
     .client-name{font-size:13px;font-weight:800;color:#1A7A2E;margin-bottom:6px;}
     .client-meta{font-size:10px;color:#666;line-height:1.7;}
 
+    /* Date info band */
+    .date-band{margin:16px 24px 0;display:flex;gap:0;border:1.5px solid #d1e8d1;border-radius:6px;overflow:hidden;}
+    .date-band-item{flex:1;padding:8px 14px;text-align:center;border-right:1px solid #d1e8d1;}
+    .date-band-item:last-child{border-right:none;}
+    .date-band-item .dbi-label{font-size:8px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;}
+    .date-band-item .dbi-val{font-size:11px;font-weight:700;color:#1A7A2E;margin-top:3px;}
     /* Reference band */
     .ref-band{margin:16px 24px 0;background:#1A7A2E;border-radius:6px;padding:8px 16px;text-align:center;}
     .ref-band span{font-size:10px;font-weight:700;color:#fff;letter-spacing:1px;}
@@ -192,7 +198,7 @@ export function generateInvoiceHtml(inv) {
     <div class="header-right">
       <div class="doc-type">${typeLabel}</div>
       <div class="doc-number">${inv.number || "—"}</div>
-      <div class="status-badge" style="background:${statusCfg.color};">${statusCfg.label}</div>
+      
     </div>
   </div>
   <div class="header-red-bar"></div>
@@ -213,17 +219,29 @@ export function generateInvoiceHtml(inv) {
       <div class="client-box-header"><span>${inv.type === "devis" ? "Destinataire" : "Facturer à"}</span></div>
       <div class="client-box-body">
         <div class="client-name">${(inv.client_name || "—").toUpperCase()}</div>
-        <div class="client-meta">
-          Date d'émission : <strong>${formatDate(inv.date)}</strong><br>
-          ${inv.due_date ? `${inv.type === "devis" ? "Validité" : "Échéance"} : <strong>${formatDate(inv.due_date)}</strong>` : ""}
-        </div>
+        ${inv.notes_client ? `<div class="client-meta">${inv.notes_client}</div>` : ""}
       </div>
     </div>
   </div>
 
-  <!-- REFERENCE BAND -->
-  <div class="ref-band">
-    <span>RÉFÉRENCE DOCUMENT : ${inv.number || "—"}</span>
+  <!-- DATE BAND -->
+  <div class="date-band">
+    <div class="date-band-item">
+      <div class="dbi-label">Référence</div>
+      <div class="dbi-val">${inv.number || "—"}</div>
+    </div>
+    <div class="date-band-item">
+      <div class="dbi-label">Date d'émission</div>
+      <div class="dbi-val">${formatDate(inv.date)}</div>
+    </div>
+    ${inv.due_date ? `<div class="date-band-item">
+      <div class="dbi-label">${inv.type === "devis" ? "Validité" : "Échéance"}</div>
+      <div class="dbi-val">${formatDate(inv.due_date)}</div>
+    </div>` : ""}
+    <div class="date-band-item">
+      <div class="dbi-label">Type</div>
+      <div class="dbi-val">${TYPE_LABELS[inv.type] || "DOCUMENT"}</div>
+    </div>
   </div>
 
   <!-- TABLE -->

@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Users, UserCheck, FileText, Truck, Package,
   Tag, Warehouse, BarChart2, BookOpen, Users2, ShoppingCart,
   Shield, Globe, LogOut, Menu, Search,
-  DollarSign, TrendingDown, Navigation, X, Briefcase, TrendingUp, Bell, ChevronDown
+  DollarSign, TrendingDown, Navigation, X, Briefcase, TrendingUp, Bell, ChevronDown, Settings
 } from "lucide-react";
 
 const GROUPS = [
@@ -63,6 +63,12 @@ const GROUPS = [
     label: "Analytics",
     items: [
       { id: "stats", label: "Statistiques", icon: TrendingUp },
+    ],
+  },
+  {
+    label: null,
+    items: [
+      { id: "settings", label: "Paramètres", icon: Settings },
     ],
   },
 ];
