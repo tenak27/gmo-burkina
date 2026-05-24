@@ -29,8 +29,21 @@ export default function Navbar({ heroHeight }) {
 
   const scrollTo = (href) => {
     setMobileOpen(false);
+    // If not on home page, navigate there first then scroll
+    if (window.location.pathname !== "/") {
+      window.location.href = "/" + href;
+      return;
+    }
     const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Try after a short delay in case page is still loading
+      setTimeout(() => {
+        const el2 = document.querySelector(href);
+        if (el2) el2.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
   };
 
   const getDashboardLink = () => {
@@ -140,7 +153,7 @@ export default function Navbar({ heroHeight }) {
 
       {/* Mobile menu */}
       <AnimatePresence>
-        {mobileOpen && scrolled && (
+        {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

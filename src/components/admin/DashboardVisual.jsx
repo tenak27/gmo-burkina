@@ -184,7 +184,7 @@ export default function DashboardVisual({ data, setTab }) {
       </div>
 
       {/* Financial consolidated band */}
-      <div className="rounded-2xl overflow-hidden" style={{background:"linear-gradient(135deg,#3b0764 0%,#4c1d95 40%,#5b21b6 100%)"}}>
+      <div className="rounded-2xl overflow-hidden" style={{background:"linear-gradient(135deg,#4c0080 0%,#6d28d9 40%,#7c3aed 100%)"}}>
         <div className="px-6 pt-4 pb-2 flex items-start justify-between">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-purple-300 animate-pulse" />
@@ -223,10 +223,10 @@ export default function DashboardVisual({ data, setTab }) {
       {/* 4 colored KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label:"CA Facturé", sub:`CA Facturé — ${months[thisMonth]} ${thisYear}`, val:caThisMois, icon:"📄", grad:"from-violet-600 to-purple-700", tab:"invoices" },
-          { label:"Encaissé ce mois", sub:`Recouvrement global : ${tauxRecouvrement}%`, val:encaisseThisMois, icon:"$", grad:"from-green-500 to-emerald-600", tab:"payments" },
-          { label:`${facturesImpayees.length} facture(s)`, sub:`${facturesImpayees.length} facture(s) impayées\n${resteEncaisser.toLocaleString("fr-FR")} FCFA`, val:null, icon:"⏰", grad:"from-amber-500 to-orange-600", tab:"invoices", noVal:true },
-          { label:"Pipeline devis", sub:`${devisActifs.length} actif(s)`, val:pipelineDevis, icon:"📈", grad:"from-pink-500 to-rose-600", tab:"invoices" },
+          { label:"CA Facturé", sub:`CA Facturé — ${months[thisMonth]} ${thisYear}`, val:caThisMois, icon:"📄", grad:"from-violet-500 to-purple-600", tab:"invoices" },
+          { label:"Encaissé ce mois", sub:`Recouvrement global : ${tauxRecouvrement}%`, val:encaisseThisMois, icon:"$", grad:"from-green-500 to-green-600", tab:"payments" },
+          { label:`${facturesImpayees.length} facture(s)`, sub:`${facturesImpayees.length} facture(s) impayées\n${resteEncaisser.toLocaleString("fr-FR")} FCFA`, val:null, icon:"⏰", grad:"from-orange-400 to-orange-500", tab:"invoices", noVal:true },
+          { label:"Pipeline devis", sub:`${devisActifs.length} actif(s)`, val:pipelineDevis, icon:"📈", grad:"from-pink-500 to-red-500", tab:"invoices" },
         ].map(card => (
           <button key={card.label} onClick={()=>setTab(card.tab)}
             className={`bg-gradient-to-br ${card.grad} rounded-2xl p-5 text-left relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity group`}>

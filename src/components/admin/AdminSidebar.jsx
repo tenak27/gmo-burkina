@@ -66,6 +66,12 @@ const GROUPS = [
     ],
   },
   {
+    label: "Site Web",
+    items: [
+      { id: "vitrine", label: "Site Vitrine", icon: Globe },
+    ],
+  },
+  {
     label: null,
     items: [
       { id: "settings", label: "Paramètres", icon: Settings },
@@ -82,6 +88,7 @@ const GROUP_ACCENTS = {
   "Finance": "text-emerald-300",
   "RH & Admin": "text-purple-300",
   "Analytics": "text-cyan-300",
+  "Site Web": "text-violet-300",
 };
 
 function CommandPalette({ onNavigate, onClose }) {
