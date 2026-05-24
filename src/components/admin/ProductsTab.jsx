@@ -11,7 +11,10 @@ const COLUMNS = [
     ? <img src={v} alt={r.name} className="w-10 h-10 object-cover rounded-lg border border-gray-100" onError={e => e.target.style.display="none"} />
     : <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center"><Package className="w-4 h-4 text-gray-300" /></div>
   },
-  { key: "name", label: "Produit", render: (v, r) => <div><p className="font-heading text-sm font-bold text-obsidian">{v}</p><span className="text-xs text-obsidian/50 font-body capitalize">{r.category || "—"}</span></div> },
+  { key: "name", label: "Produit", render: (v, r) => {
+    const CAT_LABELS = { cigarette: "Cigarette", alimentaire: "Alimentaire", hygiene: "Hygiène", elevage: "Elevage" };
+    return <div><p className="font-heading text-sm font-bold text-obsidian">{v}</p><span className="text-xs text-obsidian/50 font-body">{CAT_LABELS[r.category] || r.category || "—"}</span></div>;
+  }},
   { key: "unit", label: "Unité", render: v => <span className="text-sm text-obsidian/60 font-body">{v || "—"}</span> },
   { key: "unit_price", label: "Prix U.", align: "right", render: v => v ? <span className="text-sm font-heading font-bold text-obsidian">{Number(v).toLocaleString()} FCFA</span> : <span className="text-obsidian/25">—</span> },
   { key: "wholesale_price", label: "Prix Gros", align: "right", render: v => v ? <span className="text-sm font-heading font-bold text-gmo-green">{Number(v).toLocaleString()} FCFA</span> : <span className="text-obsidian/25">—</span> },
@@ -99,7 +102,10 @@ function ProductForm({ form, setForm, onSave, onClose, saving, isEdit }) {
           <div>
             <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Catégorie</label>
             <select value={form.category || "alimentaire"} onChange={e => set("category", e.target.value)} className={inputCls}>
-              {["alimentaire","hygiene","boisson","cereale","autre"].map(c => <option key={c} value={c}>{c}</option>)}
+              <option value="cigarette">Cigarette</option>
+              <option value="alimentaire">Alimentaire</option>
+              <option value="hygiene">Hygiène</option>
+              <option value="elevage">Elevage</option>
             </select>
           </div>
 
