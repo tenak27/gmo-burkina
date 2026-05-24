@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Building2, Phone, Mail, MapPin, Globe, FileText, Save, CheckCircle2, Shield, Upload, Image, Loader2 } from "lucide-react";
 import CompanySettingsForm from "./CompanySettingsForm";
+import FiscalYearSettings from "./FiscalYearSettings";
 
 const SECTIONS = [
   { id: "company",   label: "Société",          icon: Building2 },
+  { id: "exercices", label: "Exercices comptables", icon: Shield },
   { id: "documents", label: "Documents",         icon: FileText },
   { id: "contact",   label: "Contact & Adresse", icon: MapPin },
   { id: "system",    label: "Système",           icon: Shield },
@@ -185,6 +187,18 @@ export default function SettingsTab() {
                 )}
               </Section>
             </>
+          )}
+
+          {activeSection === "exercices" && (
+            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-5">
+              <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50">
+                <h3 className="font-semibold text-sm text-gray-800">Exercices comptables SYSCOHADA</h3>
+                <p className="text-xs text-gray-400 mt-0.5">Ouverture / clôture sécurisée avec équilibrage obligatoire</p>
+              </div>
+              <div className="p-5">
+                <FiscalYearSettings />
+              </div>
+            </div>
           )}
 
           {activeSection === "contact" && (
