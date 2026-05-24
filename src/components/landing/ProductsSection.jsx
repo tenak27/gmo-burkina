@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 
-const CATEGORIES = ["Tous", "Alimentaire", "Confiserie", "Hygiène", "Agriculture"];
+const CATEGORIES = ["Tous", "Alimentaire", "Confiserie", "Hygiène", "Élevage"];
 
 const PRODUCTS = [
   {
@@ -70,7 +70,7 @@ const PRODUCTS = [
   },
   {
     name: "Aliments pour bétail",
-    category: "Agriculture",
+    category: "Élevage",
     brand: "GMO Agri",
     description:
       "Large gamme d'aliments pour bétail conçus pour les besoins nutritionnels spécifiques des bovins, moutons, chèvres. Riches en protéines, vitamines et minéraux.",
@@ -202,7 +202,7 @@ export default function ProductsSection() {
               transition={{ delay: 0.5 }}
               className="font-body text-sm text-obsidian/50 max-w-sm"
             >
-              Alimentaire, hygiène, confiserie et agriculture — une gamme complète distribuée à travers le Burkina Faso.
+              Alimentaire, hygiène, confiserie et élevage — une gamme complète distribuée à travers le Burkina Faso.
             </motion.p>
           </div>
         </div>
