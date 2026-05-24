@@ -100,9 +100,9 @@ function ImageUploadField({ value, onChange, previewClass = "w-full h-32 object-
 }
 
 // ─── PRODUITS VITRINE ────────────────────────────────────────────────────────
-const CAT_LABELS = { cigarette: "Cigarette", alimentaire: "Alimentaire", hygiene: "Hygiène", elevage: "Elevage" };
+const CAT_LABELS = { tabac: "Tabac", alimentaire: "Alimentaire", hygiene: "Hygiène", elevage: "Elevage" };
 const CAT_COLORS = {
-  cigarette: "bg-orange-100 text-orange-700",
+  tabac: "bg-orange-100 text-orange-700",
   alimentaire: "bg-green-100 text-green-700",
   hygiene: "bg-blue-100 text-blue-700",
   elevage: "bg-amber-100 text-amber-700",

@@ -9,7 +9,7 @@
     "category": {
       "type": "string",
       "enum": [
-        "cigarette",
+        "tabac",
         "alimentaire",
         "hygiene",
         "elevage"

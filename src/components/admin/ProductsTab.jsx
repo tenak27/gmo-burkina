@@ -12,7 +12,7 @@ const COLUMNS = [
     : <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center"><Package className="w-4 h-4 text-gray-300" /></div>
   },
   { key: "name", label: "Produit", render: (v, r) => {
-    const CAT_LABELS = { cigarette: "Cigarette", alimentaire: "Alimentaire", hygiene: "Hygiène", elevage: "Elevage" };
+    const CAT_LABELS = { tabac: "Tabac", alimentaire: "Alimentaire", hygiene: "Hygiène", elevage: "Elevage" };
     return <div><p className="font-heading text-sm font-bold text-obsidian">{v}</p><span className="text-xs text-obsidian/50 font-body">{CAT_LABELS[r.category] || r.category || "—"}</span></div>;
   }},
   { key: "unit", label: "Unité", render: v => <span className="text-sm text-obsidian/60 font-body">{v || "—"}</span> },
@@ -102,7 +102,7 @@ function ProductForm({ form, setForm, onSave, onClose, saving, isEdit }) {
           <div>
             <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Catégorie</label>
             <select value={form.category || "alimentaire"} onChange={e => set("category", e.target.value)} className={inputCls}>
-              <option value="cigarette">Cigarette</option>
+              <option value="tabac">Tabac</option>
               <option value="alimentaire">Alimentaire</option>
               <option value="hygiene">Hygiène</option>
               <option value="elevage">Elevage</option>

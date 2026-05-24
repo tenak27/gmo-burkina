@@ -7,11 +7,11 @@ const WHATSAPP = "https://wa.me/22676211633";
 
 // Mappe category DB → catégories affichées
 const CATEGORY_MAP = {
-  "hamilton light": "Cigarette",
-  "hamilton classic": "Cigarette",
-  "excellence": "Cigarette",
-  "dunhill light": "Cigarette",
-  "dunhill classic": "Cigarette",
+  "hamilton light": "Tabac",
+  "hamilton classic": "Tabac",
+  "excellence": "Tabac",
+  "dunhill light": "Tabac",
+  "dunhill classic": "Tabac",
   "farine etalon": "Alimentaire",
   "huile de soja": "Alimentaire",
   "huile savor": "Alimentaire",
@@ -29,7 +29,7 @@ const getCategoryForProduct = (name) => {
   return "Alimentaire";
 };
 
-const CATEGORIES_ORDER = ["Cigarette", "Alimentaire", "Hygiène", "Elevage"];
+const CATEGORIES_ORDER = ["Tabac", "Alimentaire", "Hygiène", "Elevage"];
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
