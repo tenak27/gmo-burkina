@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityTable from "./EntityTable";
+import SectionHeader from "./SectionHeader";
 import { Upload, X, Loader2, Package } from "lucide-react";
 
 const inputCls = "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-body text-obsidian focus:outline-none focus:border-gmo-green transition-colors";

@@ -201,8 +201,8 @@ export default function DriversTab({ drivers, setDrivers }) {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="font-heading text-2xl font-bold text-obsidian">Chauffeurs-Livreurs</h2>
-          <p className="text-sm text-obsidian/40 font-body mt-0.5">{drivers.length} chauffeur(s) · mis à jour {lastUpdate.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"})}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-obsidian/50 font-heading mb-1">Chauffeurs-Livreurs</p>
+          <p className="text-sm text-obsidian/40 font-body">{drivers.length} chauffeur(s) · mis à jour {lastUpdate.toLocaleTimeString("fr-FR", {hour:"2-digit",minute:"2-digit"})}</p>
         </div>
         <button onClick={openAdd}
           className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-xl btn-glow-green cursor-pointer">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityTable from "./EntityTable";
 import EntityForm from "./EntityForm";
+import SectionHeader from "./SectionHeader";
 
 const FIELDS = [
   { key: "name", label: "Nom / Raison sociale", required: true },
