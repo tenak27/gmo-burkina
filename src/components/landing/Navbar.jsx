@@ -171,46 +171,6 @@ export default function Navbar({ heroHeight }) {
               ))}
             </div>
 
-            {/* Right CTAs */}
-            <div className="hidden lg:flex items-center gap-3">
-              {isAuthenticated && dashLink ? (
-                <>
-                  <Link
-                    to={dashLink.to}
-                    className="flex items-center gap-2 font-heading font-bold text-sm text-obsidian/70 hover:text-gmo-green transition-colors px-4 py-2 rounded-lg hover:bg-gmo-green/8"
-                  >
-                    <User className="w-4 h-4" />
-                    {dashLink.label}
-                  </Link>
-                  <button
-                    onClick={() => logout()}
-                    className="font-body text-xs text-obsidian/35 hover:text-gmo-red transition-colors"
-                  >
-                    Déconnexion
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="flex items-center gap-2 border border-gray-200 text-obsidian/60 font-heading font-bold text-sm px-4 py-2 rounded-lg hover:border-gmo-green hover:text-gmo-green transition-all"
-                >
-                  <LogIn className="w-4 h-4" />
-                  Connexion
-                </button>
-              )}
-              <a
-                href="https://wa.me/+22670213831"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="+226 70 21 38 31"
-                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-heading font-bold text-sm px-3 py-2.5 rounded-lg transition-colors"
-              >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z"/>
-                </svg>
-              </a>
-            </div>
-
             {/* Right CTAs - Desktop only */}
             <div className="hidden lg:flex items-center gap-3">
               {isAuthenticated && dashLink ? (
