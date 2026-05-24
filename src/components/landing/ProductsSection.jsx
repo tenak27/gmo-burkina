@@ -13,13 +13,21 @@ const CATEGORY_MAP = {
   "farine gmf": "Alimentaire",
   "farine": "Alimentaire",
   "huile sn citec": "Alimentaire",
+  "huile savor soja": "Alimentaire",
+  "huile savor graine": "Alimentaire",
   "huile savor": "Alimentaire",
   "sucre": "Alimentaire",
+  "sosuco": "Alimentaire",
   "savon citec": "Hygiène",
   "savon n°": "Hygiène",
+  "cobifa axe": "Alimentaire",
+  "cobifa chewngun": "Alimentaire",
   "cobifa": "Alimentaire",
   "tourteaux": "Embauche",
   "betail": "Embauche",
+  "son de blé": "Embauche",
+  "aliment bétail": "Embauche",
+  "aliment de betail": "Embauche",
 };
 
 const getCategoryForProduct = (name) => {
@@ -30,7 +38,7 @@ const getCategoryForProduct = (name) => {
   return "Alimentaire";
 };
 
-const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
+const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Embauche"];
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
@@ -123,25 +131,33 @@ export default function ProductsSection() {
 
   // Ordre d'affichage souhaité (les noms doivent correspondre exactement aux produits en DB)
   const DISPLAY_ORDER = [
+    // Cigarettes
     "Hamilton Light",
     "Hamilton Classic",
     "Excellence",
     "Dunhill Light",
     "Dunhill Classic",
-    "Farine de Blé",
-    "Farine de Blé GMF 25kg",
-    "Huile SN CITEC 5L",
-    "Huile SN CITEC 20L",
-    "Huile SAVOR Coton 5L",
-    "Huile SAVOR Coton 1L",
-    "Savon CITEC Lessive 400g",
-    "Savon N°1",
-    "Savon N°2",
-    "Sucre SOSUCO",
-    "Bonbons COBIFA AXE",
-    "Chewing-gum COBIFA Étalon",
-    "Tourteaux de Bétail Coton",
-    "Tourteaux de Bétail Soja",
+    // Alimentaire - Huiles
+    "Huile Savor Soja 5l",
+    "Huile Savor Soja 20l",
+    "Huile Savor Graine de coton 5l",
+    "Huile Savor Graine de coton 20l",
+    // Alimentaire - Farine
+    "Farine de Blé GMF Etalon 50kg",
+    // Alimentaire - Sucres
+    "Sosuco sucre morceau blond 25 paquets",
+    "Sosuco sucre granulé blond 50kg",
+    "Sosuco sucre morceau Blanc 25 paquets",
+    "Sosuco sucre granulé blanc 50kg",
+    // Alimentaire - Cobifa
+    "Cobifa AXE zoodo",
+    "Cobifa chewngun etalon",
+    // Embauche
+    "Son de blé sac de 25kg",
+    "Aliment bétail coton sac 50kg",
+    "Tourtaux de coton sac de 50kg",
+    "Aliment de Betail soja sac 50kg",
+    "Tourtaux de soja sac 50kg",
   ];
 
   // Normalise les produits DB pour correspondre à la structure ProductCard
