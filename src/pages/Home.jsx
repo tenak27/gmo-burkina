@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { base44 } from "@/api/base44Client";
 import Navbar from "../components/landing/Navbar";
 import HeroSection from "../components/landing/HeroSection";
 import PartnersCarousel from "../components/landing/PartnersCarousel";
@@ -33,15 +34,24 @@ const IMAGES = {
   journey: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5bc285315_generated_35f6c974.png",
 };
 
+const FALLBACK_GALLERY = [
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a1f3d31df_generated_image.png",
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e25cd957_generated_image.png",
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/054ba89e1_generated_image.png",
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e4235e14e_generated_image.png",
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b4292e3bb_generated_image.png",
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/74fa03193_generated_image.png",
+];
+
 export default function Home() {
-  const galleryImages = [
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a1f3d31df_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e25cd957_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/054ba89e1_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e4235e14e_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b4292e3bb_generated_image.png",
-    "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/74fa03193_generated_image.png",
-  ];
+  const [galleryImages, setGalleryImages] = useState(FALLBACK_GALLERY);
+
+  useEffect(() => {
+    base44.entities.Category.list("name", 200).then(data => {
+      const imgs = (data || []).filter(d => d.code === "GALERIE" && d.description).map(d => d.description);
+      if (imgs.length > 0) setGalleryImages(imgs);
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className="bg-obsidian min-h-screen">

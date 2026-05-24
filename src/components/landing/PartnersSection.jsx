@@ -1,11 +1,22 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { base44 } from "@/api/base44Client";
 
-const PARTNERS = ["SN CITEC", "MABUCIG", "SN SOSUCO", "COBIFA", "GMB"];
+const FALLBACK_PARTNERS = ["SN CITEC", "MABUCIG", "SN SOSUCO", "COBIFA", "GMB"];
 
 export default function PartnersSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [partners, setPartners] = useState([]);
+
+  useEffect(() => {
+    base44.entities.Category.list("name", 200).then(data => {
+      const dynamic = (data || []).filter(d => d.code === "PARTENAIRE");
+      setPartners(dynamic);
+    }).catch(() => {});
+  }, []);
+
+  const displayPartners = partners.length > 0 ? partners : FALLBACK_PARTNERS.map(name => ({ name, id: name }));
 
   return (
     <section className="bg-light-gray py-16 lg:py-20 border-t border-gray-100">
@@ -20,17 +31,20 @@ export default function PartnersSection() {
           </motion.p>
 
           <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-12">
-            {PARTNERS.map((partner, i) => (
+            {displayPartners.map((partner, i) => (
               <motion.div
-                key={partner}
+                key={partner.id || partner.name}
                 initial={{ opacity: 0, y: 15 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -3, transition: { duration: 0.2 } }}
                 className="flex items-center justify-center px-7 py-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gmo-green/25 transition-all duration-300"
               >
-                <span className="font-heading text-sm font-bold text-obsidian/50 tracking-widest uppercase">
-                  {partner}
+                {partner.description ? (
+                  <img src={partner.description} alt={partner.name} className="h-10 w-auto max-w-[120px] object-contain" onError={e => { e.target.style.display="none"; e.target.nextSibling.style.display="block"; }} />
+                ) : null}
+                <span className="font-heading text-sm font-bold text-obsidian/50 tracking-widest uppercase" style={{ display: partner.description ? "none" : "block" }}>
+                  {partner.name}
                 </span>
               </motion.div>
             ))}
