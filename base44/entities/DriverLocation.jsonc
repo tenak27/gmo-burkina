@@ -1,0 +1,44 @@
+{
+  "name": "DriverLocation",
+  "type": "object",
+  "properties": {
+    "driver_id": {
+      "type": "string",
+      "description": "ID du chauffeur (User.id)"
+    },
+    "driver_name": {
+      "type": "string",
+      "description": "Nom complet du chauffeur"
+    },
+    "lat": {
+      "type": "number",
+      "description": "Latitude GPS"
+    },
+    "lng": {
+      "type": "number",
+      "description": "Longitude GPS"
+    },
+    "accuracy": {
+      "type": "number",
+      "description": "Pr\u00e9cision GPS en m\u00e8tres"
+    },
+    "speed": {
+      "type": "number",
+      "description": "Vitesse km/h"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "GPS activ\u00e9/d\u00e9sactiv\u00e9"
+    },
+    "last_update": {
+      "type": "string",
+      "description": "Timestamp ISO de la derni\u00e8re mise \u00e0 jour"
+    }
+  },
+  "required": [
+    "driver_id",
+    "lat",
+    "lng"
+  ]
+}

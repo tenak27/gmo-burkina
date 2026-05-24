@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/lib/AuthContext";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
 import {
   Truck, MapPin, CheckCircle2, Clock, Package, LogOut,
-  Phone, Navigation, AlertCircle, RefreshCw, ChevronRight, Globe, FileText
+  Phone, Navigation, AlertCircle, RefreshCw, ChevronRight, Globe, FileText,
+  Satellite, WifiOff
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DeliveryNoteCard from "@/components/driver/DeliveryNoteCard";
@@ -115,6 +116,102 @@ function OrderDeliveryCard({ order, onUpdateStatus }) {
   );
 }
 
+function GpsTracker({ user }) {
+  const [gpsActive, setGpsActive] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState("idle"); // idle | active | error
+  const [locationRecord, setLocationRecord] = useState(null);
+  const watchRef = useRef(null);
+
+  const startGps = () => {
+    if (!navigator.geolocation) {
+      setGpsStatus("error");
+      return;
+    }
+    setGpsStatus("active");
+    setGpsActive(true);
+    watchRef.current = navigator.geolocation.watchPosition(
+      async (pos) => {
+        const payload = {
+          driver_id: user.id,
+          driver_name: user.full_name,
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+          speed: pos.coords.speed,
+          is_active: true,
+          last_update: new Date().toISOString(),
+        };
+        if (locationRecord) {
+          await base44.entities.DriverLocation.update(locationRecord.id, payload);
+        } else {
+          // Check if record exists for this driver
+          const existing = await base44.entities.DriverLocation.filter({ driver_id: user.id });
+          if (existing && existing.length > 0) {
+            setLocationRecord(existing[0]);
+            await base44.entities.DriverLocation.update(existing[0].id, payload);
+          } else {
+            const r = await base44.entities.DriverLocation.create(payload);
+            setLocationRecord(r);
+          }
+        }
+      },
+      () => setGpsStatus("error"),
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+    );
+  };
+
+  const stopGps = async () => {
+    if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current);
+    setGpsActive(false);
+    setGpsStatus("idle");
+    if (locationRecord) {
+      await base44.entities.DriverLocation.update(locationRecord.id, { is_active: false });
+    }
+  };
+
+  useEffect(() => {
+    return () => { if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current); };
+  }, []);
+
+  return (
+    <div className={`rounded-2xl border p-4 mb-4 transition-all ${gpsActive ? "bg-blue-50 border-blue-200" : "bg-white border-gray-100"} shadow-sm`}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${gpsActive ? "bg-blue-100" : "bg-gray-100"}`}>
+            <Satellite className={`w-5 h-5 ${gpsActive ? "text-blue-600" : "text-gray-400"}`} />
+          </div>
+          <div>
+            <p className="font-heading text-sm font-bold text-obsidian">Suivi GPS</p>
+            {gpsStatus === "active" && (
+              <p className="text-[11px] text-blue-600 font-body flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse inline-block" />
+                Position envoyée en temps réel
+              </p>
+            )}
+            {gpsStatus === "idle" && <p className="text-[11px] text-obsidian/40 font-body">Activez pour être suivi par l'admin</p>}
+            {gpsStatus === "error" && (
+              <p className="text-[11px] text-red-500 font-body flex items-center gap-1">
+                <WifiOff className="w-3 h-3" /> GPS non disponible sur cet appareil
+              </p>
+            )}
+          </div>
+        </div>
+        <button
+          onClick={gpsActive ? stopGps : startGps}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-heading font-bold transition-all cursor-pointer ${
+            gpsActive
+              ? "bg-red-500 text-white hover:bg-red-600"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
+        >
+          <Navigation className="w-4 h-4" />
+          {gpsActive ? "Désactiver" : "Activer GPS"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function DriverDashboard() {
   const { user, logout } = useAuth();
   const [orders, setOrders] = useState([]);
@@ -200,6 +297,9 @@ function DriverDashboard() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6">
+        {/* GPS Tracker */}
+        <GpsTracker user={user} />
+
         {/* KPIs */}
         <div className="grid grid-cols-3 gap-3 mb-5">
           {[

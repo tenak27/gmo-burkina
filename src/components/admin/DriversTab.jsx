@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityForm from "./EntityForm";
-import DriverMapView from "./DriverMapView";
+import LiveDriverMap from "./LiveDriverMap";
 import {
   Truck, Phone, MapPin, CheckCircle2, Clock, XCircle,
   Plus, Edit2, Trash2, Zap, Navigation, Map
@@ -231,8 +231,8 @@ export default function DriversTab({ drivers, setDrivers }) {
         ))}
       </div>
 
-      {/* Map */}
-      <DriverMapView drivers={drivers} />
+      {/* Live GPS Map */}
+      <LiveDriverMap drivers={drivers} />
 
       {/* Filter pills */}
       <div className="flex items-center gap-2 flex-wrap">
