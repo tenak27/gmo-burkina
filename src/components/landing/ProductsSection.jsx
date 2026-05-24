@@ -97,8 +97,33 @@ export default function ProductsSection() {
     });
   }, []);
 
+  // Ordre d'affichage souhaité (les noms doivent correspondre exactement aux produits en DB)
+  const DISPLAY_ORDER = [
+    "Hamilton Light",
+    "Hamilton Classic",
+    "Excellence",
+    "Dunhill Light",
+    "Dunhill Classic",
+    "Farine Etalon",
+    "Huile de Soja 5L",
+    "Huile de Soja 20L",
+    "Huile SAVOR Coton 5L",
+    "Huile SAVOR Coton 20L",
+    "Savon N°1",
+    "Savon N°2",
+    "Sucre",
+    "AXE",
+    "Gomme",
+    "Bonbon Gingembre",
+    "Tourteaux de Bétail Coton",
+    "Tourteaux de Bétail Soja",
+  ];
+
   // Normalise les produits DB pour correspondre à la structure ProductCard
-  const PRODUCTS = dbProducts.map(p => ({
+  const normalizeKey = (str) => str?.toLowerCase().trim().replace(/\s+/g, " ");
+
+  const rawProducts = dbProducts.map(p => ({
+    _key: normalizeKey(p.name),
     name: p.name,
     category: CAT_LABEL[p.category] || p.category || "Autre",
     brand: p.description?.split(".")[0] || p.name,
@@ -110,6 +135,15 @@ export default function ProductsSection() {
     ].filter(Boolean),
     image: p.image_url || "",
   }));
+
+  // Tri selon DISPLAY_ORDER, les produits non listés vont à la fin
+  const orderMap = {};
+  DISPLAY_ORDER.forEach((name, i) => { orderMap[normalizeKey(name)] = i; });
+  const PRODUCTS = [...rawProducts].sort((a, b) => {
+    const ia = orderMap[a._key] ?? 9999;
+    const ib = orderMap[b._key] ?? 9999;
+    return ia - ib;
+  });
 
   const categories = ["Tous", ...new Set(PRODUCTS.map(p => p.category))];
 
