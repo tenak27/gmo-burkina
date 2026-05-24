@@ -32,13 +32,6 @@ const SERVICES = [
   color: "bg-gmo-green"
 },
 {
-  icon: Clock,
-  title: "Service 24/7",
-  description: "Une équipe dynamique et expérimentée disponible en permanence pour répondre à vos besoins logistiques.",
-  specs: ["Support continu", "Équipe dédiée"],
-  color: "bg-gmo-red"
-},
-{
   icon: Zap,
   title: "Innovation",
   description: "Application mobile en développement pour commander et suivre vos livraisons directement depuis votre téléphone.",
