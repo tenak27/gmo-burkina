@@ -7,9 +7,9 @@ const WHATSAPP = "https://wa.me/22676211633";
 
 // Mappe category DB → catégories affichées
 const CATEGORY_MAP = {
-  "hamilton": "Tabac",
-  "excellence": "Tabac",
-  "dunhill": "Tabac",
+  "hamilton": "Cigarettes",
+  "excellence": "Cigarettes",
+  "dunhill": "Cigarettes",
   "farine": "Alimentaire",
   "huile sn citec": "Alimentaire",
   "huile savor": "Alimentaire",
@@ -28,7 +28,7 @@ const getCategoryForProduct = (name) => {
   return "Alimentaire";
 };
 
-const CATEGORIES_ORDER = ["Tabac", "Alimentaire", "Hygiène", "Elevage"];
+const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Elevage"];
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
