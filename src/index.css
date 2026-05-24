@@ -135,8 +135,15 @@
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
+  @keyframes ticker-fast {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
   .animate-ticker {
     animation: ticker 35s linear infinite;
+  }
+  .animate-ticker-fast {
+    animation: ticker-fast 8s linear infinite;
   }
 
   .animate-pulse-green {
