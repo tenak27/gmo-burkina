@@ -195,11 +195,12 @@ export default function Navbar({ heroHeight }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="+226 70 21 38 31"
-                className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-heading font-bold text-sm px-3 py-2.5 rounded-lg transition-colors"
+                className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading font-bold text-sm px-4 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg hover:scale-105"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z"/>
                 </svg>
+                WhatsApp
               </a>
             </div>
 
@@ -218,86 +219,146 @@ export default function Navbar({ heroHeight }) {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-white pt-20 px-8 overflow-y-auto"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed top-0 right-0 z-50 w-full max-w-sm h-full bg-white shadow-2xl overflow-y-auto"
           >
-            <div className="flex flex-col gap-5 py-6">
+            {/* Header with close button */}
+            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between z-10">
+              <span className="font-heading text-lg font-bold text-obsidian">Menu</span>
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+              >
+                <X className="w-6 h-6 text-obsidian" />
+              </button>
+            </div>
+
+            {/* Navigation links */}
+            <div className="px-6 py-4 space-y-1">
               {NAV_LINKS.map((link, i) => (
                 link.label === "Produits" ? (
-                  <div key={link.href}>
-                    <motion.button
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.06 }}
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="border-b border-gray-100"
+                  >
+                    <button
                       onClick={() => setCategoriesOpen(!categoriesOpen)}
-                      className="font-heading text-2xl text-obsidian/80 hover:text-gmo-green text-left border-b border-gray-100 pb-4 w-full flex items-center justify-between"
+                      className="w-full py-4 flex items-center justify-between text-left"
+                    >
+                      <span className="font-heading text-lg text-obsidian hover:text-gmo-green transition-colors">
+                        {link.label}
+                      </span>
+                      <ChevronDown className={`w-5 h-5 text-obsidian/40 transition-transform ${categoriesOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {/* Categories dropdown */}
+                    <AnimatePresence>
+                      {categoriesOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden bg-gray-50 rounded-xl mb-3"
+                        >
+                          <div className="px-4 py-3 space-y-2">
+                            {categories.map((cat) => (
+                              <button
+                                key={cat}
+                                onClick={() => {
+                                  scrollTo("#produits");
+                                  setMobileOpen(false);
+                                }}
+                                className="block w-full text-left font-body text-sm text-obsidian/70 hover:text-gmo-green hover:bg-white px-3 py-2 rounded-lg transition-colors"
+                              >
+                                {cat}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ) : link.isPage ? (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="border-b border-gray-100"
+                  >
+                    <Link
+                      to={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="block py-4 font-heading text-lg text-gmo-green hover:text-gmo-green/70 transition-colors"
                     >
                       {link.label}
-                      <ChevronDown className={`w-5 h-5 transition-transform ${categoriesOpen ? 'rotate-180' : ''}`} />
-                    </motion.button>
-                    {categoriesOpen && (
-                      <div className="pl-4 py-2 space-y-3">
-                        {categories.map((cat) => (
-                          <button
-                            key={cat}
-                            onClick={() => {
-                              scrollTo("#produits");
-                              setCategoriesOpen(false);
-                            }}
-                            className="block w-full text-left font-heading text-lg text-obsidian/60 hover:text-gmo-green"
-                          >
-                            {cat}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : link.isPage ? (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="font-heading text-2xl text-gmo-green text-left border-b border-gray-100 pb-4"
-                  >
-                    {link.label} →
-                  </Link>
+                    </Link>
+                  </motion.div>
                 ) : (
-                  <motion.button
+                  <motion.div
                     key={link.href}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06 }}
-                    onClick={() => scrollTo(link.href)}
-                    className="font-heading text-2xl text-obsidian/80 hover:text-gmo-green text-left border-b border-gray-100 pb-4"
+                    transition={{ delay: i * 0.05 }}
+                    className="border-b border-gray-100"
                   >
-                    {link.label}
-                  </motion.button>
+                    <button
+                      onClick={() => {
+                        scrollTo(link.href);
+                        setMobileOpen(false);
+                      }}
+                      className="w-full py-4 font-heading text-lg text-obsidian hover:text-gmo-green transition-colors text-left"
+                    >
+                      {link.label}
+                    </button>
+                  </motion.div>
                 )
               ))}
+
+              {/* Dashboard link for authenticated users */}
               {isAuthenticated && dashLink && (
-                <Link
-                  to={dashLink.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="font-heading text-2xl text-gmo-green text-left border-b border-gray-100 pb-4"
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="border-b border-gray-100"
                 >
-                  {dashLink.label}
-                </Link>
+                  <Link
+                    to={dashLink.to}
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-4 font-heading text-lg text-gmo-green hover:text-gmo-green/70 transition-colors"
+                  >
+                    {dashLink.label}
+                  </Link>
+                </motion.div>
               )}
-              <a
-                href="https://wa.me/+22670213831"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 flex items-center justify-center gap-2 bg-emerald-500 text-white font-heading font-bold text-base px-6 py-4 rounded-xl"
-                title="+226 70 21 38 31"
+
+              {/* WhatsApp button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="pt-4 pb-8"
               >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z"/>
-                </svg>
-                WhatsApp
-              </a>
+                <a
+                  href="https://wa.me/+22670213831"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading font-bold text-base px-6 py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                  title="+226 70 21 38 31"
+                >
+                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                    <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z"/>
+                  </svg>
+                  <span>WhatsApp +226 70 21 38 31</span>
+                </a>
+              </motion.div>
             </div>
           </motion.div>
         )}
