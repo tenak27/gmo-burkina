@@ -48,7 +48,7 @@ function AdminDashboard() {
   useEffect(() => { loadAll(); }, []);
 
   useEffect(() => {
-    const unsub = base44.entities.Order.subscribe(event => {
+    const unsubOrder = base44.entities.Order.subscribe(event => {
       setOrders(prev => {
         if (event.type === "create") return [event.data, ...prev];
         if (event.type === "update") return prev.map(o => o.id === event.id ? event.data : o);
@@ -56,7 +56,15 @@ function AdminDashboard() {
         return prev;
       });
     });
-    return unsub;
+    const unsubProduct = base44.entities.Product.subscribe(event => {
+      setProducts(prev => {
+        if (event.type === "create") return [...prev, event.data];
+        if (event.type === "update") return prev.map(p => p.id === event.id ? event.data : p);
+        if (event.type === "delete") return prev.filter(p => p.id !== event.id);
+        return prev;
+      });
+    });
+    return () => { unsubOrder(); unsubProduct(); };
   }, []);
 
   const loadAll = async () => {
