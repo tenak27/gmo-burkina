@@ -105,6 +105,7 @@ export default function AboutSection() {
                 Le Groupe Madina Oumarou est une société à responsabilité limitée de droit burkinabè, 
                 régie par les dispositions de l'OHADA et par la règlementation du Burkina Faso. 
                 Entreprise citoyenne et socialement responsable, nous sommes le leader de la distribution.
+                Notre siège social est situé à Dapoya, avec un point de vente au Kwame Kruma sur l'Avenue Yennega à Ouagadougou.
               </motion.p>
 
               {/* PDG Quote */}
