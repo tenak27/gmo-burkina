@@ -16,6 +16,7 @@ import TestimonialsSection from "../components/landing/TestimonialsSection";
 import JourneyBanner from "../components/landing/JourneyBanner";
 import LogisticsPartnersSection from "../components/landing/LogisticsPartnersSection";
 import GallerySection from "../components/landing/GallerySection";
+import FleetGallerySection from "../components/landing/FleetGallerySection";
 import MediaSection from "../components/landing/MediaSection";
 import BlogSection from "../components/landing/BlogSection";
 import GMOFootSection from "../components/landing/GMOFootSection";
@@ -64,6 +65,7 @@ export default function Home() {
       <RSESection />
       <PresenceSection />
       <LogisticsPartnersSection />
+      <FleetGallerySection />
       <GallerySection images={galleryImages} />
       <JourneyBanner journeyImage={IMAGES.journey} />
       <MediaSection />
