@@ -8,6 +8,10 @@
     "client_name": {
       "type": "string"
     },
+    "order_id": {
+      "type": "string",
+      "description": "ID de la commande associ\u00e9e \u00e0 cette cr\u00e9ance"
+    },
     "invoice_id": {
       "type": "string"
     },
@@ -46,6 +50,7 @@
   },
   "required": [
     "client_name",
-    "original_amount"
+    "original_amount",
+    "order_id"
   ]
 }

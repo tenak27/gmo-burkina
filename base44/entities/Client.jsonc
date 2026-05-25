@@ -9,7 +9,8 @@
       "type": "string",
       "enum": [
         "particulier",
-        "entreprise"
+        "entreprise",
+        "revendeur"
       ],
       "default": "entreprise"
     },
