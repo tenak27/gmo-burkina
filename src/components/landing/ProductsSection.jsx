@@ -184,7 +184,7 @@ export default function ProductsSection() {
     
     const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
     const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
-    const tabacImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/52c51effe_images.png";
+    const tabacImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/6e576666f_Capturedcran2026-05-2572727PM.png";
     const snCitecImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg";
     
     return {
