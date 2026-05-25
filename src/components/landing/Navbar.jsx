@@ -119,17 +119,17 @@ export default function Navbar({ heroHeight }) {
             >
               <div className="animate-ticker-fast flex items-center">
                 <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/556a3e7be_Capturedcran2026-05-25112453AM.png"
                   alt="GMO"
                   className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
                 />
                 <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/556a3e7be_Capturedcran2026-05-25112453AM.png"
                   alt="GMO"
                   className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
                 />
                 <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png"
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/556a3e7be_Capturedcran2026-05-25112453AM.png"
                   alt="GMO"
                   className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
                 />
