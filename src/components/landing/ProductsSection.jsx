@@ -25,6 +25,7 @@ const CATEGORY_MAP = {
   "cobifa chewngun": "Alimentaire",
   "cobifa": "Alimentaire",
   "tourteaux": "Embauche",
+  "tourtaux": "Embauche",
   "betail": "Embauche",
   "son de blé": "Embauche",
   "aliment bétail": "Embauche",
