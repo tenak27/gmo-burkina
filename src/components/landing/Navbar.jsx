@@ -113,27 +113,25 @@ export default function Navbar({ heroHeight }) {
             {/* Logo - Centered with scroll animation */}
             <motion.button 
               onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-              className="flex-1 mx-6 relative overflow-hidden"
+              className="flex-1 mx-6 relative"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="animate-ticker-fast flex items-center whitespace-nowrap">
-                {/* Copy 1 */}
+              <div className="animate-ticker-fast flex items-center" style={{ width: 'max-content' }}>
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
-                  className="h-[110px] w-auto object-contain inline-block align-middle"
+                  className="h-[110px] w-auto object-contain flex-shrink-0"
                 />
-                <span className="text-gmo-red font-body italic text-lg font-semibold mx-8 inline-block align-middle">
+                <span className="text-gmo-red font-body italic text-lg font-semibold whitespace-nowrap flex-shrink-0 px-8">
                   Consommer local, c'est booster l'économie nationale !
                 </span>
-                {/* Copy 2 (identical for seamless loop) */}
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
-                  className="h-[110px] w-auto object-contain inline-block align-middle"
+                  className="h-[110px] w-auto object-contain flex-shrink-0"
                 />
-                <span className="text-gmo-red font-body italic text-lg font-semibold mx-8 inline-block align-middle">
+                <span className="text-gmo-red font-body italic text-lg font-semibold whitespace-nowrap flex-shrink-0 px-8">
                   Consommer local, c'est booster l'économie nationale !
                 </span>
               </div>
