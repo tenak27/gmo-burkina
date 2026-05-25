@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/landing/Navbar";
 import HeroSection from "../components/landing/HeroSection";
 import PartnersCarousel from "../components/landing/PartnersCarousel";
+import PartnershipBanner from "../components/landing/PartnershipBanner";
 import PresenceSection from "../components/landing/PresenceSection";
 import ServicesSection from "../components/landing/ServicesSection";
 import StatsSection from "../components/landing/StatsSection";
@@ -53,6 +54,7 @@ export default function Home() {
     <div className="bg-obsidian min-h-screen">
       <Navbar />
       <HeroSection />
+      <PartnershipBanner />
       <PartnersCarousel />
       <ServicesSection />
       <StatsSection />
