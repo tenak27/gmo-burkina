@@ -2,9 +2,10 @@ import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import {
   Plus, Download, CheckCircle2, XCircle, Clock, Search,
-  X, Wallet, TrendingDown, FileText, Upload, AlertCircle, Save
+  X, Wallet, TrendingDown, FileText, Upload, Save
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { FieldLabel, FieldInput, FieldSelect, FieldTextarea, FieldAlert, FieldSection } from "./VuexyFormField";
 
 const CATEGORIES = [
   "Carburant / véhicules", "Fournitures de bureau", "Alimentation / restauration",
@@ -22,43 +23,7 @@ function genRef() {
   return "DCH-" + Math.random().toString(36).slice(2, 8).toUpperCase();
 }
 
-// ── Shared field components ──
-function FieldLabel({ children, required }) {
-  return (
-    <label className="block text-xs font-semibold text-obsidian/60 mb-1.5 uppercase tracking-wide font-heading">
-      {children}{required && <span className="text-red-400 ml-0.5">*</span>}
-    </label>
-  );
-}
 
-function Input({ className = "", ...props }) {
-  return (
-    <input
-      className={`w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-body text-obsidian placeholder:text-obsidian/30 focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all bg-white ${className}`}
-      {...props}
-    />
-  );
-}
-
-function Select({ children, className = "", ...props }) {
-  return (
-    <select
-      className={`w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-body text-obsidian focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all bg-white appearance-none cursor-pointer ${className}`}
-      {...props}
-    >
-      {children}
-    </select>
-  );
-}
-
-function FormSection({ title, children }) {
-  return (
-    <div className="space-y-4">
-      <p className="text-[10px] font-bold uppercase tracking-widest text-obsidian/40 font-heading border-b border-gray-100 pb-2">{title}</p>
-      {children}
-    </div>
-  );
-}
 
 // ── Expense Form Modal ──
 function ExpenseFormModal({ expense, onSave, onClose }) {
@@ -125,97 +90,130 @@ function ExpenseFormModal({ expense, onSave, onClose }) {
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-6 py-5">
           <div className="max-w-3xl mx-auto space-y-6">
-          <FormSection title="Opération comptable">
+          <FieldSection title="Opération comptable">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <FieldLabel>Catégorie de dépense</FieldLabel>
-                <Select value={form.category} onChange={e => set("category", e.target.value)}>
-                  {CATEGORIES.map(c => <option key={c}>{c}</option>)}
-                </Select>
+                <FieldLabel label="Catégorie de dépense" />
+                <FieldSelect
+                  value={form.category}
+                  onChange={e => set("category", e.target.value)}
+                  options={CATEGORIES}
+                />
               </div>
               <div>
-                <FieldLabel required>Date</FieldLabel>
-                <Input type="date" value={form.date} onChange={e => set("date", e.target.value)} />
+                <FieldLabel label="Date" required />
+                <FieldInput
+                  type="date"
+                  value={form.date}
+                  onChange={e => set("date", e.target.value)}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <FieldLabel required>Montant TTC (FCFA)</FieldLabel>
-                <Input type="number" min="0" placeholder="0" value={form.amount} onChange={e => set("amount", e.target.value)} />
+                <FieldLabel label="Montant TTC (FCFA)" required />
+                <FieldInput
+                  type="number"
+                  value={form.amount}
+                  onChange={e => set("amount", e.target.value)}
+                  placeholder="0"
+                />
               </div>
               <div>
-                <FieldLabel required>Mode de paiement</FieldLabel>
-                <Select value={form.payment_method} onChange={e => set("payment_method", e.target.value)}>
-                  {["Espèces", "Mobile Money", "Chèque", "Virement"].map(m => <option key={m}>{m}</option>)}
-                </Select>
+                <FieldLabel label="Mode de paiement" required />
+                <FieldSelect
+                  value={form.payment_method}
+                  onChange={e => set("payment_method", e.target.value)}
+                  options={["Espèces", "Mobile Money", "Chèque", "Virement"]}
+                />
               </div>
             </div>
             <div>
-              <FieldLabel required>Motif / Objet</FieldLabel>
-              <textarea
-                rows={2}
+              <FieldLabel label="Motif / Objet" required />
+              <FieldTextarea
                 value={form.motif}
                 onChange={e => set("motif", e.target.value)}
                 placeholder="Objet de la dépense..."
-                className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-body text-obsidian placeholder:text-obsidian/30 focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all bg-white resize-none"
+                rows={2}
               />
             </div>
-          </FormSection>
+          </FieldSection>
 
-          <FormSection title="Bénéficiaire">
+          <FieldSection title="Bénéficiaire">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <FieldLabel>Nom</FieldLabel>
-                <Input placeholder="Nom de famille" value={form.beneficiary_nom} onChange={e => set("beneficiary_nom", e.target.value)} />
+                <FieldLabel label="Nom" />
+                <FieldInput
+                  value={form.beneficiary_nom}
+                  onChange={e => set("beneficiary_nom", e.target.value)}
+                  placeholder="Nom de famille"
+                />
               </div>
               <div>
-                <FieldLabel>Prénom(s)</FieldLabel>
-                <Input placeholder="Prénom(s)" value={form.beneficiary_prenom} onChange={e => set("beneficiary_prenom", e.target.value)} />
+                <FieldLabel label="Prénom(s)" />
+                <FieldInput
+                  value={form.beneficiary_prenom}
+                  onChange={e => set("beneficiary_prenom", e.target.value)}
+                  placeholder="Prénom(s)"
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <FieldLabel>Type de pièce</FieldLabel>
-                <Select value={form.beneficiary_id_type} onChange={e => set("beneficiary_id_type", e.target.value)}>
-                  {["CNIB", "Passeport", "Permis de conduire", "Carte professionnelle"].map(t => <option key={t}>{t}</option>)}
-                </Select>
+                <FieldLabel label="Type de pièce" />
+                <FieldSelect
+                  value={form.beneficiary_id_type}
+                  onChange={e => set("beneficiary_id_type", e.target.value)}
+                  options={["CNIB", "Passeport", "Permis de conduire", "Carte professionnelle"]}
+                />
               </div>
               <div>
-                <FieldLabel>N° Pièce d'identité</FieldLabel>
-                <Input placeholder="Numéro" value={form.beneficiary_id_number} onChange={e => set("beneficiary_id_number", e.target.value)} />
+                <FieldLabel label="N° Pièce d'identité" />
+                <FieldInput
+                  value={form.beneficiary_id_number}
+                  onChange={e => set("beneficiary_id_number", e.target.value)}
+                  placeholder="Numéro"
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <FieldLabel>Date de délivrance</FieldLabel>
-                <Input type="date" value={form.beneficiary_id_date} onChange={e => set("beneficiary_id_date", e.target.value)} />
+                <FieldLabel label="Date de délivrance" />
+                <FieldInput
+                  type="date"
+                  value={form.beneficiary_id_date}
+                  onChange={e => set("beneficiary_id_date", e.target.value)}
+                />
               </div>
               <div>
-                <FieldLabel>Téléphone</FieldLabel>
-                <Input placeholder="+226..." value={form.beneficiary_phone} onChange={e => set("beneficiary_phone", e.target.value)} />
+                <FieldLabel label="Téléphone" />
+                <FieldInput
+                  value={form.beneficiary_phone}
+                  onChange={e => set("beneficiary_phone", e.target.value)}
+                  placeholder="+226..."
+                />
               </div>
             </div>
-          </FormSection>
+          </FieldSection>
 
-          <FormSection title="Justificatif">
+          <FieldSection title="Justificatif">
             <div>
-              <FieldLabel>Notes</FieldLabel>
-              <textarea
-                rows={2}
+              <FieldLabel label="Notes" />
+              <FieldTextarea
                 value={form.notes}
                 onChange={e => set("notes", e.target.value)}
                 placeholder="Remarques éventuelles..."
-                className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm font-body text-obsidian placeholder:text-obsidian/30 focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all bg-white resize-none"
+                rows={2}
               />
             </div>
             <div>
-              <FieldLabel>Justificatif / Reçu (photo ou scan)</FieldLabel>
+              <FieldLabel label="Justificatif / Reçu (photo ou scan)" />
               {form.receipt_url ? (
-                <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-xl">
-                  <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
-                  <span className="text-xs text-green-700 font-body flex-1 truncate">Justificatif uploadé</span>
-                  <button onClick={() => set("receipt_url", "")} className="text-xs text-red-500 hover:underline">Supprimer</button>
-                </div>
+                <FieldAlert
+                  type="success"
+                  message="Justificatif uploadé"
+                  icon={CheckCircle2}
+                />
               ) : (
                 <label className="flex items-center gap-2 px-4 py-2.5 border border-dashed border-gray-300 rounded-xl text-sm text-obsidian/50 hover:border-gmo-green hover:text-gmo-green transition-colors cursor-pointer w-fit">
                   <Upload className="w-4 h-4" />
@@ -224,7 +222,7 @@ function ExpenseFormModal({ expense, onSave, onClose }) {
                 </label>
               )}
             </div>
-          </FormSection>
+          </FieldSection>
           </div>
         </div>
 

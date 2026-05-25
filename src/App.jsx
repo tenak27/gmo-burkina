@@ -16,6 +16,7 @@ import Careers from './pages/Careers';
 import DevisValidation from './pages/DevisValidation';
 import VerifyDocument from './pages/VerifyDocument';
 import ResellerSpace from './pages/ResellerSpace';
+import VuexyFormDemo from './pages/VuexyFormDemo';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
       <Route path="/carrieres" element={<Careers />} />
       <Route path="/devis-validation" element={<DevisValidation />} />
       <Route path="/verify" element={<VerifyDocument />} />
+      <Route path="/vuexy-demo" element={<VuexyFormDemo />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

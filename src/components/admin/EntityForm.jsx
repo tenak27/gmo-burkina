@@ -1,9 +1,10 @@
 /**
- * Formulaire générique - Design unifié centré
+ * Formulaire générique - Design Vuexy
  */
 import React, { useEffect, useRef, useState, useMemo } from "react";
-import { X, Save, AlertCircle, CheckCircle2, Search, ChevronDown } from "lucide-react";
+import { X, Save, ChevronDown, Search } from "lucide-react";
 import { motion } from "framer-motion";
+import { FieldLabel, FieldInput, FieldSelect, FieldTextarea, FieldToggle, FieldSearchableSelect, FieldAlert, FieldSection } from "./VuexyFormField";
 
 export default function EntityForm({ title, fields, data, onChange, onSave, onClose, saving, isEdit, clients = [] }) {
   const panelRef = useRef(null);
@@ -35,29 +36,46 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
 
     // Client select
     if (f.type === "client_select") {
-      return <ClientSelectField key={f.key} f={f} data={data} onChange={onChange} clients={clients} invalid={invalid} />;
+      return (
+        <div key={f.key}>
+          <FieldLabel label={f.label} required={f.required} />
+          <FieldSearchableSelect
+            value={data[f.key]}
+            options={clients || []}
+            placeholder="Sélectionner un client…"
+            searchPlaceholder="Rechercher un client…"
+            onSelect={(client) => {
+              onChange(f.key, client.name);
+              if (f.onSelectExtra) f.onSelectExtra(client);
+            }}
+            renderOption={(client) => (
+              <>
+                <div className="w-7 h-7 rounded-full bg-gmo-green/15 flex items-center justify-center text-gmo-green font-bold text-xs flex-shrink-0">
+                  {client.name?.charAt(0)}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-heading font-bold text-obsidian truncate">{client.name}</p>
+                  <p className="text-[10px] text-obsidian/40 font-body truncate">{client.email || client.phone || client.city || ""}</p>
+                </div>
+              </>
+            )}
+          />
+        </div>
+      );
     }
 
     // Select
     if (f.type === "select") {
       return (
         <div key={f.key}>
-          <label className="flex items-center gap-1 mb-2">
-            <span className={`text-[10px] font-bold uppercase tracking-widest font-heading ${invalid ? "text-gmo-red" : "text-obsidian/40"}`}>
-              {f.label}
-            </span>
-            {f.required && <span className="text-gmo-red text-xs leading-none">*</span>}
-          </label>
-          <select
-            value={data[f.key] ?? ""}
+          <FieldLabel label={f.label} required={f.required} />
+          <FieldSelect
+            value={data[f.key]}
             onChange={e => onChange(f.key, e.target.value)}
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all"
-          >
-            {!f.required && <option value="">— Sélectionner —</option>}
-            {f.options?.map(o => (
-              <option key={o.value ?? o} value={o.value ?? o}>{o.label ?? o}</option>
-            ))}
-          </select>
+            options={f.options}
+            required={f.required}
+            invalid={invalid}
+          />
         </div>
       );
     }
@@ -66,18 +84,13 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
     if (f.type === "textarea") {
       return (
         <div key={f.key}>
-          <label className="flex items-center gap-1 mb-2">
-            <span className={`text-[10px] font-bold uppercase tracking-widest font-heading ${invalid ? "text-gmo-red" : "text-obsidian/40"}`}>
-              {f.label}
-            </span>
-            {f.required && <span className="text-gmo-red text-xs leading-none">*</span>}
-          </label>
-          <textarea
-            value={data[f.key] ?? ""}
+          <FieldLabel label={f.label} required={f.required} />
+          <FieldTextarea
+            value={data[f.key]}
             onChange={e => onChange(f.key, e.target.value)}
-            placeholder={f.placeholder || ""}
+            placeholder={f.placeholder}
             rows={3}
-            className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all resize-none ${invalid ? "border-red-300 bg-red-50 focus:border-gmo-red focus:ring-red-100" : ""}`}
+            invalid={invalid}
           />
         </div>
       );
@@ -87,28 +100,12 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
     if (f.type === "checkbox") {
       return (
         <div key={f.key}>
-          <label className="flex items-center gap-1 mb-2">
-            <span className={`text-[10px] font-bold uppercase tracking-widest font-heading ${invalid ? "text-gmo-red" : "text-obsidian/40"}`}>
-              {f.label}
-            </span>
-            {f.required && <span className="text-gmo-red text-xs leading-none">*</span>}
-          </label>
-          <button
-            type="button"
-            onClick={() => onChange(f.key, !data[f.key])}
-            className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl border transition-all ${
-              data[f.key] ? "bg-gmo-green/5 border-gmo-green/30" : "bg-gray-50 border-gray-200 hover:border-gray-300"
-            }`}
-          >
-            <div className={`rounded-full transition-colors duration-200 relative flex-shrink-0 ${data[f.key] ? "bg-gmo-green" : "bg-gray-300"}`}
-              style={{ height: 20, width: 36 }}>
-              <div className={`absolute top-[2px] w-[16px] h-[16px] rounded-full bg-white shadow transition-transform duration-200 ${data[f.key] ? "translate-x-[18px]" : "translate-x-[2px]"}`} />
-            </div>
-            <span className={`text-sm font-body ${data[f.key] ? "text-gmo-green font-medium" : "text-obsidian/50"}`}>
-              {f.checkLabel || f.label}
-            </span>
-            {data[f.key] && <CheckCircle2 className="w-4 h-4 text-gmo-green ml-auto" />}
-          </button>
+          <FieldLabel label={f.label} required={f.required} />
+          <FieldToggle
+            checked={!!data[f.key]}
+            onChange={val => onChange(f.key, val)}
+            label={f.checkLabel || f.label}
+          />
         </div>
       );
     }
@@ -116,24 +113,15 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
     // Default input
     return (
       <div key={f.key}>
-        <label className="flex items-center gap-1 mb-2">
-          <span className={`text-[10px] font-bold uppercase tracking-widest font-heading ${invalid ? "text-gmo-red" : "text-obsidian/40"}`}>
-            {f.label}
-          </span>
-          {f.required && <span className="text-gmo-red text-xs leading-none">*</span>}
-        </label>
-        <div className="relative">
-          <input
-            type={f.type || "text"}
-            value={data[f.key] ?? ""}
-            onChange={e => onChange(f.key, e.target.value)}
-            placeholder={f.placeholder || ""}
-            className={`w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all placeholder:text-obsidian/30 ${invalid ? "border-red-300 bg-red-50 focus:border-gmo-red focus:ring-red-100 pr-10" : ""}`}
-          />
-          {invalid && (
-            <AlertCircle className="w-4 h-4 text-gmo-red absolute right-3 top-1/2 -translate-y-1/2" />
-          )}
-        </div>
+        <FieldLabel label={f.label} required={f.required} />
+        <FieldInput
+          type={f.type || "text"}
+          value={data[f.key]}
+          onChange={e => onChange(f.key, e.target.value)}
+          placeholder={f.placeholder}
+          required={f.required}
+          invalid={invalid}
+        />
       </div>
     );
   };
@@ -189,10 +177,7 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
             ))}
 
             {hasRequired && !allValid && (
-              <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
-                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-                <p className="text-xs text-red-600 font-body">Champs obligatoires manquants.</p>
-              </div>
+              <FieldAlert type="error" message="Champs obligatoires manquants." />
             )}
           </div>
         </div>
