@@ -22,6 +22,18 @@ Deno.serve(async (req) => {
       show_on_vitrine: true 
     }, 'display_order');
 
+    // Récupérer galerie photos
+    const galerie = await base44.entities.Category.filter({ code: 'GALERIE' });
+    
+    // Récupérer partenaires
+    const partenaires = await base44.entities.Category.filter({ code: 'PARTENAIRE' });
+    
+    // Récupérer actualités
+    const actualites = await base44.entities.Category.filter({ code: 'actualite', is_active: true });
+    
+    // Récupérer offres d'emploi
+    const offres = await base44.entities.Category.filter({ code: 'OFFRE_EMPLOI', is_active: true });
+
     // Traductions
     const translations = {
       fr: {
@@ -113,49 +125,165 @@ Deno.serve(async (req) => {
     const t = translations[language] || translations.fr;
 
     if (format === 'html') {
-      // Génération HTML complet
+      // Génération HTML complet de TOUT le site vitrine
       const html = `<!DOCTYPE html>
 <html lang="${language}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${t.title} - ${t.catalog}</title>
+  <title>${t.title} - ${t.subtitle}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #1C1C1E; background: #F8F8F6; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-    header { background: linear-gradient(135deg, #1A7A2E 0%, #0d3d17 100%); color: white; padding: 60px 20px; text-align: center; }
-    header h1 { font-size: 3em; margin-bottom: 10px; }
-    header p { font-size: 1.2em; opacity: 0.9; }
-    .section { margin: 40px 0; }
-    .section-title { font-size: 2em; color: #1A7A2E; margin-bottom: 20px; border-bottom: 3px solid #CC1717; padding-bottom: 10px; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .product-card { background: white; border: 2px solid #1C1C1E; border-radius: 8px; overflow: hidden; transition: transform 0.3s; }
+    body { font-family: 'Space Grotesk', 'Segoe UI', sans-serif; line-height: 1.6; color: #1C1C1E; background: #F8F8F6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Hero Section */
+    .hero { background: linear-gradient(135deg, #1A7A2E 0%, #0d3d17 100%); color: white; padding: 100px 20px; text-align: center; min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; margin-bottom: 20px; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+    .hero p { font-size: 1.3rem; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+    .hero-cta { margin-top: 40px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn { padding: 15px 35px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.3s; }
+    .btn-primary { background: #1A7A2E; color: white; border: 2px solid #1A7A2E; }
+    .btn-primary:hover { background: #0d3d17; transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: white; border: 2px solid white; }
+    .btn-secondary:hover { background: white; color: #1A7A2E; }
+    
+    /* Sections */
+    .section { padding: 80px 20px; }
+    .section-alt { background: white; }
+    .section-dark { background: #1C1C1E; color: white; }
+    .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: #1A7A2E; }
+    .section-dark .section-title { color: #1A7A2E; }
+    .section-subtitle { font-size: 1.1rem; opacity: 0.7; max-width: 600px; margin-bottom: 50px; }
+    
+    /* Services Grid */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .service-card { background: white; padding: 35px; border-radius: 15px; border: 2px solid #1C1C1E; transition: all 0.3s; }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+    .service-icon { width: 60px; height: 60px; background: #1A7A2E; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .service-icon span { font-size: 28px; }
+    .service-card h3 { font-size: 1.4rem; margin-bottom: 12px; color: #1C1C1E; }
+    .service-card p { color: #666; line-height: 1.7; }
+    
+    /* Products */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+    .product-card { background: white; border: 2px solid #1C1C1E; border-radius: 12px; overflow: hidden; transition: all 0.3s; }
     .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-    .product-image { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
-    .product-content { padding: 20px; }
-    .product-category { font-size: 0.75em; text-transform: uppercase; color: #CC1717; font-weight: bold; margin-bottom: 8px; }
-    .product-name { font-size: 1.3em; font-weight: bold; margin-bottom: 10px; color: #1C1C1E; }
-    .product-description { font-size: 0.9em; color: #666; margin-bottom: 15px; }
-    .product-details { font-size: 0.85em; color: #555; }
-    .product-details li { margin-bottom: 5px; }
-    .contact-info { background: white; padding: 30px; border-radius: 8px; border-left: 4px solid #1A7A2E; }
-    .contact-item { margin-bottom: 15px; }
-    .contact-label { font-weight: bold; color: #1A7A2E; }
-    footer { background: #1C1C1E; color: white; text-align: center; padding: 30px; margin-top: 60px; }
-    @media print { .product-card { break-inside: avoid; } }
-    @media (max-width: 768px) { .products-grid { grid-template-columns: 1fr; } header h1 { font-size: 2em; } }
+    .product-image { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
+    .product-content { padding: 25px; }
+    .product-category { font-size: 0.75rem; text-transform: uppercase; color: #CC1717; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
+    .product-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; color: #1C1C1E; }
+    .product-description { font-size: 0.9rem; color: #666; margin-bottom: 15px; line-height: 1.6; }
+    .product-details { font-size: 0.85rem; color: #555; }
+    .product-details li { margin-bottom: 6px; list-style: none; }
+    .product-details li::before { content: "• "; color: #1A7A2E; font-weight: bold; }
+    
+    /* Gallery */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .gallery-item { border-radius: 12px; overflow: hidden; position: relative; }
+    .gallery-item img { width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s; }
+    .gallery-item:hover img { transform: scale(1.05); }
+    
+    /* Partners */
+    .partners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; align-items: center; }
+    .partner-card { background: white; padding: 25px; border-radius: 12px; border: 2px solid #E5E7EB; display: flex; align-items: center; justify-content: center; }
+    .partner-card img { max-width: 100%; max-height: 80px; object-fit: contain; }
+    
+    /* Team */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .team-card { background: white; border-radius: 15px; overflow: hidden; border: 2px solid #1C1C1E; }
+    .team-image { width: 100%; height: 300px; object-fit: cover; }
+    .team-content { padding: 25px; }
+    .team-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
+    .team-role { color: #1A7A2E; font-weight: 700; margin-bottom: 12px; }
+    .team-desc { color: #666; line-height: 1.7; }
+    
+    /* Jobs */
+    .job-card { background: white; padding: 30px; border-radius: 12px; border: 2px solid #E5E7EB; margin-bottom: 20px; }
+    .job-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
+    .job-meta { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+    .job-tag { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; font-weight: 700; }
+    .job-tag-cdi { background: #DCFCE7; color: #166534; }
+    .job-tag-cdd { background: #DBEAFE; color: #1E40AF; }
+    .job-tag-stage { background: #FEF3C7; color: #92400E; }
+    .job-desc { color: #666; line-height: 1.7; }
+    
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+    .contact-info { background: white; padding: 35px; border-radius: 12px; border-left: 5px solid #1A7A2E; }
+    .contact-item { margin-bottom: 20px; }
+    .contact-label { font-weight: 800; color: #1A7A2E; display: block; margin-bottom: 5px; }
+    .contact-form { background: white; padding: 35px; border-radius: 12px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 8px; color: #1C1C1E; }
+    .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-family: inherit; }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    
+    /* Footer */
+    footer { background: #1C1C1E; color: white; text-align: center; padding: 50px 20px; }
+    footer p { opacity: 0.7; }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { padding: 60px 15px; min-height: 60vh; }
+      .hero h1 { font-size: 2.5rem; }
+      .section { padding: 50px 15px; }
+      .section-title { font-size: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .services-grid, .products-grid, .team-grid { grid-template-columns: 1fr; }
+    }
+    
+    @media print { .product-card, .service-card, .team-card { break-inside: avoid; } }
   </style>
 </head>
 <body>
-  <header>
-    <h1>${t.title}</h1>
-    <p>${t.subtitle}</p>
-  </header>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div>
+      <h1>${t.title}</h1>
+      <p>${t.subtitle}</p>
+      <div class="hero-cta">
+        <a href="#services" class="btn btn-primary">${t.services}</a>
+        <a href="#contact" class="btn btn-secondary">${t.contact}</a>
+      </div>
+    </div>
+  </section>
 
-  <div class="container">
-    <div class="section">
+  <!-- Services Section -->
+  <section id="services" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">${t.services}</h2>
+      <p class="section-subtitle">Une gamme complète de services pour répondre à vos besoins</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon"><span>🚚</span></div>
+          <h3>Distribution Nationale</h3>
+          <p>Livraison de produits dans tout le Burkina Faso avec une flotte moderne et une équipe expérimentée.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><span>📦</span></div>
+          <h3>Logistique & Stockage</h3>
+          <p>Entrepôts sécurisés et gestion optimisée des stocks pour garantir la disponibilité des produits.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><span>🌍</span></div>
+          <h3>Import-Export</h3>
+          <p>Distribution internationale vers la Côte d'Ivoire, le Mali et le Niger.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon"><span>✅</span></div>
+          <h3>Qualité Garantie</h3>
+          <p>Produits locaux certifiés et respect des normes de qualité internationales.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="produits" class="section">
+    <div class="container">
       <h2 class="section-title">${t.products}</h2>
+      <p class="section-subtitle">Découvrez notre gamme complète de produits de qualité</p>
       <div class="products-grid">
         ${products.map(p => `
           <div class="product-card">
@@ -165,36 +293,166 @@ Deno.serve(async (req) => {
               <div class="product-name">${p.name}</div>
               <div class="product-description">${p.description || ''}</div>
               <ul class="product-details">
-                ${p.unit ? `<li><strong>${t.unit}:</strong> ${p.unit}</li>` : ''}
-                ${p.unit_price ? `<li><strong>${t.price}:</strong> ${p.unit_price.toLocaleString()} FCFA</li>` : ''}
-                ${p.stock_quantity !== undefined ? `<li><strong>${t.stock}:</strong> ${p.stock_quantity}</li>` : ''}
+                ${p.unit ? `<li>${t.unit}: ${p.unit}</li>` : ''}
+                ${p.unit_price ? `<li>${t.price}: ${p.unit_price.toLocaleString()} FCFA</li>` : ''}
+                ${p.stock_quantity !== undefined ? `<li>${t.stock}: ${p.stock_quantity}</li>` : ''}
               </ul>
             </div>
           </div>
         `).join('')}
       </div>
     </div>
+  </section>
 
-    <div class="section">
-      <h2 class="section-title">${t.contact}</h2>
-      <div class="contact-info">
-        <div class="contact-item">
-          <span class="contact-label">${t.address}:</span> ${company.address || 'Dapoya, Ouagadougou'}
-        </div>
-        <div class="contact-item">
-          <span class="contact-label">${t.phone}:</span> ${company.phone || '+226 25 33 19 00'}
-        </div>
-        <div class="contact-item">
-          <span class="contact-label">${t.email}:</span> ${company.email || 'contact@gmobfaso.com'}
-        </div>
-        ${company.website ? `<div class="contact-item"><span class="contact-label">${t.website}:</span> ${company.website}</div>` : ''}
+  <!-- Gallery Section -->
+  ${galerie.length > 0 ? `
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Galerie Photos</h2>
+      <p class="section-subtitle">Quelques images de nos installations et activités</p>
+      <div class="gallery-grid">
+        ${galerie.map(item => `
+          <div class="gallery-item">
+            <img src="${item.description || ''}" alt="${item.name}" onerror="this.style.display='none'">
+          </div>
+        `).join('')}
       </div>
     </div>
-  </div>
+  </section>
+  ` : ''}
 
+  <!-- Partners Section -->
+  ${partenaires.length > 0 ? `
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Nos Partenaires</h2>
+      <p class="section-subtitle">Ils nous font confiance</p>
+      <div class="partners-grid">
+        ${partenaires.map(p => `
+          <div class="partner-card">
+            ${p.description ? `<img src="${p.description}" alt="${p.name}">` : `<p style="font-weight:700;color:#666;">${p.name}</p>`}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>
+  ` : ''}
+
+  <!-- Team Section -->
+  <section class="section section-dark">
+    <div class="container">
+      <h2 class="section-title">${t.team}</h2>
+      <p class="section-subtitle">Une équipe expérimentée à votre service</p>
+      <div class="team-grid">
+        <div class="team-card">
+          <img src="https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg" alt="PDG" class="team-image">
+          <div class="team-content">
+            <h3 class="team-name">Hama TRAORE</h3>
+            <p class="team-role">Président Directeur Général</p>
+            <p class="team-desc">Fondateur et visionnaire du Groupe Madina Oumarou, plus de 40 ans d'expertise en distribution.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <img src="https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg" alt="Responsable Commercial" class="team-image">
+          <div class="team-content">
+            <h3 class="team-name">Responsable Commercial</h3>
+            <p class="team-role">Responsable Commercial</p>
+            <p class="team-desc">En charge du développement des ventes et de l'expansion du réseau de distribution.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <img src="https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg" alt="Équipe" class="team-image">
+          <div class="team-content">
+            <h3 class="team-name">Équipe Logistique</h3>
+            <p class="team-role">Transport & Livraison</p>
+            <p class="team-desc">Plus de 30 chauffeurs et coordinateurs logistiques pour vous servir chaque jour.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jobs Section -->
+  ${offres.length > 0 ? `
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Offres d'Emploi</h2>
+      <p class="section-subtitle">Rejoignez notre équipe dynamique</p>
+      ${offres.map(o => {
+        const jobData = JSON.parse(o.description || '{}');
+        return `
+          <div class="job-card">
+            <h3 class="job-title">${o.name}</h3>
+            <div class="job-meta">
+              <span class="job-tag job-tag-${(jobData.contract || 'cdi').toLowerCase()}">${jobData.contract || 'CDI'}</span>
+              <span>📍 ${jobData.location || 'Ouagadougou'}</span>
+              <span>🏢 ${jobData.department || 'Tous départements'}</span>
+            </div>
+            <p class="job-desc">${jobData.description || o.description || ''}</p>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  </section>
+  ` : ''}
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section-title">${t.contact}</h2>
+      <p class="section-subtitle">Notre équipe est à votre disposition</p>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-item">
+            <span class="contact-label">${t.address}</span>
+            <p>${company.address || 'Dapoya, Ouagadougou, Burkina Faso'}</p>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">${t.phone}</span>
+            <p>${company.phone || '+226 25 33 19 00'}</p>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">${t.email}</span>
+            <p>${company.email || 'contact@gmobfaso.com'}</p>
+          </div>
+          ${company.website ? `
+          <div class="contact-item">
+            <span class="contact-label">${t.website}</span>
+            <p>${company.website}</p>
+          </div>
+          ` : ''}
+          <div class="contact-item">
+            <span class="contact-label">Horaires</span>
+            <p>Lundi - Vendredi: 7h30 - 17h30</p>
+            <p>Samedi: 8h00 - 12h00</p>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3 style="margin-bottom:20px;font-size:1.3rem;">Envoyez-nous un message</h3>
+          <div class="form-group">
+            <label>Nom complet</label>
+            <input type="text" placeholder="Votre nom" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="votre@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Votre message..."></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;">Envoyer</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
-    <p>${t.footer}</p>
-    <p style="font-size: 0.85em; margin-top: 10px; opacity: 0.7;">${t.generated}: ${new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'es' ? 'es-ES' : 'de-DE')}</p>
+    <div class="container">
+      <p>${t.footer}</p>
+      <p style="margin-top:15px;font-size:0.85rem;">${t.generated}: ${new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'es' ? 'es-ES' : 'de-DE')}</p>
+    </div>
   </footer>
 </body>
 </html>`;

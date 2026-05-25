@@ -8,10 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const FORMATS = [
-  { value: 'html', label: 'HTML', icon: FileText, description: 'Site web complet, prêt à publier' },
-  { value: 'pdf', label: 'PDF', icon: FileText, description: 'Document imprimable, haute qualité' },
-  { value: 'json', label: 'JSON', icon: FileText, description: 'Données structurées pour intégration' },
-  { value: 'csv', label: 'CSV', icon: FileText, description: 'Tableur Excel/Google Sheets' },
+  { value: 'html', label: 'HTML', icon: FileText, description: 'Site vitrine COMPLET (Hero, Services, Produits, Galerie, Équipe, Contact)' },
+  { value: 'pdf', label: 'PDF', icon: FileText, description: 'Site complet en PDF (10-20 pages)' },
+  { value: 'json', label: 'JSON', icon: FileText, description: 'Toutes les données du site' },
 ];
 
 const LANGUAGES = [
@@ -78,7 +77,7 @@ export default function VitrineExportPanel() {
       <Alert className="bg-gmo-green/5 border-gmo-green/20">
         <Globe className="h-4 w-4 text-gmo-green" />
         <AlertDescription className="text-sm text-gmo-green/80 ml-2">
-          L'export inclut tous les produits actifs avec <code>show_on_vitrine = true</code>
+          Exporte TOUT le site : Hero, Services, Produits, Galerie, Partenaires, Équipe, Actualités, Offres d'emploi et Contact
         </AlertDescription>
       </Alert>
 
