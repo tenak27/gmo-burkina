@@ -21,7 +21,7 @@ const PANELS = [
     color: "#CC1717",
   },
   {
-    img: "https://gmobfaso.com/assets/img/slides/slide-3.jpg",
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg",
     label: "QUALITÉ",
     sub: "Produits locaux certifiés",
     tagline: "Excellence & responsabilité",
