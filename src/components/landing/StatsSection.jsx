@@ -3,12 +3,12 @@ import { motion, useInView } from "framer-motion";
 import { Truck, Package, MapPin, Users, TrendingUp, Clock } from "lucide-react";
 
 const STATS = [
-  { icon: Truck, value: 50, suffix: "+", label: "Véhicules de livraison", desc: "Flotte moderne et entretenue" },
+  { icon: Truck, value: 50, suffix: "+", label: "Véhicules", desc: "Flotte moderne et entretenue" },
+  { icon: Truck, value: 0, suffix: "", label: "Motos électriques", desc: "Livraison écologique urbaine" },
   { icon: Package, value: 100, suffix: "+", label: "Livraisons / jour", desc: "Partout au Burkina Faso" },
-  { icon: MapPin, value: 7, suffix: "", label: "Villes couvertes", desc: "4 actives · 3 en expansion" },
+  { icon: MapPin, value: 7, suffix: "", label: "Villes couvertes", desc: "Ouaga · Bobo · Ouahigouya · Doris · Boromo · Diebougou · Po" },
   { icon: Users, value: 500, suffix: "+", label: "Clients actifs", desc: "Commerçants & distributeurs" },
   { icon: TrendingUp, value: 10, suffix: " ans", label: "D'expérience", desc: "Leader de la distribution" },
-  { icon: Clock, value: 24, suffix: "/7", label: "Disponibilité", desc: "Support et livraisons continus" },
 ];
 
 function AnimatedCounter({ target, suffix, started }) {
