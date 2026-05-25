@@ -117,23 +117,23 @@ export default function Navbar({ heroHeight }) {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="flex gap-6 animate-ticker" style={{ width: "max-content" }}>
+              <div className="flex gap-6 animate-ticker overflow-hidden" style={{ width: "max-content" }}>
                 {/* Copy 1 */}
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
-                  className="h-[110px] w-auto object-contain flex-shrink-0"
+                  className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0"
                 />
-                <span className="text-gmo-red font-body italic text-lg font-semibold flex-shrink-0 flex items-center">
+                <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-lg font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
                   Consommer local, c'est booster l'économie nationale !
                 </span>
                 {/* Copy 2 (identical for seamless loop) */}
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
-                  className="h-[110px] w-auto object-contain flex-shrink-0"
+                  className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0"
                 />
-                <span className="text-gmo-red font-body italic text-lg font-semibold flex-shrink-0 flex items-center">
+                <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-lg font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
                   Consommer local, c'est booster l'économie nationale !
                 </span>
               </div>
