@@ -88,14 +88,14 @@ const GROUPS = [
 
 // Couleur d'accent par groupe
 const GROUP_ACCENTS = {
-  "CRM": "text-blue-300",
-  "Ventes": "text-amber-300",
-  "Stock": "text-teal-300",
-  "Livraison": "text-orange-300",
-  "Finance": "text-emerald-300",
-  "RH & Admin": "text-purple-300",
-  "Analytics": "text-cyan-300",
-  "Site Web": "text-violet-300",
+  "CRM": "text-indigo-400",
+  "Ventes": "text-violet-400",
+  "Stock": "text-blue-400",
+  "Livraison": "text-indigo-400",
+  "Finance": "text-violet-400",
+  "RH & Admin": "text-blue-400",
+  "Analytics": "text-indigo-400",
+  "Site Web": "text-violet-400",
 };
 
 function CommandPalette({ onNavigate, onClose }) {
@@ -111,7 +111,7 @@ function CommandPalette({ onNavigate, onClose }) {
   return (
     <div className="fixed inset-0 z-[200] flex items-start justify-center pt-20 px-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-obsidian">
+      <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-white/10 shadow-2xl" style={{ background: "linear-gradient(180deg, #0F172A 0%, #1A2847 100%)" }}>
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
           <Search className="w-4 h-4 text-white/40" />
           <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
@@ -141,17 +141,17 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
   const navigate = (id) => { setTab(id); onClose?.(); };
 
   return (
-    <div className="flex flex-col w-[220px]" style={{ background: "linear-gradient(160deg, #1C1C1E 0%, #0f2a15 60%, #1C1C1E 100%)", height: "100%", overflow: "hidden" }}>
+    <div className="flex flex-col w-[220px]" style={{ background: "linear-gradient(180deg, #0F172A 0%, #1A2847 100%)", height: "100%", overflow: "hidden" }}>
 
       {/* Logo */}
       <div className="px-5 py-4 flex items-center gap-3 border-b border-white/10">
-        <div className="w-9 h-9 rounded-xl bg-gmo-green flex items-center justify-center flex-shrink-0 shadow-lg"
-          style={{ boxShadow: "0 0 16px rgba(26,122,46,0.5)" }}>
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center flex-shrink-0 shadow-lg"
+          style={{ boxShadow: "0 0 16px rgba(99,102,241,0.4)" }}>
           <Shield className="w-4 h-4 text-white" />
         </div>
         <div>
           <p className="text-white text-sm font-bold leading-tight font-heading">GMO ERP</p>
-          <p className="text-gmo-green text-[10px] font-medium font-body">Administration</p>
+          <p className="text-indigo-300 text-[10px] font-medium font-body">Administration</p>
         </div>
       </div>
 
@@ -182,10 +182,10 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
                 <button key={item.id} onClick={() => navigate(item.id)}
                   className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-all duration-150 cursor-pointer text-[12px] mb-0.5 relative group
                     ${isActive
-                      ? "bg-gmo-green text-white font-semibold"
+                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold"
                       : "text-white/50 hover:bg-white/10 hover:text-white"
                     }`}
-                  style={isActive ? { boxShadow: "0 2px 10px rgba(26,122,46,0.4)" } : {}}
+                  style={isActive ? { boxShadow: "0 2px 10px rgba(99,102,241,0.4)" } : {}}
                 >
                   <Icon className={`w-3.5 h-3.5 flex-shrink-0 transition-all ${isActive ? "text-white" : "text-white/35 group-hover:text-white/70"}`} />
                   <span className="flex-1 truncate font-body">{item.label}</span>
@@ -209,8 +209,8 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
       {/* User */}
       <div className="p-3 border-t border-white/10">
         <div className="flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer group">
-          <div className="w-7 h-7 rounded-full bg-gmo-green flex items-center justify-center text-white text-xs font-bold flex-shrink-0 flex-shrink-0"
-            style={{ boxShadow: "0 0 10px rgba(26,122,46,0.4)" }}>
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 flex-shrink-0"
+            style={{ boxShadow: "0 0 10px rgba(99,102,241,0.4)" }}>
             {user?.full_name?.charAt(0) || "A"}
           </div>
           <div className="flex-1 min-w-0">
@@ -226,7 +226,7 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
 
       {/* Subtle animated bottom glow */}
       <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
-        style={{ background: "linear-gradient(to top, rgba(26,122,46,0.06), transparent)" }} />
+        style={{ background: "linear-gradient(to top, rgba(99,102,241,0.06), transparent)" }} />
     </div>
   );
 }
@@ -255,12 +255,12 @@ export default function AdminSidebar({ tab, setTab, pendingOrders, newApplicatio
 
       {/* Mobile top bar */}
       <div className="lg:hidden sticky top-0 z-50 flex items-center justify-between px-4 h-14"
-        style={{ background: "linear-gradient(90deg, #1C1C1E 0%, #0f2a15 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex items-center gap-3">
-          <button onClick={() => setMobileOpen(true)} className="text-white/50 hover:text-white cursor-pointer"><Menu className="w-5 h-5" /></button>
-          <div className="w-7 h-7 rounded-lg bg-gmo-green flex items-center justify-center" style={{ boxShadow: "0 0 10px rgba(26,122,46,0.5)" }}>
-            <Shield className="w-4 h-4 text-white" />
-          </div>
+       style={{ background: "linear-gradient(90deg, #0F172A 0%, #1A2847 100%)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+       <div className="flex items-center gap-3">
+         <button onClick={() => setMobileOpen(true)} className="text-white/50 hover:text-white cursor-pointer"><Menu className="w-5 h-5" /></button>
+         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center" style={{ boxShadow: "0 0 10px rgba(99,102,241,0.4)" }}>
+           <Shield className="w-4 h-4 text-white" />
+         </div>
           <span className="text-white text-sm font-bold font-heading">GMO ERP</span>
         </div>
         <div className="flex items-center gap-2">
@@ -280,9 +280,9 @@ export default function AdminSidebar({ tab, setTab, pendingOrders, newApplicatio
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className="absolute left-0 top-0 bottom-0 shadow-2xl animate-slide-in-left">
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10"
-              style={{ background: "#1C1C1E" }}>
+              style={{ background: "linear-gradient(180deg, #0F172A 0%, #1A2847 100%)" }}>
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gmo-green flex items-center justify-center"><Shield className="w-4 h-4 text-white" /></div>
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center"><Shield className="w-4 h-4 text-white" /></div>
                 <span className="text-white text-sm font-bold font-heading">GMO ERP</span>
               </div>
               <button onClick={() => setMobileOpen(false)} className="text-white/40 hover:text-white cursor-pointer"><X className="w-4 h-4" /></button>
