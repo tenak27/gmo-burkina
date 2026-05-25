@@ -26,7 +26,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable des Ventes",
   role: "RV",
   description: "En charge de la gestion des équipes commerciales et du développement du portefeuille clients sur l'ensemble du territoire.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5b8b88e6e_Capturedcran2026-05-2510019PM.png",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png",
   color: "#1A7A2E",
   tag: "Équipe Commerciale"
 }];
