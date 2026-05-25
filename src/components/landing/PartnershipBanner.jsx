@@ -117,8 +117,8 @@ export default function PartnershipBanner() {
             {/* Image generated for partnership */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-md">
               <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/8ba211151_generated_image.png"
-                alt="Partenariat GMO SN CITEC"
+                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e23bb77ef_generated_image.png"
+                alt="Partenariat GMO Impérial Tobacco"
                 className="w-full h-48 object-cover"
               />
             </div>
