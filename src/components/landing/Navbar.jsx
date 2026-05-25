@@ -203,19 +203,26 @@ export default function Navbar({ heroHeight }) {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="fixed top-0 left-0 z-50 w-full max-w-sm h-full bg-white shadow-2xl overflow-y-auto"
             >
-              {/* Close button header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                <span className="font-heading text-sm font-bold text-obsidian">Menu</span>
-                <button
-                  onClick={() => setMobileOpen(false)}
-                  className="p-2 text-obsidian/50 hover:text-obsidian hover:bg-gray-100 rounded-xl transition-all cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              {/* Enhanced header with logo */}
+              <div className="bg-gradient-to-r from-gmo-green/5 to-gmo-red/5 border-b border-gray-100 px-6 py-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-heading text-lg font-black text-obsidian">MENU</span>
+                  <button
+                    onClick={() => setMobileOpen(false)}
+                    className="p-2 text-obsidian/50 hover:text-gmo-red hover:bg-gmo-red/10 rounded-xl transition-all cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <img
+                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                  alt="GMO"
+                  className="h-8 w-auto object-contain mx-auto"
+                />
               </div>
 
-              {/* Navigation links - ALL menu items in hamburger */}
-            <div className="px-6 py-4 space-y-1">
+              {/* Navigation links with enhanced styling */}
+              <div className="px-4 py-2 space-y-1">
               {NAV_LINKS.map((link, i) => (
                 link.label === "Produits" ? (
                   <motion.div
@@ -223,16 +230,19 @@ export default function Navbar({ heroHeight }) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="border-b border-gray-100"
+                    className="mb-2"
                   >
                     <button
                       onClick={() => setCategoriesOpen(!categoriesOpen)}
-                      className="w-full py-4 flex items-center justify-between text-left"
+                      className="w-full px-4 py-3.5 flex items-center justify-between bg-gradient-to-r from-gmo-green/5 to-transparent rounded-xl hover:from-gmo-green/10 transition-all"
                     >
-                      <span className="font-heading text-lg text-obsidian hover:text-gmo-green transition-colors">
-                        {link.label}
-                      </span>
-                      <ChevronDown className={`w-5 h-5 text-obsidian/40 transition-transform ${categoriesOpen ? 'rotate-180' : ''}`} />
+                      <div className="flex items-center gap-3">
+                        <span className="w-1 h-4 bg-gmo-green rounded-full" />
+                        <span className="font-heading text-base font-bold text-obsidian">
+                          {link.label}
+                        </span>
+                      </div>
+                      <ChevronDown className={`w-5 h-5 text-gmo-green transition-transform ${categoriesOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {/* Categories dropdown */}
                     <AnimatePresence>
@@ -241,21 +251,27 @@ export default function Navbar({ heroHeight }) {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden bg-gray-50 rounded-xl mb-3"
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden mt-2 ml-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100"
                         >
-                          <div className="px-4 py-3 space-y-2">
-                            {categories.map((cat) => (
-                              <button
+                          <div className="px-4 py-3 space-y-1.5">
+                            {categories.map((cat, idx) => (
+                              <motion.button
                                 key={cat}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.03 }}
                                 onClick={() => {
                                   scrollTo("#produits");
                                   setMobileOpen(false);
                                 }}
-                                className="block w-full text-left font-body text-sm text-obsidian/70 hover:text-gmo-green hover:bg-white px-3 py-2 rounded-lg transition-colors"
+                                className="block w-full text-left font-body text-sm text-obsidian/70 hover:text-gmo-green hover:bg-gmo-green/5 px-3 py-2.5 rounded-lg transition-all"
                               >
-                                {cat}
-                              </button>
+                                <span className="flex items-center gap-2">
+                                  <span className="w-1.5 h-1.5 bg-gmo-green rounded-full" />
+                                  {cat}
+                                </span>
+                              </motion.button>
                             ))}
                           </div>
                         </motion.div>
@@ -265,17 +281,20 @@ export default function Navbar({ heroHeight }) {
                 ) : link.isPage ? (
                   <motion.div
                     key={link.href}
-                    initial={{ opacity: 0, x: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="border-b border-gray-100"
+                    className="mb-2"
                   >
                     <Link
                       to={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="block py-4 font-heading text-lg text-gmo-green hover:text-gmo-green/70 transition-colors"
+                      className="block px-4 py-3.5 font-heading text-base font-bold text-obsidian hover:text-gmo-green bg-gradient-to-r from-transparent to-gmo-green/5 rounded-xl transition-all"
                     >
-                      {link.label}
+                      <div className="flex items-center gap-3">
+                        <span className="w-1 h-4 bg-gmo-red rounded-full" />
+                        {link.label}
+                      </div>
                     </Link>
                   </motion.div>
                 ) : (
@@ -284,16 +303,19 @@ export default function Navbar({ heroHeight }) {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="border-b border-gray-100"
+                    className="mb-2"
                   >
                     <button
                       onClick={() => {
                         scrollTo(link.href);
                         setMobileOpen(false);
                       }}
-                      className="w-full py-4 font-heading text-lg text-obsidian hover:text-gmo-green transition-colors text-left"
+                      className="w-full px-4 py-3.5 font-heading text-base font-bold text-obsidian hover:text-gmo-green bg-gradient-to-r from-transparent to-gmo-green/5 rounded-xl transition-all text-left"
                     >
-                      {link.label}
+                      <div className="flex items-center gap-3">
+                        <span className="w-1 h-4 bg-gmo-green rounded-full" />
+                        {link.label}
+                      </div>
                     </button>
                   </motion.div>
                 )
@@ -305,70 +327,68 @@ export default function Navbar({ heroHeight }) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="border-b border-gray-100"
+                  className="mb-2"
                 >
                   <Link
                     to={dashLink.to}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-4 font-heading text-lg text-gmo-green hover:text-gmo-green/70 transition-colors"
+                    className="block px-4 py-3.5 font-heading text-base font-bold text-gmo-green bg-gradient-to-r from-gmo-green/10 to-transparent rounded-xl hover:from-gmo-green/15 transition-all"
                   >
-                    {dashLink.label}
+                    <div className="flex items-center gap-3">
+                      <User className="w-4 h-4 text-gmo-green" />
+                      {dashLink.label}
+                    </div>
                   </Link>
                 </motion.div>
               )}
 
-              {/* Login/Logout */}
-              {isAuthenticated ? (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.45 }}
-                  className="border-b border-gray-100"
-                >
+              {/* Auth section */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                className="mt-4 pt-4 border-t border-gray-100"
+              >
+                {isAuthenticated ? (
                   <button
                     onClick={() => {
                       logout();
                       setMobileOpen(false);
                     }}
-                    className="w-full py-4 font-heading text-lg text-gmo-red hover:text-gmo-red/70 transition-colors text-left"
+                    className="w-full px-4 py-3.5 font-heading text-base font-bold text-gmo-red bg-gradient-to-r from-gmo-red/10 to-transparent rounded-xl hover:from-gmo-red/15 transition-all text-left flex items-center gap-3"
                   >
+                    <LogIn className="w-4 h-4 text-gmo-red rotate-180" />
                     Déconnexion
                   </button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.45 }}
-                  className="border-b border-gray-100"
-                >
+                ) : (
                   <button
                     onClick={() => {
                       base44.auth.redirectToLogin(window.location.href);
                       setMobileOpen(false);
                     }}
-                    className="w-full py-4 font-heading text-lg text-obsidian hover:text-gmo-green transition-colors text-left"
+                    className="w-full px-4 py-3.5 font-heading text-base font-bold text-obsidian bg-gradient-to-r from-obsidian/10 to-transparent rounded-xl hover:from-obsidian/15 transition-all text-left flex items-center gap-3"
                   >
+                    <LogIn className="w-4 h-4 text-obsidian" />
                     Connexion
                   </button>
-                </motion.div>
-              )}
+                )}
+              </motion.div>
 
-              {/* WhatsApp button */}
+              {/* WhatsApp button - Enhanced */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="pt-4 pb-8"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.55 }}
+                className="mt-6 mb-4"
               >
                 <a
                   href="https://wa.me/+22670213831"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading font-bold text-base px-6 py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                  className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#20BA5A] hover:from-[#20BA5A] hover:to-[#1DA851] text-white font-heading font-bold text-sm px-6 py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] mx-4"
                   title="+226 70 21 38 31"
                 >
-                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z"/>
                   </svg>
                   <span>WhatsApp +226 70 21 38 31</span>
