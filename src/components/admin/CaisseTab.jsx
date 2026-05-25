@@ -2,8 +2,9 @@ import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
 import {
   Plus, Download, CheckCircle2, XCircle, Clock, Search,
-  X, Wallet, TrendingDown, FileText, Upload, AlertCircle
+  X, Wallet, TrendingDown, FileText, Upload, AlertCircle, Save
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const CATEGORIES = [
   "Carburant / véhicules", "Fournitures de bureau", "Alimentation / restauration",
@@ -99,29 +100,31 @@ function ExpenseFormModal({ expense, onSave, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col"
-        style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        transition={{ type: "spring", damping: 28, stiffness: 350 }}
+        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4"
+      >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gmo-green/10 flex items-center justify-center">
-              <FileText className="w-4 h-4 text-gmo-green" />
-            </div>
-            <div>
-              <h3 className="font-heading text-base font-bold text-obsidian">
-                {expense ? "Modifier la décharge" : "Nouvelle décharge de dépense"}
-              </h3>
-              <p className="text-[11px] text-obsidian/40 font-body">Réf : {form.reference}</p>
-            </div>
+        <div className="sticky top-0 bg-gradient-to-r from-obsidian/98 to-obsidian/95 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+          <div>
+            <p className="font-heading text-base font-bold text-white">
+              {expense ? "Modifier" : "Nouvelle"} Décharge
+            </p>
+            <p className="text-[10px] text-white/40 font-body mt-0.5">{form.reference}</p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-obsidian/40 hover:text-obsidian transition-colors">
+          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="overflow-y-auto flex-1 px-6 py-5 space-y-6">
+        <div className="flex-1 overflow-y-auto px-6 py-5">
+          <div className="max-w-3xl mx-auto space-y-6">
           <FormSection title="Opération comptable">
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -222,20 +225,31 @@ function ExpenseFormModal({ expense, onSave, onClose }) {
               )}
             </div>
           </FormSection>
+          </div>
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50/50 rounded-b-2xl">
-          <button onClick={onClose} className="px-5 py-2.5 text-sm font-body text-obsidian/60 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors">
+        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
+          <button
+            onClick={onClose}
+            className="px-5 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/50 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer"
+          >
             Annuler
           </button>
-          <button onClick={handleSubmit} disabled={saving || !form.motif || !form.amount}
-            className="px-6 py-2.5 text-sm font-heading font-bold bg-gmo-green text-white rounded-xl hover:bg-gmo-green/90 disabled:opacity-40 transition-colors btn-glow-green flex items-center gap-2">
-            {saving && <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-            {saving ? "Enregistrement…" : "Enregistrer"}
+          <button
+            onClick={handleSubmit}
+            disabled={saving || !form.motif || !form.amount}
+            className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm py-3 rounded-xl hover:bg-gmo-green/90 active:scale-95 transition-all disabled:opacity-40 cursor-pointer"
+          >
+            {saving
+              ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : <Save className="w-4 h-4" />}
+            {saving ? "Enregistrement…" : (expense ? "Mettre à jour" : "Créer")}
           </button>
         </div>
-      </div>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
