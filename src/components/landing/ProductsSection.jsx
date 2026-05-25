@@ -62,9 +62,31 @@ function ProductCard({ product, index }) {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/10 transition-all duration-500" />
-        <span className="absolute top-3 left-3 font-body text-[10px] uppercase tracking-widest text-gmo-red bg-white/90 backdrop-blur-sm border border-gmo-red/20 px-3 py-1">
-          {product.category}
-        </span>
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          <span className="font-body text-[10px] uppercase tracking-widest text-gmo-red bg-white/90 backdrop-blur-sm border border-gmo-red/20 px-3 py-1 rounded-sm">
+            {product.category}
+          </span>
+          {product.category === "Cigarettes" && (
+            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-gmo-red/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
+              Tabac
+            </span>
+          )}
+          {product.category === "Alimentaire" && (
+            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-gmo-green/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
+              Alimentation
+            </span>
+          )}
+          {product.category === "Hygiène" && (
+            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-blue-500/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
+              Hygiène
+            </span>
+          )}
+          {product.category === "Embauche" && (
+            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-gold/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
+              Élevage
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Content */}
@@ -227,7 +249,7 @@ export default function ProductsSection() {
           ))}
         </motion.div>
 
-        {/* Grid */}
+        {/* Grid with category badges */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
