@@ -329,16 +329,16 @@ export default function Navbar({ heroHeight }) {
                 transition={{ delay: 0.4 }}
                 className="mb-2">
                 
-                  <Link
-                  to={dashLink.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3.5 font-heading text-base font-bold text-gmo-green bg-gradient-to-r from-gmo-green/10 to-transparent rounded-xl hover:from-gmo-green/15 transition-all hidden">
                   
-                    <div className="flex items-center gap-3">
-                      <User className="w-4 h-4 text-gmo-green" />
-                      {dashLink.label}
-                    </div>
-                  </Link>
+
+
+
+
+
+
+
+
+                
                 </motion.div>
               }
 
