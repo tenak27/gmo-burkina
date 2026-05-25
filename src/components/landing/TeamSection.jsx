@@ -17,7 +17,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable des Ventes",
   role: "RV",
   description: "En charge du développement des ventes, de la relation client et de l'expansion du réseau de distribution à travers le Burkina Faso.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5b8b88e6e_Capturedcran2026-05-2510019PM.png",
   color: "#CC1717",
   tag: "Ventes & Croissance"
 },
