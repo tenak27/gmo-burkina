@@ -385,7 +385,7 @@ export default function Navbar({ heroHeight }) {
                   href="https://wa.me/+22670213831"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#20BA5A] hover:from-[#20BA5A] hover:to-[#1DA851] text-white font-heading font-bold text-sm px-6 py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] mx-4"
+                  className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#20BA5A] hover:from-[#20BA5A] hover:to-[#1DA851] text-white font-heading font-bold text-sm px-6 py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] mx-4 hidden"
                   title="+226 70 21 38 31">
                   
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
