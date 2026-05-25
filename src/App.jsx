@@ -15,6 +15,7 @@ import DriverSpace from './pages/DriverSpace';
 import Careers from './pages/Careers';
 import DevisValidation from './pages/DevisValidation';
 import VerifyDocument from './pages/VerifyDocument';
+import ResellerSpace from './pages/ResellerSpace';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -27,6 +28,7 @@ function RoleRedirect() {
   if (user.role === "magasinier") return <Navigate to="/magasinier" replace />;
   if (user.role === "chauffeur") return <Navigate to="/chauffeur" replace />;
   if (user.role === "detaillant") return <Navigate to="/detaillant" replace />;
+  if (user.role === "revendeur") return <Navigate to="/revendeur" replace />;
   return <Navigate to="/client" replace />;
 }
 
@@ -60,6 +62,7 @@ const AuthenticatedApp = () => {
       <Route path="/magasinier" element={<MagasinierSpace />} />
       <Route path="/commercial" element={<CommercialSpace />} />
       <Route path="/chauffeur" element={<DriverSpace />} />
+      <Route path="/revendeur" element={<ResellerSpace />} />
       <Route path="/carrieres" element={<Careers />} />
       <Route path="/devis-validation" element={<DevisValidation />} />
       <Route path="/verify" element={<VerifyDocument />} />
