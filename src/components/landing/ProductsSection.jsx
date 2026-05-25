@@ -4,7 +4,7 @@ import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 
-const WHATSAPP = "https://wa.me/22676211633";
+const WHATSAPP = "https://wa.me/22670213831";
 
 // Mappe category DB → catégories affichées
 const CATEGORY_MAP = {
@@ -285,7 +285,7 @@ export default function ProductsSection() {
             className="flex-shrink-0 flex items-center gap-3 bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 hover:bg-gmo-green/80 transition-colors duration-300"
           >
             <MessageCircle className="w-5 h-5" />
-            WhatsApp +226 76 21 16 33
+            WhatsApp +226 70 21 38 31
           </a>
         </motion.div>
       </div>
