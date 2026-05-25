@@ -98,7 +98,7 @@ export default function EntityTable({
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl overflow-hidden bg-white shadow-sm" style={{ border: "1px solid rgba(0,0,0,0.07)" }}>
+      <div className="rounded-xl overflow-hidden bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)]" style={{ border: "1px solid #E5E7EB" }}>
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <div className="w-10 h-10 border-2 border-gmo-green/20 border-t-gmo-green rounded-full animate-spin" />
@@ -109,19 +109,19 @@ export default function EntityTable({
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50/80 border-b border-gray-100">
+                  <tr style={{ backgroundColor: "#1E3A5F" }}>
                     {columns.map((c, i) => (
                       <th
                         key={`${c.key}-${i}`}
                         onClick={sortableKeys.has(c.key) ? () => handleSort(c.key) : undefined}
-                        className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-obsidian/50 font-heading select-none ${
+                        className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-white font-heading select-none ${
                           c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"
-                        } ${sortableKeys.has(c.key) ? "cursor-pointer hover:text-obsidian group" : ""}`}
+                        } ${sortableKeys.has(c.key) ? "cursor-pointer hover:opacity-90 group" : ""}`}
                       >
                         <span className="inline-flex items-center gap-1.5">
                           {c.label}
                           {sortableKeys.has(c.key) && (
-                            <span className={`transition-opacity ${sortKey === c.key ? "opacity-100" : "opacity-0 group-hover:opacity-50"}`}>
+                            <span className={`transition-opacity ${sortKey === c.key ? "opacity-100" : "opacity-0 group-hover:opacity-70"}`}>
                               {sortKey === c.key && sortDir === "desc"
                                 ? <ChevronDown className="w-3.5 h-3.5" />
                                 : <ChevronUp className="w-3.5 h-3.5" />}
@@ -131,11 +131,11 @@ export default function EntityTable({
                       </th>
                     ))}
                     {(onEdit || onDelete) && (
-                      <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wider text-obsidian/50 font-heading">Actions</th>
+                      <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wider text-white font-heading">Actions</th>
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody>
                   {paged.length === 0 ? (
                     <tr>
                       <td colSpan={columns.length + 1} className="text-center py-16 font-body">
@@ -150,7 +150,8 @@ export default function EntityTable({
                   ) : paged.map((row, i) => (
                     <tr
                       key={row.id || i}
-                      className="hover:bg-gmo-green/5 transition-colors duration-100 group"
+                      className={`transition-colors duration-100 group ${i % 2 === 0 ? "bg-white" : "bg-[#F8F9FA]"}`}
+                      style={{ borderBottom: "1px solid #E5E7EB" }}
                     >
                       {columns.map((c, ci) => (
                         <td
@@ -191,7 +192,7 @@ export default function EntityTable({
             </div>
 
             {/* Footer */}
-            <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-5 py-4 gap-3 border-t border-gray-100 bg-gray-50/50">
+            <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-5 py-4 gap-3 border-t" style={{ borderColor: "#E5E7EB", backgroundColor: "#F8F9FA" }}>
               <span className="text-sm text-obsidian/50 font-body">
                 {search
                   ? <><span className="text-gmo-green font-semibold">{filtered.length}</span> résultat{filtered.length > 1 ? "s" : ""} sur {rows.length}</>
