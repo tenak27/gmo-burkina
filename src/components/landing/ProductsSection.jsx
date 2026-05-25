@@ -300,11 +300,11 @@ export default function ProductsSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8 }}
-          className="mt-16 bg-obsidian p-8 lg:p-12 flex flex-col lg:flex-row items-center justify-between gap-6"
+          className="mt-16 bg-obsidian p-6 sm:p-8 lg:p-12 flex flex-col items-center text-center lg:text-left lg:flex-row lg:items-center lg:justify-between gap-6"
         >
-          <div>
+          <div className="w-full lg:w-auto">
             <p className="font-body text-xs uppercase tracking-widest text-gmo-green/70 mb-2">Besoin d'un devis groupé ?</p>
-            <h3 className="font-heading text-2xl lg:text-3xl font-bold text-concrete">
+            <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold text-concrete">
               Contactez notre équipe commerciale
             </h3>
           </div>
@@ -312,7 +312,7 @@ export default function ProductsSection() {
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 flex items-center gap-3 bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 hover:bg-gmo-green/80 transition-colors duration-300"
+            className="flex-shrink-0 w-full sm:w-auto flex items-center justify-center gap-3 bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 hover:bg-gmo-green/80 transition-colors duration-300"
           >
             <MessageCircle className="w-5 h-5" />
             WhatsApp +226 70 21 38 31
