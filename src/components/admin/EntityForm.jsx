@@ -130,12 +130,12 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
   const allValid = !fields.some(isEmpty);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/50 backdrop-blur-md"
+        className="absolute inset-0 bg-black/60 backdrop-blur-md"
         onClick={onClose}
       />
 
@@ -145,7 +145,7 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.92, opacity: 0, y: 24 }}
         transition={{ type: "spring", damping: 30, stiffness: 380 }}
-        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[90vh] border border-gray-100 my-8"
+        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-[0_25px_80px_-20px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col max-h-[85vh] border border-white/20"
       >
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F] border-b border-white/10 px-6 py-4 flex items-center justify-between flex-shrink-0">
@@ -164,7 +164,7 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         </div>
 
         {/* Fields */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
+        <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent hover:scrollbar-thumb-gray-400">
           <div className="max-w-3xl mx-auto space-y-3">
             {fieldGroups.map((group, gi) => (
               group.length === 2 ? (
