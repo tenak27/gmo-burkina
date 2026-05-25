@@ -39,7 +39,7 @@ const getCategoryForProduct = (name) => {
   return "Alimentaire";
 };
 
-const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Embauche"];
+const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
 function ProductCard({ product, index }) {
   const ref = useRef(null);
