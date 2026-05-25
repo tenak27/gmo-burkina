@@ -167,8 +167,8 @@ export default function ProductsSection() {
     // Vérifier les marques avec logos spécifiques
     const isSosuco = name.includes("sosuco");
     const isCobifa = name.includes("cobifa");
-    const isTabac = name.includes("tabac");
-    const isSnCitec = name.includes("tourteaux") || name.includes("aliment bétail") || name.includes("aliment de betail") || name.includes("huile savor") || name.includes("hamilton light");
+    const isTabac = name.includes("tabac") || name.includes("hamilton light");
+    const isSnCitec = name.includes("tourteaux") || name.includes("aliment bétail") || name.includes("aliment de betail") || name.includes("huile savor");
     
     const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
     const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
