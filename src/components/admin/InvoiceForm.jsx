@@ -107,13 +107,35 @@ export default function InvoiceForm({ invoice, onSave, onClose, clients = [], pr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute inset-0 bg-black/50 backdrop-blur-md" onClick={onClose} />
+      
+      {/* Type selector - Outside modal */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[60]">
+        <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 px-6 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest font-heading text-obsidian/40 mb-3 text-center">Type de document</p>
+          <div className="grid grid-cols-3 gap-3">
+            {Object.entries(TYPE_CONFIG).map(([key, cfg]) => {
+              const Icon = cfg.icon;
+              return (
+                <button key={key} onClick={() => setType(key)}
+                  className={`flex flex-col items-center gap-2 py-3 px-4 rounded-xl border text-xs font-heading font-bold transition-all cursor-pointer ${
+                    form.type === key ? `${cfg.color} border-transparent shadow-lg shadow-${cfg.color.split('-')[1]}-500/20` : "border-gray-200 text-obsidian/50 hover:border-gray-300 bg-gray-50"
+                  }`}>
+                  <Icon className="w-5 h-5" />
+                  {cfg.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
         transition={{ type: "spring", damping: 28, stiffness: 350 }}
-        className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4"
+        className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4 mt-[140px]"
       >
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F] border-b border-white/10 px-6 py-5 flex items-center justify-between">
@@ -130,25 +152,6 @@ export default function InvoiceForm({ invoice, onSave, onClose, clients = [], pr
 
         <div className="flex-1 overflow-y-auto px-6 py-5">
           <div className="max-w-4xl mx-auto space-y-6">
-
-            {/* Type selector */}
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest font-heading text-obsidian/40 mb-3">Type de document</p>
-              <div className="grid grid-cols-3 gap-3">
-                {Object.entries(TYPE_CONFIG).map(([key, cfg]) => {
-                  const Icon = cfg.icon;
-                  return (
-                    <button key={key} onClick={() => setType(key)}
-                      className={`flex flex-col items-center gap-2 py-4 rounded-xl border text-xs font-heading font-bold transition-all cursor-pointer ${
-                        form.type === key ? `${cfg.color} border-transparent shadow-lg shadow-${cfg.color.split('-')[1]}-500/20` : "border-gray-200 text-obsidian/50 hover:border-gray-300 bg-gray-50"
-                      }`}>
-                      <Icon className="w-5 h-5" />
-                      {cfg.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
 
             {/* Client & dates */}
             <div className="grid grid-cols-2 gap-4">
