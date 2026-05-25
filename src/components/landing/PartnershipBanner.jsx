@@ -26,15 +26,15 @@ export default function PartnershipBanner() {
             </div>
 
             <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">
-              GMO & SN CITEC
+              GMO & IMPÉRIAL TOBACCO
               <br />
               <span className="text-gmo-green">Une Alliance Stratégique</span>
             </h2>
 
             <p className="font-body text-sm text-obsidian/60 leading-relaxed">
               Groupe Madina Oumarou renforce sa position de leader en distribution grâce à un 
-              partenariat exclusif avec <strong className="text-gmo-green">SN CITEC</strong>, 
-              référence dans l'industrie agroalimentaire au Burkina Faso.
+              partenariat exclusif avec <strong className="text-gmo-green">Impérial Tobacco</strong>, 
+              référence dans l'industrie du tabac au Burkina Faso et en Afrique de l'Ouest.
             </p>
 
             <div className="space-y-4 pt-4">
@@ -98,11 +98,11 @@ export default function PartnershipBanner() {
                   <div className="w-16 h-[2px] bg-gradient-to-l from-gmo-red to-gmo-green" />
                 </div>
 
-                {/* SN CITEC Logo */}
+                {/* Impérial Tobacco Logo */}
                 <div className="relative">
                   <img
                     src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg"
-                    alt="SN CITEC"
+                    alt="Impérial Tobacco"
                     className="h-16 lg:h-20 w-auto object-contain"
                   />
                 </div>
