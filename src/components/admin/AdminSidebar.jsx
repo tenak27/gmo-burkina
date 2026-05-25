@@ -165,11 +165,11 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
       </div>
 
       {/* Nav */}
-      <div className="py-3 px-3 space-y-1" style={{ flex: "1 1 0", overflowY: "auto", minHeight: 0 }}>
+      <div className="pb-3 px-2.5" style={{ flex: "1 1 0", overflowY: "auto", minHeight: 0, paddingTop: "10px" }}>
         {GROUPS.map((group, gi) => (
-          <div key={gi} className={gi > 0 ? "mt-3" : ""}>
+          <div key={gi} className={gi > 0 ? "mt-2" : ""}>
             {group.label && (
-              <p className={`text-[9px] font-bold uppercase tracking-[0.18em] px-2 mb-1.5 ${GROUP_ACCENTS[group.label] || "text-white/30"}`}>
+              <p className={`text-[9px] font-bold uppercase tracking-[0.18em] px-2 mb-1 mt-1 ${GROUP_ACCENTS[group.label] || "text-white/30"}`}>
                 {group.label}
               </p>
             )}
@@ -180,23 +180,22 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
               const showAppBadge = item.badgeKey === "applications" && newApplications > 0;
               return (
                 <button key={item.id} onClick={() => navigate(item.id)}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left transition-all duration-150 cursor-pointer text-[13px] mb-0.5 relative group
+                  className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-all duration-150 cursor-pointer text-[12px] mb-0.5 relative group
                     ${isActive
-                      ? "bg-gmo-green text-white font-semibold shadow-lg"
+                      ? "bg-gmo-green text-white font-semibold"
                       : "text-white/50 hover:bg-white/10 hover:text-white"
                     }`}
-                  style={isActive ? { boxShadow: "0 4px 14px rgba(26,122,46,0.45)" } : {}}
+                  style={isActive ? { boxShadow: "0 2px 10px rgba(26,122,46,0.4)" } : {}}
                 >
-                  <Icon className={`w-4 h-4 flex-shrink-0 transition-all ${isActive ? "text-white" : "text-white/35 group-hover:text-white/70"}`} />
+                  <Icon className={`w-3.5 h-3.5 flex-shrink-0 transition-all ${isActive ? "text-white" : "text-white/35 group-hover:text-white/70"}`} />
                   <span className="flex-1 truncate font-body">{item.label}</span>
-                  {isActive && <div className="absolute right-2 w-1.5 h-1.5 rounded-full bg-white/60" />}
                   {showOrderBadge && (
-                    <span className="bg-amber-400 text-obsidian text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-none">
+                    <span className="bg-amber-400 text-obsidian text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center leading-none">
                       {pendingOrders}
                     </span>
                   )}
                   {showAppBadge && (
-                    <span className="bg-blue-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-none">
+                    <span className="bg-blue-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center leading-none">
                       {newApplications}
                     </span>
                   )}

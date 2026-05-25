@@ -2,6 +2,20 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import { X, Save, AlertCircle, CheckCircle2, Search, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 
+const fieldBase = "w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm font-body text-obsidian focus:outline-none focus:bg-white focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/10 transition-all placeholder:text-obsidian/30";
+const fieldError = "bg-red-50 border-red-300 focus:border-gmo-red focus:ring-red-100";
+
+function Label({ f, invalid }) {
+  return (
+    <label className="flex items-center gap-1 mb-1">
+      <span className={`text-[11px] font-semibold uppercase tracking-wide font-heading ${invalid ? "text-gmo-red" : "text-obsidian/50"}`}>
+        {f.label}
+      </span>
+      {f.required && <span className="text-gmo-red text-xs leading-none">*</span>}
+    </label>
+  );
+}
+
 function ClientSelectField({ f, data, onChange, clients, invalid }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -11,37 +25,32 @@ function ClientSelectField({ f, data, onChange, clients, invalid }) {
   }, [clients, search]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <label className="flex items-center gap-1.5">
-        <span className={`text-sm font-semibold font-heading ${invalid ? "text-gmo-red" : "text-obsidian/70"}`}>{f.label}</span>
-        {f.required && <span className="text-gmo-red text-sm font-bold">*</span>}
-      </label>
+    <div>
+      <Label f={f} invalid={invalid} />
       <div className="relative">
         <button type="button" onClick={() => setOpen(o => !o)}
-          className={`w-full border rounded-xl px-4 py-3 text-base font-body text-left flex items-center justify-between transition-all ${
-            invalid ? "border-red-300 bg-red-50/20" : "border-gray-300 hover:border-gray-400 focus:border-gmo-green"
-          }`}>
-          <span className={data[f.key] ? "text-obsidian" : "text-obsidian/35"}>
-            {data[f.key] || "— Sélectionner un client —"}
+          className={`${fieldBase} ${invalid ? fieldError : ""} flex items-center justify-between`}>
+          <span className={data[f.key] ? "text-obsidian" : "text-obsidian/30"}>
+            {data[f.key] || "Sélectionner un client…"}
           </span>
-          <ChevronDown className="w-4 h-4 text-obsidian/30 flex-shrink-0" />
+          <ChevronDown className="w-3.5 h-3.5 text-obsidian/30 flex-shrink-0" />
         </button>
         {open && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-30 overflow-hidden">
             <div className="p-2 border-b border-gray-100">
-              <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                <Search className="w-3.5 h-3.5 text-obsidian/30" />
-                <input autoFocus value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher un client…"
+              <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-1.5">
+                <Search className="w-3 h-3 text-obsidian/30" />
+                <input autoFocus value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher…"
                   className="flex-1 text-xs font-body bg-transparent focus:outline-none text-obsidian" />
               </div>
             </div>
-            <div className="max-h-48 overflow-y-auto">
+            <div className="max-h-44 overflow-y-auto">
               {filtered.length === 0
-                ? <p className="text-xs text-obsidian/30 text-center py-4 font-body">Aucun client trouvé</p>
+                ? <p className="text-xs text-obsidian/30 text-center py-3 font-body">Aucun résultat</p>
                 : filtered.map(c => (
                   <button key={c.id} onMouseDown={() => { onChange(f.key, c.name); if (f.onSelectExtra) f.onSelectExtra(c); setOpen(false); setSearch(""); }}
-                    className="w-full text-left px-4 py-2.5 hover:bg-gmo-green/5 flex items-center gap-3 transition-colors cursor-pointer">
-                    <div className="w-7 h-7 rounded-full bg-gmo-green/15 flex items-center justify-center text-gmo-green font-bold text-xs flex-shrink-0">
+                    className="w-full text-left px-3 py-2 hover:bg-gmo-green/5 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <div className="w-6 h-6 rounded-full bg-gmo-green/15 flex items-center justify-center text-gmo-green font-bold text-[10px] flex-shrink-0">
                       {c.name?.charAt(0)}
                     </div>
                     <div className="min-w-0">
@@ -70,7 +79,6 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
 
   const isEmpty = (f) => f.required && !data[f.key] && data[f.key] !== 0 && data[f.key] !== false;
 
-  // Group fields into pairs for 2-column layout when both are short
   const fieldGroups = [];
   let i = 0;
   while (i < fields.length) {
@@ -91,21 +99,13 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
       return <ClientSelectField key={f.key} f={f} data={data} onChange={onChange} clients={clients} invalid={invalid} />;
     }
     return (
-      <div key={f.key} className="flex flex-col gap-2">
-        <label className="flex items-center gap-1.5">
-          <span className={`text-sm font-semibold font-heading ${invalid ? "text-gmo-red" : "text-obsidian/70"}`}>
-            {f.label}
-          </span>
-          {f.required && <span className="text-gmo-red text-sm font-bold">*</span>}
-        </label>
-
+      <div key={f.key}>
+        <Label f={f} invalid={invalid} />
         {f.type === "select" ? (
           <select
             value={data[f.key] ?? ""}
             onChange={e => onChange(f.key, e.target.value)}
-            className={`w-full border rounded-xl px-4 py-3 text-base font-body text-obsidian bg-white focus:outline-none transition-all ${
-              invalid ? "border-red-300 bg-red-50/20 focus:border-gmo-red" : "border-gray-300 hover:border-gray-400 focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/15"
-            }`}
+            className={`${fieldBase} ${invalid ? fieldError : ""}`}
           >
             {!f.required && <option value="">— Sélectionner —</option>}
             {f.options?.map(o => (
@@ -119,27 +119,25 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
             onChange={e => onChange(f.key, e.target.value)}
             placeholder={f.placeholder || ""}
             rows={3}
-            className={`w-full border rounded-xl px-4 py-3 text-base font-body text-obsidian focus:outline-none transition-all resize-none ${
-              invalid ? "border-red-300 bg-red-50/20 focus:border-gmo-red" : "border-gray-300 hover:border-gray-400 focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/15"
-            }`}
+            className={`${fieldBase} ${invalid ? fieldError : ""} resize-none`}
           />
 
         ) : f.type === "checkbox" ? (
           <button
             type="button"
             onClick={() => onChange(f.key, !data[f.key])}
-            className={`flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all ${
-              data[f.key] ? "bg-gmo-green/5 border-gmo-green/40" : "bg-gray-50 border-gray-300 hover:border-gray-400"
+            className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg border transition-all ${
+              data[f.key] ? "bg-gmo-green/5 border-gmo-green/30" : "bg-gray-50 border-gray-200 hover:border-gray-300"
             }`}
           >
-            <div className={`rounded-full transition-colors duration-300 relative flex-shrink-0 ${data[f.key] ? "bg-gmo-green" : "bg-gray-300"}`}
-              style={{ height: 24, width: 44 }}>
-              <div className={`absolute top-[3px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform duration-300 ${data[f.key] ? "translate-x-[23px]" : "translate-x-[3px]"}`} />
+            <div className={`rounded-full transition-colors duration-200 relative flex-shrink-0 ${data[f.key] ? "bg-gmo-green" : "bg-gray-300"}`}
+              style={{ height: 20, width: 36 }}>
+              <div className={`absolute top-[2px] w-[16px] h-[16px] rounded-full bg-white shadow transition-transform duration-200 ${data[f.key] ? "translate-x-[18px]" : "translate-x-[2px]"}`} />
             </div>
-            <span className={`text-base font-body transition-colors ${data[f.key] ? "text-gmo-green font-medium" : "text-obsidian/60"}`}>
+            <span className={`text-sm font-body ${data[f.key] ? "text-gmo-green font-medium" : "text-obsidian/50"}`}>
               {f.checkLabel || f.label}
             </span>
-            {data[f.key] && <CheckCircle2 className="w-4 h-4 text-gmo-green ml-auto" />}
+            {data[f.key] && <CheckCircle2 className="w-3.5 h-3.5 text-gmo-green ml-auto" />}
           </button>
 
         ) : (
@@ -149,14 +147,10 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
               value={data[f.key] ?? ""}
               onChange={e => onChange(f.key, e.target.value)}
               placeholder={f.placeholder || ""}
-              className={`w-full border rounded-xl px-4 py-3 text-base font-body text-obsidian focus:outline-none transition-all ${
-                invalid
-                  ? "border-red-300 bg-red-50/20 focus:border-gmo-red pr-10"
-                  : "border-gray-300 hover:border-gray-400 focus:border-gmo-green focus:ring-2 focus:ring-gmo-green/15"
-              }`}
+              className={`${fieldBase} ${invalid ? fieldError + " pr-8" : ""}`}
             />
             {invalid && (
-              <AlertCircle className="w-5 h-5 text-gmo-red absolute right-3.5 top-1/2 -translate-y-1/2" />
+              <AlertCircle className="w-3.5 h-3.5 text-gmo-red absolute right-3 top-1/2 -translate-y-1/2" />
             )}
           </div>
         )}
@@ -169,47 +163,40 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Modal */}
       <motion.div
         ref={panelRef}
-        initial={{ scale: 0.95, opacity: 0, y: 10 }}
+        initial={{ scale: 0.97, opacity: 0, y: 8 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: 10 }}
-        transition={{ type: "spring", damping: 28, stiffness: 320 }}
-        className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] border border-gray-100"
+        exit={{ scale: 0.97, opacity: 0, y: 8 }}
+        transition={{ type: "spring", damping: 30, stiffness: 350 }}
+        className="relative w-full max-w-md bg-white rounded-2xl shadow-xl flex flex-col max-h-[88vh] border border-gray-100"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${isEdit ? "bg-amber-100" : "bg-gmo-green/15"}`}>
-              <div className={`w-3 h-3 rounded-full ${isEdit ? "bg-amber-500" : "bg-gmo-green"}`} />
-            </div>
-            <div>
-              <p className="font-heading text-base font-bold text-obsidian leading-tight">
-                {isEdit ? `Modifier — ${title}` : `Nouveau — ${title}`}
-              </p>
-              <p className="text-[11px] text-obsidian/35 font-body">GMO Burkina ERP</p>
-            </div>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <div>
+            <p className="font-heading text-sm font-bold text-obsidian">
+              {isEdit ? `Modifier · ${title}` : `Nouveau · ${title}`}
+            </p>
+            <p className="text-[10px] text-obsidian/30 font-body mt-0.5">GMO Burkina ERP</p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-obsidian/40 hover:text-obsidian hover:bg-gray-50 transition-all"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-obsidian/30 hover:text-obsidian hover:bg-gray-100 transition-all"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Fields */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3.5">
           {fieldGroups.map((group, gi) => (
             group.length === 2 ? (
               <div key={gi} className="grid grid-cols-2 gap-3">
@@ -221,33 +208,31 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
           ))}
 
           {hasRequired && !allValid && (
-            <div className="flex items-center gap-2.5 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-              <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
-              <p className="text-sm text-red-700 font-body">Veuillez remplir tous les champs obligatoires.</p>
+            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-lg px-3 py-2.5">
+              <AlertCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
+              <p className="text-xs text-red-600 font-body">Champs obligatoires manquants.</p>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-100">
-          <div className="flex gap-3">
-            <button
-              onClick={onSave}
-              disabled={saving || !allValid}
-              className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm py-3 rounded-xl hover:bg-gmo-green/90 active:scale-[0.98] transition-all disabled:opacity-40 shadow-sm"
-            >
-              {saving
-                ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                : <Save className="w-4 h-4" />}
-              {saving ? "Enregistrement…" : (isEdit ? "Enregistrer" : "Créer")}
-            </button>
-            <button
-              onClick={onClose}
-              className="px-5 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/60 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 active:scale-[0.98] transition-all"
-            >
-              Annuler
-            </button>
-          </div>
+        <div className="px-5 py-3.5 border-t border-gray-100 flex gap-2.5">
+          <button
+            onClick={onSave}
+            disabled={saving || !allValid}
+            className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm py-2.5 rounded-xl hover:bg-gmo-green/90 active:scale-[0.98] transition-all disabled:opacity-40"
+          >
+            {saving
+              ? <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : <Save className="w-3.5 h-3.5" />}
+            {saving ? "Enregistrement…" : (isEdit ? "Enregistrer" : "Créer")}
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-body text-obsidian/50 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 active:scale-[0.98] transition-all"
+          >
+            Annuler
+          </button>
         </div>
       </motion.div>
     </div>
