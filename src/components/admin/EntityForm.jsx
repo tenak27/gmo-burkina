@@ -145,10 +145,10 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.92, opacity: 0, y: 24 }}
         transition={{ type: "spring", damping: 30, stiffness: 380 }}
-        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4"
+        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[90vh] border border-gray-100 my-8"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F] border-b border-white/10 px-6 py-5 flex items-center justify-between">
+        <div className="sticky top-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F] border-b border-white/10 px-6 py-4 flex items-center justify-between flex-shrink-0">
           <div>
             <p className="font-heading text-lg font-bold text-white tracking-tight">
               {isEdit ? `Modifier` : `Nouveau`} · {title}
@@ -183,7 +183,7 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-5 flex items-center gap-3">
+        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex items-center gap-3 flex-shrink-0">
           <button
             onClick={onClose}
             className="px-6 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/60 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer font-medium"
