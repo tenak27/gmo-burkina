@@ -8,7 +8,7 @@ const STATS = [
   { icon: Package, value: 100, suffix: "+", label: "Livraisons / jour", desc: "Partout au Burkina Faso" },
   { icon: MapPin, value: 7, suffix: "", label: "Villes couvertes", desc: "Ouaga · Bobo · Ouahigouya · Doris · Boromo · Diebougou · Po" },
   { icon: Users, value: 500, suffix: "+", label: "Clients actifs", desc: "Commerçants & distributeurs" },
-  { icon: TrendingUp, value: 10, suffix: " ans", label: "D'expérience", desc: "Leader de la distribution" },
+  { icon: TrendingUp, value: 40, suffix: "+ ans", label: "D'expérience", desc: "Leader de la distribution" },
 ];
 
 function AnimatedCounter({ target, suffix, started }) {
