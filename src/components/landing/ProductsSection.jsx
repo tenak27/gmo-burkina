@@ -167,7 +167,7 @@ export default function ProductsSection() {
     // Vérifier les marques avec logos spécifiques
     const isSosuco = name.includes("sosuco");
     const isCobifa = name.includes("cobifa");
-    const isSnCitec = name.includes("tourtaux") || name.includes("aliment bétail") || name.includes("aliment de betail") || name.includes("huile savor") || name.includes("hamilton light");
+    const isSnCitec = name.includes("tourteaux") || name.includes("aliment bétail") || name.includes("aliment de betail") || name.includes("huile savor") || name.includes("hamilton light");
     
     const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
     const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
@@ -187,8 +187,10 @@ export default function ProductsSection() {
     };
   });
 
-  // Utiliser les produits DB si disponibles
-  const PRODUCTS = PRODUCTS_FROM_DB;
+  // Supprimer les doublons par nom de produit
+  const PRODUCTS = PRODUCTS_FROM_DB.filter(
+    (product, index, self) => index === self.findIndex((p) => p.name === product.name)
+  );
 
   const categories = ["Tous", ...CATEGORIES_ORDER.filter(cat => PRODUCTS.some(p => p.category === cat))];
 
