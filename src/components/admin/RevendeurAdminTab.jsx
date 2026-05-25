@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
-import { CheckCircle2, XCircle, Clock, CreditCard, TrendingUp, Package, Eye, ChevronDown, ChevronUp, User } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, CreditCard, TrendingUp, Package, Eye, ChevronDown, ChevronUp, User, Plus } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import InitiateResellerOrderModal from "./InitiateResellerOrderModal";
 
 const APPROVAL_LABELS = {
   pending_pdg_approval: { label: "En attente PDG", cls: "text-amber-600 bg-amber-50 border-amber-200" },
@@ -85,9 +87,10 @@ function OrderRow({ order, onApprove, onReject, approving }) {
   );
 }
 
-export default function RevendeurAdminTab({ orders, setOrders, clients, receivables }) {
+export default function RevendeurAdminTab({ orders, setOrders, clients, receivables, products = [] }) {
   const [approving, setApproving] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const resellerOrders = useMemo(() =>
     orders.filter(o => o.client_type === "revendeur"),
@@ -150,23 +153,29 @@ export default function RevendeurAdminTab({ orders, setOrders, clients, receivab
         ))}
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-2 flex-wrap">
-        {[
-          { key: "all", label: "Toutes" },
-          { key: "pending", label: `En attente (${pendingCount})` },
-          { key: "approved", label: "Approuvées" },
-          { key: "rejected", label: "Rejetées" },
-        ].map(f => (
-          <button key={f.key} onClick={() => setFilterStatus(f.key)}
-            className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold border transition-all ${
-              filterStatus === f.key
-                ? "bg-obsidian text-white border-obsidian"
-                : "bg-white text-obsidian/50 border-gray-200 hover:border-gray-300"
-            }`}>
-            {f.label}
-          </button>
-        ))}
+      {/* Filters & Action */}
+      <div className="flex gap-2 flex-wrap justify-between items-center">
+        <div className="flex gap-2 flex-wrap">
+          {[
+            { key: "all", label: "Toutes" },
+            { key: "pending", label: `En attente (${pendingCount})` },
+            { key: "approved", label: "Approuvées" },
+            { key: "rejected", label: "Rejetées" },
+          ].map(f => (
+            <button key={f.key} onClick={() => setFilterStatus(f.key)}
+              className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold border transition-all ${
+                filterStatus === f.key
+                  ? "bg-obsidian text-white border-obsidian"
+                  : "bg-white text-obsidian/50 border-gray-200 hover:border-gray-300"
+              }`}>
+              {f.label}
+            </button>
+          ))}
+        </div>
+        <button onClick={() => setModalOpen(true)}
+          className="flex items-center gap-1.5 bg-gmo-green text-white font-heading font-bold text-xs px-4 py-2 rounded-xl hover:bg-gmo-green/90 transition-colors cursor-pointer">
+          <Plus className="w-3.5 h-3.5" /> Initier une commande
+        </button>
       </div>
 
       {/* Orders list */}
@@ -188,6 +197,21 @@ export default function RevendeurAdminTab({ orders, setOrders, clients, receivab
           ))}
         </div>
       )}
+
+      {/* Modal */}
+      <AnimatePresence>
+        {modalOpen && (
+          <InitiateResellerOrderModal
+            clients={resellerClients}
+            products={products}
+            onClose={() => setModalOpen(false)}
+            onSuccess={() => {
+              setModalOpen(false);
+              // Recharger les commandes si nécessaire
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
