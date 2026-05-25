@@ -25,8 +25,8 @@ export default function PartnershipBanner() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">GMO & Mabucig SA
-Une Alliance Stratégique
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">GMO & Mabucig SA Une Alliance Stratégique
+
 
 
             </h2>
