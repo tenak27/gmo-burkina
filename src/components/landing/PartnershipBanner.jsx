@@ -25,17 +25,17 @@ export default function PartnershipBanner() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">GMO & Mabucig SA
-Une Alliance Stratégique
-
-
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">
+              GMO & Impérial Tobacco
+              <br />
+              <span className="text-gmo-green">Une Alliance Stratégique</span>
             </h2>
 
-            <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec Impérial Tobacco, géant mondial du tabac présent dans plus de 160 pays et 4ème groupe tabac mondial. Ce partenariat stratégique positionne GMO comme distributeur privilégié d'un leader international reconnu pour son innovation et son expertise inégalée au Burkina Faso .
-
-
-
-
+            <p className="font-body text-sm text-obsidian/60 leading-relaxed">
+              Groupe Madina Oumarou s'associe avec <strong className="text-gmo-green">Impérial Tobacco</strong>, 
+              géant mondial du tabac présent dans plus de 160 pays et 4ème groupe tabac mondial. 
+              Ce partenariat stratégique positionne GMO comme distributeur privilégié d'un leader international 
+              reconnu pour son innovation et son expertise inégalée au Burkina Faso.
             </p>
 
             <div className="space-y-4 pt-4">
@@ -87,7 +87,6 @@ Une Alliance Stratégique
                     src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/47050d727_logo-gmo2x-EVZXLeXs.png"
                     alt="GMO"
                     className="h-20 lg:h-24 w-auto object-contain" />
-                  
                 </div>
 
                 {/* Partnership Symbol */}
@@ -101,11 +100,10 @@ Une Alliance Stratégique
 
                 {/* Impérial Tobacco Logo */}
                 <div className="relative">
-                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/15f1406fe_Capture_d_cran_2026-05-25__72727_PM.png"
-
-                  alt="Impérial Tobacco"
-                  className="h-16 lg:h-20 w-auto object-contain" />
-                  
+                  <img
+                    src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/86228a120_images.png"
+                    alt="Impérial Tobacco"
+                    className="h-16 lg:h-20 w-auto object-contain" />
                 </div>
 
               </div>
@@ -117,16 +115,15 @@ Une Alliance Stratégique
 
             {/* Image generated for partnership */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-md">
-              <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/8640decae_Gemini_Generated_Image_kktmy3kktmy3kktm.png"
-
-              alt="Partenariat GMO Impérial Tobacco"
-              className="w-full h-48 object-cover" />
-              
+              <img
+                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e23bb77ef_generated_image.png"
+                alt="Partenariat GMO Impérial Tobacco"
+                className="w-full h-48 object-cover" />
             </div>
           </motion.div>
 
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 }
