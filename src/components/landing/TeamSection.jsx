@@ -124,15 +124,6 @@ const OPERATIONAL_TEAM = [
   border: "border-emerald-200/60"
 },
 {
-  dept: "Maintenance & Technique",
-  icon: "🔧",
-  count: "5+",
-  desc: "Mécaniciens, électriciens et techniciens de maintenance",
-  kpi: "Flotte opérationnelle 95%",
-  color: "from-orange-500/10 to-orange-600/5",
-  border: "border-orange-200/60"
-},
-{
   dept: "Achats & Approvisionnement",
   icon: "🛒",
   count: "4+",
