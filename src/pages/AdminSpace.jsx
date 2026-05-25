@@ -23,6 +23,7 @@ import ApplicationsTab from "@/components/admin/ApplicationsTab";
 import StatsChartsPanel from "@/components/admin/StatsChartsPanel";
 import SettingsTab from "@/components/admin/SettingsTab";
 import SiteVitrineTab from "@/components/admin/SiteVitrineTab";
+import CaisseTab from "@/components/admin/CaisseTab";
 
 function AdminDashboard() {
   const [tab, setTab] = useState("dashboard");
@@ -43,6 +44,7 @@ function AdminDashboard() {
   const [payments, setPayments] = useState([]);
   const [receivables, setReceivables] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [cashExpenses, setCashExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { loadAll(); }, []);
@@ -69,7 +71,7 @@ function AdminDashboard() {
 
   const loadAll = async () => {
     setLoading(true);
-    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent, drv, pay, rec, apps] = await Promise.all([
+    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent, drv, pay, rec, apps, cashExp] = await Promise.all([
       base44.entities.User.list("-created_date", 100),
       base44.entities.Client.list("-created_date", 100),
       base44.entities.Supplier.list("-created_date", 100),
@@ -86,6 +88,7 @@ function AdminDashboard() {
       base44.entities.Payment.list("-date", 100),
       base44.entities.Receivable.list("-created_date", 100),
       base44.entities.Application.list("-created_date", 100),
+      base44.entities.CashExpense.list("-created_date", 100),
     ]);
     setUsers(u || []);
     setClients(c || []);
@@ -103,6 +106,7 @@ function AdminDashboard() {
     setPayments(pay || []);
     setReceivables(rec || []);
     setApplications(apps || []);
+    setCashExpenses(cashExp || []);
     setLoading(false);
   };
 
@@ -150,6 +154,7 @@ function AdminDashboard() {
             {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
             {tab === "settings"     && <SettingsTab />}
             {tab === "vitrine"      && <SiteVitrineTab />}
+            {tab === "caisse"       && <CaisseTab expenses={cashExpenses} setExpenses={setCashExpenses} />}
           </div>
           <p className="text-center text-xs text-obsidian/30 mt-8 pb-4">
             GMO Burkina ERP · <span className="text-gmo-green">IAM Technology</span>

@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Users, UserCheck, FileText, Truck, Package,
   Tag, Warehouse, BarChart2, BookOpen, Users2, ShoppingCart,
   Shield, Globe, LogOut, Menu, Search,
-  DollarSign, TrendingDown, Navigation, X, Briefcase, TrendingUp, Bell, Settings, ChevronRight
+  DollarSign, TrendingDown, Navigation, X, Briefcase, TrendingUp, Bell, Settings, ChevronRight, Wallet
 } from "lucide-react";
 
 const GROUPS = [
@@ -47,6 +47,7 @@ const GROUPS = [
     label: "Finance",
     items: [
       { id: "accounting",  label: "Comptabilité", icon: BookOpen },
+      { id: "caisse",      label: "Caisse",        icon: Wallet },
       { id: "payments",    label: "Paiements",    icon: DollarSign },
       { id: "receivables", label: "Créances",     icon: TrendingDown },
     ],

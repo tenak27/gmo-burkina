@@ -1,0 +1,99 @@
+{
+  "name": "CashExpense",
+  "type": "object",
+  "properties": {
+    "reference": {
+      "type": "string",
+      "description": "R\u00e9f\u00e9rence DCH-XXXXXX"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Carburant / v\u00e9hicules",
+        "Fournitures de bureau",
+        "Alimentation / restauration",
+        "Transport / d\u00e9placement",
+        "Communication",
+        "Entretien / r\u00e9paration",
+        "Frais bancaires",
+        "Salaires / avances",
+        "Autre"
+      ],
+      "default": "Autre"
+    },
+    "motif": {
+      "type": "string",
+      "description": "Motif / Objet de la d\u00e9pense"
+    },
+    "amount": {
+      "type": "number",
+      "default": 0
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "Esp\u00e8ces",
+        "Mobile Money",
+        "Ch\u00e8que",
+        "Virement"
+      ],
+      "default": "Esp\u00e8ces"
+    },
+    "beneficiary_nom": {
+      "type": "string"
+    },
+    "beneficiary_prenom": {
+      "type": "string"
+    },
+    "beneficiary_phone": {
+      "type": "string"
+    },
+    "beneficiary_id_type": {
+      "type": "string",
+      "enum": [
+        "CNIB",
+        "Passeport",
+        "Permis de conduire",
+        "Carte professionnelle"
+      ],
+      "default": "CNIB"
+    },
+    "beneficiary_id_number": {
+      "type": "string"
+    },
+    "beneficiary_id_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "receipt_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en_attente",
+        "valide",
+        "rejete"
+      ],
+      "default": "en_attente"
+    },
+    "approved_by": {
+      "type": "string"
+    },
+    "approved_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "date",
+    "motif",
+    "amount"
+  ]
+}
