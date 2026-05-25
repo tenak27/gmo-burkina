@@ -2,7 +2,8 @@ import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import EntityTable from "./EntityTable";
 import SectionHeader from "./SectionHeader";
-import { Upload, X, Loader2, Package } from "lucide-react";
+import { Upload, X, Loader2, Package, Save } from "lucide-react";
+import { motion } from "framer-motion";
 
 const inputCls = "w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-body text-obsidian focus:outline-none focus:border-gmo-green transition-colors";
 
@@ -43,11 +44,20 @@ function ProductForm({ form, setForm, onSave, onClose, saving, isEdit }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
-          <h4 className="font-heading text-base font-bold text-obsidian">{isEdit ? "Modifier le produit" : "Nouveau produit"}</h4>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer"><X className="w-5 h-5" /></button>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        transition={{ type: "spring", damping: 28, stiffness: 350 }}
+        className="bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden border border-gray-100"
+      >
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 flex-shrink-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F]">
+          <div>
+            <h4 className="font-heading text-lg font-bold text-white tracking-tight">{isEdit ? "Modifier le produit" : "Nouveau produit"}</h4>
+            <p className="text-[10px] text-white/50 font-body mt-0.5 uppercase tracking-wider">Gestion de stock</p>
+          </div>
+          <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all cursor-pointer"><X className="w-5 h-5" /></button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
 
@@ -134,14 +144,15 @@ function ProductForm({ form, setForm, onSave, onClose, saving, isEdit }) {
           </label>
         </div>
 
-        <div className="flex gap-3 px-6 py-4 border-t border-gray-100 flex-shrink-0">
-          <button onClick={onClose} className="flex-1 border border-gray-200 text-sm font-heading font-semibold py-2.5 rounded-xl cursor-pointer hover:bg-gray-50">Annuler</button>
+        <div className="flex gap-3 px-6 py-5 border-t border-gray-100 flex-shrink-0 bg-white">
+          <button onClick={onClose} className="px-6 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/60 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer font-medium">Annuler</button>
           <button onClick={onSave} disabled={saving || !form.name}
-            className="flex-1 bg-gmo-green text-white text-sm font-heading font-bold py-2.5 rounded-xl cursor-pointer disabled:opacity-50 hover:opacity-90">
-            {saving ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : isEdit ? "Enregistrer" : "Créer"}
+            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-gmo-green to-emerald-600 text-white font-heading font-bold text-sm py-3.5 rounded-xl hover:shadow-lg hover:shadow-gmo-green/25 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            {saving ? "Enregistrement…" : (isEdit ? "Enregistrer" : "Créer")}
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
