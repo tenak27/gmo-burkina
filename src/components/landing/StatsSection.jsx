@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { Truck, Package, MapPin, Users, TrendingUp, Clock } from "lucide-react";
+import { Truck, Package, MapPin, Users, TrendingUp, Clock, Bike } from "lucide-react";
 
 const STATS = [
   { icon: Truck, value: 50, suffix: "+", label: "Véhicules", desc: "Flotte moderne et entretenue" },
-  { icon: Truck, value: 25, suffix: "+", label: "Motos électriques", desc: "Livraison écologique urbaine" },
+  { icon: Bike, value: 25, suffix: "+", label: "Motos électriques", desc: "Livraison écologique urbaine" },
   { icon: Package, value: 100, suffix: "+", label: "Livraisons / jour", desc: "Partout au Burkina Faso" },
   { icon: MapPin, value: 7, suffix: "", label: "Villes couvertes", desc: "Ouaga · Bobo · Ouahigouya · Doris · Boromo · Diebougou · Po" },
   { icon: Users, value: 500, suffix: "+", label: "Clients actifs", desc: "Commerçants & distributeurs" },
