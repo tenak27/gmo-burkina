@@ -32,9 +32,10 @@ export default function PartnershipBanner() {
             </h2>
 
             <p className="font-body text-sm text-obsidian/60 leading-relaxed">
-              Groupe Madina Oumarou renforce sa position de leader en distribution grâce à un 
-              partenariat exclusif avec <strong className="text-gmo-green">Impérial Tobacco</strong>, 
-              référence dans l'industrie du tabac au Burkina Faso et en Afrique de l'Ouest.
+              Groupe Madina Oumarou s'associe avec <strong className="text-gmo-green">Impérial Tobacco</strong>, 
+              géant mondial du tabac présent dans plus de 160 pays et 4ème groupe tabac mondial. 
+              Ce partenariat stratégique positionne GMO comme distributeur privilégié d'une marque d'excellence 
+              reconnue pour son innovation et sa qualité premium en Afrique de l'Ouest.
             </p>
 
             <div className="space-y-4 pt-4">
