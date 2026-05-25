@@ -44,7 +44,7 @@ export default function PartnershipBanner() {
                 </div>
                 <div>
                   <p className="font-heading text-sm font-bold text-obsidian">Distribution Exclusive</p>
-                  <p className="font-body text-xs text-obsidian/50">Accès prioritaire aux produits Imperial</p>
+                  <p className="font-body text-xs text-obsidian/50">Accès prioritaire aux produits Imperial Tobacco</p>
                 </div>
               </div>
 
