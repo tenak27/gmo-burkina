@@ -16,7 +16,7 @@ const ARTICLES = [
     date: "02 Mars 2025",
     title: "Nouveau partenariat stratégique avec SN CITEC",
     excerpt: "GMO Burkina consolide sa collaboration avec SN CITEC pour la distribution de l'huile MADINA et des produits d'hygiène à travers le réseau national.",
-    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/678f80d25_huile.jpg",
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/2d52470b7_Gemini_Generated_Image_4r6y1k4r6y1k4r6y.png",
     color: "bg-gmo-red",
   },
   {
