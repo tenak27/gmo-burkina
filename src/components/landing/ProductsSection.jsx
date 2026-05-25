@@ -123,67 +123,38 @@ export default function ProductsSection() {
   const [activeCategory, setActiveCategory] = useState("Tous");
   const [dbProducts, setDbProducts] = useState([]);
 
-  // Produits statiques pour la vitrine
-  useEffect(() => {
-    setDbProducts([]);
-  }, []);
-
-  // Ordre d'affichage souhaité (les noms doivent correspondre exactement aux produits en DB)
-  const DISPLAY_ORDER = [
+  // Produits statiques pour la vitrine - EN STOCK
+  const PRODUCTS_IN_STOCK = [
     // Cigarettes
-    "Hamilton Light",
-    "Hamilton Classic",
-    "Excellence",
-    "Dunhill Light",
-    "Dunhill Classic",
+    { name: "Hamilton Light", category: "Cigarettes", brand: "Hamilton", description: "Cigarettes premium", image: "https://gmobfaso.com/assets/img/products/hamilton-light.jpg" },
+    { name: "Hamilton Classic", category: "Cigarettes", brand: "Hamilton", description: "Cigarettes classiques", image: "https://gmobfaso.com/assets/img/products/hamilton-classic.jpg" },
+    { name: "Excellence", category: "Cigarettes", brand: "Excellence", description: "Cigarettes qualité supérieure", image: "https://gmobfaso.com/assets/img/products/excellence.jpg" },
+    { name: "Dunhill Light", category: "Cigarettes", brand: "Dunhill", description: "Cigarettes légères", image: "https://gmobfaso.com/assets/img/products/dunhill-light.jpg" },
+    { name: "Dunhill Classic", category: "Cigarettes", brand: "Dunhill", description: "Cigarettes traditionnelles", image: "https://gmobfaso.com/assets/img/products/dunhill-classic.jpg" },
     // Alimentaire - Huiles
-    "Huile Savor Soja 5l",
-    "Huile Savor Soja 20l",
-    "Huile Savor Graine de coton 5l",
-    "Huile Savor Graine de coton 20l",
+    { name: "Huile Savor Soja 5l", category: "Alimentaire", brand: "Savor", description: "Huile de soja raffinée", image: "https://gmobfaso.com/assets/img/products/huile-savor-soja-5l.jpg" },
+    { name: "Huile Savor Soja 20l", category: "Alimentaire", brand: "Savor", description: "Huile de soja en bidon", image: "https://gmobfaso.com/assets/img/products/huile-savor-soja-20l.jpg" },
+    { name: "Huile Savor Graine de coton 5l", category: "Alimentaire", brand: "Savor", description: "Huile de coton raffinée", image: "https://gmobfaso.com/assets/img/products/huile-savor-coton-5l.jpg" },
+    { name: "Huile Savor Graine de coton 20l", category: "Alimentaire", brand: "Savor", description: "Huile de coton grand format", image: "https://gmobfaso.com/assets/img/products/huile-savor-coton-20l.jpg" },
     // Alimentaire - Farine
-    "Farine de Blé GMF Etalon 50kg",
+    { name: "Farine de Blé GMF Etalon 50kg", category: "Alimentaire", brand: "GMF", description: "Farine de blé premium", image: "https://gmobfaso.com/assets/img/products/farine-gmf-50kg.jpg" },
     // Alimentaire - Sucres
-    "Sosuco sucre morceau blond 25 paquets",
-    "Sosuco sucre granulé blond 50kg",
-    "Sosuco sucre morceau Blanc 25 paquets",
-    "Sosuco sucre granulé blanc 50kg",
+    { name: "Sosuco sucre morceau blond 25 paquets", category: "Alimentaire", brand: "Sosuco", description: "Sucre en morceaux", image: "https://gmobfaso.com/assets/img/products/sosuco-morceau-blond.jpg" },
+    { name: "Sosuco sucre granulé blond 50kg", category: "Alimentaire", brand: "Sosuco", description: "Sucre granulé professionnel", image: "https://gmobfaso.com/assets/img/products/sosuco-granule-blond.jpg" },
+    { name: "Sosuco sucre morceau Blanc 25 paquets", category: "Alimentaire", brand: "Sosuco", description: "Sucre blanc raffiné", image: "https://gmobfaso.com/assets/img/products/sosuco-morceau-blanc.jpg" },
+    { name: "Sosuco sucre granulé blanc 50kg", category: "Alimentaire", brand: "Sosuco", description: "Sucre blanc en sac", image: "https://gmobfaso.com/assets/img/products/sosuco-granule-blanc.jpg" },
     // Alimentaire - Cobifa
-    "Cobifa AXE zoodo",
-    "Cobifa chewngun etalon",
+    { name: "Cobifa AXE zoodo", category: "Alimentaire", brand: "Cobifa", description: "Assaisonnement cube", image: "https://gmobfaso.com/assets/img/products/cobifa-axe.jpg" },
+    { name: "Cobifa chewngun etalon", category: "Alimentaire", brand: "Cobifa", description: "Bonbons chewing-gum", image: "https://gmobfaso.com/assets/img/products/cobifa-chewngun.jpg" },
     // Embauche
-    "Son de blé sac de 25kg",
-    "Aliment bétail coton sac 50kg",
-    "Tourtaux de coton sac de 50kg",
-    "Aliment de Betail soja sac 50kg",
-    "Tourtaux de soja sac 50kg",
+    { name: "Son de blé sac de 25kg", category: "Embauche", brand: "GMF", description: "Aliment pour bétail", image: "https://gmobfaso.com/assets/img/products/son-ble-25kg.jpg" },
+    { name: "Aliment bétail coton sac 50kg", category: "Embauche", brand: "GMF", description: "Tourteau de coton", image: "https://gmobfaso.com/assets/img/products/aliment-betail-coton.jpg" },
+    { name: "Tourtaux de coton sac de 50kg", category: "Embauche", brand: "GMF", description: "Tourteau pour élevage", image: "https://gmobfaso.com/assets/img/products/tourteaux-coton.jpg" },
+    { name: "Aliment de Betail soja sac 50kg", category: "Embauche", brand: "GMF", description: "Aliment riche en protéines", image: "https://gmobfaso.com/assets/img/products/aliment-betail-soja.jpg" },
+    { name: "Tourtaux de soja sac 50kg", category: "Embauche", brand: "GMF", description: "Tourteau de soja premium", image: "https://gmobfaso.com/assets/img/products/tourteaux-soja.jpg" },
   ];
 
-  // Normalise les produits DB pour correspondre à la structure ProductCard
-  const normalizeKey = (str) => str?.toLowerCase().trim().replace(/\s+/g, " ");
-
-  const rawProducts = dbProducts.map(p => ({
-    _key: normalizeKey(p.name),
-    name: p.name,
-    category: getCategoryForProduct(p.name),
-    brand: p.description?.split(".")[0] || p.name,
-    description: p.description || "",
-    details: [
-      p.unit ? `Unité : ${p.unit}` : null,
-      p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : null,
-      p.stock_quantity ? `Stock disponible : ${p.stock_quantity}` : null,
-    ].filter(Boolean),
-    image: p.image_url || "",
-  }));
-
-  // Tri selon DISPLAY_ORDER, les produits non listés vont à la fin
-  const orderMap = {};
-  DISPLAY_ORDER.forEach((name, i) => { orderMap[normalizeKey(name)] = i; });
-  const PRODUCTS = [...rawProducts].sort((a, b) => {
-    const ia = orderMap[a._key] ?? 9999;
-    const ib = orderMap[b._key] ?? 9999;
-    return ia - ib;
-  });
+  const PRODUCTS = PRODUCTS_IN_STOCK;
 
   const categories = ["Tous", ...CATEGORIES_ORDER.filter(cat => PRODUCTS.some(p => p.category === cat))];
 
