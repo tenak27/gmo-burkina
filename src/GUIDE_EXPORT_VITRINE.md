@@ -1,329 +1,354 @@
-# Guide d'Export - Vitrine GMO Burkina
+# 📦 Export Site Vitrine - Groupe Madina Oumarou
 
-## 📁 Fichiers à Exporter
+Guide complet pour exporter le site vitrine sans dépendances Base44.
 
-### Pages Principales
-```
-pages/Home.jsx                    → Page d'accueil
-pages/Careers.jsx                 → Page Carrières
-```
+---
 
-### Composants Landing
+## 🎯 Fichiers à Exporter
+
+### Structure du dossier `export-vitrine/`
+
 ```
-components/landing/Navbar.jsx
-components/landing/HeroSection.jsx
-components/landing/ServicesSection.jsx
-components/landing/AboutSection.jsx
-components/landing/ProductsSection.jsx
-components/landing/GMOFootSection.jsx
-components/landing/GallerySection.jsx
-components/landing/PartnersSection.jsx
-components/landing/PartnersCarousel.jsx
-components/landing/StatsSection.jsx
-components/landing/ContactSection.jsx
-components/landing/Footer.jsx
-components/landing/CoverageMap.jsx
-components/landing/PresenceSection.jsx
-components/landing/CatalogSection.jsx
-components/landing/ProjectsSection.jsx
-components/landing/TestimonialsSection.jsx
-components/landing/TeamSection.jsx
-components/landing/MediaSection.jsx
-components/landing/RSESection.jsx
-components/landing/BlogSection.jsx
-components/landing/NewsletterSection.jsx
-components/landing/JourneyBanner.jsx
-components/landing/LogisticsPartnersSection.jsx
+export-vitrine/
+├── index.html                    # Page d'accueil
+├── css/
+│   └── styles.css               # Styles personnalisés
+├── js/
+│   └── main.js                  # Scripts (navigation, animations)
+├── assets/
+│   ├── images/                  # Toutes les images
+│   └── logo/                    # Logos GMO
+└── README.md                    # Instructions de déploiement
 ```
 
-### Composants Auth
-```
-components/auth/RoleGuard.jsx     → Garder uniquement si besoin de login
-```
+---
 
-### Fichiers de Configuration
-```
-index.html                        → Structure HTML
-index.css                         → Styles globaux
-tailwind.config.js                → Configuration Tailwind
-App.jsx                           → Routeur (garder uniquement Home et Careers)
-```
+## 📄 Fichiers Sources à Copier
+
+### 1. Composants Landing (100% statiques)
+
+Ces composants sont **purs** et ne nécessitent aucune modification :
+
+- ✅ `components/landing/ServicesSection`
+- ✅ `components/landing/StatsSection`
+- ✅ `components/landing/AboutSection`
+- ✅ `components/landing/TeamSection`
+- ✅ `components/landing/PartnersCarousel`
+- ✅ `components/landing/PresenceSection`
+- ✅ `components/landing/CoverageMap` *(enlever la carte Leaflet si besoin)*
+- ✅ `components/landing/RSESection`
+- ✅ `components/landing/ProjectsSection`
+- ✅ `components/landing/TestimonialsSection`
+- ✅ `components/landing/GallerySection`
+- ✅ `components/landing/JourneyBanner`
+- ✅ `components/landing/LogisticsPartnersSection`
+- ✅ `components/landing/MediaSection`
+- ✅ `components/landing/BlogSection`
+- ✅ `components/landing/GMOFootSection`
+- ✅ `components/landing/CareersSection`
+- ✅ `components/landing/NewsletterSection`
+- ✅ `components/landing/ContactSection`
+- ✅ `components/landing/Footer`
+
+### 2. Composants à Adapter
+
+#### ❌ `components/landing/HeroSection`
+**Problème** : Utilise `useAuth` et `base44.auth.redirectToLogin`
+
+**Solution** : Remplacer la section de connexion par un simple bouton "Espace Client" statique
+
+#### ❌ `components/landing/Navbar`
+**Problème** : Utilise `useAuth`, `base44`, et fetch des produits
+
+**Solution** : 
+- Supprimer toute logique d'authentification
+- Remplacer par navigation statique
+- Hardcoder les catégories de produits
+
+#### ❌ `components/landing/ProductsSection`
+**Problème** : Fetch des produits depuis Base44
+
+**Solution** : 
+- Créer un fichier `data/produits.json` avec les produits en dur
+- Modifier pour lire depuis ce fichier JSON
+
+#### ❌ `components/landing/CatalogSection`
+**Problème** : Fetch des produits depuis Base44
+
+**Solution** : 
+- Utiliser le même `data/produits.json`
+- Filtrer localement
+
+#### ❌ `components/landing/ContactSection`
+**Problème** : Utilise `base44.integrations.Core.SendEmail`
+
+**Solution** : 
+- Remplacer le formulaire par un lien `mailto:` ou formulaire Formspree
+- Ou garder statique avec bouton "Nous contacter"
 
 ---
 
 ## 🔧 Modifications Requises
 
-### 1. Supprimer les imports Base44
-Dans TOUS les fichiers, supprimer :
-```javascript
+### A. Navbar (Supprimer Auth)
+
+**Fichier** : `components/landing/Navbar`
+
+**Remplacer** :
+```jsx
+// ❌ SUPPRIMER
+import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
+const { user, isAuthenticated, logout } = useAuth();
+
+// ❌ SUPPRIMER tout le bloc de connexion
+{isAuthenticated ? (...) : (...)}
+
+// ✅ REMPLACER PAR
+<a 
+  href="/client" 
+  className="inline-flex items-center gap-1.5 bg-gmo-green/10 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl"
+>
+  <User className="w-3.5 h-3.5" />
+  Espace Client
+</a>
 ```
 
-### 2. Remplacer les URLs media.base44.com
-Remplacer toutes les URLs :
-```
-https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/...
-```
-Par :
-```
-https://gmobfaso.com/assets/img/...
-```
-
-### 3. Désactiver les appels API Base44
-
-**Navbar.jsx** - Remplacer la récupération dynamique des catégories :
-```javascript
-// AVANT
+**Pour les catégories** :
+```jsx
+// ❌ SUPPRIMER
 useEffect(() => {
-  base44.entities.Product.list("name", 200).then(data => {
-    const products = (data || []).filter(p => p.show_on_vitrine && p.is_active !== false);
-    const cats = new Set();
-    products.forEach(p => cats.add(getCategoryForProduct(p.name)));
-    setCategories(["Tous", ...Array.from(cats)]);
-  }).catch(() => {});
+  base44.entities.Product.list(...).then(...)
 }, []);
 
-// APRÈS
-useEffect(() => {
-  setCategories(["Tous", "Cigarettes", "Alimentaire", "Hygiène", "Embauche"]);
-}, []);
+// ✅ REMPLACER PAR
+const categories = ["Tous", "Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 ```
-
-**ProductsSection.jsx** - Produits statiques :
-```javascript
-// AVANT
-useEffect(() => {
-  base44.entities.Product.list("name", 200).then(data => {
-    setDbProducts((data || []).filter(p => p.show_on_vitrine && p.is_active !== false));
-  });
-}, []);
-
-// APRÈS - Définir les produits en dur
-const STATIC_PRODUCTS = [
-  {
-    name: "Hamilton Light",
-    category: "Cigarettes",
-    brand: "Hamilton",
-    description: "Cigarettes de qualité supérieure",
-    details: ["Pack 20 cigarettes", "Fabriqué localement"],
-    image: "https://gmobfaso.com/assets/img/products/hamilton.jpg",
-  },
-  // ... autres produits
-];
-
-useEffect(() => {
-  setDbProducts(STATIC_PRODUCTS);
-}, []);
-```
-
-**ContactSection.jsx** - Formulaire de contact :
-```javascript
-// AVANT
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setSending(true);
-  await base44.integrations.Core.SendEmail({
-    to: "infos@gmoburkina.com",
-    subject: `[Contact Site] ${form.subject} — ${form.name}`,
-    body: `...`,
-    from_name: "GMO Burkina — Site Web",
-  });
-  setSending(false);
-  toast.success("Message envoyé !");
-  setForm({ ... });
-};
-
-// APRÈS - Utiliser un service tiers ou formsubmit.co
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setSending(true);
-  
-  // Option 1: Utiliser FormSubmit (gratuit)
-  await fetch("https://formsubmit.co/ajax/infos@gmoburkina.com", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      subject: `Nouveau contact - ${form.subject}`,
-      message: form.message,
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      company: form.company,
-    }),
-  });
-  
-  setSending(false);
-  toast.success("Message envoyé !");
-  setForm({ ... });
-};
-```
-
-**Careers.jsx** - Candidatures :
-```javascript
-// AVANT
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setSubmitting(true);
-  await base44.entities.Application.create({ ... });
-  await base44.integrations.Core.SendEmail({ ... });
-  setSubmitting(false);
-  setDone(true);
-};
-
-// APRÈS - Email direct ou service tiers
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setSubmitting(true);
-  
-  // Envoyer par email via FormSubmit ou EmailJS
-  await fetch("https://formsubmit.co/ajax/rh@gmoburkina.com", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      subject: `Candidature - ${job?.title || "Spontanée"}`,
-      message: `Nom: ${form.name}\nEmail: ${form.email}\nTéléphone: ${form.phone}\nMessage: ${form.message}`,
-      // Le CV doit être géré séparément (upload sur Google Drive, Dropbox, etc.)
-    }),
-  });
-  
-  setSubmitting(false);
-  setDone(true);
-};
-```
-
-### 4. Nettoyer le Routeur (App.jsx)
-
-Garder uniquement les routes pour la vitrine :
-```javascript
-// App.jsx - Nettoyé
-function App() {
-  return (
-    <QueryClientProvider client={queryClientInstance}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/carrieres" element={<Careers />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-        <Toaster />
-      </Router>
-    </QueryClientProvider>
-  )
-}
-```
-
-### 5. Mettre à jour les URLs d'images
-
-Mapper les images Base44 vers gmobfaso.com :
-
-| Base44 URL | Remplacement |
-|------------|--------------|
-| `.../c6a35848c_Capturedcran2026-05-25112724AM.png` | `/assets/img/logo-gmo.png` |
-| `.../c7662a636_logo-gmo2x.png` | `/assets/img/logo-gmo-white.png` |
-| `.../9e31bba75_home-innovation-pdg.jpg` | `/assets/img/a-propos/a-propos-1.jpg` |
-| `.../1a49d0a18_generated_1a2588b5.png` | `/assets/img/slides/slide-1.jpg` |
-| `.../7fb80f92d_generated_bc5a0082.png` | `/assets/img/a-propos/a-propos-2.jpg` |
-| `.../b71c07b21_generated_f4cdf466.png` | `/assets/img/a-propos/a-propos-3.jpg` |
-| `.../1e2be0905_generated_51987d61.png` | `/assets/img/slides/slide-2.jpg` |
-| `.../c233f6983_generated_cd287a08.png` | `/assets/img/slides/slide-3.jpg` |
-| `.../5bc285315_generated_35f6c974.png` | `/assets/img/a-propos/a-propos-5.jpg` |
 
 ---
 
-## 📦 Procédure d'Export
+### B. HeroSection (Supprimer Auth)
 
-### Étape 1: Créer l'archive
-```bash
-# Dans le dossier du projet
-mkdir gmo-vitrine
-cd gmo-vitrine
+**Fichier** : `components/landing/HeroSection`
 
-# Copier les fichiers nécessaires
-cp -r ../pages/Home.jsx ./
-cp -r ../pages/Careers.jsx ./
-cp -r ../components/landing ./
-cp -r ../components/auth ./
-cp -r ../components/ui ./
-cp -r ../lib ./
-cp ../App.jsx ./
-cp ../index.html ./
-cp ../index.css ./
-cp ../tailwind.config.js ./
-cp -r ../public ./
-cp ../package.json ./
+**Remplacer** :
+```jsx
+// ❌ SUPPRIMER
+import { useAuth } from "@/lib/AuthContext";
+import { base44 } from "@/api/base44Client";
+const { user, isAuthenticated, logout } = useAuth();
+
+// ❌ SUPPRIMER la logique de dashboard
+const getDashboardLink = () => {...}
+
+// ✅ REMPLACER LE BOUTON DE CONNEXION PAR
+<a
+  href="/client"
+  className="flex items-center gap-2 text-white/65 font-heading font-bold text-sm border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:text-white hover:bg-white/8 transition-all"
+>
+  <LogIn className="w-3.5 h-3.5" />
+  Connexion
+</a>
 ```
 
-### Étape 2: Nettoyer les dépendances
-Dans `package.json`, garder uniquement :
+---
+
+### C. ProductsSection (Données en dur)
+
+**Fichier** : `components/landing/ProductsSection`
+
+**Créer** : `data/produits.json`
 ```json
-{
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.26.0",
-    "framer-motion": "^11.16.4",
-    "lucide-react": "^0.475.0",
-    "tailwindcss": "^3.4.0",
-    "sonner": "^2.0.1",
-    "@tanstack/react-query": "^5.84.1"
-  }
-}
+[
+  {
+    "name": "Hamilton Rouge",
+    "category": "tabac",
+    "description": "Cigarettes premium",
+    "unit_price": 500,
+    "image_url": "https://...",
+    "show_on_vitrine": true,
+    "is_active": true
+  },
+  // ... autres produits
+]
 ```
 
-### Étape 3: Modifier App.jsx
-```javascript
-// Supprimer AuthProvider et RoleGuard
-// Garder uniquement :
-import { Home } from './pages/Home';
-import { Careers } from './pages/Careers';
+**Modifier** :
+```jsx
+// ❌ SUPPRIMER
+const [products, setProducts] = useState([]);
+useEffect(() => {
+  base44.entities.Product.list(...).then(setProducts);
+}, []);
+
+// ✅ REMPLACER PAR
+import produits from "../data/produits.json";
+const products = produits.filter(p => p.show_on_vitrine && p.is_active !== false);
 ```
 
-### Étape 4: Tester en local
-```bash
-npm install
-npm run dev
+---
+
+### D. CatalogSection (Données en dur)
+
+**Fichier** : `components/landing/CatalogSection`
+
+**Modifier** :
+```jsx
+// ❌ SUPPRIMER
+const [products, setProducts] = useState([]);
+useEffect(() => {
+  base44.entities.Product.list(...).then(setProducts);
+}, []);
+
+// ✅ REMPLACER PAR
+import produits from "../data/produits.json";
+const products = produits.filter(p => p.show_on_vitrine && p.is_active !== false);
 ```
+
+---
+
+### E. ContactSection (Formulaire statique)
+
+**Fichier** : `components/landing/ContactSection`
+
+**Option 1 - Formspree (gratuit)** :
+```jsx
+// ✅ REMPLACER LE FORMULAIRE PAR
+<form 
+  action="https://formspree.io/f/VOTRE_ID_FORMSPREE" 
+  method="POST"
+  className="..."
+>
+  {/* mêmes inputs */}
+  <button type="submit" className="...">
+    Envoyer
+  </button>
+</form>
+```
+
+**Option 2 - Mailto simple** :
+```jsx
+// ✅ REMPLACER PAR
+<a 
+  href="mailto:contact@gmobfaso.com?subject=Demande de devis"
+  className="bg-gmo-green text-white font-heading font-bold text-sm px-8 py-4 rounded-lg"
+>
+  Nous contacter
+</a>
+```
+
+---
+
+## 🎨 Styles et Assets
+
+### CSS
+
+**Fichier** : `index.css`
+
+**Conserver** :
+- ✅ Variables CSS (couleurs GMO)
+- ✅ Utilities personnalisées (glow, animations)
+- ✅ Tailwind directives
+
+**Supprimer** :
+- ❌ `@import` fonts Google (les mettre dans `<link>` HTML)
+- ❌ Références à `tailwind.config.js`
+
+---
+
+### Images
+
+**Toutes les images à télécharger** :
+
+1. **Héros** :
+   - `https://gmobfaso.com/assets/img/slides/slide-1.jpg`
+   - `https://gmobfaso.com/assets/img/slides/slide-2.jpg`
+   - `https://gmobfaso.com/assets/img/slides/slide-3.jpg`
+   - `https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/12a75595c_generated_image.png`
+
+2. **Logo** :
+   - `https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png`
+   - `https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png`
+
+3. **About/Team** :
+   - `https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg`
+   - `https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg`
+   - `https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg`
+   - `https://gmobfaso.com/assets/img/a-propos/a-propos-4.jpg`
+   - `https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg`
+   - `https://gmobfaso.com/assets/img/a-propos/a-propos-6.jpg`
+
+4. **Partners** :
+   - Toutes les images dans `components/landing/PartnersCarousel`
+
+5. **Products** :
+   - Récupérer depuis `data/produits.json`
+
+---
+
+## 📋 Checklist d'Export
+
+### Étape 1 : Préparation
+- [ ] Créer dossier `export-vitrine/`
+- [ ] Copier tous les composants listés ci-dessus
+- [ ] Télécharger toutes les images dans `assets/images/`
+
+### Étape 2 : Modifications Code
+- [ ] Modifier `Navbar` (supprimer auth + base44)
+- [ ] Modifier `HeroSection` (supprimer auth)
+- [ ] Créer `data/produits.json`
+- [ ] Modifier `ProductsSection` (utiliser JSON)
+- [ ] Modifier `CatalogSection` (utiliser JSON)
+- [ ] Modifier `ContactSection` (formulaire statique)
+
+### Étape 3 : Nettoyage
+- [ ] Supprimer tous les `import { base44 }`
+- [ ] Supprimer tous les `import { useAuth }`
+- [ ] Supprimer `AuthContext` references
+- [ ] Supprimer `base44Client` references
+- [ ] Vérifier qu'aucune mention "Base44" ne reste
+
+### Étape 4 : Tests
+- [ ] Tester navigation mobile
+- [ ] Tester filtres produits
+- [ ] Tester formulaire contact
+- [ ] Vérifier toutes les images s'affichent
+- [ ] Tester responsive design
 
 ---
 
 ## 🚀 Déploiement
 
-### Option 1: Vercel / Netlify
-1. Pousser le code sur GitHub
-2. Connecter le repo à Vercel/Netlify
-3. Déploiement automatique
-
-### Option 2: Hébergement mutualisé
-1. Builder le projet : `npm run build`
-2. Uploader le dossier `dist/` via FTP
-3. Configurer le serveur web (Apache/Nginx)
-
-### Option 3: GitHub Pages
+### Option 1 : Vercel/Netlify (gratuit)
 ```bash
-npm install --save-dev gh-pages
+cd export-vitrine/
+npm install
 npm run build
-npx gh-pages -d dist
+# Déployer le dossier dist/
 ```
 
----
+### Option 2 : Hébergement classique
+```bash
+# Uploader via FTP :
+- index.html
+- css/styles.css
+- js/main.js
+- assets/
+```
 
-## ✅ Checklist Finale
-
-- [ ] Supprimé tous les imports `base44`
-- [ ] Remplacé toutes les URLs `media.base44.com`
-- [ ] Désactivé les appels API Base44
-- [ ] Configuré les produits statiques
-- [ ] Configuré le formulaire de contact (FormSubmit ou autre)
-- [ ] Configuré les candidatures (email direct)
-- [ ] Nettoyé App.jsx (routes inutiles)
-- [ ] Testé en local
-- [ ] Vérifié responsive mobile
-- [ ] Validé les performances (Lighthouse)
+### Option 3 : GitHub Pages
+```bash
+git init
+git add .
+git commit -m "Site vitrine GMO"
+git push origin main
+# Activer GitHub Pages
+```
 
 ---
 
 ## 📞 Support
 
-Pour toute question sur l'export ou le déploiement, contacter :
-- **IAM TECHNOLOGY** - Armand Olivier KONATE
-- Email: support@iamtechnology.bf
+Pour toute question sur l'export, contacter l'équipe de développement.
+
+**Note** : Cet export est une version statique. Pour les fonctionnalités dynamiques (commandes, authentification), il faudra déployer l'application complète Base44.
