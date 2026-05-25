@@ -112,131 +112,131 @@ export default function CatalogSection() {
 
   if (!loading && products.length === 0) return null;
 
-  return (
-    <section id="produits" className="bg-white py-24 lg:py-32 hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 hidden">
+  return null;
 
-        {/* Header */}
-        <div ref={ref} className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            className="flex items-center gap-3 mb-4">
-            
-            <div className="w-6 h-[2px] bg-gmo-green" />
-            <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green">Catalogue produits</span>
-          </motion.div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div>
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="font-heading text-4xl lg:text-5xl font-bold text-obsidian">
-                
-                NOS PRODUITS
-                <br />
-                <span className="text-gmo-green">EN STOCK</span>
-              </motion.h2>
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : {}}
-                transition={{ delay: 0.4, duration: 0.7 }}
-                className="h-1 w-20 bg-gradient-to-r from-gmo-green to-gmo-red mt-5 origin-left rounded-full" />
-              
-            </div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.3 }}
-              className="font-body text-sm text-obsidian/50 max-w-xs leading-relaxed">
-              
-              Découvrez notre gamme de produits disponibles à la distribution. Commandez directement ou contactez notre équipe commerciale.
-            </motion.p>
-          </div>
-        </div>
 
-        {/* Category filters */}
-        {!loading &&
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.35 }}
-          className="flex flex-wrap gap-2 mb-8">
-          
-            {categories.map((cat) => {
-            const colors = CATEGORY_COLORS[cat];
-            const isActive = activeCategory === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-heading font-bold uppercase tracking-widest transition-all duration-200 border ${
-                isActive ?
-                "bg-obsidian text-white border-obsidian shadow-sm" :
-                colors ?
-                `${colors.bg} ${colors.text} ${colors.border} hover:shadow-sm` :
-                "bg-gray-100 text-obsidian/60 border-gray-200 hover:bg-gray-200"}`
-                }>
-                
-                  {cat !== "all" && colors && <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-white" : colors.dot}`} />}
-                  {cat === "all" ? `Tous (${products.length})` : `${CATEGORY_LABELS[cat]} (${products.filter((p) => p.category === cat).length})`}
-                </button>);
 
-          })}
-          </motion.div>
-        }
 
-        {/* Grid */}
-        {loading ?
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {[...Array(8)].map((_, i) =>
-          <div key={i} className="bg-gray-100 rounded-2xl h-72 animate-pulse" />
-          )}
-          </div> :
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
-            {filtered.map((product, i) =>
-          <ProductCard key={product.id} product={product} index={i} isInView={isInView} />
-          )}
-          </div>
-        }
 
-        {/* CTA Banner */}
-        {!loading && products.length > 0 &&
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.6 }}
-          className="bg-gradient-to-r from-obsidian to-[#1A7A2E]/80 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-5">
-          
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <Tag className="w-4 h-4 text-gmo-green" />
-                <p className="font-heading text-base font-bold text-white">Besoin d'un devis groupé ?</p>
-              </div>
-              <p className="font-body text-xs text-white/50">Tarifs grossiste disponibles pour les commandes en volume. Connectez-vous pour accéder au formulaire de devis.</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-              <a
-              href="tel:+22625331900"
-              className="flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-heading font-bold text-sm px-5 py-3 rounded-xl hover:bg-white/15 transition-colors">
-              
-                <Phone className="w-4 h-4" /> Appeler
-              </a>
-              <a
-              href="https://wa.me/22676211633"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-3 rounded-xl hover:bg-gmo-green/80 transition-colors">
-              
-                <ChevronRight className="w-4 h-4" /> Commander via WhatsApp
-              </a>
-            </div>
-          </motion.div>
-        }
-      </div>
-    </section>);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
