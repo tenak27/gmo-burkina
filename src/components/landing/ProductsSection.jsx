@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 
 const WHATSAPP = "https://wa.me/22676211633";
@@ -123,38 +124,35 @@ export default function ProductsSection() {
   const [activeCategory, setActiveCategory] = useState("Tous");
   const [dbProducts, setDbProducts] = useState([]);
 
-  // Produits statiques pour la vitrine - EN STOCK
-  const PRODUCTS_IN_STOCK = [
-    // Cigarettes
-    { name: "Hamilton Light", category: "Cigarettes", brand: "Hamilton", description: "Cigarettes premium", image: "https://images.unsplash.com/photo-1530268729831-4ca8c9f1d4c8?w=400&h=300&fit=crop", details: ["Pack de 10 cartons", "Distribution nationale", "Prix grossiste disponible"] },
-    { name: "Hamilton Classic", category: "Cigarettes", brand: "Hamilton", description: "Cigarettes classiques", image: "https://images.unsplash.com/photo-1530268729831-4ca8c9f1d4c8?w=400&h=300&fit=crop", details: ["Pack de 10 cartons", "Distribution nationale", "Prix grossiste disponible"] },
-    { name: "Excellence", category: "Cigarettes", brand: "Excellence", description: "Cigarettes qualité supérieure", image: "https://images.unsplash.com/photo-1530268729831-4ca8c9f1d4c8?w=400&h=300&fit=crop", details: ["Pack de 10 cartons", "Distribution nationale", "Prix grossiste disponible"] },
-    { name: "Dunhill Light", category: "Cigarettes", brand: "Dunhill", description: "Cigarettes légères", image: "https://images.unsplash.com/photo-1530268729831-4ca8c9f1d4c8?w=400&h=300&fit=crop", details: ["Pack de 10 cartons", "Distribution nationale", "Prix grossiste disponible"] },
-    { name: "Dunhill Classic", category: "Cigarettes", brand: "Dunhill", description: "Cigarettes traditionnelles", image: "https://images.unsplash.com/photo-1530268729831-4ca8c9f1d4c8?w=400&h=300&fit=crop", details: ["Pack de 10 cartons", "Distribution nationale", "Prix grossiste disponible"] },
-    // Alimentaire - Huiles
-    { name: "Huile Savor Soja 5l", category: "Alimentaire", brand: "Savor", description: "Huile de soja raffinée", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Bouteille 5L", "Huile végétale pure", "Idéal cuisson"] },
-    { name: "Huile Savor Soja 20l", category: "Alimentaire", brand: "Savor", description: "Huile de soja en bidon", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Bidon 20L", "Usage professionnel", "Prix avantageux"] },
-    { name: "Huile Savor Graine de coton 5l", category: "Alimentaire", brand: "Savor", description: "Huile de coton raffinée", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Bouteille 5L", "Huile locale burkinabè", "Qualité premium"] },
-    { name: "Huile Savor Graine de coton 20l", category: "Alimentaire", brand: "Savor", description: "Huile de coton grand format", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Bidon 20L", "Usage professionnel", "Production locale"] },
-    // Alimentaire - Farine
-    { name: "Farine de Blé GMF Etalon 50kg", category: "Alimentaire", brand: "GMF", description: "Farine de blé premium", image: "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop", details: ["Sac 50kg", "Farine blanche", "Pour boulangerie"] },
-    // Alimentaire - Sucres
-    { name: "Sosuco sucre morceau blond 25 paquets", category: "Alimentaire", brand: "Sosuco", description: "Sucre en morceaux", image: "https://images.unsplash.com/photo-1605350322219-e3e51b9e0ec9?w=400&h=300&fit=crop", details: ["Carton 25 paquets", "Sucre roux", "Production burkinabè"] },
-    { name: "Sosuco sucre granulé blond 50kg", category: "Alimentaire", brand: "Sosuco", description: "Sucre granulé professionnel", image: "https://images.unsplash.com/photo-1605350322219-e3e51b9e0ec9?w=400&h=300&fit=crop", details: ["Sac 50kg", "Usage professionnel", "Qualité constante"] },
-    { name: "Sosuco sucre morceau Blanc 25 paquets", category: "Alimentaire", brand: "Sosuco", description: "Sucre blanc raffiné", image: "https://images.unsplash.com/photo-1605350322219-e3e51b9e0ec9?w=400&h=300&fit=crop", details: ["Carton 25 paquets", "Sucre blanc pur", "Raffiné localement"] },
-    { name: "Sosuco sucre granulé blanc 50kg", category: "Alimentaire", brand: "Sosuco", description: "Sucre blanc en sac", image: "https://images.unsplash.com/photo-1605350322219-e3e51b9e0ec9?w=400&h=300&fit=crop", details: ["Sac 50kg", "Usage professionnel", "Qualité supérieure"] },
-    // Alimentaire - Cobifa
-    { name: "Cobifa AXE zoodo", category: "Alimentaire", brand: "Cobifa", description: "Assaisonnement cube", image: "https://images.unsplash.com/photo-1596040066171-c9a2fbf87b6f?w=400&h=300&fit=crop", details: ["Boîte de 100 cubes", "Condiment local", "Saveur authentique"] },
-    { name: "Cobifa chewngun etalon", category: "Alimentaire", brand: "Cobifa", description: "Bonbons chewing-gum", image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd94c73?w=400&h=300&fit=crop", details: ["Boîte de 12 paquets", "Production locale", "Différents parfums"] },
-    // Embauche
-    { name: "Son de blé sac de 25kg", category: "Embauche", brand: "GMF", description: "Aliment pour bétail", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Sac 25kg", "Riche en fibres", "Pour bovins et ovins"] },
-    { name: "Aliment bétail coton sac 50kg", category: "Embauche", brand: "GMF", description: "Tourteau de coton", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Sac 50kg", "Haute teneur en protéines", "Sous-produit coton"] },
-    { name: "Tourtaux de coton sac de 50kg", category: "Embauche", brand: "GMF", description: "Tourteau pour élevage", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Sac 50kg", "Aliment concentré", "Pour volailles et porcs"] },
-    { name: "Aliment de Betail soja sac 50kg", category: "Embauche", brand: "GMF", description: "Aliment riche en protéines", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Sac 50kg", "Protéines végétales", "Croissance optimale"] },
-    { name: "Tourtaux de soja sac 50kg", category: "Embauche", brand: "GMF", description: "Tourteau de soja premium", image: "https://images.unsplash.com/photo-1585518419759-664faf70b3d0?w=400&h=300&fit=crop", details: ["Sac 50kg", "Excellente digestibilité", "Pour tous élevages"] },
-  ];
+  // Charger les produits depuis la base de données
+  useEffect(() => {
+    base44.entities.Product.list("display_order", 200)
+      .then(data => {
+        const activeProducts = (data || []).filter(p => p.is_active !== false && p.show_on_vitrine !== false);
+        setDbProducts(activeProducts);
+      })
+      .catch(err => {
+        console.error("Erreur chargement produits:", err);
+        setDbProducts([]);
+      });
+  }, []);
 
-  const PRODUCTS = PRODUCTS_IN_STOCK;
+  // Produits de la base de données avec images réelles
+  const PRODUCTS_FROM_DB = dbProducts.map(p => ({
+    name: p.name,
+    category: getCategoryForProduct(p.name),
+    brand: p.name.split(" ")[0],
+    description: p.description || "Produit de qualité",
+    details: [
+      p.unit ? `Unité : ${p.unit}` : "Conditionnement standard",
+      p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : "Prix sur demande",
+      p.stock_quantity !== undefined ? `Stock : ${p.stock_quantity}` : "En stock",
+    ].filter(Boolean),
+    image: p.image_url || "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop",
+  }));
+
+  // Utiliser les produits DB si disponibles
+  const PRODUCTS = PRODUCTS_FROM_DB;
 
   const categories = ["Tous", ...CATEGORIES_ORDER.filter(cat => PRODUCTS.some(p => p.category === cat))];
 
