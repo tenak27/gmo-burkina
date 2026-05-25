@@ -102,7 +102,7 @@ export default function Footer() {
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="w-3 h-3 text-gmo-green" />
                 </div>
-                <p className="font-body text-xs text-white/35 leading-relaxed">Quartier Dapoya, Lot 29<br />Ouagadougou, BF</p>
+                <p className="font-body text-xs text-white/35 leading-relaxed">Siège : Dapoya, Point de vente Kwame Kruma<br />Avenue Yennega, Ouagadougou, BF</p>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0">
