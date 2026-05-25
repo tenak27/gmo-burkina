@@ -10,10 +10,13 @@ import { base44 } from "@/api/base44Client";
 const LOCATIONS = [
   { city: "Ouagadougou", status: "active" },
   { city: "Bobo Dioulasso", status: "active" },
-  { city: "Diebougou", status: "active" },
   { city: "Ouahigouya", status: "active" },
+  { city: "Dori", status: "active" },
+  { city: "Boromo", status: "active" },
+  { city: "Diebougou", status: "active" },
+  { city: "Pô", status: "active" },
   { city: "Banfora", status: "coming" },
-  { city: "Dedougou", status: "coming" },
+  { city: "Dédougou", status: "coming" },
   { city: "Orodara", status: "coming" },
 ];
 
