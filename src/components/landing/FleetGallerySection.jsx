@@ -10,7 +10,7 @@ const FLEET_ITEMS = [
     category: "Transport",
     description: "Flotte de camions réfrigérés pour la distribution en zone urbaine",
     image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/12a75595c_generated_image.png",
-    withLogo: true,
+    withLogo: false,
   },
   {
     id: 2,
