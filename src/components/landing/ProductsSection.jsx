@@ -11,6 +11,7 @@ const CATEGORY_MAP = {
   "hamilton": "Cigarettes",
   "excellence": "Cigarettes",
   "dunhill": "Cigarettes",
+  "farine de blé gmf etalon": "Embauche",
   "farine gmf": "Alimentaire",
   "farine": "Alimentaire",
   "huile sn citec": "Alimentaire",
