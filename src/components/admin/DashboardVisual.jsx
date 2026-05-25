@@ -1,6 +1,8 @@
 import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Chart from "react-apexcharts";
+import { motion } from "framer-motion";
 import {
   Users, Package, ShoppingCart, AlertTriangle, FileText, Truck,
   DollarSign, CreditCard, AlertCircle, TrendingDown, TrendingUp,
@@ -154,9 +156,9 @@ export default function DashboardVisual({ data, setTab }) {
   const trendPct = monthly[4]?.facture>0 ? ((monthly[5]?.facture-monthly[4]?.facture)/monthly[4]?.facture*100).toFixed(1) : null;
 
   return (
-    <div className="space-y-5 pb-10">
-      {/* Hero bar */}
-      <div className="rounded-2xl overflow-hidden" style={{background:"linear-gradient(135deg,#0f0f1a 0%,#1a1a2e 50%,#16213e 100%)"}}>
+    <div className="space-y-6">
+      {/* Hero bar moderne avec gradient animé */}
+      <div className="rounded-2xl overflow-hidden shadow-xl" style={{background:"linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)"}}>
         <div className="px-4 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-6 flex-wrap">
             <div>
@@ -183,8 +185,8 @@ export default function DashboardVisual({ data, setTab }) {
         </button>
       </div>
 
-      {/* Financial consolidated band */}
-      <div className="rounded-2xl overflow-hidden" style={{background:"linear-gradient(135deg,#4c0080 0%,#6d28d9 40%,#7c3aed 100%)"}}>
+      {/* Financial consolidated band - Violet vibrant */}
+      <div className="rounded-2xl overflow-hidden shadow-lg" style={{background:"linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)"}}>
         <div className="px-6 pt-4 pb-2 flex items-start justify-between">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-purple-300 animate-pulse" />
@@ -223,13 +225,17 @@ export default function DashboardVisual({ data, setTab }) {
       {/* 4 colored KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label:"CA Facturé", sub:`CA Facturé — ${months[thisMonth]} ${thisYear}`, val:caThisMois, icon:"📄", grad:"from-violet-500 to-purple-600", tab:"invoices" },
-          { label:"Encaissé ce mois", sub:`Recouvrement global : ${tauxRecouvrement}%`, val:encaisseThisMois, icon:"$", grad:"from-green-500 to-green-600", tab:"payments" },
-          { label:`${facturesImpayees.length} facture(s)`, sub:`${facturesImpayees.length} facture(s) impayées\n${resteEncaisser.toLocaleString("fr-FR")} FCFA`, val:null, icon:"⏰", grad:"from-orange-400 to-orange-500", tab:"invoices", noVal:true },
-          { label:"Pipeline devis", sub:`${devisActifs.length} actif(s)`, val:pipelineDevis, icon:"📈", grad:"from-pink-500 to-red-500", tab:"invoices" },
+          { label:"CA Facturé", sub:`CA Facturé — ${months[thisMonth]} ${thisYear}`, val:caThisMois, icon:"📄", grad:"from-blue-500 to-cyan-600", tab:"invoices" },
+          { label:"Encaissé ce mois", sub:`Recouvrement global : ${tauxRecouvrement}%`, val:encaisseThisMois, icon:"$", grad:"from-emerald-500 to-teal-600", tab:"payments" },
+          { label:`${facturesImpayees.length} facture(s)`, sub:`${facturesImpayees.length} facture(s) impayées\n${resteEncaisser.toLocaleString("fr-FR")} FCFA`, val:null, icon:"⏰", grad:"from-orange-400 to-pink-500", tab:"invoices", noVal:true },
+          { label:"Pipeline devis", sub:`${devisActifs.length} actif(s)`, val:pipelineDevis, icon:"📈", grad:"from-rose-500 to-red-600", tab:"invoices" },
         ].map(card => (
-          <button key={card.label} onClick={()=>setTab(card.tab)}
-            className={`bg-gradient-to-br ${card.grad} rounded-2xl p-5 text-left relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity group`}>
+          <motion.button
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            key={card.label} onClick={()=>setTab(card.tab)}
+            className={`bg-gradient-to-br ${card.grad} rounded-2xl p-5 text-left relative overflow-hidden cursor-pointer shadow-lg hover:shadow-xl transition-all group`}
+          >
             <div className="absolute top-3 right-3 text-white/30 text-4xl pointer-events-none select-none">○</div>
             <div className="absolute top-2 right-2">
               <ArrowUpRight className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" />
@@ -243,7 +249,7 @@ export default function DashboardVisual({ data, setTab }) {
               </p>
             )}
             <p className="text-[11px] text-white/70 font-body mt-1 whitespace-pre-line">{card.sub}</p>
-          </button>
+          </motion.button>
         ))}
       </div>
 

@@ -137,7 +137,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: "linear-gradient(135deg, #f5f7fa 0%, #e9ecef 50%, #f0f2f5 100%)" }}>
+    <div className="min-h-screen flex bg-gray-50">
       <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} />
       <main className="flex-1 min-w-0 overflow-x-hidden flex flex-col">
         <div className="hidden lg:block">
