@@ -40,12 +40,16 @@ const MEDIA_ITEMS = [
     type: "article",
     category: "Partenariat",
     date: "10 avril 2026",
-    title: "Nouveau partenariat stratégique avec un distributeur régional au Mali",
-    summary: "GMO signe un accord de distribution exclusive avec un partenaire malien, ouvrant la voie à une expansion régionale dans la zone CEDEAO.",
+    title: "Nouveau partenariat stratégique avec SN CITEC",
+    summary: "GMO Burkina renforce son portefeuille de produits alimentaires en signant un partenariat stratégique avec SN CITEC, leader régional de l'huile végétale.",
     image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7fb80f92d_generated_bc5a0082.png",
-    tag: "Expansion",
+    tag: "Partenariat",
     tagColor: "text-amber-400 bg-amber-400/10 border-amber-400/20",
     featured: false,
+    logos: [
+      "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png",
+      "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0a/SN_CITEC_logo.png/320px-SN_CITEC_logo.png"
+    ],
   },
   {
     type: "evenement",
@@ -124,12 +128,19 @@ export default function MediaSection() {
               transition={{ delay: 0.2 }}
               className="group mb-12 grid lg:grid-cols-2 gap-0 bg-white/[0.04] border border-white/10 hover:border-gmo-green/30 transition-all duration-500 overflow-hidden rounded-xl"
             >
-              <div className="aspect-video lg:aspect-auto overflow-hidden">
+              <div className="aspect-video lg:aspect-auto overflow-hidden relative">
                 <img
                   src={featured.image}
                   alt={featured.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
+                {featured.logos && featured.logos.length === 2 && (
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center gap-4 bg-obsidian/80 backdrop-blur-sm p-3 rounded-lg">
+                    <img src={featured.logos[0]} alt="GMO" className="h-8 w-auto object-contain brightness-0 invert" />
+                    <span className="text-white/40 text-lg">+</span>
+                    <img src={featured.logos[1]} alt="SN CITEC" className="h-8 w-auto object-contain" />
+                  </div>
+                )}
               </div>
               <div className="p-8 lg:p-10 flex flex-col justify-center">
                 <div className="flex items-center gap-2 mb-4">
