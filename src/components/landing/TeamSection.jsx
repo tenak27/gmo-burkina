@@ -91,7 +91,7 @@ const OPERATIONAL_TEAM = [
 
 const STATS = [
 { value: "60+", label: "Collaborateurs", icon: Users },
-{ value: "15+", label: "Années d'expérience", icon: Award },
+{ value: "40+", label: "Années d'expérience", icon: Award },
 { value: "98%", label: "Satisfaction client", icon: TrendingUp }];
 
 
@@ -195,9 +195,9 @@ export default function TeamSection() {
 
           {/* Executive cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {EXECUTIVE_BOARD.map((person, i) => (
-              <ExecutiveCard key={person.name} person={person} index={i} isInView={execInView} />
-            ))}
+            {EXECUTIVE_BOARD.map((person, i) =>
+            <ExecutiveCard key={person.name} person={person} index={i} isInView={execInView} />
+            )}
           </div>
 
           {/* Stats row */}
@@ -206,8 +206,8 @@ export default function TeamSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={statsInView ? { opacity: 1, y: 0 } : {}}
             className="mt-16 grid grid-cols-3 gap-4 md:gap-6">
-            {STATS.map((stat, i) => (
-              <div key={stat.label} className="text-center">
+            {STATS.map((stat, i) =>
+            <div key={stat.label} className="text-center">
                 <div className="flex justify-center mb-3">
                   <div className="w-12 h-12 bg-gmo-green/10 rounded-xl flex items-center justify-center">
                     <stat.icon className="w-5 h-5 text-gmo-green" />
@@ -216,7 +216,7 @@ export default function TeamSection() {
                 <p className="font-heading text-3xl lg:text-4xl font-bold text-obsidian">{stat.value}</p>
                 <p className="font-body text-xs uppercase tracking-widest text-obsidian/50 mt-2">{stat.label}</p>
               </div>
-            ))}
+            )}
           </motion.div>
         </div>
       </div>
