@@ -273,7 +273,7 @@ export default function HeroSection() {
           </div>
 
           <p className="font-body text-sm text-white/80 leading-relaxed max-w-xs mb-8">
-            <span className="text-white font-semibold">GMO Burkina</span> — votre partenaire de confiance pour la distribution, le transport et la logistique au Burkina Faso et en Afrique de l'Ouest. Plus de <span className="text-gmo-green font-semibold">15 ans</span> d'expertise au service de vos approvisionnements.
+            <span className="text-white font-semibold">GMO Burkina</span> — votre partenaire de confiance pour la distribution, le transport et la logistique au Burkina Faso et en Afrique de l'Ouest. Plus de <span className="text-gmo-green font-semibold">40 ans</span> d'expertise au service de vos approvisionnements.
           </p>
 
           <div className="flex flex-wrap gap-3">
