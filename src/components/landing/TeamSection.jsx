@@ -7,7 +7,7 @@ const EXECUTIVE_BOARD = [
   name: "Hama TRAORE",
   title: "Président Directeur Général",
   role: "PDG",
-  description: "Fondateur et visionnaire du Groupe Madina Oumarou, Hama TRAORE pilote la stratégie de croissance du groupe depuis sa création avec plus de 15 ans d'expertise en distribution.",
+  description: "Fondateur et visionnaire du Groupe Madina Oumarou, Hama TRAORE pilote la stratégie de croissance du groupe depuis sa création avec plus de 40 ans d'expertise en distribution.",
   image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg",
   color: "#1A7A2E",
   tag: "Fondateur"
@@ -22,13 +22,13 @@ const EXECUTIVE_BOARD = [
   tag: "Ventes & Croissance"
 },
 {
-  name: "Directeur des Opérations",
-  title: "Directeur des Opérations",
-  role: "DOL",
-  description: "Pilote l'ensemble de la chaîne logistique, des entrepôts à la livraison finale, en garantissant efficacité et respect des délais.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ffdae3761_a-propos-6.jpg",
+  name: "Responsable des Ventes",
+  title: "Responsable des Ventes",
+  role: "RV",
+  description: "En charge de la gestion des équipes commerciales et du développement du portefeuille clients sur l'ensemble du territoire.",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
   color: "#1A7A2E",
-  tag: "Logistique & Ops"
+  tag: "Équipe Commerciale"
 }];
 
 
