@@ -167,10 +167,12 @@ export default function ProductsSection() {
     // Vérifier les marques avec logos spécifiques
     const isSosuco = name.includes("sosuco");
     const isCobifa = name.includes("cobifa");
+    const isTabac = name.includes("tabac");
     const isSnCitec = name.includes("tourteaux") || name.includes("aliment bétail") || name.includes("aliment de betail") || name.includes("huile savor") || name.includes("hamilton light");
     
     const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
     const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
+    const tabacImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/52c51effe_images.png";
     const snCitecImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg";
     
     return {
@@ -183,7 +185,7 @@ export default function ProductsSection() {
         p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : "Prix sur demande",
         p.stock_quantity !== undefined ? `Stock : ${p.stock_quantity}` : "En stock",
       ].filter(Boolean),
-      image: isSosuco ? soscoImage : (isCobifa ? cobifaImage : (isSnCitec ? snCitecImage : (p.image_url || "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop"))),
+      image: isSosuco ? soscoImage : (isCobifa ? cobifaImage : (isTabac ? tabacImage : (isSnCitec ? snCitecImage : (p.image_url || "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop")))),
     };
   });
 
