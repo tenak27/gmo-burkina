@@ -71,43 +71,53 @@ function AdminDashboard() {
 
   const loadAll = async () => {
     setLoading(true);
-    const [u, c, sup, p, o, inv, del, wh, cat, mov, emp, ent, drv, pay, rec, apps, cashExp] = await Promise.all([
+
+    // Vague 1 : données critiques pour le dashboard
+    const [u, c, p, o, inv] = await Promise.all([
       base44.entities.User.list("-created_date", 100),
       base44.entities.Client.list("-created_date", 100),
-      base44.entities.Supplier.list("-created_date", 100),
       base44.entities.Product.list("name", 200),
       base44.entities.Order.list("-created_date", 100),
       base44.entities.Invoice.list("-created_date", 100),
+    ]);
+    setUsers(u || []);
+    setClients(c || []);
+    setProducts(p || []);
+    setOrders(o || []);
+    setInvoices(inv || []);
+    setLoading(false); // afficher le dashboard sans attendre la suite
+
+    // Vague 2 : données secondaires
+    const [sup, del, wh, cat, mov, apps] = await Promise.all([
+      base44.entities.Supplier.list("-created_date", 100),
       base44.entities.DeliveryNote.list("-created_date", 100),
       base44.entities.Warehouse.list("name", 50),
       base44.entities.Category.list("name", 50),
       base44.entities.StockMovement.list("-created_date", 100),
+      base44.entities.Application.list("-created_date", 100),
+    ]);
+    setSuppliers(sup || []);
+    setDeliveries(del || []);
+    setWarehouses(wh || []);
+    setCategories(cat || []);
+    setMovements(mov || []);
+    setApplications(apps || []);
+
+    // Vague 3 : RH, finance, caisse
+    const [emp, ent, drv, pay, rec, cashExp] = await Promise.all([
       base44.entities.Employee.list("last_name", 100),
       base44.entities.AccountEntry.list("-date", 100),
       base44.entities.Driver.list("last_name", 50),
       base44.entities.Payment.list("-date", 100),
       base44.entities.Receivable.list("-created_date", 100),
-      base44.entities.Application.list("-created_date", 100),
       base44.entities.CashExpense.list("-created_date", 100),
     ]);
-    setUsers(u || []);
-    setClients(c || []);
-    setSuppliers(sup || []);
-    setProducts(p || []);
-    setOrders(o || []);
-    setInvoices(inv || []);
-    setDeliveries(del || []);
-    setWarehouses(wh || []);
-    setCategories(cat || []);
-    setMovements(mov || []);
     setEmployees(emp || []);
     setEntries(ent || []);
     setDrivers(drv || []);
     setPayments(pay || []);
     setReceivables(rec || []);
-    setApplications(apps || []);
     setCashExpenses(cashExp || []);
-    setLoading(false);
   };
 
   const pendingOrders = orders.filter(o => o.status === "en_attente").length;
