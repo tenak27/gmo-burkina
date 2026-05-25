@@ -31,7 +31,7 @@ export default function PartnershipBanner() {
 
             </h2>
 
-            <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec la Mabicig, géant Burkinabé du tabac filiale d'Impérial Tobacco présent dans plus de 160 pays et 4ème groupe tabac mondial. Ce partenariat stratégique positionne GMO comme distributeur leader national des marques reconnues pour leurs innovations et  leurs qualités premium au Burkina Faso.
+            <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec la Mabicig, géant Burkinabé du tabac filiale d'Impérial Tobacco présent dans plus de 160 pays et 4ème groupe tabac mondial. Ce partenariat stratégique positionne GMO comme distributeur leader national des marques reconnues pour leurs innovations et  leurs qualitées premium au Burkina Faso.
 
 
 
