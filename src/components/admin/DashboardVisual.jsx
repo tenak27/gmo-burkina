@@ -100,13 +100,13 @@ function HealthScore({ score, invoices, products }) {
   const label = health >= 70 ? "Bon" : health >= 40 ? "Moyen" : "Critique";
   const labelColor = health >= 70 ? "text-green-400" : health >= 40 ? "text-amber-400" : "text-red-400";
   return (
-    <div className="text-right min-w-[200px]">
+    <div className="text-left sm:text-right">
       <div className="flex items-center justify-end gap-2 mb-1">
         <p className="text-[10px] text-white/50 uppercase tracking-wider">Santé entreprise</p>
         <span className={`text-[10px] font-bold ${labelColor}`}>— {label}</span>
       </div>
       <p className="text-xs font-bold text-white/80 mb-1.5">Score global</p>
-      <div className="w-48 h-2 bg-white/10 rounded-full ml-auto mb-1">
+      <div className="w-full sm:w-48 h-2 bg-white/10 rounded-full sm:ml-auto mb-1">
         <div className="h-2 rounded-full transition-all" style={{ width:`${health}%`, background: color }} />
       </div>
       <p className="text-[10px] text-white/40">{health}/100</p>
@@ -157,13 +157,13 @@ export default function DashboardVisual({ data, setTab }) {
     <div className="space-y-5 pb-10">
       {/* Hero bar */}
       <div className="rounded-2xl overflow-hidden" style={{background:"linear-gradient(135deg,#0f0f1a 0%,#1a1a2e 50%,#16213e 100%)"}}>
-        <div className="px-6 py-5 flex items-center justify-between gap-6 flex-wrap">
-          <div className="flex items-center gap-8">
+        <div className="px-4 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-6 flex-wrap">
             <div>
               <p className="text-[13px] text-white/40 font-body mb-1">{dateLabel}</p>
               <div className="flex items-end gap-2">
-                <span className="text-5xl font-heading font-bold text-white tracking-tight">{hh}:{mm}</span>
-                <span className="text-2xl text-white/40 font-heading mb-1">:{ss}</span>
+                <span className="text-4xl sm:text-5xl font-heading font-bold text-white tracking-tight">{hh}:{mm}</span>
+                <span className="text-xl sm:text-2xl text-white/40 font-heading mb-1">:{ss}</span>
               </div>
             </div>
             <WeatherWidget />

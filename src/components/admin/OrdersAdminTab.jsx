@@ -181,21 +181,21 @@ export default function OrdersAdminTab({ orders, setOrders, clients = [], produc
       </div>
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="font-heading text-2xl font-bold text-obsidian">
-          Commandes <span className="text-obsidian/30 font-normal text-xl">({orders.length})</span>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <h2 className="font-heading text-xl sm:text-2xl font-bold text-obsidian">
+          Commandes <span className="text-obsidian/30 font-normal text-lg sm:text-xl">({orders.length})</span>
         </h2>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
-            <button onClick={() => setView("kanban")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "kanban" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
-              <LayoutGrid className="w-4 h-4" /> Kanban
+            <button onClick={() => setView("kanban")} className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-body transition-all ${view === "kanban" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
+              <LayoutGrid className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> <span className="hidden sm:inline">Kanban</span>
             </button>
-            <button onClick={() => setView("table")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body transition-all ${view === "table" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
-              <List className="w-4 h-4" /> Table
+            <button onClick={() => setView("table")} className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-body transition-all ${view === "table" ? "bg-white shadow-sm text-obsidian font-semibold" : "text-obsidian/50 hover:text-obsidian"}`}>
+              <List className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> <span className="hidden sm:inline">Table</span>
             </button>
           </div>
-          <button onClick={openNew} className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-xl btn-glow-green cursor-pointer">
-            <Plus className="w-4 h-4" /> Nouvelle commande
+          <button onClick={openNew} className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl btn-glow-green cursor-pointer">
+            <Plus className="w-4 h-4" /> <span className="hidden sm:inline">Nouvelle commande</span><span className="sm:hidden">Nouveau</span>
           </button>
         </div>
       </div>

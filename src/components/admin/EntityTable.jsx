@@ -55,20 +55,20 @@ export default function EntityTable({
   return (
     <div className="animate-fade-up">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
-          <h2 className="font-heading text-2xl font-bold text-obsidian">{title}</h2>
+          <h2 className="font-heading text-xl sm:text-2xl font-bold text-obsidian">{title}</h2>
           {subtitle && <p className="text-sm text-obsidian/50 font-body mt-1">{subtitle}</p>}
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {/* Search */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-obsidian/40" />
             <input
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(1); }}
               placeholder="Rechercher..."
-              className="pl-10 pr-8 py-2.5 text-sm font-body border border-gray-200 rounded-xl focus:border-gmo-green focus:outline-none w-52 transition-colors bg-white shadow-sm"
+              className="pl-10 pr-8 py-2.5 text-sm font-body border border-gray-200 rounded-xl focus:border-gmo-green focus:outline-none w-full sm:w-52 transition-colors bg-white shadow-sm"
             />
             {search && (
               <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-obsidian/40 hover:text-obsidian">
@@ -191,7 +191,7 @@ export default function EntityTable({
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between px-5 py-4 border-t border-gray-100 bg-gray-50/50">
+            <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-5 py-4 gap-3 border-t border-gray-100 bg-gray-50/50">
               <span className="text-sm text-obsidian/50 font-body">
                 {search
                   ? <><span className="text-gmo-green font-semibold">{filtered.length}</span> résultat{filtered.length > 1 ? "s" : ""} sur {rows.length}</>
