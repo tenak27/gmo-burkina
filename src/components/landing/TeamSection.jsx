@@ -13,9 +13,9 @@ const EXECUTIVE_BOARD = [
   tag: "Fondateur"
 },
 {
-  name: "Responsable Commercial",
-  title: "Responsable Commercial",
-  role: "RC",
+  name: "Responsable des Ventes",
+  title: "Responsable des Ventes",
+  role: "RV",
   description: "En charge du développement des ventes, de la relation client et de l'expansion du réseau de distribution à travers le Burkina Faso.",
   image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
   color: "#CC1717",
