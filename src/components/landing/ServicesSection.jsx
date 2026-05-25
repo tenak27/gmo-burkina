@@ -4,25 +4,11 @@ import { Truck, Package, MapPin, Shield, Clock, Zap, Gauge, Rocket } from "lucid
 
 const SERVICES = [
 {
-  icon: Truck,
-  title: "Transport & Logistique",
-  description: "Distribution nationale et internationale à travers le Burkina Faso et l'Afrique de l'Ouest. Flotte moderne et fiable.",
-  specs: ["Flotte 50+ véhicules", "Couverture nationale"],
-  color: "bg-gmo-green"
-},
-{
   icon: Package,
   title: "Distribution",
   description: "Leader de la distribution de produits de grande consommation. Réseau étendu couvrant toutes les régions du pays.",
   specs: ["Produits alimentaires", "Produits d'hygiène"],
   color: "bg-gmo-red"
-},
-{
-  icon: MapPin,
-  title: "Couverture Régionale",
-  description: "Présent dans les principales villes du Burkina avec une expansion vers la Côte d'Ivoire, le Mali et le Niger.",
-  specs: ["4 villes actives", "3 villes en expansion"],
-  color: "bg-gold"
 },
 {
   icon: Shield,
@@ -32,18 +18,11 @@ const SERVICES = [
   color: "bg-gmo-green"
 },
 {
-  icon: Zap,
-  title: "Innovation",
-  description: "Application mobile en développement pour commander et suivre vos livraisons directement depuis votre téléphone.",
-  specs: ["App mobile (bientôt)", "Commande en ligne"],
+  icon: MapPin,
+  title: "Couverture Régionale",
+  description: "Présent dans les principales villes du Burkina avec une expansion vers la Côte d'Ivoire, le Mali et le Niger.",
+  specs: ["4 villes actives", "3 villes en expansion"],
   color: "bg-gold"
-},
-{
-  icon: Gauge,
-  title: "Quantité & Fiabilité",
-  description: "Garantie de livraison complète et intégrité des produits. Respect strict des délais et des normes de qualité.",
-  specs: ["100% conformité", "Délais garantis"],
-  color: "bg-gmo-green"
 },
 {
   icon: Rocket,
@@ -53,10 +32,17 @@ const SERVICES = [
   color: "bg-gmo-red"
 },
 {
+  icon: Zap,
+  title: "Innovation",
+  description: "Application mobile en développement pour commander et suivre vos livraisons directement depuis votre téléphone.",
+  specs: ["App mobile (bientôt)", "Commande en ligne"],
+  color: "bg-gold"
+},
+{
   icon: Clock,
-  title: "Service 6j/7 8h-24h",
-  description: "Disponibilité maximale pour vos besoins. Ouvert 6 jours sur 7 de 8h à minuit pour assurer votre satisfaction.",
-  specs: ["6 jours par semaine", "8h à minuit"],
+  title: "Service 6j/7",
+  description: "Disponibilité maximale pour vos besoins. Ouvert du lundi au samedi, 8h30-13h et 15h-17h (sauf vendredi 8h30-12h).",
+  specs: ["Lun-Sam 8h30-13h", "15h-17h (ven: 8h30-12h)"],
   color: "bg-gold"
 }];
 
@@ -72,31 +58,24 @@ function ServiceCard({ service, index }) {
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6, transition: { duration: 0.25 } }}
-      className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl border border-gray-100 hover:border-gmo-green/20 transition-all duration-400 overflow-hidden">
+      className="group relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-xl border border-gray-100 hover:border-gmo-green/20 transition-all duration-400 overflow-hidden">
       
-      {/* Background gradient on hover */}
-      
-
-      {/* Number */}
-      <span className="absolute top-5 right-5 font-heading text-xs text-gray-100 tracking-widest font-bold">
-        {String(index + 1).padStart(2, "0")}
-      </span>
 
       {/* Icon */}
-      <div className={`w-12 h-12 ${service.color} rounded-xl flex items-center justify-center mb-6 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+      <div className={`w-11 h-11 sm:w-12 sm:h-12 ${service.color} rounded-xl flex items-center justify-center mb-5 sm:mb-6 shadow-md group-hover:scale-110 transition-transform duration-300`}>
         <service.icon className="w-5 h-5 text-white" />
       </div>
 
-      <h3 className="font-heading text-xl font-bold text-obsidian mb-3 relative z-10">
+      <h3 className="font-heading text-lg sm:text-xl font-bold text-obsidian mb-2 sm:mb-3 relative z-10">
         {service.title}
       </h3>
-      <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-6 relative z-10">
+      <p className="font-body text-xs sm:text-sm text-obsidian/55 leading-relaxed mb-4 sm:mb-6 relative z-10">
         {service.description}
       </p>
 
-      <div className="flex flex-wrap gap-2 relative z-10">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2 relative z-10">
         {service.specs.map((spec) =>
-        <span key={spec} className="font-body text-[10px] uppercase tracking-widest text-gmo-green bg-gmo-green/8 border border-gmo-green/15 px-3 py-1 rounded-full">
+        <span key={spec} className="font-body text-[9px] sm:text-[10px] uppercase tracking-widest text-gmo-green bg-gmo-green/8 border border-gmo-green/15 px-2.5 sm:px-3 py-1 rounded-full">
             {spec}
           </span>
         )}
@@ -140,7 +119,7 @@ export default function ServicesSection() {
           
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {SERVICES.map((service, i) =>
           <ServiceCard key={service.title} service={service} index={i} />
           )}
