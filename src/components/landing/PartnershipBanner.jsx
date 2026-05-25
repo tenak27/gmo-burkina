@@ -16,8 +16,8 @@ export default function PartnershipBanner() {
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
+            className="space-y-6">
+            
             <div className="flex items-center gap-3">
               <div className="w-8 h-[2px] bg-gmo-green" />
               <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green">
@@ -75,8 +75,8 @@ export default function PartnershipBanner() {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
-          >
+            className="relative">
+            
             <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-2xl p-8 lg:p-12 shadow-lg">
               <div className="flex flex-col items-center justify-center gap-8">
                 
@@ -85,8 +85,8 @@ export default function PartnershipBanner() {
                   <img
                     src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/47050d727_logo-gmo2x-EVZXLeXs.png"
                     alt="GMO"
-                    className="h-20 lg:h-24 w-auto object-contain"
-                  />
+                    className="h-20 lg:h-24 w-auto object-contain" />
+                  
                 </div>
 
                 {/* Partnership Symbol */}
@@ -103,8 +103,8 @@ export default function PartnershipBanner() {
                   <img
                     src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/86228a120_images.png"
                     alt="Impérial Tobacco"
-                    className="h-16 lg:h-20 w-auto object-contain"
-                  />
+                    className="h-16 lg:h-20 w-auto object-contain" />
+                  
                 </div>
 
               </div>
@@ -116,16 +116,16 @@ export default function PartnershipBanner() {
 
             {/* Image generated for partnership */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-md">
-              <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e23bb77ef_generated_image.png"
-                alt="Partenariat GMO Impérial Tobacco"
-                className="w-full h-48 object-cover"
-              />
+              <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/8640decae_Gemini_Generated_Image_kktmy3kktmy3kktm.png"
+
+              alt="Partenariat GMO Impérial Tobacco"
+              className="w-full h-48 object-cover" />
+              
             </div>
           </motion.div>
 
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
