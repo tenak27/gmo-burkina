@@ -142,8 +142,8 @@ export default function SaleOrderForm({ order, onSave, onClose, clients = [], pr
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-5">
-          <div className="max-w-4xl mx-auto space-y-6">
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="max-w-4xl mx-auto space-y-4">
 
             {/* Client */}
             <div>

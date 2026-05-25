@@ -164,11 +164,11 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         </div>
 
         {/* Fields */}
-        <div className="flex-1 overflow-y-auto px-6 py-5">
-          <div className="max-w-3xl mx-auto space-y-5">
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="max-w-3xl mx-auto space-y-3">
             {fieldGroups.map((group, gi) => (
               group.length === 2 ? (
-                <div key={gi} className="grid grid-cols-2 gap-4">
+                <div key={gi} className="grid grid-cols-2 gap-3">
                   {group.map(f => renderField(f))}
                 </div>
               ) : (

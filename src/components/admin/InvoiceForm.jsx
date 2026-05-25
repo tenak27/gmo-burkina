@@ -150,8 +150,8 @@ export default function InvoiceForm({ invoice, onSave, onClose, clients = [], pr
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-5">
-          <div className="max-w-4xl mx-auto space-y-6">
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="max-w-4xl mx-auto space-y-4">
 
             {/* Client & dates */}
             <div className="grid grid-cols-2 gap-4">

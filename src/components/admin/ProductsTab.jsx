@@ -59,7 +59,7 @@ function ProductForm({ form, setForm, onSave, onClose, saving, isEdit }) {
           </div>
           <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all cursor-pointer"><X className="w-5 h-5" /></button>
         </div>
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
 
           {/* Photo upload */}
           <div>
