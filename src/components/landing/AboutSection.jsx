@@ -54,7 +54,7 @@ export default function AboutSection() {
                 className="relative z-10"
               >
                 <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e31bba75_home-innovation-pdg.jpg"
+                  src="https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg"
                   alt="PDG Hama TRAORE — Groupe Madina Oumarou"
                   className="w-full aspect-[3/4] object-cover object-top"
                 />

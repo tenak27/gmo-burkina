@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { base44 } from "@/api/base44Client";
+
 import Navbar from "../components/landing/Navbar";
 import HeroSection from "../components/landing/HeroSection";
 import PartnersCarousel from "../components/landing/PartnersCarousel";
@@ -26,32 +26,27 @@ import ContactSection from "../components/landing/ContactSection";
 import Footer from "../components/landing/Footer";
 
 const IMAGES = {
-  hero: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1a49d0a18_generated_1a2588b5.png",
-  hub: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7fb80f92d_generated_bc5a0082.png",
-  detail: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b71c07b21_generated_f4cdf466.png",
-  fleet: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1e2be0905_generated_51987d61.png",
-  cargo: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c233f6983_generated_cd287a08.png",
-  journey: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5bc285315_generated_35f6c974.png",
+  hero: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
+  hub: "https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg",
+  detail: "https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg",
+  fleet: "https://gmobfaso.com/assets/img/slides/slide-2.jpg",
+  cargo: "https://gmobfaso.com/assets/img/slides/slide-3.jpg",
+  journey: "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg",
 };
 
 const FALLBACK_GALLERY = [
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a1f3d31df_generated_image.png",
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e25cd957_generated_image.png",
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/054ba89e1_generated_image.png",
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/e4235e14e_generated_image.png",
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b4292e3bb_generated_image.png",
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/74fa03193_generated_image.png",
+  "https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg",
+  "https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg",
+  "https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg",
+  "https://gmobfaso.com/assets/img/a-propos/a-propos-4.jpg",
+  "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg",
+  "https://gmobfaso.com/assets/img/a-propos/a-propos-6.jpg",
 ];
 
 export default function Home() {
   const [galleryImages, setGalleryImages] = useState(FALLBACK_GALLERY);
 
-  useEffect(() => {
-    base44.entities.Category.list("name", 200).then(data => {
-      const imgs = (data || []).filter(d => d.code === "GALERIE" && d.description).map(d => d.description);
-      if (imgs.length > 0) setGalleryImages(imgs);
-    }).catch(() => {});
-  }, []);
+
 
   return (
     <div className="bg-obsidian min-h-screen">

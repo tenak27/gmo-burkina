@@ -39,7 +39,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+            <img src="https://gmobfaso.com/assets/img/logo-gmo-white.png"
               alt="GMO" className="h-9 brightness-0 invert opacity-85 mb-4" />
             <p className="font-body text-xs text-white/35 leading-relaxed mb-4">
               Leader de la distribution au Burkina Faso. Transport, logistique, qualité.

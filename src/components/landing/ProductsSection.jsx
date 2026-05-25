@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+
 
 const WHATSAPP = "https://wa.me/22676211633";
 
@@ -123,10 +123,9 @@ export default function ProductsSection() {
   const [activeCategory, setActiveCategory] = useState("Tous");
   const [dbProducts, setDbProducts] = useState([]);
 
+  // Produits statiques pour la vitrine
   useEffect(() => {
-    base44.entities.Product.list("name", 200).then(data => {
-      setDbProducts((data || []).filter(p => p.show_on_vitrine && p.is_active !== false));
-    });
+    setDbProducts([]);
   }, []);
 
   // Ordre d'affichage souhaité (les noms doivent correspondre exactement aux produits en DB)
