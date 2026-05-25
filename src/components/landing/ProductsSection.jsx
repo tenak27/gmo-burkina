@@ -160,18 +160,24 @@ export default function ProductsSection() {
   }, []);
 
   // Produits de la base de données avec images réelles
-  const PRODUCTS_FROM_DB = dbProducts.map(p => ({
-    name: p.name,
-    category: getCategoryForProduct(p.name),
-    brand: p.name.split(" ")[0],
-    description: p.description || "Produit de qualité",
-    details: [
-      p.unit ? `Unité : ${p.unit}` : "Conditionnement standard",
-      p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : "Prix sur demande",
-      p.stock_quantity !== undefined ? `Stock : ${p.stock_quantity}` : "En stock",
-    ].filter(Boolean),
-    image: p.image_url || "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop",
-  }));
+  const PRODUCTS_FROM_DB = dbProducts.map(p => {
+    // Vérifier si c'est un produit Sosuco
+    const isSosuco = p.name.toLowerCase().includes("sosuco");
+    const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
+    
+    return {
+      name: p.name,
+      category: getCategoryForProduct(p.name),
+      brand: p.name.split(" ")[0],
+      description: p.description || "Produit de qualité",
+      details: [
+        p.unit ? `Unité : ${p.unit}` : "Conditionnement standard",
+        p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : "Prix sur demande",
+        p.stock_quantity !== undefined ? `Stock : ${p.stock_quantity}` : "En stock",
+      ].filter(Boolean),
+      image: isSosuco ? soscoImage : (p.image_url || "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop"),
+    };
+  });
 
   // Utiliser les produits DB si disponibles
   const PRODUCTS = PRODUCTS_FROM_DB;
