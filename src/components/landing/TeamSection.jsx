@@ -17,7 +17,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable Commercial",
   role: "RC",
   description: "En charge du développement des ventes, de la relation client et de l'expansion du réseau de distribution à travers le Burkina Faso.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5b8b88e6e_Capturedcran2026-05-2510019PM.png",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
   color: "#CC1717",
   tag: "Ventes & Croissance"
 },
@@ -26,7 +26,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable des Ventes",
   role: "RV",
   description: "En charge de la gestion des équipes commerciales et du développement du portefeuille clients sur l'ensemble du territoire.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5b8b88e6e_Capturedcran2026-05-2510019PM.png",
   color: "#1A7A2E",
   tag: "Équipe Commerciale"
 }];
