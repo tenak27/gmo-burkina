@@ -1,12 +1,12 @@
 import React from "react";
 
 const PARTNERS = [
-  { name: "Impérial Tobacco", logo: "https://gmobfaso.com/assets/img/partenaires/mabucig.jpg" },
-  { name: "GMF", logo: "https://gmobfaso.com/assets/img/partenaires/gmb.jpg" },
-  { name: "SN CITEC", logo: "https://gmobfaso.com/assets/img/partenaires/sn-citec.jpg" },
-  { name: "SN SUSUCO", logo: "https://gmobfaso.com/assets/img/partenaires/sn-sosuco.jpg" },
-  { name: "COBIFA", logo: "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg" },
-];
+{ name: "Impérial Tobacco", logo: "https://gmobfaso.com/assets/img/partenaires/mabucig.jpg" },
+{ name: "GMF", logo: "https://gmobfaso.com/assets/img/partenaires/gmb.jpg" },
+{ name: "SN CITEC", logo: "https://gmobfaso.com/assets/img/partenaires/sn-citec.jpg" },
+{ name: "SN SUSUCO", logo: "https://gmobfaso.com/assets/img/partenaires/sn-sosuco.jpg" },
+{ name: "COBIFA", logo: "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg" }];
+
 
 const DOUBLED = [...PARTNERS, ...PARTNERS];
 
@@ -27,21 +27,21 @@ export default function PartnersCarousel() {
         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
         <div className="flex gap-6 animate-ticker" style={{ width: "max-content" }}>
-          {DOUBLED.map((partner, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 flex flex-col items-center justify-center bg-white border border-gray-100 rounded-2xl px-8 py-6 w-56 hover:shadow-md hover:border-gray-200 transition-all duration-300 cursor-default"
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="h-16 w-auto object-contain mb-3"
-              />
+          {DOUBLED.map((partner, i) =>
+          <div
+            key={i}
+            className="flex-shrink-0 flex flex-col items-center justify-center bg-white border border-gray-100 rounded-2xl px-8 py-6 w-56 hover:shadow-md hover:border-gray-200 transition-all duration-300 cursor-default">
+            
+              <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/15f1406fe_Capture_d_cran_2026-05-25__72727_PM.png"
+
+            alt={partner.name}
+            className="h-16 w-auto object-contain mb-3" />
+            
               <p className="font-heading text-xs font-bold text-obsidian tracking-widest uppercase text-center">{partner.name}</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
