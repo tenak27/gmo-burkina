@@ -122,10 +122,47 @@ export default function AboutSection() {
                 <p className="font-body text-xs uppercase tracking-widest text-gmo-green/70">PDG — Groupe Madina Oumarou</p>
               </motion.div>
 
+              {/* Localités */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.6 }}
+                className="mb-8"
+              >
+                <p className="font-heading text-xs uppercase tracking-widest text-obsidian/35 mb-4">Nos localités</p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { city: "Ouagadougou", status: "active" },
+                    { city: "Bobo Dioulasso", status: "active" },
+                    { city: "Ouahigouya", status: "active" },
+                    { city: "Dori", status: "active" },
+                    { city: "Boromo", status: "active" },
+                    { city: "Diebougou", status: "active" },
+                    { city: "Pô", status: "active" },
+                    { city: "Banfora", status: "coming" },
+                    { city: "Dédougou", status: "coming" },
+                    { city: "Orodara", status: "coming" },
+                  ].map((loc) => (
+                    <span
+                      key={loc.city}
+                      className={`font-body text-[11px] uppercase tracking-widest px-3 py-1.5 rounded-full border transition-all ${
+                        loc.status === "active"
+                          ? "text-gmo-green bg-gmo-green/8 border-gmo-green/20"
+                          : "text-obsidian/30 bg-gray-50 border-gray-200"
+                      }`}
+                    >
+                      {loc.city}
+                      {loc.status === "coming" && <span className="ml-1 text-[9px]">· BIENTÔT</span>}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Valeurs icônes */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.7 }}
                 className="grid grid-cols-3 gap-6"
               >
                 {[
