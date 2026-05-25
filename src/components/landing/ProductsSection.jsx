@@ -160,9 +160,20 @@ export default function ProductsSection() {
       });
   }, []);
 
+  // Map DB category to display category
+  const DB_CATEGORY_MAP = {
+    "tabac": "Cigarettes",
+    "alimentaire": "Alimentaire",
+    "hygiene": "Hygiène",
+    "embauche": "Embauche",
+  };
+
   // Produits de la base de données avec images réelles
   const PRODUCTS_FROM_DB = dbProducts.map(p => {
     const name = p.name.toLowerCase();
+    
+    // Utiliser la catégorie de la base de données si disponible, sinon utiliser le mapping automatique
+    const category = p.category && DB_CATEGORY_MAP[p.category] ? DB_CATEGORY_MAP[p.category] : getCategoryForProduct(p.name);
     
     // Vérifier les marques avec logos spécifiques
     const isSosuco = name.includes("sosuco");
@@ -177,7 +188,7 @@ export default function ProductsSection() {
     
     return {
       name: p.name,
-      category: getCategoryForProduct(p.name),
+      category: category,
       brand: p.name.split(" ")[0],
       description: p.description || "Produit de qualité",
       details: [
