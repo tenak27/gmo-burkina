@@ -247,8 +247,6 @@ function ExpenseFormModal({ expense, onSave, onClose }) {
             {saving ? "Enregistrement…" : (expense ? "Mettre à jour" : "Créer")}
           </button>
         </div>
-          </div>
-        </div>
       </motion.div>
     </div>
   );
