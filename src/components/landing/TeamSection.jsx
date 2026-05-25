@@ -34,65 +34,120 @@ const EXECUTIVE_BOARD = [
 
 const OPERATIONAL_TEAM = [
 {
+  dept: "Direction Générale",
+  icon: "👔",
+  count: "3",
+  desc: "PDG et direction exécutive pilotant la stratégie du groupe",
+  kpi: "40+ ans d'expertise",
+  color: "from-gmo-green/10 to-gmo-green/5",
+  border: "border-gmo-green/20"
+},
+{
   dept: "Commercial & Ventes",
   icon: "💼",
-  count: "12+",
-  desc: "Commerciaux terrain couvrant l'ensemble du territoire national",
-  kpi: "150+ clients actifs",
+  count: "15+",
+  desc: "Commerciaux terrain, responsables secteur et attachés commerciaux",
+  kpi: "200+ clients actifs",
   color: "from-blue-500/10 to-blue-600/5",
   border: "border-blue-200/60"
 },
 {
   dept: "Logistique & Transport",
   icon: "🚛",
-  count: "25+",
-  desc: "Chauffeurs et agents logistiques dédiés à la livraison rapide",
-  kpi: "98% taux de livraison",
+  count: "30+",
+  desc: "Chauffeurs, coordinateurs logistiques et planificateurs de tournées",
+  kpi: "25+ véhicules en service",
   color: "from-gmo-green/10 to-gmo-green/5",
   border: "border-gmo-green/20"
 },
 {
   dept: "Entrepôts & Stock",
   icon: "📦",
-  count: "8+",
-  desc: "Magasiniers et gestionnaires de stock qualifiés et certifiés",
-  kpi: "3 entrepôts gérés",
+  count: "12+",
+  desc: "Magasiniers, caristes et gestionnaires de stock certifiés",
+  kpi: "3 sites de stockage",
   color: "from-amber-500/10 to-amber-600/5",
   border: "border-amber-200/60"
 },
 {
   dept: "Finance & Comptabilité",
   icon: "📊",
-  count: "5+",
-  desc: "Experts financiers et comptables certifiés OHADA",
-  kpi: "Conformité totale",
+  count: "8+",
+  desc: "DAF, comptables, auditeurs et contrôleurs de gestion OHADA",
+  kpi: "Conformité 100%",
   color: "from-purple-500/10 to-purple-600/5",
   border: "border-purple-200/60"
 },
 {
   dept: "Ressources Humaines",
   icon: "👥",
-  count: "3+",
-  desc: "Spécialistes RH au service des 60+ collaborateurs du groupe",
-  kpi: "60+ collaborateurs",
+  count: "5+",
+  desc: "DRH, chargés de recrutement et formation continue",
+  kpi: "80+ collaborateurs",
   color: "from-pink-500/10 to-pink-600/5",
   border: "border-pink-200/60"
 },
 {
   dept: "Informatique & Digital",
   icon: "💻",
-  count: "4+",
-  desc: "Ingénieurs et développeurs pour la transformation digitale",
-  kpi: "Plateforme digitale live",
+  count: "6+",
+  desc: "DSI, développeurs full-stack et administrateurs systèmes",
+  kpi: "Plateforme 100% opérationnelle",
   color: "from-cyan-500/10 to-cyan-600/5",
   border: "border-cyan-200/60"
+},
+{
+  dept: "Marketing & Communication",
+  icon: "📢",
+  count: "4+",
+  desc: "Chef de projet marketing, community managers et graphistes",
+  kpi: "Présence multi-canaux",
+  color: "from-red-500/10 to-red-600/5",
+  border: "border-red-200/60"
+},
+{
+  dept: "Service Client",
+  icon: "🎧",
+  count: "6+",
+  desc: "Conseillers clientèle et support après-vente dédiés",
+  kpi: "98% satisfaction",
+  color: "from-indigo-500/10 to-indigo-600/5",
+  border: "border-indigo-200/60"
+},
+{
+  dept: "Qualité & Sécurité",
+  icon: "🛡️",
+  count: "3+",
+  desc: "Responsables QSE et auditeurs qualité certifiés",
+  kpi: "Normes ISO respectées",
+  color: "from-emerald-500/10 to-emerald-600/5",
+  border: "border-emerald-200/60"
+},
+{
+  dept: "Maintenance & Technique",
+  icon: "🔧",
+  count: "5+",
+  desc: "Mécaniciens, électriciens et techniciens de maintenance",
+  kpi: "Flotte opérationnelle 95%",
+  color: "from-orange-500/10 to-orange-600/5",
+  border: "border-orange-200/60"
+},
+{
+  dept: "Achats & Approvisionnement",
+  icon: "🛒",
+  count: "4+",
+  desc: "Buyers, négociateurs et gestionnaires de relations fournisseurs",
+  kpi: "50+ fournisseurs partenaires",
+  color: "from-teal-500/10 to-teal-600/5",
+  border: "border-teal-200/60"
 }];
 
 
 const STATS = [
-{ value: "60+", label: "Collaborateurs", icon: Users },
+{ value: "80+", label: "Collaborateurs", icon: Users },
 { value: "40+", label: "Années d'expérience", icon: Award },
-{ value: "98%", label: "Satisfaction client", icon: TrendingUp }];
+{ value: "98%", label: "Satisfaction client", icon: TrendingUp },
+{ value: "12", label: "Départements", icon: Users }];
 
 
 function ExecutiveCard({ person, index, isInView }) {
@@ -205,7 +260,7 @@ export default function TeamSection() {
             ref={statsRef}
             initial={{ opacity: 0, y: 30 }}
             animate={statsInView ? { opacity: 1, y: 0 } : {}}
-            className="mt-16 grid grid-cols-3 gap-4 md:gap-6">
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {STATS.map((stat, i) =>
             <div key={stat.label} className="text-center">
                 <div className="flex justify-center mb-3">
