@@ -3,8 +3,9 @@ import { base44 } from "@/api/base44Client";
 import {
   Image, Briefcase, Users, Newspaper, Trophy, Globe, Package,
   Plus, Trash2, Edit2, X, Loader2, Eye, Upload,
-  MapPin, Calendar, ExternalLink, CheckCircle2, Archive, EyeOff
+  MapPin, Calendar, ExternalLink, CheckCircle2, Archive, EyeOff, Download
 } from "lucide-react";
+import VitrineExportPanel from "./VitrineExportPanel";
 
 const TABS = [
   { id: "produits",    label: "Produits vitrine", icon: Package,   color: "from-teal-500 to-green-600" },
@@ -13,6 +14,7 @@ const TABS = [
   { id: "news",        label: "Actualités",        icon: Newspaper, color: "from-pink-500 to-rose-600" },
   { id: "offres",      label: "Offres d'emploi",  icon: Briefcase, color: "from-blue-500 to-indigo-600" },
   { id: "fasofoot",    label: "Faso Foot",         icon: Trophy,    color: "from-green-500 to-emerald-600" },
+  { id: "export",      label: "Exporter",          icon: Download,  color: "from-indigo-500 to-blue-600" },
 ];
 
 // ─── Shared Modal ─────────────────────────────────────────────────────────────
@@ -828,6 +830,7 @@ export default function SiteVitrineTab() {
         {activeTab === "news"        && <NewsManager type="actualite" color="from-pink-500 to-rose-600" label="Dernières nouvelles" />}
         {activeTab === "offres"      && <OffresManager />}
         {activeTab === "fasofoot"    && <NewsManager type="faso_foot" color="from-green-500 to-emerald-600" label="Faso Foot" />}
+        {activeTab === "export"      && <VitrineExportPanel />}
       </div>
     </div>
   );
