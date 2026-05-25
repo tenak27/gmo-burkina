@@ -25,10 +25,10 @@ export default function PartnershipBanner() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">
-              GMO & IMPÉRIAL TOBACCO
-              <br />
-              <span className="text-gmo-green">Une Alliance Stratégique</span>
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">GMO & 
+Une Alliance Stratégique
+
+
             </h2>
 
             <p className="font-body text-sm text-obsidian/60 leading-relaxed">
