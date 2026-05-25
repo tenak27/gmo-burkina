@@ -117,7 +117,7 @@ export default function Navbar({ heroHeight }) {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="animate-ticker flex items-center">
+              <div className="animate-ticker-fast flex items-center">
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
