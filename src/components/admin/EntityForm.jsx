@@ -135,31 +135,31 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-md"
         onClick={onClose}
       />
 
       <motion.div
         ref={panelRef}
-        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        initial={{ scale: 0.92, opacity: 0, y: 24 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        transition={{ type: "spring", damping: 28, stiffness: 350 }}
-        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4"
+        exit={{ scale: 0.92, opacity: 0, y: 24 }}
+        transition={{ type: "spring", damping: 30, stiffness: 380 }}
+        className="relative w-full max-w-3xl bg-white rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-obsidian/98 to-obsidian/95 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F] border-b border-white/10 px-6 py-5 flex items-center justify-between">
           <div>
-            <p className="font-heading text-base font-bold text-white">
+            <p className="font-heading text-lg font-bold text-white tracking-tight">
               {isEdit ? `Modifier` : `Nouveau`} · {title}
             </p>
-            <p className="text-[10px] text-white/40 font-body mt-0.5">GMO Burkina ERP</p>
+            <p className="text-[10px] text-white/50 font-body mt-0.5 uppercase tracking-wider">GMO Burkina ERP</p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
@@ -183,22 +183,22 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
+        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-5 flex items-center gap-3">
+          <button
+            onClick={onClose}
+            className="px-6 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/60 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer font-medium"
+          >
+            Annuler
+          </button>
           <button
             onClick={onSave}
             disabled={saving || !allValid}
-            className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm py-3 rounded-xl hover:bg-gmo-green/90 active:scale-95 transition-all disabled:opacity-40 cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-gmo-green to-emerald-600 text-white font-heading font-bold text-sm py-3.5 rounded-xl hover:shadow-lg hover:shadow-gmo-green/25 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
             {saving
               ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               : <Save className="w-4 h-4" />}
-            {saving ? "Enregistrement…" : (isEdit ? "Enregistrer" : "Créer")}
-          </button>
-          <button
-            onClick={onClose}
-            className="px-5 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/50 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer"
-          >
-            Annuler
+            {saving ? "Enregistrement…" : (isEdit ? "Enregistrer les modifications" : "Créer")}
           </button>
         </div>
       </motion.div>

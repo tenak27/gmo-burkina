@@ -132,13 +132,13 @@ export default function SaleOrderForm({ order, onSave, onClose, clients = [], pr
         className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] border border-gray-100 my-4"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-obsidian/98 to-obsidian/95 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-gradient-to-r from-[#1E3A5F] to-[#2D4A6F] border-b border-white/10 px-6 py-5 flex items-center justify-between">
           <div>
-            <p className="font-heading text-base font-bold text-white">{isEdit ? "Modifier" : "Nouvelle"} Commande</p>
-            <p className="text-[10px] text-white/40 font-body mt-0.5">{form.order_number}</p>
+            <p className="font-heading text-lg font-bold text-white tracking-tight">{isEdit ? "Modifier" : "Nouvelle"} Commande</p>
+            <p className="text-[10px] text-white/50 font-body mt-0.5 uppercase tracking-wider">{form.order_number}</p>
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
-            <X className="w-4 h-4" />
+          <button onClick={onClose} className="w-9 h-9 rounded-xl flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
+            <X className="w-5 h-5" />
           </button>
         </div>
 
@@ -402,15 +402,15 @@ export default function SaleOrderForm({ order, onSave, onClose, clients = [], pr
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
+        <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-5 flex items-center gap-3">
+          <button onClick={onClose}
+            className="px-6 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/60 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer font-medium">
+            Annuler
+          </button>
           <button onClick={handleSave} disabled={saving || !form.client_name}
-            className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm py-3 rounded-xl hover:bg-gmo-green/90 active:scale-95 transition-all disabled:opacity-40 cursor-pointer">
+            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-gmo-green to-emerald-600 text-white font-heading font-bold text-sm py-3.5 rounded-xl hover:shadow-lg hover:shadow-gmo-green/25 active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
             {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save className="w-4 h-4" />}
             {saving ? "Enregistrement…" : (isEdit ? "Mettre à jour" : "Créer la commande")}
-          </button>
-          <button onClick={onClose}
-            className="px-5 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/50 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 transition-all cursor-pointer">
-            Annuler
           </button>
         </div>
       </motion.div>
