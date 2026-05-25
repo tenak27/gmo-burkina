@@ -141,8 +141,7 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
   const navigate = (id) => { setTab(id); onClose?.(); };
 
   return (
-    <div className="flex flex-col h-full w-[220px] overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #1C1C1E 0%, #0f2a15 60%, #1C1C1E 100%)" }}>
+    <div className="flex flex-col w-[220px]" style={{ background: "linear-gradient(160deg, #1C1C1E 0%, #0f2a15 60%, #1C1C1E 100%)", height: "100%", overflow: "hidden" }}>
 
       {/* Logo */}
       <div className="px-5 py-4 flex items-center gap-3 border-b border-white/10">
@@ -166,7 +165,7 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
       </div>
 
       {/* Nav */}
-      <div className="flex-1 overflow-y-auto py-3 px-3 space-y-1 scrollbar-thin scrollbar-thumb-white/10">
+      <div className="py-3 px-3 space-y-1" style={{ flex: "1 1 0", overflowY: "auto", minHeight: 0 }}>
         {GROUPS.map((group, gi) => (
           <div key={gi} className={gi > 0 ? "mt-3" : ""}>
             {group.label && (
@@ -250,7 +249,7 @@ export default function AdminSidebar({ tab, setTab, pendingOrders, newApplicatio
   return (
     <>
       {/* Desktop */}
-      <aside className="hidden lg:flex flex-col h-screen sticky top-0 flex-shrink-0 w-[220px] relative overflow-visible"
+      <aside className="hidden lg:flex flex-col h-screen sticky top-0 flex-shrink-0 w-[220px] relative overflow-hidden"
         style={{ borderRight: "1px solid rgba(255,255,255,0.07)" }}>
         <SidebarContent tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} user={user} logout={logout} />
       </aside>
