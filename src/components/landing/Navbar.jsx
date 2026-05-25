@@ -117,15 +117,7 @@ export default function Navbar({ heroHeight }) {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="animate-ticker-fast flex items-center">
-                <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
-                  alt="GMO"
-                  className="h-[110px] w-auto object-contain flex-shrink-0 mx-6"
-                />
-                <span className="text-gmo-red font-body italic text-lg font-semibold whitespace-nowrap mx-8 flex-shrink-0">
-                  Consommer local, c'est booster l'économie nationale !
-                </span>
+              <div className="animate-ticker flex items-center">
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
