@@ -100,10 +100,10 @@ export default function PartnershipBanner() {
 
                 {/* Impérial Tobacco Logo */}
                 <div className="relative">
-                  <img
-                    src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/86228a120_images.png"
-                    alt="Impérial Tobacco"
-                    className="h-16 lg:h-20 w-auto object-contain" />
+                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/f12fb7d86_Gemini_Generated_Image_wl0c3lwl0c3lwl0c.png"
+
+                  alt="Impérial Tobacco"
+                  className="h-16 lg:h-20 w-auto object-contain" />
                   
                 </div>
 
