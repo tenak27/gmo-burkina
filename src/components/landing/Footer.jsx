@@ -80,9 +80,6 @@ export default function Footer() {
               <Link to="/detaillant" className="flex items-center gap-2 text-xs font-body text-white/35 hover:text-gmo-red transition-colors">
                 <span className="w-1.5 h-1.5 rounded-full bg-gmo-red/60" />Espace Détaillant
               </Link>
-              <Link to="/admin" className="flex items-center gap-2 text-xs font-body text-white/35 hover:text-white transition-colors">
-                <span className="w-1.5 h-1.5 rounded-full bg-white/20" />Administration ERP
-              </Link>
             </div>
             <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mt-6 mb-3">Légal</p>
             <div className="space-y-1.5">
