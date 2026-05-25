@@ -8,34 +8,25 @@ const EXECUTIVE_BOARD = [
   title: "Président Directeur Général",
   role: "PDG",
   description: "Fondateur et visionnaire du Groupe Madina Oumarou, Hama TRAORE pilote la stratégie de croissance du groupe depuis sa création avec plus de 15 ans d'expertise en distribution.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9e31bba75_home-innovation-pdg.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg",
   color: "#1A7A2E",
   tag: "Fondateur"
 },
 {
-  name: "Direction Commerciale",
+  name: "Directeur Commercial",
   title: "Directeur Commercial",
   role: "DC",
   description: "En charge du développement des ventes, de la relation client et de l'expansion du réseau de distribution à travers le Burkina Faso.",
-  image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
   color: "#CC1717",
   tag: "Ventes & Croissance"
 },
 {
-  name: "Direction Financière",
-  title: "Directeur Administratif & Financier",
-  role: "DAF",
-  description: "Garant de la santé financière du groupe, il supervise la comptabilité, la trésorerie et les relations avec les institutions bancaires.",
-  image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop",
-  color: "#F5C400",
-  tag: "Finance & Contrôle"
-},
-{
-  name: "Direction Logistique",
+  name: "Directeur des Opérations",
   title: "Directeur des Opérations",
   role: "DOL",
   description: "Pilote l'ensemble de la chaîne logistique, des entrepôts à la livraison finale, en garantissant efficacité et respect des délais.",
-  image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ffdae3761_a-propos-6.jpg",
   color: "#1A7A2E",
   tag: "Logistique & Ops"
 }];
@@ -177,6 +168,58 @@ export default function TeamSection() {
     <section id="equipe" className="overflow-hidden">
 
       {/* ── EXECUTIVE BOARD ── */}
+      <div ref={execRef} className="bg-light-gray py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={execInView ? { opacity: 1, y: 0 } : {}}
+            className="mb-14">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-6 h-[2px] bg-gmo-green" />
+              <span className="font-body text-xs uppercase tracking-[0.3em] text-gmo-green">Direction Générale</span>
+            </div>
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+              <div>
+                <h2 className="font-heading text-4xl lg:text-5xl font-bold text-obsidian">
+                  EXECUTIVE<br />
+                  <span className="text-gmo-green">BOARD</span>
+                </h2>
+                <div className="h-1 w-20 bg-gradient-to-r from-gmo-green to-transparent mt-5 rounded-full" />
+              </div>
+              <p className="font-body text-sm text-obsidian/50 max-w-xs leading-relaxed">
+                L'équipe de direction qui pilote la stratégie et la croissance du <span className="text-obsidian font-semibold">Groupe Madina Oumarou</span> depuis plus de 15 ans.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Executive cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {EXECUTIVE_BOARD.map((person, i) => (
+              <ExecutiveCard key={person.name} person={person} index={i} isInView={execInView} />
+            ))}
+          </div>
+
+          {/* Stats row */}
+          <motion.div
+            ref={statsRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={statsInView ? { opacity: 1, y: 0 } : {}}
+            className="mt-16 grid grid-cols-3 gap-4 md:gap-6">
+            {STATS.map((stat, i) => (
+              <div key={stat.label} className="text-center">
+                <div className="flex justify-center mb-3">
+                  <div className="w-12 h-12 bg-gmo-green/10 rounded-xl flex items-center justify-center">
+                    <stat.icon className="w-5 h-5 text-gmo-green" />
+                  </div>
+                </div>
+                <p className="font-heading text-3xl lg:text-4xl font-bold text-obsidian">{stat.value}</p>
+                <p className="font-body text-xs uppercase tracking-widest text-obsidian/50 mt-2">{stat.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
       
 
 
