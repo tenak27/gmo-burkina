@@ -168,54 +168,51 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
   const allValid = !fields.some(isEmpty);
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="flex-1 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Panel */}
+      {/* Modal */}
       <motion.div
         ref={panelRef}
-        initial={{ x: "100%", opacity: 0.6 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: "100%", opacity: 0 }}
-        transition={{ type: "spring", damping: 30, stiffness: 300 }}
-        className="w-full max-w-xl bg-white shadow-2xl flex flex-col h-full border-l border-gray-200"
+        initial={{ scale: 0.95, opacity: 0, y: 10 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 10 }}
+        transition={{ type: "spring", damping: 28, stiffness: 320 }}
+        className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] border border-gray-100"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-7 py-5 sticky top-0 bg-white z-10 border-b border-gray-200">
-          <div className="flex items-center gap-4">
-            <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${isEdit ? "bg-amber-100" : "bg-gmo-green/15"}`}>
-              {isEdit
-                ? <div className="w-4 h-4 rounded-full bg-amber-500" />
-                : <div className="w-4 h-4 rounded-full bg-gmo-green" />
-              }
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${isEdit ? "bg-amber-100" : "bg-gmo-green/15"}`}>
+              <div className={`w-3 h-3 rounded-full ${isEdit ? "bg-amber-500" : "bg-gmo-green"}`} />
             </div>
             <div>
-              <p className="font-heading text-lg font-bold text-obsidian leading-tight">
+              <p className="font-heading text-base font-bold text-obsidian leading-tight">
                 {isEdit ? `Modifier — ${title}` : `Nouveau — ${title}`}
               </p>
-              <p className="text-xs text-obsidian/40 font-body mt-0.5">GMO Burkina ERP</p>
+              <p className="text-[11px] text-obsidian/35 font-body">GMO Burkina ERP</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-obsidian/40 hover:text-obsidian hover:border-gray-300 hover:bg-gray-50 transition-all"
+            className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center text-obsidian/40 hover:text-obsidian hover:bg-gray-50 transition-all"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Fields */}
-        <div className="flex-1 overflow-y-auto px-7 py-6 space-y-5">
+        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
           {fieldGroups.map((group, gi) => (
             group.length === 2 ? (
-              <div key={gi} className="grid grid-cols-2 gap-4">
+              <div key={gi} className="grid grid-cols-2 gap-3">
                 {group.map(f => renderField(f))}
               </div>
             ) : (
@@ -224,29 +221,29 @@ export default function EntityForm({ title, fields, data, onChange, onSave, onCl
           ))}
 
           {hasRequired && !allValid && (
-            <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3.5 mt-2">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+            <div className="flex items-center gap-2.5 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+              <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
               <p className="text-sm text-red-700 font-body">Veuillez remplir tous les champs obligatoires.</p>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="px-7 py-5 border-t border-gray-200 sticky bottom-0 bg-white">
+        <div className="px-6 py-4 border-t border-gray-100">
           <div className="flex gap-3">
             <button
               onClick={onSave}
               disabled={saving || !allValid}
-              className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-base py-3.5 rounded-xl hover:bg-gmo-green/90 active:scale-[0.98] transition-all disabled:opacity-40 shadow-sm shadow-gmo-green/20"
+              className="flex-1 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm py-3 rounded-xl hover:bg-gmo-green/90 active:scale-[0.98] transition-all disabled:opacity-40 shadow-sm"
             >
               {saving
-                ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                : <Save className="w-5 h-5" />}
-              {saving ? "Enregistrement…" : (isEdit ? "Enregistrer les modifications" : "Créer")}
+                ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                : <Save className="w-4 h-4" />}
+              {saving ? "Enregistrement…" : (isEdit ? "Enregistrer" : "Créer")}
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-3.5 border border-gray-300 rounded-xl text-base font-body text-obsidian/60 hover:border-gray-400 hover:text-obsidian hover:bg-gray-50 active:scale-[0.98] transition-all"
+              className="px-5 py-3 border border-gray-200 rounded-xl text-sm font-body text-obsidian/60 hover:border-gray-300 hover:text-obsidian hover:bg-gray-50 active:scale-[0.98] transition-all"
             >
               Annuler
             </button>

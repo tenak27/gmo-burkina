@@ -53,6 +53,12 @@ const GROUPS = [
     ],
   },
   {
+    label: "Revendeurs",
+    items: [
+      { id: "revendeurs", label: "Revendeurs", icon: TrendingUp },
+    ],
+  },
+  {
     label: "RH & Admin",
     items: [
       { id: "hr",           label: "RH",           icon: Users2 },

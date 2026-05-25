@@ -24,6 +24,7 @@ import StatsChartsPanel from "@/components/admin/StatsChartsPanel";
 import SettingsTab from "@/components/admin/SettingsTab";
 import SiteVitrineTab from "@/components/admin/SiteVitrineTab";
 import CaisseTab from "@/components/admin/CaisseTab";
+import RevendeurAdminTab from "@/components/admin/RevendeurAdminTab";
 
 function AdminDashboard() {
   const [tab, setTab] = useState("dashboard");
@@ -165,6 +166,7 @@ function AdminDashboard() {
             {tab === "settings"     && <SettingsTab />}
             {tab === "vitrine"      && <SiteVitrineTab />}
             {tab === "caisse"       && <CaisseTab expenses={cashExpenses} setExpenses={setCashExpenses} />}
+            {tab === "revendeurs"   && <RevendeurAdminTab orders={orders} setOrders={setOrders} clients={clients} receivables={receivables} />}
           </div>
           <p className="text-center text-xs text-obsidian/30 mt-8 pb-4">
             GMO Burkina ERP · <span className="text-gmo-green">IAM Technology</span>
