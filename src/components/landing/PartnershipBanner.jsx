@@ -31,11 +31,11 @@ Une Alliance Stratégique
 
             </h2>
 
-            <p className="font-body text-sm text-obsidian/60 leading-relaxed">
-              Groupe Madina Oumarou s'associe avec <strong className="text-gmo-green">Impérial Tobacco</strong>, 
-              géant mondial du tabac présent dans plus de 160 pays et 4ème groupe tabac mondial. 
-              Ce partenariat stratégique positionne GMO comme distributeur privilégié d'un leader international 
-              reconnu pour son innovation et son expertise inégalée en Afrique de l'Ouest.
+            <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec Impérial Tobacco, géant mondial du tabac présent dans plus de 160 pays et 4ème groupe tabac mondial. Ce partenariat stratégique positionne GMO comme distributeur privilégié d'un leader international reconnu pour son innovation et son expertise inégalée au Burkina Faso .
+
+
+
+
             </p>
 
             <div className="space-y-4 pt-4">
