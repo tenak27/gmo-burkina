@@ -127,24 +127,24 @@ function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
         <div className="text-center">
-          <div className="w-10 h-10 border-2 border-green-600/20 border-t-green-600 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-xs text-gray-400 uppercase tracking-widest">Chargement ERP…</p>
+          <div className="w-12 h-12 border-3 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm text-white/80 uppercase tracking-widest font-semibold">Chargement ERP…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: "linear-gradient(160deg, #f8f7f2 0%, #f2f5ef 40%, #f5f0e8 100%)" }}>
+    <div className="min-h-screen flex" style={{ background: "linear-gradient(135deg, #f5f7fa 0%, #e9ecef 50%, #f0f2f5 100%)" }}>
       <AdminSidebar tab={tab} setTab={setTab} pendingOrders={pendingOrders} newApplications={newApplications} />
       <main className="flex-1 min-w-0 overflow-x-hidden flex flex-col">
         <div className="hidden lg:block">
           <AdminTopbar pendingOrders={pendingOrders} setTab={setTab} />
         </div>
-        <div className="flex-1 px-3 sm:px-6 py-4 sm:py-6">
-          <div key={tab} className="page-enter">
+        <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-4 sm:py-6">
+          <div key={tab} className="page-enter max-w-7xl mx-auto">
             {tab === "dashboard"    && <DashboardVisual data={allData} setTab={setTab} />}
             {tab === "clients"      && <ClientsTab clients={clients} setClients={setClients} />}
             {tab === "suppliers"    && <SuppliersTab suppliers={suppliers} setSuppliers={setSuppliers} />}
@@ -168,9 +168,6 @@ function AdminDashboard() {
             {tab === "caisse"       && <CaisseTab expenses={cashExpenses} setExpenses={setCashExpenses} />}
             {tab === "revendeurs"   && <RevendeurAdminTab orders={orders} setOrders={setOrders} clients={clients} receivables={receivables} />}
           </div>
-          <p className="text-center text-xs text-obsidian/30 mt-8 pb-4">
-            GMO Burkina ERP · <span className="text-gmo-green">IAM Technology</span>
-          </p>
         </div>
       </main>
     </div>
