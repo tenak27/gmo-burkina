@@ -122,18 +122,18 @@ export default function Navbar({ heroHeight }) {
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
-                  className="h-[90px] sm:h-[115px] lg:h-[140px] w-auto object-contain flex-shrink-0" />
+                  className="h-[270px] sm:h-[345px] lg:h-[420px] w-auto object-contain flex-shrink-0" />
                 
-                <span className="text-gmo-red font-body italic text-sm sm:text-base lg:text-xl font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
+                <span className="text-gmo-red font-body italic text-lg sm:text-xl lg:text-3xl font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
                   Consommer local, c'est booster l'économie nationale !
                 </span>
                 {/* Copy 2 (identical for seamless loop) */}
                 <img
                   src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
                   alt="GMO"
-                  className="h-[90px] sm:h-[115px] lg:h-[140px] w-auto object-contain flex-shrink-0" />
+                  className="h-[270px] sm:h-[345px] lg:h-[420px] w-auto object-contain flex-shrink-0" />
                 
-                <span className="text-gmo-red font-body italic text-sm sm:text-base lg:text-xl font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
+                <span className="text-gmo-red font-body italic text-lg sm:text-xl lg:text-3xl font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
                   Consommer local, c'est booster l'économie nationale !
                 </span>
               </div>
