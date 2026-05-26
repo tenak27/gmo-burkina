@@ -97,14 +97,29 @@ function ProductCard({ product, index }) {
         <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">{product.name}</h3>
         <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">{product.description}</p>
 
-        {/* Détails et prix */}
-        <div className="space-y-2 mb-4">
-          {product.details && product.details.map((detail, idx) => (
-            <p key={idx} className="font-body text-xs text-obsidian/70">
-              {detail}
-            </p>
-          ))}
-        </div>
+        {/* Détails rétractables */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="flex items-center gap-2 text-xs font-body text-gmo-green hover:text-gmo-green/70 transition-colors mb-3"
+        >
+          {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          <span className="uppercase tracking-widest">Détails & Prix</span>
+        </button>
+
+        {expanded && product.details && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-2 mb-4 overflow-hidden"
+          >
+            {product.details.map((detail, idx) => (
+              <p key={idx} className="font-body text-xs text-obsidian/70">
+                {detail}
+              </p>
+            ))}
+          </motion.div>
+        )}
 
         <div className="flex-1" />
 
