@@ -97,7 +97,14 @@ function ProductCard({ product, index }) {
         <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">{product.name}</h3>
         <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">{product.description}</p>
 
-
+        {/* Détails et prix */}
+        <div className="space-y-2 mb-4">
+          {product.details && product.details.map((detail, idx) => (
+            <p key={idx} className="font-body text-xs text-obsidian/70">
+              {detail}
+            </p>
+          ))}
+        </div>
 
         <div className="flex-1" />
 
