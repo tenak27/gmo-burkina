@@ -197,14 +197,14 @@ export default function Navbar({ heroHeight }) {
             className="fixed inset-0 bg-black/30 z-40 backdrop-blur-sm cursor-pointer" />
           
             <motion.div
-            initial={{ opacity: 0, x: "-100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "-100%" }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 left-0 z-50 w-full max-w-sm h-full bg-white shadow-2xl overflow-y-auto">
+            className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm h-full bg-white/80 backdrop-blur-xl shadow-2xl overflow-y-auto border-r border-l border-white/20">
             
               {/* Enhanced header with logo */}
-              <div className="bg-gradient-to-r from-gmo-green/5 to-gmo-red/5 border-b border-gray-100 px-6 py-5">
+              <div className="bg-gradient-to-r from-gmo-green/5 to-gmo-red/5 border-b border-gray-100/50 px-6 py-5">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-heading text-lg font-black text-obsidian">MENU</span>
                   <button
