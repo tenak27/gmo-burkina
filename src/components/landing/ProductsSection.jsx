@@ -212,7 +212,7 @@ export default function ProductsSection() {
     : PRODUCTS.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="produits" className="bg-concrete py-24 lg:py-32">
+    <section key="products-section" id="produits" className="bg-concrete py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
         <div ref={ref} className="mb-10">
