@@ -25,11 +25,11 @@ export default function PartnershipBanner() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold leading-tight">
-              Un trio d'excellence pour une force unique :<br />
-              <span className="text-gmo-green">GMO</span>,{" "}
-              <span className="text-gmo-red">Mabucig</span>,{" "}
-              <span className="text-gold">SN CITEC</span>
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold leading-tight">Une alliance strategique au service de l'excellence 
+GMO, Mabucig, SN CITEC
+
+
+
             </h2>
 
             <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec Mabucig SA et SN CITEC, deux acteurs majeurs burkinabè. Mabucig, filiale d'Imperial Tobacco (4e groupe de tabac mondial présent dans plus de 160 pays), et SN CITEC, acteur incontournable dans l'industrie agroalimentaire burkinabè, apportent à GMO une collaboration solide et durable. Grâce à ces alliances, GMO consolide son statut de leader national en offrant un accès privilégié à des marques premium et à une large gamme de produits de qualité.</p>
