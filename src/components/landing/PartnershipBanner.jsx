@@ -7,7 +7,7 @@ export default function PartnershipBanner() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="bg-white py-16 lg:py-20 border-b border-gray-100">
+    <section key="partnership-banner" className="bg-white py-16 lg:py-20 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div ref={ref} className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
