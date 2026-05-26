@@ -27,7 +27,7 @@ export default function PartnershipBanner() {
 
             <h2 className="font-heading text-3xl lg:text-4xl font-bold leading-tight">
               Une alliance <span className="text-gmo-green">stratégique</span> au service de l'excellence :<br />
-              <span className="text-gmo-green">GMO</span> /{" "}
+              <span className="text-gmo-green">GMO</span>,{" "}
               <span className="text-gmo-red">Mabucig</span> /{" "}
               <span className="text-gold">SN CITEC</span>
             </h2>
