@@ -156,7 +156,7 @@ export default function ProductsSection() {
     const isCobifa = name.includes("cobifa");
     const isImperialTobacco = name.includes("hamilton") || name.includes("excellence") || name.includes("dunhill");
     const isSnCitecProducts = name.includes("savon citec") || name.includes("tourtaux");
-    const isGmfEtalon = name.includes("farine de blé gmf etalon");
+    const isGmfEtalon = name.includes("farine de blé gmf etalon") || name.includes("son de blé");
     
     const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
     const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
