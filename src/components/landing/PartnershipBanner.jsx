@@ -108,12 +108,7 @@ export default function PartnershipBanner() {
               <div className="absolute bottom-4 left-4 w-24 h-24 bg-gmo-red/5 rounded-full blur-2xl" />
             </div>
 
-            {/* Image generated for partnership */}
-            <div className="mt-6 rounded-xl overflow-hidden shadow-md">
-              <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/8640decae_Gemini_Generated_Image_kktmy3kktmy3kktm.png"
-              alt="Partenariat GMO Mabucig SN CITEC"
-              className="w-full h-48 object-cover" />
-            </div>
+
           </motion.div>
 
         </div>
