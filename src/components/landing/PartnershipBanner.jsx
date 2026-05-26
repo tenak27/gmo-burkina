@@ -26,7 +26,7 @@ export default function PartnershipBanner() {
             </div>
 
             <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">
-              Une force triée:<br />
+              Un trio d'excellence pour une force unique :<br />
               <span className="text-gmo-red">GMO, Mabucig, SN CITEC</span>
             </h2>
 
