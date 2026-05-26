@@ -26,7 +26,7 @@ export default function PartnershipBanner() {
             </div>
 
             <h2 className="font-heading text-3xl lg:text-4xl font-bold leading-tight">Une alliance stratégique au service de l'excellence :
-GMO, Mabucig SN CITEC
+GMO, Mabucig /SN CITEC
 
 
 
