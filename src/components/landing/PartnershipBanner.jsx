@@ -94,9 +94,9 @@ export default function PartnershipBanner() {
 
                 {/* Mabucig Logo */}
                 <div className="relative">
-                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/6e576666f_Capturedcran2026-05-2572727PM.png"
-                    alt="Mabucig SA"
-                    className="h-16 lg:h-20 w-auto object-contain" />
+                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/86228a120_images.png"
+                  alt="Mabucig SA"
+                  className="h-16 lg:h-20 w-auto object-contain" />
                 </div>
 
                 {/* Second Partnership Line */}
@@ -109,8 +109,8 @@ export default function PartnershipBanner() {
                 {/* SN CITEC Logo */}
                 <div className="relative">
                   <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg"
-                    alt="SN CITEC"
-                    className="h-16 lg:h-20 w-auto object-contain" />
+                  alt="SN CITEC"
+                  className="h-16 lg:h-20 w-auto object-contain" />
                 </div>
 
               </div>
@@ -123,8 +123,8 @@ export default function PartnershipBanner() {
             {/* Image generated for partnership */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-md">
               <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/8640decae_Gemini_Generated_Image_kktmy3kktmy3kktm.png"
-                alt="Partenariat GMO Mabucig SN CITEC"
-                className="w-full h-48 object-cover" />
+              alt="Partenariat GMO Mabucig SN CITEC"
+              className="w-full h-48 object-cover" />
             </div>
           </motion.div>
 
