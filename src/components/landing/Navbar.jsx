@@ -201,7 +201,7 @@ export default function Navbar({ heroHeight }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm h-full bg-white/80 backdrop-blur-xl shadow-2xl overflow-y-auto border-r border-l border-white/20">
+            className="fixed top-0 left-0 z-50 w-full h-full bg-white/90 backdrop-blur-xl shadow-2xl overflow-y-auto">
             
               {/* Enhanced header with logo */}
               <div className="bg-gradient-to-r from-gmo-green/5 to-gmo-red/5 border-b border-gray-100/50 px-6 py-5">
