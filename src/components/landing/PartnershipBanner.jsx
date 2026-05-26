@@ -25,18 +25,12 @@ export default function PartnershipBanner() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">GMO & Mabucig SA Une Alliance Stratégique
-
-
-
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-obsidian leading-tight">
+              GMO & Mabucig SA<br />
+              <span className="text-gmo-red">Partenariat Stratégique</span>
             </h2>
 
-            <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec la Mabicig, géant Burkinabé du tabac filiale d'Impérial Tobacco présent dans plus de 160 pays et 4ème groupe tabac mondial. Ce partenariat stratégique positionne GMO comme distributeur leader national des marques reconnues pour leurs innovations et  leurs qualitées premium au Burkina Faso.
-
-
-
-
-            </p>
+            <p className="font-body text-sm text-obsidian/60 leading-relaxed">Groupe Madina Oumarou s'associe avec Mabucig SA et SN CITEC, acteurs majeurs burkinabés. Mabucig, filiale d'Impérial Tobacco (4ème groupe tabac mondial présent dans 160+ pays), et SN CITEC, leader de la distribution alimentaire et industrielle, constituent des partenaires stratégiques clés. Ces alliances positionnent GMO comme distributeur leader national avec accès à des marques premium et une gamme alimentaire diversifiée.</p>
 
             <div className="space-y-4 pt-4">
               <div className="flex items-start gap-3">
@@ -45,7 +39,7 @@ export default function PartnershipBanner() {
                 </div>
                 <div>
                   <p className="font-heading text-sm font-bold text-obsidian">Distribution Exclusive</p>
-                  <p className="font-body text-xs text-obsidian/50">Accès prioritaire aux produits Imperial Tobacco</p>
+                  <p className="font-body text-xs text-obsidian/50">Accès aux produits Mabucig et SN CITEC</p>
                 </div>
               </div>
 
@@ -98,12 +92,25 @@ export default function PartnershipBanner() {
                   <div className="w-16 h-[2px] bg-gradient-to-l from-gmo-red to-gmo-green" />
                 </div>
 
-                {/* Impérial Tobacco Logo */}
+                {/* Mabucig Logo */}
                 <div className="relative">
                   <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/6e576666f_Capturedcran2026-05-2572727PM.png"
+                    alt="Mabucig SA"
+                    className="h-16 lg:h-20 w-auto object-contain" />
+                </div>
 
-                  alt="Impérial Tobacco"
-                  className="h-16 lg:h-20 w-auto object-contain" />
+                {/* Second Partnership Line */}
+                <div className="flex items-center gap-4 w-full justify-center">
+                  <div className="w-12 h-[2px] bg-gradient-to-r from-gmo-green to-gold" />
+                  <span className="font-body text-xs uppercase tracking-widest text-gmo-green/60">+</span>
+                  <div className="w-12 h-[2px] bg-gradient-to-l from-gold to-gmo-green" />
+                </div>
+
+                {/* SN CITEC Logo */}
+                <div className="relative">
+                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg"
+                    alt="SN CITEC"
+                    className="h-16 lg:h-20 w-auto object-contain" />
                 </div>
 
               </div>
@@ -116,9 +123,8 @@ export default function PartnershipBanner() {
             {/* Image generated for partnership */}
             <div className="mt-6 rounded-xl overflow-hidden shadow-md">
               <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/8640decae_Gemini_Generated_Image_kktmy3kktmy3kktm.png"
-
-              alt="Partenariat GMO Impérial Tobacco"
-              className="w-full h-48 object-cover" />
+                alt="Partenariat GMO Mabucig SN CITEC"
+                className="w-full h-48 object-cover" />
             </div>
           </motion.div>
 
