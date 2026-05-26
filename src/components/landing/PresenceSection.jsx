@@ -30,6 +30,53 @@ export default function PresenceSection() {
   return (
     <section className="bg-cream py-24 lg:py-32" ref={ref}>
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        
+        {/* Map at top */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.1, duration: 0.8 }}
+          className="mb-12"
+        >
+          <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-xl border border-gray-100" style={{ height: 460 }}>
+            <MapContainer
+              center={[12.0, -2.5]}
+              zoom={6.5}
+              style={{ height: "100%", width: "100%" }}
+              zoomControl={true}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {CITIES.map((city) => (
+                <CircleMarker
+                  key={city.name}
+                  center={[city.lat, city.lng]}
+                  radius={city.status === "active" ? 14 : 9}
+                  fillColor={city.status === "active" ? "#1A7A2E" : "#F5C400"}
+                  fillOpacity={city.status === "active" ? 0.85 : 0.7}
+                  color={city.status === "active" ? "#1A7A2E" : "#F5C400"}
+                  weight={3}
+                  eventHandlers={{ click: () => setSelected(city) }}
+                >
+                  <Tooltip direction="top" offset={[0, -10]} opacity={0.97} permanent={city.name === "Ouagadougou"}>
+                    <div className="font-heading text-xs font-bold">{city.name}</div>
+                  </Tooltip>
+                  <Popup>
+                    <div className="p-1">
+                      <p className="font-bold text-sm text-obsidian">{city.name}</p>
+                      <p className="text-xs text-gmo-green mt-0.5">{city.role}</p>
+                      <p className="text-xs text-gray-500 mt-1">{city.details}</p>
+                    </div>
+                  </Popup>
+                </CircleMarker>
+              ))}
+            </MapContainer>
+          </div>
+        </motion.div>
+
         {/* Header */}
         <div className="mb-12">
           <motion.div
@@ -88,47 +135,8 @@ export default function PresenceSection() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="grid lg:grid-cols-3 gap-6"
         >
-          {/* Map */}
-          <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-xl border border-gray-100" style={{ height: 460 }}>
-            <MapContainer
-              center={[12.0, -2.5]}
-              zoom={6.5}
-              style={{ height: "100%", width: "100%" }}
-              zoomControl={true}
-              scrollWheelZoom={false}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {CITIES.map((city) => (
-                <CircleMarker
-                  key={city.name}
-                  center={[city.lat, city.lng]}
-                  radius={city.status === "active" ? 14 : 9}
-                  fillColor={city.status === "active" ? "#1A7A2E" : "#F5C400"}
-                  fillOpacity={city.status === "active" ? 0.85 : 0.7}
-                  color={city.status === "active" ? "#1A7A2E" : "#F5C400"}
-                  weight={3}
-                  eventHandlers={{ click: () => setSelected(city) }}
-                >
-                  <Tooltip direction="top" offset={[0, -10]} opacity={0.97} permanent={city.name === "Ouagadougou"}>
-                    <div className="font-heading text-xs font-bold">{city.name}</div>
-                  </Tooltip>
-                  <Popup>
-                    <div className="p-1">
-                      <p className="font-bold text-sm text-obsidian">{city.name}</p>
-                      <p className="text-xs text-gmo-green mt-0.5">{city.role}</p>
-                      <p className="text-xs text-gray-500 mt-1">{city.details}</p>
-                    </div>
-                  </Popup>
-                </CircleMarker>
-              ))}
-            </MapContainer>
-          </div>
-
           {/* Cities list + international */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 lg:col-span-2 lg:col-span-3">
             <p className="font-heading text-xs uppercase tracking-widest text-obsidian/40 mb-1">Burkina Faso</p>
             {CITIES.map((city, i) => (
               <motion.button
