@@ -97,32 +97,7 @@ function ProductCard({ product, index }) {
         <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">{product.name}</h3>
         <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">{product.description}</p>
 
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-2 font-body text-xs uppercase tracking-widest text-gmo-green hover:text-gmo-green/70 transition-colors mb-3 text-left"
-        >
-          {expanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-          {expanded ? "Masquer les détails" : "Voir les détails"}
-        </button>
 
-        <AnimatePresence>
-          {expanded && (
-            <motion.ul
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden mb-4"
-            >
-              {product.details.map((d) => (
-                <li key={d} className="flex items-start gap-2 font-body text-xs text-obsidian/60 mb-1.5">
-                  <span className="w-1 h-1 rounded-full bg-gmo-green mt-1.5 flex-shrink-0" />
-                  {d}
-                </li>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
 
         <div className="flex-1" />
 
