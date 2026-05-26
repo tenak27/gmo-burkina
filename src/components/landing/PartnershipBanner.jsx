@@ -92,19 +92,7 @@ export default function PartnershipBanner() {
                   <div className="w-16 h-[2px] bg-gradient-to-l from-gmo-red to-gmo-green" />
                 </div>
 
-                {/* Mabucig Logo */}
-                <div className="relative">
-                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/86228a120_images.png"
-                  alt="Mabucig SA"
-                  className="h-16 lg:h-20 w-auto object-contain" />
-                </div>
 
-                {/* Second Partnership Line */}
-                <div className="flex items-center gap-4 w-full justify-center">
-                  <div className="w-12 h-[2px] bg-gradient-to-r from-gmo-green to-gold" />
-                  <span className="font-body text-xs uppercase tracking-widest text-gmo-green/60">+</span>
-                  <div className="w-12 h-[2px] bg-gradient-to-l from-gold to-gmo-green" />
-                </div>
 
                 {/* SN CITEC Logo */}
                 <div className="relative">
