@@ -25,7 +25,7 @@ export default function PartnershipBanner() {
               </span>
             </div>
 
-            <h2 className="font-heading text-3xl lg:text-4xl font-bold leading-tight text-[hsl(var(--accent))]">Un trio d'excellence pour une force unique :
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold leading-tight">Un trio d'excellence pour une force unique :
 GMO, Mabucig, SN CITEC
 
             </h2>
