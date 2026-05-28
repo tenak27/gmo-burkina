@@ -147,6 +147,12 @@
     animation: ticker-fast 8s linear infinite;
   }
 
+  /* Navbar seamless ticker — translates exactly 50% (2 of 4 copies) */
+  @keyframes navTicker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
   .animate-pulse-green {
     animation: none !important;
   }

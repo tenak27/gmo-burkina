@@ -106,34 +106,32 @@ export default function Navbar({ heroHeight }) {
               {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
 
-            {/* Desktop Logo - Centered with scroll animation */}
-            <motion.button
+            {/* Desktop Logo - Centered with seamless infinite ticker */}
+            <button
               onClick={() => {window.scrollTo({ top: 0, behavior: "smooth" });}}
-              className="flex-1 mx-6 relative overflow-hidden hidden sm:flex"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}>
+              className="flex-1 mx-6 relative overflow-hidden hidden sm:flex items-center"
+              style={{ maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)" }}>
               
-              <div className="flex gap-6 animate-ticker overflow-hidden" style={{ width: "max-content" }}>
-                {/* Copy 1 */}
-                <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
-                  alt="GMO"
-                  className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0" />
-                
-                <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-lg font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
-                  Consommer local, c'est booster l'économie nationale !
-                </span>
-                {/* Copy 2 (identical for seamless loop) */}
-                <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
-                  alt="GMO"
-                  className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0" />
-                
-                <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-lg font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
-                  Consommer local, c'est booster l'économie nationale !
-                </span>
+              {/* Track: 4 copies for a perfectly seamless loop */}
+              <div
+                className="flex items-center gap-8 shrink-0"
+                style={{
+                  width: "max-content",
+                  animation: "navTicker 28s linear infinite",
+                }}>
+                {[0, 1, 2, 3].map((n) => (
+                  <React.Fragment key={n}>
+                    <img
+                      src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
+                      alt="GMO"
+                      className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0" />
+                    <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-base font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
+                      Consommer local, c'est booster l'économie nationale !
+                    </span>
+                  </React.Fragment>
+                ))}
               </div>
-            </motion.button>
+            </button>
             
             {/* Mobile Logo */}
             <motion.button
