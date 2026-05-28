@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 import { Phone, Mail, MapPin, MessageCircle, Facebook, Twitter, Linkedin, Youtube, Instagram, Shield, FileText } from "lucide-react";
 
 const NAV = [
@@ -111,7 +112,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/[0.05] pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-[10px] text-white/15">
-            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <Link to="/client" className="text-white/15 hover:text-white/15 transition-colors">T</Link><Link to="/detaillant" className="text-white/15 hover:text-white/15 transition-colors">ous droits réservés</Link>
+            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <button onClick={() => base44.auth.redirectToLogin('/client')} className="text-white/15 cursor-default">T</button><button onClick={() => base44.auth.redirectToLogin('/detaillant')} className="text-white/15 cursor-default">ous droits réservés</button>
           </p>
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3 text-gmo-green/40" />
