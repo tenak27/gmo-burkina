@@ -8,7 +8,7 @@ export default function JourneyBanner({ journeyImage }) {
   return (
     <section ref={ref} className="relative h-[55vh] lg:h-[65vh] overflow-hidden">
       <motion.img
-        src={journeyImage}
+        src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/fb07a6a03_Gemini_Generated_Image_nlu5sanlu5sanlu5.png"
         alt="Voyage logistique GMOB"
         initial={{ scale: 1.1 }}
         animate={isInView ? { scale: 1 } : {}}
