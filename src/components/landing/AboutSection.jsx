@@ -1,6 +1,65 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Award, Users, Globe, Heart, Zap, Shield } from "lucide-react";
+
+function ValueCard3D({ value, index, isInView }) {
+  const [flipped, setFlipped] = useState(false);
+  const Icon = value.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ delay: index * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="relative"
+      style={{ perspective: "1000px", height: "280px" }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+    >
+      <div
+        className="w-full h-full relative transition-transform duration-700"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* FRONT FACE */}
+        <div
+          className="absolute inset-0 bg-obsidian p-8 border border-concrete/10 rounded-2xl"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+        >
+          <Icon className="w-6 h-6 text-gmo-green mb-5" />
+          <h4 className="font-heading text-base font-bold text-concrete mb-3">{value.title}</h4>
+          <p className="font-body text-xs text-concrete/45 leading-relaxed">{value.description}</p>
+          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-[9px] font-body text-concrete/30 uppercase tracking-wider">Survolez →</span>
+          </div>
+        </div>
+
+        {/* BACK FACE (rotated 180deg) */}
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-gmo-green to-gmo-green/80 rounded-2xl p-8 flex flex-col items-center justify-center text-center border border-gmo-green/30 shadow-2xl"
+          style={{ 
+            backfaceVisibility: "hidden", 
+            WebkitBackfaceVisibility: "hidden", 
+            transform: "rotateY(180deg)" 
+          }}
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-20"
+            style={{ backgroundImage: `url(${value.image})` }}
+          />
+          <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 relative z-10">
+            <Icon className="w-8 h-8 text-white" />
+          </div>
+          <h4 className="font-heading text-lg font-black text-white mb-3 relative z-10">{value.title}</h4>
+          <div className="w-12 h-[2px] bg-white/40 mb-4 relative z-10" />
+          <p className="font-body text-sm text-white/90 leading-relaxed relative z-10 line-clamp-4">{value.description}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 const VALUES = [
   {
@@ -196,24 +255,9 @@ export default function AboutSection() {
             <div className="w-16 h-[2px] bg-gmo-red mx-auto mt-6" />
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-concrete/5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {VALUES.map((v, i) => (
-              <motion.div
-                key={v.title}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                animate={valuesInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ delay: i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="group bg-obsidian p-8 hover:bg-obsidian/80 transition-all duration-300 relative overflow-hidden"
-              >
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${v.image})` }}
-                />
-                <v.icon className="w-6 h-6 text-gmo-green mb-5 relative z-10" />
-                <h4 className="font-heading text-base font-bold text-concrete mb-3 relative z-10">{v.title}</h4>
-                <p className="font-body text-xs text-concrete/45 leading-relaxed relative z-10">{v.description}</p>
-                <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-red w-0 group-hover:w-full transition-all duration-500" />
-              </motion.div>
+              <ValueCard3D key={v.title} value={v} index={i} isInView={valuesInView} />
             ))}
           </div>
         </div>
