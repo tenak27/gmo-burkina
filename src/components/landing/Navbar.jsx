@@ -117,19 +117,19 @@ export default function Navbar({ heroHeight }) {
                 className="flex items-center gap-8 shrink-0"
                 style={{
                   width: "max-content",
-                  animation: "navTicker 28s linear infinite",
+                  animation: "navTicker 28s linear infinite"
                 }}>
-                {[0, 1, 2, 3].map((n) => (
-                  <React.Fragment key={n}>
+                {[0, 1, 2, 3].map((n) =>
+                <React.Fragment key={n}>
                     <img
-                      src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
-                      alt="GMO"
-                      className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0" />
+                    src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
+                    alt="GMO"
+                    className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0" />
                     <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-base font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
                       Consommer local, c'est booster l'économie nationale !
                     </span>
                   </React.Fragment>
-                ))}
+                )}
               </div>
             </button>
             
@@ -147,29 +147,29 @@ export default function Navbar({ heroHeight }) {
 
             {/* Right side */}
             <div className="flex items-center gap-2">
-              {isAuthenticated && dashLink ? (
-                <>
+              {isAuthenticated && dashLink ?
+              <>
                   <Link
-                    to={dashLink.to}
-                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                  to={dashLink.to}
+                  className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                     <User className="w-3.5 h-3.5" />
                     {dashLink.label}
                   </Link>
                   <button
-                    onClick={() => logout()}
-                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                  onClick={() => logout()}
+                  className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                     <LogIn className="w-3.5 h-3.5 rotate-180" />
                     Déconnexion
                   </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="hidden sm:inline-flex items-center gap-1.5 bg-obsidian/8 hover:bg-obsidian/15 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                </> :
+
+              <button
+                onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                className="hidden sm:inline-flex items-center gap-1.5 bg-obsidian/8 hover:bg-obsidian/15 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                   <LogIn className="w-3.5 h-3.5" />
                   Connexion
                 </button>
-              )}
+              }
               <a
                 href="https://wa.me/+22670213831"
                 target="_blank"
@@ -318,15 +318,15 @@ export default function Navbar({ heroHeight }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
                 className="mb-2">
-                <Link
-                  to={dashLink.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3.5 font-heading text-base font-bold text-gmo-green bg-gradient-to-r from-gmo-green/5 to-transparent rounded-xl transition-all">
-                  <div className="flex items-center gap-3">
-                    <span className="w-1 h-4 bg-gmo-green rounded-full" />
-                    {dashLink.label}
-                  </div>
-                </Link>
+                
+
+
+
+
+
+
+
+                
               </motion.div>
               }
 
@@ -337,16 +337,16 @@ export default function Navbar({ heroHeight }) {
                 transition={{ delay: 0.45 }}
                 className="mt-4 pt-4 border-t border-gray-100">
                 
-                {isAuthenticated ?
-                <button
-                  onClick={() => {
-                    logout();
-                    setMobileOpen(false);
-                  }}
-                  className="w-full px-4 py-3.5 font-heading text-base font-bold text-gmo-red bg-gradient-to-r from-gmo-red/10 to-transparent rounded-xl hover:from-gmo-red/15 transition-all text-left flex items-center gap-3">
-                    <LogIn className="w-4 h-4 text-gmo-red rotate-180" />
-                    Déconnexion
-                  </button> :
+                {isAuthenticated ? null :
+
+
+
+
+
+
+
+
+
 
                 <button
                   onClick={() => {
@@ -361,29 +361,29 @@ export default function Navbar({ heroHeight }) {
               </motion.div>
 
               {/* WhatsApp button - Enhanced */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.55 }}
-                className="mt-6 mb-4">
-                
-                <a
-                  href="https://wa.me/+22670213831"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#20BA5A] hover:from-[#20BA5A] hover:to-[#1DA851] text-white font-heading font-bold text-sm px-6 py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] mx-4"
-                  title="+226 70 21 38 31">
-                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                    <path d="M17.6 6.4C16 4.9 13.9 4 11.8 4 7.3 4 3.6 7.7 3.6 12.2c0 1.7.4 3.3 1.3 4.8L4 20l5.2-1.3c1.4.8 3 1.2 4.6 1.2 4.5 0 8.2-3.7 8.2-8.2 0-2.1-.9-4.2-2.4-5.7zm-5.8 12.9c-1.4 0-2.9-.4-4.1-1.1l-.3-.2-3.1.8.8-3.1-.2-.3c-.8-1.2-1.2-2.7-1.2-4.1 0-3.8 3.1-6.9 6.9-6.9 1.9 0 3.6.8 4.9 2 1.3 1.3 2 3 2 4.9 0 3.8-3.1 6.9-6.9 6.9z" />
-                  </svg>
-                  <span>WhatsApp +226 70 21 38 31</span>
-                </a>
-              </motion.div>
+              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
             </div>
           </motion.div>
           </>
         }
       </AnimatePresence>
-    </>
-  );
+    </>);
+
 }
