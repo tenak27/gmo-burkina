@@ -25,7 +25,6 @@ import CareersSection from "../components/landing/CareersSection";
 import CoverageMap from "../components/landing/CoverageMap";
 import NewsletterSection from "../components/landing/NewsletterSection";
 import ContactSection from "../components/landing/ContactSection";
-import BrandLaunchSection from "../components/landing/BrandLaunchSection";
 import Footer from "../components/landing/Footer";
 
 const IMAGES = {
@@ -82,7 +81,6 @@ export default function Home() {
       <PartnersCarousel />
       <ServicesSection />
       <ProductsSection />
-      <BrandLaunchSection />
       <CatalogSection />
       <StatsSection />
       <AboutSection />
