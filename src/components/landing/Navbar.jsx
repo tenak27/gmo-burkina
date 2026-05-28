@@ -200,11 +200,23 @@ export default function Navbar({ heroHeight }) {
               <div className="bg-gradient-to-r from-gmo-green/5 to-gmo-red/5 border-b border-gray-100 px-6 py-5 fixed top-0 left-0 right-0 max-w-sm z-50">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-heading text-lg font-black text-obsidian">MENU</span>
-                  <button
-                  onClick={() => setMobileOpen(false)}
-                  className="p-2 text-obsidian/50 hover:text-gmo-red hover:bg-gmo-red/10 rounded-xl transition-all cursor-pointer">
-                    <X className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {!isAuthenticated && (
+                      <button
+                        onClick={() => {
+                          base44.auth.redirectToLogin(window.location.href);
+                          setMobileOpen(false);
+                        }}
+                        className="p-2 text-gmo-green hover:bg-gmo-green/10 rounded-lg transition-all text-xs font-bold">
+                        Connexion
+                      </button>
+                    )}
+                    <button
+                    onClick={() => setMobileOpen(false)}
+                    className="p-2 text-obsidian/50 hover:text-gmo-red hover:bg-gmo-red/10 rounded-xl transition-all cursor-pointer">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
                 <img
                 src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
