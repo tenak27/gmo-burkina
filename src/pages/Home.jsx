@@ -57,11 +57,11 @@ export default function Home() {
       <PartnershipBanner />
       <PartnersCarousel />
       <ServicesSection />
+      <ProductsSection />
+      <CatalogSection />
       <StatsSection />
       <AboutSection />
       <TeamSection />
-      <ProductsSection />
-      <CatalogSection />
       <ProjectsSection />
       <TestimonialsSection />
       <RSESection />
