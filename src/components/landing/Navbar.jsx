@@ -147,22 +147,29 @@ export default function Navbar({ heroHeight }) {
 
             {/* Right side */}
             <div className="flex items-center gap-2">
-              {isAuthenticated && dashLink &&
-              <>
+              {isAuthenticated && dashLink ? (
+                <>
                   <Link
-                  to={dashLink.to}
-                  className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                    to={dashLink.to}
+                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                     <User className="w-3.5 h-3.5" />
                     {dashLink.label}
                   </Link>
                   <button
-                  onClick={() => logout()}
-                  className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                    onClick={() => logout()}
+                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                     <LogIn className="w-3.5 h-3.5 rotate-180" />
                     Déconnexion
                   </button>
                 </>
-              }
+              ) : (
+                <button
+                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                  className="inline-flex items-center gap-1.5 bg-obsidian/8 hover:bg-obsidian/15 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Connexion</span>
+                </button>
+              )}
               <a
                 href="https://wa.me/+22670213831"
                 target="_blank"
