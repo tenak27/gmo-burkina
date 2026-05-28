@@ -137,15 +137,12 @@ export default function Navbar({ heroHeight }) {
             <motion.button
               onClick={() => {window.scrollTo({ top: 0, behavior: "smooth" });}}
               className="flex-1 mx-3 sm:hidden flex items-center justify-center"
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}>
-              <motion.img
+              <img
                 src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
                 alt="GMO"
-                className="h-8 w-auto object-contain"
-                animate={{ y: [0, -3, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 2 }} />
+                className="h-8 w-auto object-contain" />
             </motion.button>
 
             {/* Client Space / Login / WhatsApp - Right side */}
