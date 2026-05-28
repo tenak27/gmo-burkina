@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, LogIn, User, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, LogIn, User, ChevronDown, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
@@ -145,24 +145,39 @@ export default function Navbar({ heroHeight }) {
                 className="h-8 w-auto object-contain" />
             </motion.button>
 
-            {/* Client Space - Right side */}
-            <div className="flex items-center gap-3">
-              {isAuthenticated && dashLink &&
-              <>
+            {/* Right side */}
+            <div className="flex items-center gap-2">
+              {isAuthenticated && dashLink ? (
+                <>
                   <Link
-                  to={dashLink?.to || "/client"}
-                  className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer">
+                    to={dashLink.to}
+                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                     <User className="w-3.5 h-3.5" />
-                    {dashLink?.label || "Mon Espace"}
+                    {dashLink.label}
                   </Link>
                   <button
-                  onClick={() => logout()}
-                  className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer">
+                    onClick={() => logout()}
+                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
                     <LogIn className="w-3.5 h-3.5 rotate-180" />
                     Déconnexion
                   </button>
                 </>
-              }
+              ) : (
+                <button
+                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                  className="hidden sm:inline-flex items-center gap-1.5 bg-obsidian/8 hover:bg-obsidian/15 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                  <LogIn className="w-3.5 h-3.5" />
+                  Connexion
+                </button>
+              )}
+              <a
+                href="https://wa.me/+22670213831"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md">
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">WhatsApp</span>
+              </a>
             </div>
           </div>
         </div>
