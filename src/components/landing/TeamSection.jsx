@@ -25,9 +25,16 @@ function OperationalCard3D({ dept, index, isInView }) {
         {/* FRONT FACE */}
         <div
           className={`absolute inset-0 bg-gradient-to-br ${dept.color} border ${dept.border} rounded-2xl p-6`}
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            backgroundImage: `url(${dept.bgImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
         >
-          <div className="flex items-start gap-4 mb-4">
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/40 rounded-2xl" />
+          <div className="relative z-10 flex items-start gap-4 mb-4">
             <div className="text-3xl flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
               {dept.icon}
             </div>
@@ -43,17 +50,12 @@ function OperationalCard3D({ dept, index, isInView }) {
           </div>
 
           {/* KPI row */}
-          <div className="flex items-center justify-between pt-3 border-t border-white/8">
+          <div className="relative z-10 flex items-center justify-between pt-3 border-t border-white/8">
             <span className="text-[10px] font-body text-concrete/30 uppercase tracking-widest">Indicateur clé</span>
             <div className="flex items-center gap-1 text-gmo-green">
               <ChevronRight className="w-3 h-3" />
               <span className="text-[11px] font-heading font-bold">{dept.kpi}</span>
             </div>
-          </div>
-
-          {/* Flip hint */}
-          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span className="text-[9px] font-body text-concrete/20 uppercase tracking-wider">Survolez →</span>
           </div>
         </div>
 
@@ -111,7 +113,8 @@ const OPERATIONAL_TEAM = [
   desc: "PDG et direction exécutive pilotant la stratégie du groupe",
   kpi: "40+ ans d'expertise",
   color: "from-gmo-green/10 to-gmo-green/5",
-  border: "border-gmo-green/20"
+  border: "border-gmo-green/20",
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg"
 },
 {
   dept: "Commercial & Ventes",
@@ -120,7 +123,8 @@ const OPERATIONAL_TEAM = [
   desc: "Commerciaux terrain, responsables secteur et attachés commerciaux",
   kpi: "200+ clients actifs",
   color: "from-blue-500/10 to-blue-600/5",
-  border: "border-blue-200/60"
+  border: "border-blue-200/60",
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg"
 },
 {
   dept: "Logistique & Transport",
@@ -129,7 +133,8 @@ const OPERATIONAL_TEAM = [
   desc: "Chauffeurs, coordinateurs logistiques et planificateurs de tournées",
   kpi: "25+ véhicules en service",
   color: "from-gmo-green/10 to-gmo-green/5",
-  border: "border-gmo-green/20"
+  border: "border-gmo-green/20",
+  bgImage: "https://gmobfaso.com/assets/img/slides/slide-2.jpg"
 },
 {
   dept: "Entrepôts & Stock",
@@ -138,7 +143,8 @@ const OPERATIONAL_TEAM = [
   desc: "Magasiniers, caristes et gestionnaires de stock certifiés",
   kpi: "3 sites de stockage",
   color: "from-amber-500/10 to-amber-600/5",
-  border: "border-amber-200/60"
+  border: "border-amber-200/60",
+  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg"
 },
 {
   dept: "Finance & Comptabilité",
@@ -147,7 +153,8 @@ const OPERATIONAL_TEAM = [
   desc: "DAF, comptables, auditeurs et contrôleurs de gestion OHADA",
   kpi: "Conformité 100%",
   color: "from-purple-500/10 to-purple-600/5",
-  border: "border-purple-200/60"
+  border: "border-purple-200/60",
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png"
 },
 {
   dept: "Ressources Humaines",
@@ -156,7 +163,8 @@ const OPERATIONAL_TEAM = [
   desc: "DRH, chargés de recrutement et formation continue",
   kpi: "80+ collaborateurs",
   color: "from-pink-500/10 to-pink-600/5",
-  border: "border-pink-200/60"
+  border: "border-pink-200/60",
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9858eeb02_Gemini_Generated_Image_x7kj25x7kj25x7kj.png"
 },
 {
   dept: "Informatique & Digital",
@@ -165,7 +173,8 @@ const OPERATIONAL_TEAM = [
   desc: "DSI, développeurs full-stack et administrateurs systèmes",
   kpi: "Plateforme 100% opérationnelle",
   color: "from-cyan-500/10 to-cyan-600/5",
-  border: "border-cyan-200/60"
+  border: "border-cyan-200/60",
+  bgImage: "https://gmobfaso.com/assets/img/slides/slide-1.jpg"
 },
 {
   dept: "Marketing & Communication",
@@ -174,7 +183,8 @@ const OPERATIONAL_TEAM = [
   desc: "Chef de projet marketing, community managers et graphistes",
   kpi: "Présence multi-canaux",
   color: "from-red-500/10 to-red-600/5",
-  border: "border-red-200/60"
+  border: "border-red-200/60",
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg"
 },
 {
   dept: "Service Client",
@@ -183,7 +193,8 @@ const OPERATIONAL_TEAM = [
   desc: "Conseillers clientèle et support après-vente dédiés",
   kpi: "98% satisfaction",
   color: "from-indigo-500/10 to-indigo-600/5",
-  border: "border-indigo-200/60"
+  border: "border-indigo-200/60",
+  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-4.jpg"
 },
 {
   dept: "Qualité & Sécurité",
@@ -192,7 +203,8 @@ const OPERATIONAL_TEAM = [
   desc: "Responsables QSE et auditeurs qualité certifiés",
   kpi: "Normes ISO respectées",
   color: "from-emerald-500/10 to-emerald-600/5",
-  border: "border-emerald-200/60"
+  border: "border-emerald-200/60",
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
 },
 {
   dept: "Achats & Approvisionnement",
@@ -201,7 +213,8 @@ const OPERATIONAL_TEAM = [
   desc: "Buyers, négociateurs et gestionnaires de relations fournisseurs",
   kpi: "50+ fournisseurs partenaires",
   color: "from-teal-500/10 to-teal-600/5",
-  border: "border-teal-200/60"
+  border: "border-teal-200/60",
+  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg"
 }];
 
 
