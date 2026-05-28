@@ -6,7 +6,8 @@ import { base44 } from "@/api/base44Client";
 import {
   Package, Clock, MapPin, ShoppingBag, Phone, LogOut,
   ChevronRight, Truck, CheckCircle2, Circle, AlertCircle, RefreshCw, Plus,
-  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp, FileText, Loader2
+  User, Mail, CreditCard, Calendar, Hash, ChevronDown, ChevronUp, FileText, Loader2,
+  X, Tag, Layers, Info, MessageCircle
 } from "lucide-react";
 import QuoteForm from "@/components/client/QuoteForm";
 import DeliveryProgress from "@/components/client/DeliveryProgress";
@@ -54,6 +55,7 @@ function ClientDashboard() {
   const [clientInfo, setClientInfo] = useState(null);
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [pdfLoading, setPdfLoading] = useState(null);
   const [invoices, setInvoices] = useState([]);
 
@@ -592,7 +594,7 @@ function ClientDashboard() {
                 {products
                   .filter(p => selectedCategory === "all" || p.category === selectedCategory)
                   .map(p => (
-                    <div key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
+                    <div key={p.id} onClick={() => setSelectedProduct(p)} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col cursor-pointer">
                       <div className="aspect-[4/3] bg-gray-50 overflow-hidden relative">
                         {p.image_url ? (
                           <img src={p.image_url} alt={p.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
@@ -604,6 +606,9 @@ function ClientDashboard() {
                         <span className="absolute top-2 left-2 text-[9px] font-heading uppercase tracking-widest text-gmo-red bg-white/90 border border-gmo-red/20 px-2 py-0.5 rounded-full">
                           {p.category || "Autre"}
                         </span>
+                        <div className="absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm text-white text-[9px] px-2 py-0.5 rounded-full font-body">
+                          Voir détails
+                        </div>
                       </div>
                       <div className="p-3 flex flex-col flex-1">
                         <p className="font-heading text-xs font-bold text-obsidian leading-tight mb-1">{p.name}</p>
@@ -632,14 +637,120 @@ function ClientDashboard() {
                             </div>
                           )}
                         </div>
-                        <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%20Burkina%2C%20je%20suis%20${encodeURIComponent(user?.full_name || "")}%20et%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}${p.unit_price ? "%20(%20" + encodeURIComponent(p.unit_price.toLocaleString()) + "%20FCFA)" : ""}%0AVeuillez%20me%20contacter%20pour%20finaliser%20ma%20commande.`}
-                          target="_blank" rel="noopener noreferrer"
+                        <button
                           className="w-full flex justify-center items-center gap-1.5 bg-gmo-green text-white text-[10px] font-heading font-bold py-2.5 rounded-xl hover:bg-gmo-green/80 active:scale-95 transition-all duration-200 shadow-sm shadow-gmo-green/30">
-                          🛒 Commander via WhatsApp
-                        </a>
+                          Voir les détails →
+                        </button>
                       </div>
                     </div>
                   ))}
+              </div>
+            )}
+
+            {/* Modal détail produit */}
+            {selectedProduct && (
+              <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={() => setSelectedProduct(null)}>
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+                <div
+                  className="relative bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+                  onClick={e => e.stopPropagation()}
+                >
+                  {/* Image */}
+                  <div className="relative h-52 sm:h-60 bg-gray-100 flex-shrink-0">
+                    {selectedProduct.image_url ? (
+                      <img src={selectedProduct.image_url} alt={selectedProduct.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-200">
+                        <Package className="w-16 h-16" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <button onClick={() => setSelectedProduct(null)}
+                      className="absolute top-3 right-3 w-8 h-8 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/60 transition-colors">
+                      <X className="w-4 h-4" />
+                    </button>
+                    <span className="absolute bottom-3 left-3 text-[10px] font-heading uppercase tracking-widest text-white bg-gmo-red px-2.5 py-1 rounded-full">
+                      {selectedProduct.category || "Autre"}
+                    </span>
+                  </div>
+
+                  {/* Contenu scrollable */}
+                  <div className="overflow-y-auto flex-1 p-5">
+                    <h3 className="font-heading text-lg font-bold text-obsidian mb-1">{selectedProduct.name}</h3>
+                    {selectedProduct.description && (
+                      <p className="text-sm text-obsidian/55 font-body leading-relaxed mb-4">{selectedProduct.description}</p>
+                    )}
+
+                    {/* Grille de prix */}
+                    <div className="bg-gray-50 rounded-2xl p-4 mb-4">
+                      <p className="text-[10px] font-heading uppercase tracking-widest text-obsidian/40 mb-3 flex items-center gap-1.5">
+                        <Tag className="w-3 h-3" /> Tarification
+                      </p>
+                      <div className="space-y-2.5">
+                        {selectedProduct.unit_price && (
+                          <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-gray-100">
+                            <div>
+                              <p className="font-heading text-xs font-bold text-obsidian">{selectedProduct.unit || "Carton"}</p>
+                              <p className="text-[10px] text-obsidian/40 font-body">Prix unitaire</p>
+                            </div>
+                            <p className="font-heading text-base font-black text-gmo-green">{selectedProduct.unit_price.toLocaleString()} <span className="text-xs font-normal">FCFA</span></p>
+                          </div>
+                        )}
+                        {selectedProduct.wholesale_price && selectedProduct.wholesale_price !== selectedProduct.unit_price && (
+                          <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-amber-100">
+                            <div>
+                              <p className="font-heading text-xs font-bold text-obsidian">
+                                {selectedProduct.unit === "cartouche" ? "Cartouche" : selectedProduct.unit === "paquet" ? "Paquet" : "Grossiste"}
+                              </p>
+                              <p className="text-[10px] text-obsidian/40 font-body">Prix grossiste</p>
+                            </div>
+                            <p className="font-heading text-base font-black text-amber-600">{selectedProduct.wholesale_price.toLocaleString()} <span className="text-xs font-normal">FCFA</span></p>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-gray-100 opacity-60">
+                          <div>
+                            <p className="font-heading text-xs font-bold text-obsidian">Détail / Unité</p>
+                            <p className="text-[10px] text-obsidian/40 font-body">Prix à la pièce</p>
+                          </div>
+                          <p className="text-xs text-obsidian/40 font-body">Sur demande</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Infos produit */}
+                    <div className="grid grid-cols-2 gap-2 mb-5">
+                      {selectedProduct.unit && (
+                        <div className="bg-gray-50 rounded-xl p-3 flex items-center gap-2">
+                          <Layers className="w-3.5 h-3.5 text-obsidian/30 flex-shrink-0" />
+                          <div>
+                            <p className="text-[9px] text-obsidian/35 font-body uppercase tracking-wide">Conditionnement</p>
+                            <p className="text-xs font-heading font-bold text-obsidian">{selectedProduct.unit}</p>
+                          </div>
+                        </div>
+                      )}
+                      {selectedProduct.stock_quantity !== undefined && (
+                        <div className={`rounded-xl p-3 flex items-center gap-2 ${selectedProduct.stock_quantity > 0 ? "bg-green-50" : "bg-red-50"}`}>
+                          <Info className={`w-3.5 h-3.5 flex-shrink-0 ${selectedProduct.stock_quantity > 0 ? "text-gmo-green" : "text-red-400"}`} />
+                          <div>
+                            <p className="text-[9px] text-obsidian/35 font-body uppercase tracking-wide">Disponibilité</p>
+                            <p className={`text-xs font-heading font-bold ${selectedProduct.stock_quantity > 0 ? "text-gmo-green" : "text-red-500"}`}>
+                              {selectedProduct.stock_quantity > 0 ? "En stock" : "Rupture"}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CTA */}
+                    <a
+                      href={`https://wa.me/22601181717?text=Bonjour%20GMO%20Burkina%2C%20je%20suis%20${encodeURIComponent(user?.full_name || "")}%20et%20je%20souhaite%20commander%20:%20${encodeURIComponent(selectedProduct.name)}${selectedProduct.unit_price ? "%20(%20" + encodeURIComponent(selectedProduct.unit_price.toLocaleString()) + "%20FCFA%2F" + encodeURIComponent(selectedProduct.unit || "carton") + ")" : ""}%0AVeuillez%20me%20contacter%20pour%20finaliser%20ma%20commande.`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="w-full flex justify-center items-center gap-2 bg-gmo-green text-white text-sm font-heading font-bold py-3.5 rounded-xl hover:bg-gmo-green/80 transition-colors shadow-lg shadow-gmo-green/20"
+                    >
+                      <MessageCircle className="w-4 h-4" /> Commander via WhatsApp
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
 
