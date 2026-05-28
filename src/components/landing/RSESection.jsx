@@ -1,6 +1,84 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Leaf, Heart, Users, Sun, Recycle, HandHeart, GraduationCap, Building2 } from "lucide-react";
+
+function RSECard3D({ pillar, index, isInView }) {
+  const [flipped, setFlipped] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.08 }}
+      className="relative"
+      style={{ perspective: "1000px", height: "340px" }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+    >
+      <div
+        className="w-full h-full relative transition-transform duration-700"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* FRONT FACE */}
+        <div
+          className={`absolute inset-0 bg-white border ${pillar.border} rounded-2xl p-7 shadow-sm`}
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+        >
+          <div className={`inline-flex w-11 h-11 ${pillar.bg} border ${pillar.border} items-center justify-center rounded-xl mb-5`}>
+            <pillar.icon className={`w-5 h-5 ${pillar.color}`} />
+          </div>
+          <span className={`font-heading text-[9px] uppercase tracking-[0.3em] ${pillar.color} block mb-2`}>{pillar.category}</span>
+          <h4 className="font-heading text-base font-bold text-obsidian mb-3 leading-tight">{pillar.title}</h4>
+          <p className="font-body text-xs text-obsidian/55 leading-relaxed mb-5">{pillar.description}</p>
+          <ul className="space-y-1.5">
+            {pillar.actions.map((action, j) => (
+              <li key={j} className="flex items-center gap-2 text-xs font-body text-obsidian/60">
+                <div className={`w-1.5 h-1.5 rounded-full ${pillar.bg.replace('/10', '/60')} flex-shrink-0`} />
+                {action}
+              </li>
+            ))}
+          </ul>
+          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-[9px] font-body text-obsidian/30 uppercase tracking-wider">Survolez →</span>
+          </div>
+        </div>
+
+        {/* BACK FACE (rotated 180deg) */}
+        <div
+          className={`absolute inset-0 ${pillar.bg.replace('/10', '/90')} ${pillar.color.replace('text-', 'bg-').replace('400', '500').replace('gmo-green', 'gmo-green')} rounded-2xl p-7 flex flex-col items-center justify-center text-center border ${pillar.border} shadow-2xl`}
+          style={{ 
+            backfaceVisibility: "hidden", 
+            WebkitBackfaceVisibility: "hidden", 
+            transform: "rotateY(180deg)",
+            background: pillar.category === "Environnement" ? "linear-gradient(135deg, #059669 0%, #047857 100%)" :
+                       pillar.category === "Éducation" ? "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)" :
+                       pillar.category === "Social" ? "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)" :
+                       pillar.category === "Emploi" ? "linear-gradient(135deg, #16a34a 0%, #15803d 100%)" :
+                       pillar.category === "Énergie" ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)" :
+                       "linear-gradient(135deg, #a855f7 0%, #9333ea 100%)"
+          }}
+        >
+          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+            <pillar.icon className="w-8 h-8 text-white" />
+          </div>
+          <h4 className="font-heading text-lg font-black text-white mb-3">{pillar.category}</h4>
+          <div className="w-12 h-[2px] bg-white/40 mb-4" />
+          <p className="font-body text-sm text-white/90 leading-relaxed mb-4">{pillar.title}</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {pillar.actions.slice(0, 2).map((action, j) => (
+              <span key={j} className="text-[10px] font-body text-white/80 bg-white/15 px-3 py-1.5 rounded-full">
+                {action}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 const RSE_PILLARS = [
   {
@@ -101,32 +179,10 @@ export default function RSESection() {
             <div className="w-16 h-[2px] bg-gmo-red mx-auto mt-8" />
           </motion.div>
 
-          {/* Pillars grid */}
+          {/* Pillars grid 3D flip */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
             {RSE_PILLARS.map((pillar, i) => (
-              <motion.div
-                key={pillar.category}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.08 }}
-                className={`group bg-white border ${pillar.border} hover:shadow-lg transition-all duration-500 p-7 relative overflow-hidden`}
-              >
-                <div className={`inline-flex w-11 h-11 ${pillar.bg} border ${pillar.border} items-center justify-center rounded-xl mb-5`}>
-                  <pillar.icon className={`w-5 h-5 ${pillar.color}`} />
-                </div>
-                <span className={`font-heading text-[9px] uppercase tracking-[0.3em] ${pillar.color} block mb-2`}>{pillar.category}</span>
-                <h4 className="font-heading text-base font-bold text-obsidian mb-3 leading-tight">{pillar.title}</h4>
-                <p className="font-body text-xs text-obsidian/55 leading-relaxed mb-5">{pillar.description}</p>
-                <ul className="space-y-1.5">
-                  {pillar.actions.map((action, j) => (
-                    <li key={j} className="flex items-center gap-2 text-xs font-body text-obsidian/60">
-                      <div className={`w-1.5 h-1.5 rounded-full ${pillar.bg.replace('/10', '/60')} flex-shrink-0`} />
-                      {action}
-                    </li>
-                  ))}
-                </ul>
-                <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-green w-0 group-hover:w-full transition-all duration-500" />
-              </motion.div>
+              <RSECard3D key={pillar.category} pillar={pillar} index={i} isInView={isInView} />
             ))}
           </div>
 
