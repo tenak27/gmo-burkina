@@ -111,7 +111,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/[0.05] pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-[10px] text-white/15">
-            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · Tous droits réservés
+            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <Link to="/client" className="text-white/15 hover:text-white/15 transition-colors">T</Link><Link to="/detaillant" className="text-white/15 hover:text-white/15 transition-colors">ous droits réservés</Link>
           </p>
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3 text-gmo-green/40" />
