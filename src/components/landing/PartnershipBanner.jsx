@@ -13,9 +13,9 @@ export default function PartnershipBanner() {
           
           {/* Left - Text Content */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6">
             
             <div className="flex items-center gap-3">
@@ -69,9 +69,9 @@ export default function PartnershipBanner() {
 
           {/* Right - Logos Display */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, x: 50, scale: 0.97 }}
+            animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+            transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="relative">
             
             <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-2xl p-8 lg:p-12 shadow-lg">

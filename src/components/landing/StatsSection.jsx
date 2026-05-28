@@ -92,9 +92,10 @@ export default function StatsSection() {
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 40, scale: 0.94 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ delay: i * 0.12, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.04, transition: { duration: 0.2 } }}
               className="group bg-obsidian p-8 lg:p-10 text-center hover:bg-white/5 transition-colors duration-300"
             >
               <div className="w-12 h-12 bg-gmo-green/10 rounded-xl flex items-center justify-center mx-auto mb-5 group-hover:bg-gmo-green/20 transition-colors duration-300">

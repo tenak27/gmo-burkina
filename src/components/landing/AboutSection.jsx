@@ -48,9 +48,9 @@ export default function AboutSection() {
             {/* Images */}
             <div className="relative">
               <motion.div
-                initial={{ opacity: 0, x: -60 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.8 }}
+                initial={{ opacity: 0, x: -70, scale: 0.97 }}
+                   animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+                   transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
                 className="relative z-10"
               >
                 <img
@@ -200,9 +200,9 @@ export default function AboutSection() {
             {VALUES.map((v, i) => (
               <motion.div
                 key={v.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={valuesInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.1 }}
+                initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                animate={valuesInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{ delay: i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="group bg-obsidian p-8 hover:bg-obsidian/80 transition-all duration-300 relative overflow-hidden"
               >
                 <div

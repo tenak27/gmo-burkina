@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import Navbar from "../components/landing/Navbar";
 import HeroSection from "../components/landing/HeroSection";
@@ -48,7 +48,30 @@ const FALLBACK_GALLERY = [
 export default function Home() {
   const [galleryImages, setGalleryImages] = useState(FALLBACK_GALLERY);
 
-
+  // Smooth section reveal via IntersectionObserver on all sections
+  useEffect(() => {
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      },
+      { threshold: 0.06, rootMargin: "-30px 0px" }
+    );
+    sections.forEach((s) => {
+      if (!s.style.opacity) {
+        s.style.transition = "opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1)";
+        s.style.opacity = "0";
+        s.style.transform = "translateY(24px)";
+      }
+      observer.observe(s);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="bg-obsidian min-h-screen">
