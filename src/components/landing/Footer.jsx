@@ -53,7 +53,7 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <a href="https://wa.me/22670213831" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/22601181717" target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 bg-gmo-green/12 border border-gmo-green/25 text-gmo-green text-xs px-3 py-2 rounded-full hover:bg-gmo-green hover:text-white transition-all duration-300 hover:shadow-md hover:shadow-gmo-green/20">
               <MessageCircle className="w-3 h-3" /> WhatsApp
             </a>
@@ -97,7 +97,7 @@ export default function Footer() {
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-3 h-3 text-gmo-green" />
                 </div>
-                <a href="tel:+22625331900" className="font-body text-xs text-white/35 hover:text-gmo-green transition-colors">+226 25 33 19 00</a>
+                <a href="tel:+22601181717" className="font-body text-xs text-white/35 hover:text-gmo-green transition-colors">+226 01 18 17 17</a>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0">

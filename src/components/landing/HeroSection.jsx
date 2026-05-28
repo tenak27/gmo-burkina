@@ -147,7 +147,7 @@ export default function HeroSection() {
                 </>
               )}
               <a
-                href="tel:+22625331900"
+                href="tel:+22601181717"
                 className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg btn-glow-green"
               >
                 <Phone className="w-4 h-4" />
@@ -193,7 +193,7 @@ export default function HeroSection() {
                 {dashLink.label}
               </Link>
             )}
-            <a href="tel:+22625331900"
+            <a href="tel:+22601181717"
               className="mt-4 flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-base px-8 py-4 rounded-xl">
               <Phone className="w-5 h-5" /> Appeler
             </a>

@@ -102,8 +102,10 @@ export default function Navbar({ heroHeight }) {
             {/* Hamburger - Left side */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 text-obsidian">
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              className="relative w-11 h-11 flex flex-col items-center justify-center gap-[5px] group rounded-xl hover:bg-gmo-green/8 transition-all duration-300">
+              <span className={`block h-[2.5px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-6 rotate-45 translate-y-[7.5px]' : 'w-6'}`} />
+              <span className={`block h-[2.5px] bg-obsidian rounded-full transition-all duration-300 ${mobileOpen ? 'w-0 opacity-0' : 'w-5 group-hover:w-6'}`} />
+              <span className={`block h-[2.5px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-6 -rotate-45 -translate-y-[7.5px]' : 'w-4 group-hover:w-6'}`} />
             </button>
 
             {/* Desktop Logo - Centered with seamless infinite ticker */}
@@ -165,13 +167,13 @@ export default function Navbar({ heroHeight }) {
               ) : (
                 <button
                   onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="inline-flex items-center gap-1.5 bg-obsidian/8 hover:bg-obsidian/15 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
+                  className="inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all border border-gmo-green/20">
                   <LogIn className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Connexion</span>
+                  <span>Connexion</span>
                 </button>
               )}
               <a
-                href="https://wa.me/+22670213831"
+                href="https://wa.me/+22601181717"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md">
