@@ -2,6 +2,77 @@ import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, Users, TrendingUp, Award, ChevronRight } from "lucide-react";
 
+function OperationalCard3D({ dept, index, isInView }) {
+  const [flipped, setFlipped] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.09, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="relative"
+      style={{ perspective: "1000px", height: "220px" }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+    >
+      <div
+        className="w-full h-full relative transition-transform duration-700"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* FRONT FACE */}
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${dept.color} border ${dept.border} rounded-2xl p-6`}
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+        >
+          <div className="flex items-start gap-4 mb-4">
+            <div className="text-3xl flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+              {dept.icon}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
+                <p className="font-heading text-sm font-bold text-concrete leading-tight">{dept.dept}</p>
+                <span className="font-heading text-xs font-black text-gmo-green bg-gmo-green/15 border border-gmo-green/25 px-2.5 py-0.5 rounded-full flex-shrink-0">
+                  {dept.count}
+                </span>
+              </div>
+              <p className="font-body text-[11px] text-concrete/40 leading-relaxed">{dept.desc}</p>
+            </div>
+          </div>
+
+          {/* KPI row */}
+          <div className="flex items-center justify-between pt-3 border-t border-white/8">
+            <span className="text-[10px] font-body text-concrete/30 uppercase tracking-widest">Indicateur clé</span>
+            <div className="flex items-center gap-1 text-gmo-green">
+              <ChevronRight className="w-3 h-3" />
+              <span className="text-[11px] font-heading font-bold">{dept.kpi}</span>
+            </div>
+          </div>
+
+          {/* Flip hint */}
+          <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="text-[9px] font-body text-concrete/20 uppercase tracking-wider">Survolez →</span>
+          </div>
+        </div>
+
+        {/* BACK FACE (rotated 180deg) */}
+        <div
+          className="absolute inset-0 bg-gmo-green rounded-2xl p-6 flex flex-col items-center justify-center text-center border border-gmo-green/30 shadow-2xl"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+        >
+          <div className="text-4xl mb-4">{dept.icon}</div>
+          <p className="font-heading text-lg font-black text-white mb-2">{dept.count}</p>
+          <p className="font-body text-xs text-white/80 mb-4">{dept.dept}</p>
+          <div className="w-8 h-[2px] bg-white/30 mb-4" />
+          <p className="font-body text-[11px] text-white/70 leading-relaxed">{dept.desc}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 const EXECUTIVE_BOARD = [
 {
   name: "Hama TRAORE",
@@ -362,41 +433,11 @@ export default function TeamSection() {
             </div>
           </motion.div>
 
-          {/* Dept cards */}
+          {/* Dept cards 3D flip */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {OPERATIONAL_TEAM.map((dept, i) =>
-            <motion.div
-              key={dept.dept}
-              initial={{ opacity: 0, y: 24 }}
-              animate={teamInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.09, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className={`group bg-gradient-to-br ${dept.color} border ${dept.border} rounded-2xl p-6 hover:scale-[1.02] transition-transform duration-300`}>
-              
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="text-3xl flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-                    {dept.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
-                      <p className="font-heading text-sm font-bold text-concrete leading-tight">{dept.dept}</p>
-                      <span className="font-heading text-xs font-black text-gmo-green bg-gmo-green/15 border border-gmo-green/25 px-2.5 py-0.5 rounded-full flex-shrink-0">
-                        {dept.count}
-                      </span>
-                    </div>
-                    <p className="font-body text-[11px] text-concrete/40 leading-relaxed">{dept.desc}</p>
-                  </div>
-                </div>
-
-                {/* KPI row */}
-                <div className="flex items-center justify-between pt-3 border-t border-white/8">
-                  <span className="text-[10px] font-body text-concrete/30 uppercase tracking-widest">Indicateur clé</span>
-                  <div className="flex items-center gap-1 text-gmo-green">
-                    <ChevronRight className="w-3 h-3" />
-                    <span className="text-[11px] font-heading font-bold">{dept.kpi}</span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
+            {OPERATIONAL_TEAM.map((dept, i) => (
+              <OperationalCard3D key={dept.dept} dept={dept} index={i} isInView={teamInView} />
+            ))}
           </div>
 
           {/* Bottom CTA */}
