@@ -70,25 +70,16 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Espaces */}
+          {/* Légal */}
           <div>
-            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Espaces</p>
-            <div className="space-y-2.5">
-              <Link to="/client" className="flex items-center gap-2 text-xs font-body text-white/35 hover:text-gmo-green transition-colors">
-                <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/60" />Espace Client
-              </Link>
-              <Link to="/detaillant" className="flex items-center gap-2 text-xs font-body text-white/35 hover:text-gmo-red transition-colors">
-                <span className="w-1.5 h-1.5 rounded-full bg-gmo-red/60" />Espace Détaillant
-              </Link>
-            </div>
-            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mt-6 mb-3">Légal</p>
-            <div className="space-y-1.5">
-              {["Mentions légales", "Confidentialité", "CGV"].map(l => (
-                <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/25 hover:text-white/55 transition-colors">
-                  <FileText className="w-2.5 h-2.5 opacity-50" />{l}
-                </a>
-              ))}
-            </div>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Légal</p>
+           <div className="space-y-1.5">
+             {["Mentions légales", "Confidentialité", "CGV"].map(l => (
+               <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/25 hover:text-white/55 transition-colors">
+                 <FileText className="w-2.5 h-2.5 opacity-50" />{l}
+               </a>
+             ))}
+           </div>
           </div>
 
           {/* Contact */}
