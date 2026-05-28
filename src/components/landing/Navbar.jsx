@@ -102,10 +102,10 @@ export default function Navbar({ heroHeight }) {
             {/* Hamburger - Left side */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="relative w-11 h-11 flex flex-col items-center justify-center gap-[5px] group rounded-xl hover:bg-gmo-green/8 transition-all duration-300">
-              <span className={`block h-[2.5px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-6 rotate-45 translate-y-[7.5px]' : 'w-6'}`} />
-              <span className={`block h-[2.5px] bg-obsidian rounded-full transition-all duration-300 ${mobileOpen ? 'w-0 opacity-0' : 'w-5 group-hover:w-6'}`} />
-              <span className={`block h-[2.5px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-6 -rotate-45 -translate-y-[7.5px]' : 'w-4 group-hover:w-6'}`} />
+              className="relative w-14 h-14 flex flex-col items-center justify-center gap-[7px] group rounded-2xl hover:bg-gmo-green/8 transition-all duration-300">
+              <span className={`block h-[3px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-8 rotate-45 translate-y-[10px]' : 'w-8'}`} />
+              <span className={`block h-[3px] bg-obsidian rounded-full transition-all duration-300 ${mobileOpen ? 'w-0 opacity-0' : 'w-6 group-hover:w-8'}`} />
+              <span className={`block h-[3px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-8 -rotate-45 -translate-y-[10px]' : 'w-5 group-hover:w-8'}`} />
             </button>
 
             {/* Desktop Logo - Centered with seamless infinite ticker */}
