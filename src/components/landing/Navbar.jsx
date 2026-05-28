@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, LogIn, User, ChevronDown, MessageCircle } from "lucide-react";
+import { Menu, X, Phone, LogIn, User, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
@@ -145,9 +145,9 @@ export default function Navbar({ heroHeight }) {
                 className="h-8 w-auto object-contain" />
             </motion.button>
 
-            {/* Client Space / Login / WhatsApp - Right side */}
+            {/* Client Space - Right side */}
             <div className="flex items-center gap-3">
-              {isAuthenticated ?
+              {isAuthenticated && dashLink &&
               <>
                   <Link
                   to={dashLink?.to || "/client"}
@@ -161,25 +161,8 @@ export default function Navbar({ heroHeight }) {
                     <LogIn className="w-3.5 h-3.5 rotate-180" />
                     Déconnexion
                   </button>
-                </> :
-
-              <button
-                onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                className="hidden sm:inline-flex items-center gap-1.5 bg-obsidian/5 hover:bg-obsidian/10 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer">
-                  <LogIn className="w-3.5 h-3.5" />
-                  Connexion
-                </button>
+                </>
               }
-              {/* WhatsApp button */}
-              <a
-                href="https://wa.me/+22670213831"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer"
-                title="+226 70 21 38 31">
-                <MessageCircle className="w-3.5 h-3.5 fill-current" />
-                <span className="hidden sm:inline">WhatsApp</span>
-              </a>
             </div>
           </div>
         </div>

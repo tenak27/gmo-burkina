@@ -129,7 +129,7 @@ export default function HeroSection() {
               transition={{ delay: 0.4 }}
               className="hidden lg:flex items-center gap-3"
             >
-              {isAuthenticated && dashLink ? (
+              {isAuthenticated && dashLink && (
                 <>
                   <Link
                     to={dashLink.to}
@@ -145,14 +145,6 @@ export default function HeroSection() {
                     Déco.
                   </button>
                 </>
-              ) : (
-                <button
-                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="flex items-center gap-2 text-white/65 font-heading font-bold text-sm border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:text-white hover:bg-white/8 transition-all"
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  Connexion
-                </button>
               )}
               <a
                 href="tel:+22625331900"
