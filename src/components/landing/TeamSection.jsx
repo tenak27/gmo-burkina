@@ -114,7 +114,7 @@ const OPERATIONAL_TEAM = [
   kpi: "40+ ans d'expertise",
   color: "from-gmo-green/10 to-gmo-green/5",
   border: "border-gmo-green/20",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg"
+  bgImage: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80"
 },
 {
   dept: "Commercial & Ventes",
@@ -124,7 +124,7 @@ const OPERATIONAL_TEAM = [
   kpi: "200+ clients actifs",
   color: "from-blue-500/10 to-blue-600/5",
   border: "border-blue-200/60",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg"
+  bgImage: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80"
 },
 {
   dept: "Logistique & Transport",
@@ -134,7 +134,7 @@ const OPERATIONAL_TEAM = [
   kpi: "25+ véhicules en service",
   color: "from-gmo-green/10 to-gmo-green/5",
   border: "border-gmo-green/20",
-  bgImage: "https://gmobfaso.com/assets/img/slides/slide-2.jpg"
+  bgImage: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80"
 },
 {
   dept: "Entrepôts & Stock",
@@ -144,7 +144,7 @@ const OPERATIONAL_TEAM = [
   kpi: "3 sites de stockage",
   color: "from-amber-500/10 to-amber-600/5",
   border: "border-amber-200/60",
-  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg"
+  bgImage: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80"
 },
 {
   dept: "Finance & Comptabilité",
@@ -154,7 +154,7 @@ const OPERATIONAL_TEAM = [
   kpi: "Conformité 100%",
   color: "from-purple-500/10 to-purple-600/5",
   border: "border-purple-200/60",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png"
+  bgImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80"
 },
 {
   dept: "Ressources Humaines",
@@ -164,7 +164,7 @@ const OPERATIONAL_TEAM = [
   kpi: "80+ collaborateurs",
   color: "from-pink-500/10 to-pink-600/5",
   border: "border-pink-200/60",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9858eeb02_Gemini_Generated_Image_x7kj25x7kj25x7kj.png"
+  bgImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80"
 },
 {
   dept: "Informatique & Digital",
@@ -174,7 +174,7 @@ const OPERATIONAL_TEAM = [
   kpi: "Plateforme 100% opérationnelle",
   color: "from-cyan-500/10 to-cyan-600/5",
   border: "border-cyan-200/60",
-  bgImage: "https://gmobfaso.com/assets/img/slides/slide-1.jpg"
+  bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80"
 },
 {
   dept: "Marketing & Communication",
@@ -184,7 +184,7 @@ const OPERATIONAL_TEAM = [
   kpi: "Présence multi-canaux",
   color: "from-red-500/10 to-red-600/5",
   border: "border-red-200/60",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg"
+  bgImage: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=600&q=80"
 },
 {
   dept: "Service Client",
@@ -194,7 +194,7 @@ const OPERATIONAL_TEAM = [
   kpi: "98% satisfaction",
   color: "from-indigo-500/10 to-indigo-600/5",
   border: "border-indigo-200/60",
-  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-4.jpg"
+  bgImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80"
 },
 {
   dept: "Qualité & Sécurité",
@@ -204,7 +204,7 @@ const OPERATIONAL_TEAM = [
   kpi: "Normes ISO respectées",
   color: "from-emerald-500/10 to-emerald-600/5",
   border: "border-emerald-200/60",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
+  bgImage: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80"
 },
 {
   dept: "Achats & Approvisionnement",
@@ -214,7 +214,7 @@ const OPERATIONAL_TEAM = [
   kpi: "50+ fournisseurs partenaires",
   color: "from-teal-500/10 to-teal-600/5",
   border: "border-teal-200/60",
-  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg"
+  bgImage: "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?w=600&q=80"
 }];
 
 
