@@ -150,20 +150,12 @@ export default function Navbar({ heroHeight }) {
             {/* Right side */}
             <div className="flex items-center gap-2">
               {isAuthenticated && dashLink ? (
-                <>
-                  <Link
-                    to={dashLink.to}
-                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
-                    <User className="w-3.5 h-3.5" />
-                    {dashLink.label}
-                  </Link>
-                  <button
-                    onClick={() => logout()}
-                    className="hidden sm:inline-flex items-center gap-1.5 bg-gmo-red/10 hover:bg-gmo-red/20 text-gmo-red font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all">
-                    <LogIn className="w-3.5 h-3.5 rotate-180" />
-                    Déconnexion
-                  </button>
-                </>
+                <Link
+                  to={dashLink.to}
+                  className="inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all border border-gmo-green/20">
+                  <User className="w-3.5 h-3.5" />
+                  <span>Mon Espace</span>
+                </Link>
               ) : (
                 <button
                   onClick={() => base44.auth.redirectToLogin(window.location.href)}
@@ -210,7 +202,15 @@ export default function Navbar({ heroHeight }) {
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-heading text-lg font-black text-obsidian">MENU</span>
                   <div className="flex items-center gap-2">
-                    {!isAuthenticated && (
+                    {isAuthenticated && dashLink ? (
+                      <Link
+                        to={dashLink.to}
+                        onClick={() => setMobileOpen(false)}
+                        className="p-2 text-gmo-green hover:bg-gmo-green/10 rounded-lg transition-all text-xs font-bold flex items-center gap-1">
+                        <User className="w-3.5 h-3.5" />
+                        Mon Espace
+                      </Link>
+                    ) : (
                       <button
                         onClick={() => {
                           base44.auth.redirectToLogin(window.location.href);
@@ -332,7 +332,15 @@ export default function Navbar({ heroHeight }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
                 className="mb-2">
-                
+                <Link
+                  to={dashLink.to}
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-4 py-3.5 font-heading text-base font-bold text-gmo-green bg-gradient-to-r from-gmo-green/8 to-transparent rounded-xl transition-all">
+                  <div className="flex items-center gap-3">
+                    <User className="w-4 h-4 text-gmo-green" />
+                    Mon Espace
+                  </div>
+                </Link>
 
 
 
