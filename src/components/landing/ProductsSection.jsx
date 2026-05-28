@@ -56,6 +56,8 @@ function ProductCard({ product, index }) {
       transition={{ duration: 0.6, delay: (index % 4) * 0.09, ease: [0.22, 1, 0.36, 1] }}
       className="cursor-pointer"
       style={{ perspective: "1000px", height: "320px" }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
       onClick={() => setFlipped(!flipped)}
     >
       <div
