@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 
@@ -46,7 +46,7 @@ const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 function ProductCard({ product, index }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const [expanded, setExpanded] = useState(false);
+  const [flipped, setFlipped] = useState(false);
 
   return (
     <motion.div
@@ -54,87 +54,79 @@ function ProductCard({ product, index }) {
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
-      className="group relative bg-white border border-obsidian/8 flex flex-col overflow-hidden hover:shadow-xl transition-all duration-500"
+      className="cursor-pointer"
+      style={{ perspective: "1000px", height: "320px" }}
+      onClick={() => setFlipped(!flipped)}
     >
-      {/* Image */}
-      <div className="relative overflow-hidden bg-gray-50 aspect-[4/3]">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/10 transition-all duration-500" />
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          <span className="font-body text-[10px] uppercase tracking-widest text-gmo-red bg-white/90 backdrop-blur-sm border border-gmo-red/20 px-3 py-1 rounded-sm">
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transformStyle: "preserve-3d",
+          transition: "transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1)",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* FACE AVANT — blanche */}
+        <div
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          className="absolute inset-0 bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col p-5 overflow-hidden"
+        >
+          {/* Image */}
+          <div className="flex-1 flex items-center justify-center mb-4">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-28 h-28 object-contain drop-shadow-md"
+            />
+          </div>
+          {/* Badge catégorie */}
+          <span className="self-start font-body text-[10px] text-obsidian/60 bg-gray-100 px-3 py-1 rounded-full mb-2">
             {product.category}
           </span>
-          {product.category === "Cigarettes" && (
-            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-gmo-red/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
-              Tabac
-            </span>
-          )}
-          {product.category === "Alimentaire" && (
-            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-gmo-green/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
-              Alimentation
-            </span>
-          )}
-          {product.category === "Hygiène" && (
-            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-blue-500/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
-              Hygiène
-            </span>
-          )}
-          {product.category === "Embauche" && (
-            <span className="font-body text-[9px] uppercase tracking-widest text-white bg-gold/90 backdrop-blur-sm px-2 py-0.5 rounded-sm">
-              Élevage
-            </span>
-          )}
+          {/* Nom */}
+          <h3 className="font-heading text-lg font-bold text-obsidian leading-tight">
+            {product.name}
+          </h3>
+          {/* Hint flip */}
+          <p className="font-body text-[10px] text-obsidian/30 mt-2 uppercase tracking-widest">
+            Cliquer pour voir le prix →
+          </p>
+        </div>
+
+        {/* FACE ARRIÈRE — verte */}
+        <div
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+          }}
+          className="absolute inset-0 bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center justify-center p-6 text-center overflow-hidden"
+        >
+          {/* Prix */}
+          <p className="font-heading text-3xl font-black text-white mb-3">
+            {product.details?.find(d => d.startsWith("Prix"))
+              ? product.details.find(d => d.startsWith("Prix")).replace("Prix : ", "")
+              : "Sur demande"}
+          </p>
+          {/* Description */}
+          <p className="font-body text-sm text-white/80 leading-relaxed mb-6 line-clamp-3">
+            {product.description}
+          </p>
+          {/* Bouton */}
+          <a
+            href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20un%20devis%20pour%20:%20${encodeURIComponent(product.name)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-6 py-3 rounded-full hover:bg-white/90 transition-colors duration-300"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Demander un devis
+          </a>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-6">
-        <p className="font-body text-[10px] uppercase tracking-widest text-gmo-green/60 mb-1">{product.brand}</p>
-        <h3 className="font-heading text-lg font-bold text-obsidian leading-tight mb-3">{product.name}</h3>
-        <p className="font-body text-sm text-obsidian/55 leading-relaxed mb-4">{product.description}</p>
-
-        {/* Détails rétractables */}
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-2 text-xs font-body text-gmo-green hover:text-gmo-green/70 transition-colors mb-3"
-        >
-          {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-          <span className="uppercase tracking-widest">Détails & Prix</span>
-        </button>
-
-        {expanded && product.details && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="space-y-2 mb-4 overflow-hidden"
-          >
-            {product.details.map((detail, idx) => (
-              <p key={idx} className="font-body text-xs text-obsidian/70">
-                {detail}
-              </p>
-            ))}
-          </motion.div>
-        )}
-
-        <div className="flex-1" />
-
-        <a
-          href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20un%20devis%20pour%20:%20${encodeURIComponent(product.name)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 flex items-center justify-center gap-2 bg-gmo-green text-white font-heading font-bold text-xs uppercase tracking-widest px-4 py-3 hover:bg-gmo-green/80 transition-colors duration-300"
-        >
-          <MessageCircle className="w-4 h-4" />
-          Demander un devis
-        </a>
-      </div>
-
-      <div className="absolute bottom-0 left-0 h-[2px] bg-gmo-red w-0 group-hover:w-full transition-all duration-500" />
     </motion.div>
   );
 }
@@ -286,7 +278,7 @@ export default function ProductsSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
             {filtered.map((product, i) => (
               <ProductCard key={product.name} product={product} index={i} />
