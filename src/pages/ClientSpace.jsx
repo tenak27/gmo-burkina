@@ -607,10 +607,30 @@ function ClientDashboard() {
                       </div>
                       <div className="p-3 flex flex-col flex-1">
                         <p className="font-heading text-xs font-bold text-obsidian leading-tight mb-1">{p.name}</p>
-                        {p.description && <p className="text-[10px] text-obsidian/40 font-body leading-relaxed mb-3 flex-1">{p.description}</p>}
-                        <div className="text-[10px] text-obsidian/30 font-body mb-2">
-                          <p>{p.unit || "Unité"}</p>
-                          {p.unit_price && <p className="text-gmo-green font-semibold">{p.unit_price.toLocaleString()} FCFA</p>}
+                        {p.description && <p className="text-[10px] text-obsidian/40 font-body leading-relaxed mb-2 flex-1 line-clamp-2">{p.description}</p>}
+                        {/* Prix selon unité */}
+                        <div className="mb-2 space-y-1">
+                          {p.unit_price && (
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] text-obsidian/40 font-body uppercase tracking-wide">{p.unit || "Carton"}</span>
+                              <span className="text-[11px] font-bold text-gmo-green font-heading">{p.unit_price.toLocaleString()} FCFA</span>
+                            </div>
+                          )}
+                          {p.wholesale_price && p.wholesale_price !== p.unit_price && (
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] text-obsidian/40 font-body uppercase tracking-wide">
+                                {p.unit === "cartouche" ? "Cartouche" : p.unit === "paquet" ? "Paquet" : "Grossiste"}
+                              </span>
+                              <span className="text-[11px] font-semibold text-amber-600 font-heading">{p.wholesale_price.toLocaleString()} FCFA</span>
+                            </div>
+                          )}
+                          {/* Unité dérivée (carton → cartouche/paquet estimé) */}
+                          {p.unit_price && p.unit?.toLowerCase().includes("carton") && (
+                            <div className="flex items-center justify-between opacity-60">
+                              <span className="text-[9px] text-obsidian/30 font-body uppercase tracking-wide">Détail / unité</span>
+                              <span className="text-[9px] text-obsidian/40 font-body">Sur demande</span>
+                            </div>
+                          )}
                         </div>
                         <a href={`https://wa.me/22676211633?text=Bonjour%20GMO%20Burkina%2C%20je%20suis%20${encodeURIComponent(user?.full_name || "")}%20et%20je%20souhaite%20commander%20:%20${encodeURIComponent(p.name)}${p.unit_price ? "%20(%20" + encodeURIComponent(p.unit_price.toLocaleString()) + "%20FCFA)" : ""}%0AVeuillez%20me%20contacter%20pour%20finaliser%20ma%20commande.`}
                           target="_blank" rel="noopener noreferrer"
