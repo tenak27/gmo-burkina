@@ -227,7 +227,7 @@ function VendeurDashboard() {
 
 export default function VendeurSpace() {
   return (
-    <RoleGuard roles={["vendeur"]}>
+    <RoleGuard roles={["vendeur", "admin", "pdg"]}>
       <VendeurDashboard />
     </RoleGuard>
   );
