@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { base44 } from "@/api/base44Client";
-import { Users, Package, MapPin, BarChart2, Plus, RefreshCw } from "lucide-react";
+import { Users, Package, MapPin, BarChart2, RefreshCw, Bike } from "lucide-react";
 import VendeursListTab from "@/components/vendeurs/VendeursListTab";
 import StockVendeursTab from "@/components/vendeurs/StockVendeursTab";
 import CarteVendeursTab from "@/components/vendeurs/CarteVendeursTab";
 import VentesVendeursTab from "@/components/vendeurs/VentesVendeursTab";
+import MotosVendeursTab from "@/components/vendeurs/MotosVendeursTab";
 
 const TABS = [
   { id: "vendeurs", label: "Vendeurs", icon: Users },
   { id: "stock", label: "Stock / Assignation", icon: Package },
   { id: "ventes", label: "Ventes", icon: BarChart2 },
+  { id: "motos", label: "Motos", icon: Bike },
   { id: "carte", label: "Carte GPS", icon: MapPin },
 ];
 
@@ -113,6 +115,7 @@ function VendeursAdminDashboard() {
         {tab === "vendeurs" && <VendeursListTab vendeurs={vendeurs} setVendeurs={setVendeurs} stocks={stocks} ventes={ventes} />}
         {tab === "stock"   && <StockVendeursTab stocks={stocks} setStocks={setStocks} vendeurs={vendeurs} />}
         {tab === "ventes"  && <VentesVendeursTab ventes={ventes} vendeurs={vendeurs} />}
+        {tab === "motos"   && <MotosVendeursTab vendeurs={vendeurs} />}
         {tab === "carte"   && <CarteVendeursTab vendeurs={vendeurs} />}
       </div>
     </div>
@@ -121,7 +124,7 @@ function VendeursAdminDashboard() {
 
 export default function VendeursAdmin() {
   return (
-    <RoleGuard roles={["pdg", "admin", "commercial", "magasinier"]}>
+    <RoleGuard roles={["pdg", "admin", "commercial", "magasinier", "pdg_cig", "admin_cig", "commercial_cig"]}>
       <VendeursAdminDashboard />
     </RoleGuard>
   );

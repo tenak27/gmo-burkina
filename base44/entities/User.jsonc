@@ -13,7 +13,11 @@
         "detaillant",
         "revendeur",
         "vendeur",
-        "client"
+        "client",
+        "admin_cig",
+        "vendeur_cig",
+        "commercial_cig",
+        "pdg_cig"
       ],
       "default": "client"
     }

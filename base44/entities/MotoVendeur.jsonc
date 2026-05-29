@@ -1,0 +1,44 @@
+{
+  "name": "MotoVendeur",
+  "type": "object",
+  "properties": {
+    "immatriculation": {
+      "type": "string",
+      "description": "Num\u00e9ro d'immatriculation de la moto"
+    },
+    "marque": {
+      "type": "string",
+      "description": "Marque / mod\u00e8le (ex: Yamaha, Honda...)"
+    },
+    "couleur": {
+      "type": "string"
+    },
+    "vendeur_id": {
+      "type": "string",
+      "description": "ID du vendeur assign\u00e9"
+    },
+    "vendeur_nom": {
+      "type": "string"
+    },
+    "date_assignation": {
+      "type": "string",
+      "format": "date"
+    },
+    "etat": {
+      "type": "string",
+      "enum": [
+        "disponible",
+        "assignee",
+        "en_panne",
+        "retiree"
+      ],
+      "default": "disponible"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "immatriculation"
+  ]
+}
