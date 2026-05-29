@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
-import { Package, MapPin, ShoppingBag, Home, LogOut, RefreshCw, CheckCircle2, Clock, AlertCircle, Plus, X, Loader2, Navigation } from "lucide-react";
+import { Package, MapPin, ShoppingBag, Home, LogOut, RefreshCw, CheckCircle2, AlertCircle, Navigation, UserPlus } from "lucide-react";
 import VendeurStockPortal from "@/components/vendeurs/VendeurStockPortal";
 import VendeurPointsVente from "@/components/vendeurs/VendeurPointsVente";
 import VendeurVentes from "@/components/vendeurs/VendeurVentes";
+import ProfileNotFound from "@/components/vendeurs/ProfileNotFound";
 
 const TABS = [
   { id: "accueil", label: "Accueil", icon: Home },
@@ -96,18 +97,7 @@ function VendeurDashboard() {
   }
 
   if (!vendeur) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 max-w-sm w-full text-center">
-          <Package className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-          <h2 className="font-heading text-lg font-bold text-obsidian mb-2">Profil non trouvé</h2>
-          <p className="text-sm text-obsidian/50 font-body">Votre compte vendeur n'a pas encore été configuré. Contactez votre responsable.</p>
-          <button onClick={() => logout()} className="mt-5 flex items-center gap-2 mx-auto text-sm text-gmo-red font-body hover:underline">
-            <LogOut className="w-4 h-4" /> Se déconnecter
-          </button>
-        </div>
-      </div>
-    );
+    return <ProfileNotFound user={user} onProfileCreated={loadData} onLogout={logout} />;
   }
 
   return (
