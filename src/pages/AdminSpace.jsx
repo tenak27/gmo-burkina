@@ -72,24 +72,26 @@ function AdminDashboard() {
 
   const loadAll = async () => {
     setLoading(true);
-
-    // Vague 1 : données critiques pour le dashboard
-    const [uRes, c, p, o, inv] = await Promise.all([
-      base44.functions.invoke("listUsers", {}),
-      base44.entities.Client.list("-created_date", 100),
-      base44.entities.Product.list("name", 200),
-      base44.entities.Order.list("-created_date", 100),
-      base44.entities.Invoice.list("-created_date", 100),
-    ]);
-    setUsers(uRes?.data?.users || []);
-    setClients(c || []);
-    setProducts(p || []);
-    setOrders(o || []);
-    setInvoices(inv || []);
-    setLoading(false); // afficher le dashboard sans attendre la suite
+    try {
+      // Vague 1 : données critiques pour le dashboard
+      const [uRes, c, p, o, inv] = await Promise.allSettled([
+        base44.functions.invoke("listUsers", {}),
+        base44.entities.Client.list("-created_date", 100),
+        base44.entities.Product.list("name", 200),
+        base44.entities.Order.list("-created_date", 100),
+        base44.entities.Invoice.list("-created_date", 100),
+      ]);
+      setUsers(uRes.value?.data?.users || []);
+      setClients(c.value || []);
+      setProducts(p.value || []);
+      setOrders(o.value || []);
+      setInvoices(inv.value || []);
+    } finally {
+      setLoading(false); // toujours déverrouiller même en cas d'erreur
+    }
 
     // Vague 2 : données secondaires
-    const [sup, del, wh, cat, mov, apps] = await Promise.all([
+    const [sup, del, wh, cat, mov, apps] = await Promise.allSettled([
       base44.entities.Supplier.list("-created_date", 100),
       base44.entities.DeliveryNote.list("-created_date", 100),
       base44.entities.Warehouse.list("name", 50),
@@ -97,15 +99,15 @@ function AdminDashboard() {
       base44.entities.StockMovement.list("-created_date", 100),
       base44.entities.Application.list("-created_date", 100),
     ]);
-    setSuppliers(sup || []);
-    setDeliveries(del || []);
-    setWarehouses(wh || []);
-    setCategories(cat || []);
-    setMovements(mov || []);
-    setApplications(apps || []);
+    setSuppliers(sup.value || []);
+    setDeliveries(del.value || []);
+    setWarehouses(wh.value || []);
+    setCategories(cat.value || []);
+    setMovements(mov.value || []);
+    setApplications(apps.value || []);
 
     // Vague 3 : RH, finance, caisse
-    const [emp, ent, drv, pay, rec, cashExp] = await Promise.all([
+    const [emp, ent, drv, pay, rec, cashExp] = await Promise.allSettled([
       base44.entities.Employee.list("last_name", 100),
       base44.entities.AccountEntry.list("-date", 100),
       base44.entities.Driver.list("last_name", 50),
@@ -113,12 +115,12 @@ function AdminDashboard() {
       base44.entities.Receivable.list("-created_date", 100),
       base44.entities.CashExpense.list("-created_date", 100),
     ]);
-    setEmployees(emp || []);
-    setEntries(ent || []);
-    setDrivers(drv || []);
-    setPayments(pay || []);
-    setReceivables(rec || []);
-    setCashExpenses(cashExp || []);
+    setEmployees(emp.value || []);
+    setEntries(ent.value || []);
+    setDrivers(drv.value || []);
+    setPayments(pay.value || []);
+    setReceivables(rec.value || []);
+    setCashExpenses(cashExp.value || []);
   };
 
   const pendingOrders = orders.filter(o => o.status === "en_attente").length;
