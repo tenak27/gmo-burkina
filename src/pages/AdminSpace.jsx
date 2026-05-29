@@ -176,7 +176,7 @@ function AdminDashboard() {
 
 export default function AdminSpace() {
   return (
-    <RoleGuard roles={["pdg"]}>
+    <RoleGuard roles={["pdg", "admin"]}>
       <AdminDashboard />
     </RoleGuard>
   );

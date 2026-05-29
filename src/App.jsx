@@ -24,7 +24,7 @@ function RoleRedirect() {
   const { user, isAuthenticated, isLoadingAuth } = useAuth();
   if (isLoadingAuth) return null;
   if (!isAuthenticated || !user) return <Navigate to="/" replace />;
-  if (user.role === "pdg") return <Navigate to="/admin" replace />;
+  if (user.role === "pdg" || user.role === "admin") return <Navigate to="/admin" replace />;
   if (user.role === "commercial") return <Navigate to="/commercial" replace />;
   if (user.role === "magasinier") return <Navigate to="/magasinier" replace />;
   if (user.role === "chauffeur") return <Navigate to="/chauffeur" replace />;
