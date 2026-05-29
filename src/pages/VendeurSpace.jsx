@@ -99,14 +99,9 @@ function VendeurDashboard() {
               <p className="text-[10px] text-obsidian/40 font-body">Vendeur GMO</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 text-[10px] font-heading font-bold px-3 py-1.5 rounded-xl border bg-gmo-green text-white border-gmo-green">
-              <Navigation className="w-3.5 h-3.5 animate-pulse" /> GPS ON
-            </div>
-            <button onClick={() => logout()} className="text-obsidian/30 hover:text-gmo-red transition-colors">
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
+          <button onClick={() => logout()} className="text-obsidian/30 hover:text-gmo-red transition-colors">
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
         {gpsError && <p className="text-center text-[11px] text-red-500 font-body pb-1 px-4">{gpsError}</p>}
         {/* Mobile nav */}
