@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
-import { Package, MapPin, ShoppingBag, Home, LogOut, RefreshCw, CheckCircle2, AlertCircle, Navigation, UserPlus } from "lucide-react";
+import { Package, MapPin, ShoppingBag, Home, LogOut, CheckCircle2, AlertCircle, Navigation } from "lucide-react";
 import VendeurStockPortal from "@/components/vendeurs/VendeurStockPortal";
 import VendeurPointsVente from "@/components/vendeurs/VendeurPointsVente";
 import VendeurVentes from "@/components/vendeurs/VendeurVentes";
@@ -22,7 +22,6 @@ function VendeurDashboard() {
   const [stocks, setStocks] = useState([]);
   const [ventes, setVentes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [trackingGPS, setTrackingGPS] = useState(false);
   const [gpsError, setGpsError] = useState("");
 
   useEffect(() => { loadData(); }, [user]);
@@ -49,39 +48,25 @@ function VendeurDashboard() {
     setLoading(false);
   };
 
-  // GPS tracking en direct
-  const startGPS = () => {
-    if (!navigator.geolocation) {
-      setGpsError("GPS non disponible sur cet appareil");
-      return;
-    }
-    setTrackingGPS(true);
+  // GPS toujours actif — démarre automatiquement quand le profil vendeur est chargé
+  useEffect(() => {
+    if (!vendeur?.id) return;
+    if (!navigator.geolocation) { setGpsError("GPS non disponible sur cet appareil"); return; }
     setGpsError("");
     const watchId = navigator.geolocation.watchPosition(
       async (pos) => {
         const { latitude: lat, longitude: lng, accuracy } = pos.coords;
-        if (vendeur?.id) {
-          await base44.entities.Vendeur.update(vendeur.id, {
-            lat, lng, accuracy,
-            last_location_update: new Date().toISOString(),
-          });
-          setVendeur(prev => ({ ...prev, lat, lng }));
-        }
+        await base44.entities.Vendeur.update(vendeur.id, {
+          lat, lng,
+          last_location_update: new Date().toISOString(),
+        });
+        setVendeur(prev => ({ ...prev, lat, lng }));
       },
-      (err) => {
-        setGpsError("Erreur GPS : " + err.message);
-        setTrackingGPS(false);
-      },
+      (err) => setGpsError("GPS : " + err.message),
       { enableHighAccuracy: true, maximumAge: 10000, timeout: 15000 }
     );
-    // Store watchId for cleanup
-    window._gpsWatchId = watchId;
-  };
-
-  const stopGPS = () => {
-    if (window._gpsWatchId) navigator.geolocation.clearWatch(window._gpsWatchId);
-    setTrackingGPS(false);
-  };
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [vendeur?.id]);
 
   const stocksEnAttente = stocks.filter(s => s.status === "en_attente_validation" && s.valide_par_magasinier && !s.valide_par_vendeur);
   const stocksActifs = stocks.filter(s => s.status === "valide");
@@ -115,16 +100,9 @@ function VendeurDashboard() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* GPS toggle */}
-            <button
-              onClick={trackingGPS ? stopGPS : startGPS}
-              className={`flex items-center gap-1.5 text-[10px] font-heading font-bold px-3 py-1.5 rounded-xl border transition-all ${
-                trackingGPS ? "bg-gmo-green text-white border-gmo-green" : "border-gray-200 text-obsidian/50 hover:border-gmo-green hover:text-gmo-green"
-              }`}
-            >
-              <Navigation className={`w-3.5 h-3.5 ${trackingGPS ? "animate-pulse" : ""}`} />
-              {trackingGPS ? "GPS ON" : "GPS"}
-            </button>
+            <div className="flex items-center gap-1.5 text-[10px] font-heading font-bold px-3 py-1.5 rounded-xl border bg-gmo-green text-white border-gmo-green">
+              <Navigation className="w-3.5 h-3.5 animate-pulse" /> GPS ON
+            </div>
             <button onClick={() => logout()} className="text-obsidian/30 hover:text-gmo-red transition-colors">
               <LogOut className="w-4 h-4" />
             </button>
@@ -217,8 +195,6 @@ function VendeurDashboard() {
 
 export default function VendeurSpace() {
   return (
-    <RoleGuard roles={["vendeur", "vendeur_cig", "admin", "pdg", "admin_cig", "pdg_cig", "commercial_cig"]}>
-      <VendeurDashboard />
-    </RoleGuard>
+    <VendeurDashboard />
   );
 }
