@@ -74,14 +74,14 @@ function AdminDashboard() {
     setLoading(true);
 
     // Vague 1 : données critiques pour le dashboard
-    const [u, c, p, o, inv] = await Promise.all([
-      base44.entities.User.list("-created_date", 100),
+    const [uRes, c, p, o, inv] = await Promise.all([
+      base44.functions.invoke("listUsers", {}),
       base44.entities.Client.list("-created_date", 100),
       base44.entities.Product.list("name", 200),
       base44.entities.Order.list("-created_date", 100),
       base44.entities.Invoice.list("-created_date", 100),
     ]);
-    setUsers(u || []);
+    setUsers(uRes?.data?.users || []);
     setClients(c || []);
     setProducts(p || []);
     setOrders(o || []);
