@@ -1,0 +1,77 @@
+{
+  "name": "StockVendeur",
+  "type": "object",
+  "properties": {
+    "vendeur_id": {
+      "type": "string"
+    },
+    "vendeur_nom": {
+      "type": "string"
+    },
+    "produit_nom": {
+      "type": "string",
+      "description": "Ex: Hamilton, Excellence..."
+    },
+    "cartouches_assignees": {
+      "type": "number",
+      "default": 0
+    },
+    "cartouches_disponibles": {
+      "type": "number",
+      "default": 0
+    },
+    "paquets_assignes": {
+      "type": "number",
+      "default": 0,
+      "description": "Paquets suppl\u00e9mentaires hors cartouches"
+    },
+    "paquets_disponibles": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en_attente_validation",
+        "valide",
+        "epuise"
+      ],
+      "default": "en_attente_validation"
+    },
+    "assignee_par": {
+      "type": "string",
+      "description": "ID commercial"
+    },
+    "assignee_par_nom": {
+      "type": "string"
+    },
+    "valide_par_magasinier": {
+      "type": "string"
+    },
+    "valide_par_vendeur": {
+      "type": "string"
+    },
+    "date_assignation": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "date_validation_magasinier": {
+      "type": "string"
+    },
+    "date_validation_vendeur": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "rappel_envoye": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "vendeur_id",
+    "produit_nom",
+    "cartouches_assignees"
+  ]
+}

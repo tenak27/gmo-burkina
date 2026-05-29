@@ -17,6 +17,8 @@ import DevisValidation from './pages/DevisValidation';
 import VerifyDocument from './pages/VerifyDocument';
 import ResellerSpace from './pages/ResellerSpace';
 import VuexyFormDemo from './pages/VuexyFormDemo';
+import VendeursAdmin from './pages/VendeursAdmin';
+import VendeurSpace from './pages/VendeurSpace';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -30,6 +32,7 @@ function RoleRedirect() {
   if (user.role === "chauffeur") return <Navigate to="/chauffeur" replace />;
   if (user.role === "detaillant") return <Navigate to="/detaillant" replace />;
   if (user.role === "revendeur") return <Navigate to="/revendeur" replace />;
+  if (user.role === "vendeur") return <Navigate to="/vendeur" replace />;
   return <Navigate to="/client" replace />;
 }
 
@@ -68,6 +71,8 @@ const AuthenticatedApp = () => {
       <Route path="/devis-validation" element={<DevisValidation />} />
       <Route path="/verify" element={<VerifyDocument />} />
       <Route path="/vuexy-demo" element={<VuexyFormDemo />} />
+      <Route path="/vendeurs" element={<VendeursAdmin />} />
+      <Route path="/vendeur" element={<VendeurSpace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

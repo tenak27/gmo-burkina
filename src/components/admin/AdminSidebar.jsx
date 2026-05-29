@@ -59,6 +59,12 @@ const GROUPS = [
     ],
   },
   {
+    label: "Vendeurs Cig.",
+    items: [
+      { id: "vendeurs_cig", label: "Vendeurs Cigarettes", icon: Users2, isLink: "/vendeurs" },
+    ],
+  },
+  {
     label: "RH & Admin",
     items: [
       { id: "hr",           label: "RH",           icon: Users2 },
@@ -178,27 +184,35 @@ function SidebarContent({ tab, setTab, pendingOrders, newApplications, onClose, 
               const isActive = tab === item.id;
               const showOrderBadge = item.badge && pendingOrders > 0;
               const showAppBadge = item.badgeKey === "applications" && newApplications > 0;
-              return (
-                <button key={item.id} onClick={() => navigate(item.id)}
-                  className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-all duration-150 cursor-pointer text-[12px] mb-0.5 relative group
-                    ${isActive
-                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold"
-                      : "text-white/50 hover:bg-white/10 hover:text-white"
-                    }`}
-                  style={isActive ? { boxShadow: "0 2px 10px rgba(99,102,241,0.4)" } : {}}
-                >
+              const btnClass = `w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-all duration-150 cursor-pointer text-[12px] mb-0.5 relative group
+                ${isActive
+                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold"
+                  : "text-white/50 hover:bg-white/10 hover:text-white"
+                }`;
+              const btnStyle = isActive ? { boxShadow: "0 2px 10px rgba(99,102,241,0.4)" } : {};
+              const innerContent = (
+                <>
                   <Icon className={`w-3.5 h-3.5 flex-shrink-0 transition-all ${isActive ? "text-white" : "text-white/35 group-hover:text-white/70"}`} />
                   <span className="flex-1 truncate font-body">{item.label}</span>
                   {showOrderBadge && (
-                    <span className="bg-amber-400 text-obsidian text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center leading-none">
-                      {pendingOrders}
-                    </span>
+                    <span className="bg-amber-400 text-obsidian text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center leading-none">{pendingOrders}</span>
                   )}
                   {showAppBadge && (
-                    <span className="bg-blue-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center leading-none">
-                      {newApplications}
-                    </span>
+                    <span className="bg-blue-400 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center leading-none">{newApplications}</span>
                   )}
+                  {item.isLink && <span className="text-[9px] bg-gmo-red/30 text-gmo-red px-1 py-0.5 rounded font-bold">→</span>}
+                </>
+              );
+              if (item.isLink) {
+                return (
+                  <Link key={item.id} to={item.isLink} className={btnClass} style={btnStyle}>
+                    {innerContent}
+                  </Link>
+                );
+              }
+              return (
+                <button key={item.id} onClick={() => navigate(item.id)} className={btnClass} style={btnStyle}>
+                  {innerContent}
                 </button>
               );
             })}

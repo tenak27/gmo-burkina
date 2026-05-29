@@ -4,18 +4,18 @@
   "properties": {
     "role": {
       "type": "string",
-      "description": "R\u00f4le de l'utilisateur dans l'application",
       "enum": [
+        "admin",
         "pdg",
         "commercial",
         "magasinier",
         "chauffeur",
         "detaillant",
+        "revendeur",
+        "vendeur",
         "client"
-      ]
+      ],
+      "default": "client"
     }
-  },
-  "required": [
-    "role"
-  ]
+  }
 }

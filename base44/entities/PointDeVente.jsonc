@@ -1,0 +1,43 @@
+{
+  "name": "PointDeVente",
+  "type": "object",
+  "properties": {
+    "vendeur_id": {
+      "type": "string",
+      "description": "ID du vendeur"
+    },
+    "nom_client": {
+      "type": "string"
+    },
+    "phone_client": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "string"
+    },
+    "quartier": {
+      "type": "string"
+    },
+    "ville": {
+      "type": "string",
+      "default": "Ouagadougou"
+    },
+    "lat": {
+      "type": "number"
+    },
+    "lng": {
+      "type": "number"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "vendeur_id",
+    "nom_client"
+  ]
+}

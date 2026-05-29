@@ -1,0 +1,47 @@
+{
+  "name": "Vendeur",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "ID de l'utilisateur li\u00e9"
+    },
+    "nom": {
+      "type": "string"
+    },
+    "prenom": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "zone": {
+      "type": "string",
+      "description": "Zone g\u00e9ographique couverte"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "lat": {
+      "type": "number",
+      "description": "Derni\u00e8re latitude GPS"
+    },
+    "lng": {
+      "type": "number",
+      "description": "Derni\u00e8re longitude GPS"
+    },
+    "last_location_update": {
+      "type": "string",
+      "description": "Timestamp derni\u00e8re position"
+    }
+  },
+  "required": [
+    "nom",
+    "prenom",
+    "phone"
+  ]
+}
