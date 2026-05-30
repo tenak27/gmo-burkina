@@ -164,7 +164,7 @@ const OPERATIONAL_TEAM = [
   desc: "PDG et direction exécutive pilotant la stratégie du groupe",
   kpi: "40+ ans d'expertise",
   accent: "#1A7A2E",
-  bgImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=85"
+  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1a0a79b3c_Gemini_Generated_Image_b8kbkwb8kbkwb8kb.png"
 },
 {
   dept: "Commercial & Ventes",
