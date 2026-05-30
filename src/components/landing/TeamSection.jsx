@@ -7,64 +7,120 @@ function OperationalCard({ dept, index, isInView }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="relative overflow-hidden rounded-2xl cursor-default group"
-      style={{ height: "260px" }}
+      initial={{ opacity: 0, y: 40, scale: 0.97 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ delay: index * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-3xl cursor-default group"
+      style={{ height: "320px" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Background image */}
+      {/* Background image with Ken Burns */}
       <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-        style={{ backgroundImage: `url(${dept.bgImage})` }}
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out"
+        style={{
+          backgroundImage: `url(${dept.bgImage})`,
+          transform: hovered ? "scale(1.12)" : "scale(1.03)",
+        }}
       />
 
-      {/* Dark overlay — always present, deepens on hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 transition-opacity duration-500" />
+      {/* Permanent rich gradient — bottom heavy */}
+      <div className="absolute inset-0" style={{
+        background: "linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.25) 35%, rgba(0,0,0,0.82) 72%, rgba(0,0,0,0.97) 100%)"
+      }} />
+
+      {/* Accent color wash on hover */}
       <div
-        className="absolute inset-0 transition-opacity duration-500"
-        style={{ opacity: hovered ? 1 : 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.25) 100%)" }}
+        className="absolute inset-0 transition-opacity duration-700"
+        style={{
+          opacity: hovered ? 0.22 : 0,
+          background: `radial-gradient(ellipse at bottom left, ${dept.accent}FF 0%, transparent 70%)`,
+        }}
       />
 
-      {/* Top: icon + count badge */}
-      <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl"
-          style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.18)" }}>
-          {dept.icon}
+      {/* Top accent bar */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[3px] transition-opacity duration-500"
+        style={{ background: `linear-gradient(to right, ${dept.accent}, transparent)`, opacity: hovered ? 1 : 0.45 }}
+      />
+
+      {/* Top row — icon + count */}
+      <div className="absolute top-5 left-5 right-5 flex items-start justify-between z-10">
+        {/* Icon pill */}
+        <div
+          className="flex items-center gap-2 px-3 py-2 rounded-2xl transition-all duration-500"
+          style={{
+            background: hovered ? `${dept.accent}CC` : "rgba(255,255,255,0.10)",
+            backdropFilter: "blur(12px)",
+            border: `1px solid ${hovered ? dept.accent + "80" : "rgba(255,255,255,0.15)"}`,
+          }}
+        >
+          <span className="text-xl leading-none">{dept.icon}</span>
         </div>
-        <span className="font-heading text-xs font-black text-white px-3 py-1 rounded-full"
-          style={{ background: "rgba(26,122,46,0.85)", backdropFilter: "blur(6px)", border: "1px solid rgba(26,122,46,0.6)" }}>
-          {dept.count}
-        </span>
+
+        {/* Count badge */}
+        <div
+          className="flex items-center gap-1 px-3 py-1.5 rounded-full transition-all duration-500"
+          style={{
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(10px)",
+            border: `1px solid rgba(255,255,255,0.12)`,
+          }}
+        >
+          <span className="font-heading text-sm font-black text-white leading-none">{dept.count}</span>
+          <span className="font-body text-[10px] text-white/50 leading-none">pers.</span>
+        </div>
       </div>
 
-      {/* Bottom glass panel */}
-      <div
-        className="absolute bottom-0 left-0 right-0 p-5 transition-all duration-500 z-10"
-        style={{
-          background: "rgba(10,10,12,0.55)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-        }}
-      >
-        <p className="font-heading text-sm font-bold text-white leading-tight mb-1">{dept.dept}</p>
-        
+      {/* Bottom content panel */}
+      <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+
+        {/* Dept name */}
+        <p className="font-heading text-base font-black text-white leading-tight mb-2 drop-shadow-md">
+          {dept.dept}
+        </p>
+
         {/* Description — slides in on hover */}
         <div
           className="overflow-hidden transition-all duration-500"
-          style={{ maxHeight: hovered ? "80px" : "0px", opacity: hovered ? 1 : 0 }}
+          style={{ maxHeight: hovered ? "72px" : "0px", opacity: hovered ? 1 : 0 }}
         >
-          <p className="font-body text-[11px] text-white/65 leading-relaxed mb-2">{dept.desc}</p>
+          <p className="font-body text-xs text-white/60 leading-relaxed mb-3">
+            {dept.desc}
+          </p>
         </div>
 
-        {/* KPI */}
-        <div className="flex items-center gap-1.5 mt-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-gmo-green flex-shrink-0" />
-          <span className="font-heading text-[11px] font-semibold text-gmo-green">{dept.kpi}</span>
+        {/* KPI chip */}
+        <div className="flex items-center gap-2">
+          <div
+            className="w-2 h-2 rounded-full flex-shrink-0 transition-all duration-500"
+            style={{ background: dept.accent, boxShadow: hovered ? `0 0 8px ${dept.accent}` : "none" }}
+          />
+          <span
+            className="font-heading text-[11px] font-bold transition-colors duration-500"
+            style={{ color: hovered ? dept.accent : "rgba(255,255,255,0.55)" }}
+          >
+            {dept.kpi}
+          </span>
         </div>
+
+        {/* Bottom separator line that grows on hover */}
+        <div
+          className="mt-3 h-[1px] rounded-full transition-all duration-700 origin-left"
+          style={{
+            background: `linear-gradient(to right, ${dept.accent}, transparent)`,
+            transform: hovered ? "scaleX(1)" : "scaleX(0)",
+            opacity: hovered ? 0.7 : 0,
+          }}
+        />
+      </div>
+
+      {/* Corner number watermark */}
+      <div
+        className="absolute bottom-4 right-5 font-heading font-black text-white/5 select-none pointer-events-none transition-all duration-500"
+        style={{ fontSize: "clamp(3rem, 5vw, 5rem)", opacity: hovered ? 0 : 1 }}
+      >
+        {String(index + 1).padStart(2, "0")}
       </div>
     </motion.div>
   );
@@ -107,9 +163,8 @@ const OPERATIONAL_TEAM = [
   count: "3",
   desc: "PDG et direction exécutive pilotant la stratégie du groupe",
   kpi: "40+ ans d'expertise",
-  color: "from-gmo-green/10 to-gmo-green/5",
-  border: "border-gmo-green/20",
-  bgImage: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80"
+  accent: "#1A7A2E",
+  bgImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=85"
 },
 {
   dept: "Commercial & Ventes",
@@ -117,9 +172,8 @@ const OPERATIONAL_TEAM = [
   count: "15+",
   desc: "Commerciaux terrain, responsables secteur et attachés commerciaux",
   kpi: "200+ clients actifs",
-  color: "from-blue-500/10 to-blue-600/5",
-  border: "border-blue-200/60",
-  bgImage: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=80"
+  accent: "#1d4ed8",
+  bgImage: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=85"
 },
 {
   dept: "Logistique & Transport",
@@ -127,9 +181,8 @@ const OPERATIONAL_TEAM = [
   count: "30+",
   desc: "Chauffeurs, coordinateurs logistiques et planificateurs de tournées",
   kpi: "25+ véhicules en service",
-  color: "from-gmo-green/10 to-gmo-green/5",
-  border: "border-gmo-green/20",
-  bgImage: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80"
+  accent: "#1A7A2E",
+  bgImage: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800&q=85"
 },
 {
   dept: "Entrepôts & Stock",
@@ -137,9 +190,8 @@ const OPERATIONAL_TEAM = [
   count: "12+",
   desc: "Magasiniers, caristes et gestionnaires de stock certifiés",
   kpi: "3 sites de stockage",
-  color: "from-amber-500/10 to-amber-600/5",
-  border: "border-amber-200/60",
-  bgImage: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80"
+  accent: "#d97706",
+  bgImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=85"
 },
 {
   dept: "Finance & Comptabilité",
@@ -147,9 +199,8 @@ const OPERATIONAL_TEAM = [
   count: "8+",
   desc: "DAF, comptables, auditeurs et contrôleurs de gestion OHADA",
   kpi: "Conformité 100%",
-  color: "from-purple-500/10 to-purple-600/5",
-  border: "border-purple-200/60",
-  bgImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80"
+  accent: "#7c3aed",
+  bgImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=85"
 },
 {
   dept: "Ressources Humaines",
@@ -157,9 +208,8 @@ const OPERATIONAL_TEAM = [
   count: "5+",
   desc: "DRH, chargés de recrutement et formation continue",
   kpi: "80+ collaborateurs",
-  color: "from-pink-500/10 to-pink-600/5",
-  border: "border-pink-200/60",
-  bgImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80"
+  accent: "#be185d",
+  bgImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=85"
 },
 {
   dept: "Informatique & Digital",
@@ -167,9 +217,8 @@ const OPERATIONAL_TEAM = [
   count: "6+",
   desc: "DSI, développeurs full-stack et administrateurs systèmes",
   kpi: "Plateforme 100% opérationnelle",
-  color: "from-cyan-500/10 to-cyan-600/5",
-  border: "border-cyan-200/60",
-  bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80"
+  accent: "#0891b2",
+  bgImage: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=85"
 },
 {
   dept: "Marketing & Communication",
@@ -177,9 +226,8 @@ const OPERATIONAL_TEAM = [
   count: "4+",
   desc: "Chef de projet marketing, community managers et graphistes",
   kpi: "Présence multi-canaux",
-  color: "from-red-500/10 to-red-600/5",
-  border: "border-red-200/60",
-  bgImage: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=600&q=80"
+  accent: "#CC1717",
+  bgImage: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=85"
 },
 {
   dept: "Service Client",
@@ -187,9 +235,8 @@ const OPERATIONAL_TEAM = [
   count: "6+",
   desc: "Conseillers clientèle et support après-vente dédiés",
   kpi: "98% satisfaction",
-  color: "from-indigo-500/10 to-indigo-600/5",
-  border: "border-indigo-200/60",
-  bgImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80"
+  accent: "#4f46e5",
+  bgImage: "https://images.unsplash.com/photo-1553775927-a071d5a6a39a?w=800&q=85"
 },
 {
   dept: "Qualité & Sécurité",
@@ -197,9 +244,8 @@ const OPERATIONAL_TEAM = [
   count: "3+",
   desc: "Responsables QSE et auditeurs qualité certifiés",
   kpi: "Normes ISO respectées",
-  color: "from-emerald-500/10 to-emerald-600/5",
-  border: "border-emerald-200/60",
-  bgImage: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80"
+  accent: "#059669",
+  bgImage: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=85"
 },
 {
   dept: "Achats & Approvisionnement",
@@ -207,9 +253,8 @@ const OPERATIONAL_TEAM = [
   count: "4+",
   desc: "Buyers, négociateurs et gestionnaires de relations fournisseurs",
   kpi: "50+ fournisseurs partenaires",
-  color: "from-teal-500/10 to-teal-600/5",
-  border: "border-teal-200/60",
-  bgImage: "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?w=600&q=80"
+  accent: "#0d9488",
+  bgImage: "https://images.unsplash.com/photo-1493612276216-ee3925520721?w=800&q=85"
 }];
 
 
@@ -441,8 +486,8 @@ export default function TeamSection() {
             </div>
           </motion.div>
 
-          {/* Dept cards glassmorphisme */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Dept cards premium grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {OPERATIONAL_TEAM.map((dept, i) => (
               <OperationalCard key={dept.dept} dept={dept} index={i} isInView={teamInView} />
             ))}
