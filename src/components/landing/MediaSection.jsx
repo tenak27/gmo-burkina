@@ -129,7 +129,7 @@ export default function MediaSection() {
             className="group mb-12 grid lg:grid-cols-2 gap-0 bg-white/[0.04] border border-white/10 hover:border-gmo-green/30 transition-all duration-500 overflow-hidden rounded-xl">
             
               <div className="aspect-video lg:aspect-auto overflow-hidden relative">
-                <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9858eeb02_Gemini_Generated_Image_x7kj25x7kj25x7kj.png"
+                <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/fb5adab03_Gemini_Generated_Image_7tq8x97tq8x97tq8.png"
 
               alt={featured.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
