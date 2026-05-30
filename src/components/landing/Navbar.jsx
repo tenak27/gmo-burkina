@@ -97,12 +97,12 @@ export default function Navbar({ heroHeight }) {
         className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-md shadow-sm border-b border-gray-100"
         style={{ pointerEvents: "auto" }}>
         
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
           <div className="flex items-center justify-between h-18 py-3">
             {/* Hamburger - Left side */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="relative w-14 h-14 flex flex-col items-center justify-center gap-[7px] group rounded-2xl hover:bg-gmo-green/8 transition-all duration-300">
+              className="relative w-16 h-16 flex flex-col items-center justify-center gap-[7px] group rounded-2xl hover:bg-gmo-green/10 transition-all duration-300 border border-transparent hover:border-gmo-green/20">
               <span className={`block h-[3px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-8 rotate-45 translate-y-[10px]' : 'w-8'}`} />
               <span className={`block h-[3px] bg-obsidian rounded-full transition-all duration-300 ${mobileOpen ? 'w-0 opacity-0' : 'w-6 group-hover:w-8'}`} />
               <span className={`block h-[3px] bg-obsidian rounded-full transition-all duration-300 origin-center ${mobileOpen ? 'w-8 -rotate-45 -translate-y-[10px]' : 'w-5 group-hover:w-8'}`} />

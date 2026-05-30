@@ -28,7 +28,7 @@ const PANELS = [
     color: "#F5C400",
   },
   {
-    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9858eeb02_Gemini_Generated_Image_x7kj25x7kj25x7kj.png",
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c25f1b164_Gemini_Generated_Image_7tq8x97tq8x97tq8.png",
     label: "EXPANSION",
     sub: "Afrique de l'Ouest",
     tagline: "Côte d'Ivoire · Mali · Niger",
@@ -75,7 +75,7 @@ export default function HeroSection() {
   const dashLink = getDashboardLink();
 
   return (
-    <section id="accueil" className="relative bg-obsidian overflow-hidden" style={{ height: "100svh", minHeight: 620 }}>
+    <section id="accueil" className="relative bg-obsidian overflow-hidden" style={{ height: "100svh", minHeight: 580, maxWidth: "100vw" }}>
 
       {/* BG transitions */}
       <AnimatePresence mode="sync">
@@ -92,7 +92,7 @@ export default function HeroSection() {
 
       {/* ── EMBEDDED NAVBAR (visible only on hero) ── */}
       <div className="absolute top-0 left-0 right-0 z-30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
@@ -158,9 +158,9 @@ export default function HeroSection() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-white p-2"
+              className="lg:hidden text-white p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
             </button>
           </div>
         </div>
@@ -202,10 +202,10 @@ export default function HeroSection() {
       </AnimatePresence>
 
       {/* ── CONTENT ── */}
-      <div className="relative z-10 h-full flex flex-col lg:flex-row">
+      <div className="relative z-10 h-full flex flex-col lg:flex-row max-w-[2000px] mx-auto w-full">
 
         {/* LEFT — text (50%) */}
-        <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 xl:px-16 pt-20 pb-16 lg:py-0 w-full lg:w-1/2 flex-shrink-0">
+        <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-12 xl:px-20 2xl:px-28 pt-20 pb-16 lg:py-0 w-full lg:w-1/2 flex-shrink-0">
 
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
