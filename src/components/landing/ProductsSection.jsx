@@ -44,9 +44,9 @@ const getCategoryForProduct = (name) => {
 const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
 const CIG_TARIFS = [
-  { label: "Paquet", sub: "10 tiges", price: "1 100", icon: "🚬" },
+  { label: "Carton", sub: "25 cartouches", price: "275 000", icon: "📦" },
   { label: "Cartouche", sub: "10 paquets", price: "11 000", icon: "🗂️" },
-  { label: "Carton", sub: "25 cart.", price: "275 000", icon: "📦" },
+  { label: "Paquet", sub: "10 tiges", price: "1 100", icon: "🚬" },
 ];
 
 function ProductCard({ product, index }) {
@@ -102,17 +102,16 @@ function ProductCard({ product, index }) {
           {isCig ? (
             <div className="w-full flex flex-col gap-1.5 my-1">
               {CIG_TARIFS.map(row => (
-                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base leading-none">{row.icon}</span>
-                    <div className="text-left">
-                      <p className="font-heading text-[12px] font-bold text-white leading-none">{row.label}</p>
-                      <p className="font-body text-[9px] text-white/40 mt-0.5">{row.sub}</p>
+                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl px-2.5 py-2 flex items-center justify-between gap-1 min-w-0">
+                  <div className="flex items-center gap-1.5 min-w-0 flex-shrink">
+                    <span className="text-sm leading-none flex-shrink-0">{row.icon}</span>
+                    <div className="text-left min-w-0">
+                      <p className="font-heading text-[11px] font-bold text-white leading-none truncate">{row.label}</p>
+                      <p className="font-body text-[9px] text-white/40 mt-0.5 truncate">{row.sub}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-heading text-[14px] font-black text-white leading-none">{row.price}</p>
-                    <p className="font-body text-[9px] text-white/50">FCFA</p>
+                  <div className="text-right flex-shrink-0 ml-1">
+                    <p className="font-heading text-[13px] font-black text-white leading-none whitespace-nowrap">{row.price} <span className="text-[9px] font-normal text-white/50">F</span></p>
                   </div>
                 </div>
               ))}
