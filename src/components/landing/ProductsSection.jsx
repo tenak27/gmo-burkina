@@ -111,9 +111,9 @@ function ProductCard({ product, index }) {
           {product.category === "Cigarettes" ? (
             <div className="w-full space-y-2 mb-4">
               {[
-                { label: "Carton", value: product.unit_price ? `${(product.unit_price).toLocaleString()} FCFA` : "Sur demande" },
-                { label: "Cartouche", value: product.unit_price ? `${Math.round(product.unit_price / 10).toLocaleString()} FCFA` : "Sur demande" },
-                { label: "Paquet", value: product.unit_price ? `${Math.round(product.unit_price / 200).toLocaleString()} FCFA` : "Sur demande" },
+                { label: "Carton (25 cartouches)", value: "275 000 FCFA" },
+                { label: "Cartouche (10 paquets)", value: "11 000 FCFA" },
+                { label: "Paquet (10 tiges)", value: "1 100 FCFA" },
               ].map(row => (
                 <div key={row.label} className="flex items-center justify-between bg-white/15 rounded-xl px-3 py-2">
                   <span className="font-body text-xs text-white/70">{row.label}</span>
