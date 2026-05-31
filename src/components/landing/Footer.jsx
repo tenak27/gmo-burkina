@@ -71,9 +71,22 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Légal */}
+          {/* Portails */}
           <div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Légal</p>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Portails</p>
+           <div className="space-y-2">
+             <button onClick={() => base44.auth.redirectToLogin('/chauffeur')}
+               className="flex items-center gap-1.5 text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
+               <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
+               Portail Chauffeurs
+             </button>
+             <button onClick={() => base44.auth.redirectToLogin('/vendeur')}
+               className="flex items-center gap-1.5 text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
+               <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
+               Portail Ambulants
+             </button>
+           </div>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-3 mt-5">Légal</p>
            <div className="space-y-1.5">
              {["Mentions légales", "Confidentialité", "CGV"].map(l => (
                <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/25 hover:text-white/55 transition-colors">
@@ -112,7 +125,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/[0.05] pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-[10px] text-white/15">
-            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <button onClick={() => base44.auth.redirectToLogin('/client')} className="text-white/15 cursor-default" title="Connexion cachée">T</button><button onClick={() => base44.auth.redirectToLogin('/detaillant')} className="text-white/15 cursor-default hover:text-gmo-green/40 transition-colors" title="Connexion détaillant">ous droits réservés</button>
+            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <button onClick={() => base44.auth.redirectToLogin('/client')} className="text-white/15 cursor-default" title="Connexion cachée">T</button><button onClick={() => base44.auth.redirectToLogin('/admin')} className="text-white/15 cursor-default hover:text-white/20 transition-colors" title="Espace employé">ous droits réservés</button>
           </p>
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3 text-gmo-green/40" />

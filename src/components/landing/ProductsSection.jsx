@@ -104,25 +104,38 @@ function ProductCard({ product, index }) {
             WebkitBackfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
           }}
-          className="absolute inset-0 bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center justify-center p-6 text-center overflow-hidden"
+          className="absolute inset-0 bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center justify-center p-5 text-center overflow-hidden"
         >
-          {/* Prix */}
-          <p className="font-heading text-3xl font-black text-white mb-3">
-            {product.details?.find(d => d.startsWith("Prix"))
-              ? product.details.find(d => d.startsWith("Prix")).replace("Prix : ", "")
-              : "Sur demande"}
-          </p>
-          {/* Description */}
-          <p className="font-body text-sm text-white/80 leading-relaxed mb-6 line-clamp-3">
-            {product.description}
-          </p>
+          <p className="font-heading text-sm font-bold text-white/70 uppercase tracking-widest mb-4">Tarifs</p>
+
+          {product.category === "Cigarettes" ? (
+            <div className="w-full space-y-2 mb-4">
+              {[
+                { label: "Carton", value: product.unit_price ? `${(product.unit_price).toLocaleString()} FCFA` : "Sur demande" },
+                { label: "Cartouche", value: product.unit_price ? `${Math.round(product.unit_price / 10).toLocaleString()} FCFA` : "Sur demande" },
+                { label: "Paquet", value: product.unit_price ? `${Math.round(product.unit_price / 200).toLocaleString()} FCFA` : "Sur demande" },
+              ].map(row => (
+                <div key={row.label} className="flex items-center justify-between bg-white/15 rounded-xl px-3 py-2">
+                  <span className="font-body text-xs text-white/70">{row.label}</span>
+                  <span className="font-heading text-sm font-black text-white">{row.value}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="font-heading text-3xl font-black text-white mb-4">
+              {product.details?.find(d => d.startsWith("Prix"))
+                ? product.details.find(d => d.startsWith("Prix")).replace("Prix : ", "")
+                : "Sur demande"}
+            </p>
+          )}
+
           {/* Bouton */}
           <a
             href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20un%20devis%20pour%20:%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-6 py-3 rounded-full hover:bg-white/90 transition-colors duration-300"
+            className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-5 py-2.5 rounded-full hover:bg-white/90 transition-colors duration-300"
           >
             <MessageCircle className="w-4 h-4" />
             Demander un devis
@@ -185,6 +198,7 @@ export default function ProductsSection() {
       category: category,
       brand: p.name.split(" ")[0],
       description: p.description || "Produit de qualité",
+      unit_price: p.unit_price || null,
       details: [
         p.unit ? `Unité : ${p.unit}` : "Conditionnement standard",
         p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : "Prix sur demande",
