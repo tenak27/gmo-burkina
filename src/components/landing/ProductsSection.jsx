@@ -111,17 +111,19 @@ function ProductCard({ product, index }) {
           {product.category === "Cigarettes" ? (
             <div className="w-full space-y-2 mb-5">
               {[
-                { label: "Carton", sub: "25 cartouches", value: "275 000 FCFA", icon: "📦" },
-                { label: "Cartouche", sub: "10 paquets", value: "11 000 FCFA", icon: "🗂️" },
-                { label: "Paquet", sub: "10 tiges", value: "1 100 FCFA", icon: "🚬" },
+                { label: "Carton", sub: "25 cartouches", value: "275 000", icon: "📦" },
+                { label: "Cartouche", sub: "10 paquets", value: "11 000", icon: "🗂️" },
+                { label: "Paquet", sub: "10 tiges", value: "1 100", icon: "🚬" },
               ].map(row => (
-                <div key={row.label} className="flex items-center gap-2 bg-white/15 border border-white/25 rounded-xl px-3 py-3">
-                  <span className="text-lg leading-none flex-shrink-0">{row.icon}</span>
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="font-heading text-sm font-black text-white leading-none truncate">{row.label}</p>
-                    <p className="font-body text-[11px] text-white/55 mt-0.5">{row.sub}</p>
+                <div key={row.label} className="bg-white/15 border border-white/25 rounded-xl px-3 py-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-base leading-none flex-shrink-0">{row.icon}</span>
+                      <p className="font-heading text-sm font-black text-white leading-none">{row.label}</p>
+                    </div>
+                    <p className="font-heading text-sm font-black text-white whitespace-nowrap flex-shrink-0">{row.value} <span className="text-[10px] font-normal text-white/70">FCFA</span></p>
                   </div>
-                  <p className="font-heading text-sm font-black text-white whitespace-nowrap flex-shrink-0">{row.value}</p>
+                  <p className="font-body text-[10px] text-white/50 mt-1 ml-7">{row.sub}</p>
                 </div>
               ))}
             </div>
