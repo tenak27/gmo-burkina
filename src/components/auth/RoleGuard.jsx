@@ -70,7 +70,7 @@ export default function RoleGuard({ roles, children }) {
               </p>
               <div className="flex gap-3">
                 <button
-                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
+                  onClick={() => base44.auth.redirectToLogin(window.location.href, { locale: "fr" })}
                   className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg cursor-pointer transition-colors">
                   <LogIn className="w-4 h-4" /> Se connecter
                 </button>

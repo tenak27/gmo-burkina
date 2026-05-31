@@ -109,15 +109,22 @@ function ProductCard({ product, index }) {
           <p className="font-heading text-sm font-bold text-white/70 uppercase tracking-widest mb-4">Tarifs</p>
 
           {product.category === "Cigarettes" ? (
-            <div className="w-full space-y-2 mb-4">
+            <div className="w-full space-y-2 mb-5">
               {[
-                { label: "Carton (25 cartouches)", value: "275 000 FCFA" },
-                { label: "Cartouche (10 paquets)", value: "11 000 FCFA" },
-                { label: "Paquet (10 tiges)", value: "1 100 FCFA" },
+                { label: "Carton", sub: "25 cartouches", value: "275 000", unit: "FCFA", icon: "📦" },
+                { label: "Cartouche", sub: "10 paquets", value: "11 000", unit: "FCFA", icon: "🗂️" },
+                { label: "Paquet", sub: "10 tiges", value: "1 100", unit: "FCFA", icon: "🚬" },
               ].map(row => (
-                <div key={row.label} className="flex items-center justify-between bg-white/15 rounded-xl px-3 py-2">
-                  <span className="font-body text-xs text-white/70">{row.label}</span>
-                  <span className="font-heading text-sm font-black text-white">{row.value}</span>
+                <div key={row.label} className="flex items-center gap-3 bg-white/10 border border-white/20 rounded-xl px-3 py-2.5">
+                  <span className="text-base leading-none">{row.icon}</span>
+                  <div className="flex-1 text-left">
+                    <p className="font-heading text-xs font-bold text-white leading-none">{row.label}</p>
+                    <p className="font-body text-[10px] text-white/50 mt-0.5">{row.sub}</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="font-heading text-sm font-black text-white">{row.value}</span>
+                    <span className="font-body text-[10px] text-white/60 ml-1">{row.unit}</span>
+                  </div>
                 </div>
               ))}
             </div>
