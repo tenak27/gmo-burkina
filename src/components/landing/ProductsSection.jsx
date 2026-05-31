@@ -77,27 +77,24 @@ function ProductCard({ product, index }) {
       {/* FACE ARRIÈRE */}
       {flipped && (
         <div
-          className="bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center p-5 text-center"
+          className="bg-gmo-green rounded-2xl shadow-lg flex flex-col p-4 text-center"
           onClick={e => e.stopPropagation()}
         >
-          <p className="font-heading text-xs font-bold text-white/60 uppercase tracking-widest mb-3">Tarifs</p>
+          <p className="font-heading text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-3">Tarifs</p>
 
           {isCig ? (
-            <div className="w-full space-y-2 mb-4">
+            <div className="w-full grid grid-cols-3 gap-2 mb-4">
               {[
-                { label: "Carton", sub: "25 cartouches", value: "275 000 FCFA", icon: "📦" },
-                { label: "Cartouche", sub: "10 paquets", value: "11 000 FCFA", icon: "🗂️" },
-                { label: "Paquet", sub: "10 tiges", value: "1 100 FCFA", icon: "🚬" },
+                { label: "Paquet", sub: "10 tiges", price: "1 100", icon: "🚬" },
+                { label: "Cartouche", sub: "10 paquets", price: "11 000", icon: "🗂️" },
+                { label: "Carton", sub: "25 cart.", price: "275 000", icon: "📦" },
               ].map(row => (
-                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl px-3 py-2.5 text-left">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-base">{row.icon}</span>
-                      <span className="font-heading text-sm font-bold text-white">{row.label}</span>
-                    </div>
-                    <span className="font-heading text-sm font-black text-white">{row.value}</span>
-                  </div>
-                  <p className="font-body text-[10px] text-white/50 mt-0.5 ml-7">{row.sub}</p>
+                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl p-2.5 flex flex-col items-center justify-between gap-1">
+                  <span className="text-xl leading-none">{row.icon}</span>
+                  <p className="font-heading text-[11px] font-bold text-white leading-tight">{row.label}</p>
+                  <p className="font-heading text-sm font-black text-white leading-none">{row.price}</p>
+                  <p className="font-body text-[9px] text-white/50 leading-tight">FCFA</p>
+                  <p className="font-body text-[9px] text-white/40 leading-tight">{row.sub}</p>
                 </div>
               ))}
             </div>
@@ -113,15 +110,15 @@ function ProductCard({ product, index }) {
             href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20effectuer%20un%20achat%20pour%20:%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-5 py-2.5 rounded-full hover:bg-white/90 transition-colors mb-2"
+            className="flex items-center justify-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-4 py-2.5 rounded-full hover:bg-white/90 transition-colors mb-2"
           >
-            <MessageCircle className="w-4 h-4" />
+            <MessageCircle className="w-3.5 h-3.5" />
             Effectuer un achat
           </a>
 
           <button
             onClick={() => setFlipped(false)}
-            className="text-white/40 text-[10px] font-body underline mt-1"
+            className="text-white/35 text-[10px] font-body underline"
           >
             ← Retour
           </button>
