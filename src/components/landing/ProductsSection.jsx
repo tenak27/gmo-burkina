@@ -66,7 +66,7 @@ function ProductCard({ product, index }) {
       style={{ perspective: "1000px", height: cardH }}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
-      onClick={() => setFlipped(f => !f)}
+      onTouchEnd={e => { e.preventDefault(); setFlipped(f => !f); }}
     >
       <div style={{
         position: "relative", width: "100%", height: "100%",
@@ -100,14 +100,20 @@ function ProductCard({ product, index }) {
           <p className="font-heading text-[9px] font-bold text-white/50 uppercase tracking-[0.2em]">Tarifs</p>
 
           {isCig ? (
-            <div className="w-full grid grid-cols-3 gap-1.5 my-1">
+            <div className="w-full flex flex-col gap-1.5 my-1">
               {CIG_TARIFS.map(row => (
-                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl p-2 flex flex-col items-center gap-0.5">
-                  <span className="text-lg leading-none">{row.icon}</span>
-                  <p className="font-heading text-[10px] font-bold text-white leading-tight">{row.label}</p>
-                  <p className="font-heading text-[13px] font-black text-white leading-none">{row.price}</p>
-                  <p className="font-body text-[8px] text-white/50">FCFA</p>
-                  <p className="font-body text-[8px] text-white/35">{row.sub}</p>
+                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base leading-none">{row.icon}</span>
+                    <div className="text-left">
+                      <p className="font-heading text-[12px] font-bold text-white leading-none">{row.label}</p>
+                      <p className="font-body text-[9px] text-white/40 mt-0.5">{row.sub}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-heading text-[14px] font-black text-white leading-none">{row.price}</p>
+                    <p className="font-body text-[9px] text-white/50">FCFA</p>
+                  </div>
                 </div>
               ))}
             </div>
