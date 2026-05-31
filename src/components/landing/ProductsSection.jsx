@@ -55,7 +55,7 @@ function ProductCard({ product, index }) {
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.6, delay: (index % 4) * 0.09, ease: [0.22, 1, 0.36, 1] }}
       className="cursor-pointer"
-      style={{ perspective: "1000px", height: "320px" }}
+      style={{ perspective: "1000px", height: product.category === "Cigarettes" ? "360px" : "320px" }}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
       onClick={() => setFlipped(!flipped)}
@@ -111,20 +111,17 @@ function ProductCard({ product, index }) {
           {product.category === "Cigarettes" ? (
             <div className="w-full space-y-2 mb-5">
               {[
-                { label: "Carton", sub: "25 cartouches", value: "275 000", unit: "FCFA", icon: "📦" },
-                { label: "Cartouche", sub: "10 paquets", value: "11 000", unit: "FCFA", icon: "🗂️" },
-                { label: "Paquet", sub: "10 tiges", value: "1 100", unit: "FCFA", icon: "🚬" },
+                { label: "Carton", sub: "25 cartouches", value: "275 000 FCFA", icon: "📦" },
+                { label: "Cartouche", sub: "10 paquets", value: "11 000 FCFA", icon: "🗂️" },
+                { label: "Paquet", sub: "10 tiges", value: "1 100 FCFA", icon: "🚬" },
               ].map(row => (
-                <div key={row.label} className="flex items-center gap-3 bg-white/10 border border-white/20 rounded-xl px-3 py-2.5">
-                  <span className="text-base leading-none">{row.icon}</span>
-                  <div className="flex-1 text-left">
-                    <p className="font-heading text-xs font-bold text-white leading-none">{row.label}</p>
-                    <p className="font-body text-[10px] text-white/50 mt-0.5">{row.sub}</p>
+                <div key={row.label} className="flex items-center gap-2 bg-white/15 border border-white/25 rounded-xl px-3 py-3">
+                  <span className="text-lg leading-none flex-shrink-0">{row.icon}</span>
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="font-heading text-sm font-black text-white leading-none truncate">{row.label}</p>
+                    <p className="font-body text-[11px] text-white/55 mt-0.5">{row.sub}</p>
                   </div>
-                  <div className="text-right">
-                    <span className="font-heading text-sm font-black text-white">{row.value}</span>
-                    <span className="font-body text-[10px] text-white/60 ml-1">{row.unit}</span>
-                  </div>
+                  <p className="font-heading text-sm font-black text-white whitespace-nowrap flex-shrink-0">{row.value}</p>
                 </div>
               ))}
             </div>
@@ -138,14 +135,14 @@ function ProductCard({ product, index }) {
 
           {/* Bouton */}
           <a
-            href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20un%20devis%20pour%20:%20${encodeURIComponent(product.name)}`}
+            href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20effectuer%20un%20achat%20pour%20:%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
             className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-5 py-2.5 rounded-full hover:bg-white/90 transition-colors duration-300"
           >
             <MessageCircle className="w-4 h-4" />
-            Demander un devis
+            Effectuer un achat
           </a>
         </div>
       </div>
