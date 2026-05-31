@@ -43,63 +43,76 @@ const getCategoryForProduct = (name) => {
 
 const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
+const CIG_TARIFS = [
+  { label: "Paquet", sub: "10 tiges", price: "1 100", icon: "🚬" },
+  { label: "Cartouche", sub: "10 paquets", price: "11 000", icon: "🗂️" },
+  { label: "Carton", sub: "25 cart.", price: "275 000", icon: "📦" },
+];
+
 function ProductCard({ product, index }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
   const [flipped, setFlipped] = useState(false);
   const isCig = product.category === "Cigarettes";
+  const cardH = isCig ? 300 : 260;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.6, delay: (index % 4) * 0.09, ease: [0.22, 1, 0.36, 1] }}
-      className="cursor-pointer"
-      onClick={() => setFlipped(!flipped)}
+      transition={{ duration: 0.5, delay: (index % 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      className="cursor-pointer select-none"
+      style={{ perspective: "1000px", height: cardH }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped(f => !f)}
     >
-      {/* FACE AVANT */}
-      {!flipped && (
-        <div className="bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col p-5 overflow-hidden" style={{ minHeight: isCig ? 320 : 280 }}>
-          <div className="flex-1 flex items-center justify-center mb-4">
-            <img src={product.image} alt={product.name} className="w-24 h-24 object-contain drop-shadow-md" />
+      <div style={{
+        position: "relative", width: "100%", height: "100%",
+        transformStyle: "preserve-3d",
+        transition: "transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1)",
+        transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+      }}>
+
+        {/* ── FACE AVANT ── */}
+        <div
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          className="absolute inset-0 bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col p-3 sm:p-5 overflow-hidden"
+        >
+          <div className="flex-1 flex items-center justify-center">
+            <img src={product.image} alt={product.name}
+              className="w-16 h-16 sm:w-24 sm:h-24 object-contain drop-shadow-md" />
           </div>
-          <span className="self-start font-body text-[10px] text-obsidian/60 bg-gray-100 px-3 py-1 rounded-full mb-2">
+          <span className="self-start font-body text-[9px] sm:text-[10px] text-obsidian/50 bg-gray-100 px-2 py-0.5 rounded-full mb-1.5">
             {product.category}
           </span>
-          <h3 className="font-heading text-base font-bold text-obsidian leading-tight">{product.name}</h3>
-          <p className="font-body text-[10px] text-obsidian/30 mt-2 uppercase tracking-widest">
-            Appuyer pour voir le prix →
-          </p>
+          <h3 className="font-heading text-[13px] sm:text-base font-bold text-obsidian leading-tight line-clamp-2">{product.name}</h3>
+          <p className="font-body text-[9px] text-obsidian/25 mt-1.5 uppercase tracking-widest">Voir prix →</p>
         </div>
-      )}
 
-      {/* FACE ARRIÈRE */}
-      {flipped && (
+        {/* ── FACE ARRIÈRE ── */}
         <div
-          className="bg-gmo-green rounded-2xl shadow-lg flex flex-col p-4 text-center"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+          className="absolute inset-0 bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center justify-between p-3 sm:p-4 text-center overflow-hidden"
           onClick={e => e.stopPropagation()}
         >
-          <p className="font-heading text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-3">Tarifs</p>
+          <p className="font-heading text-[9px] font-bold text-white/50 uppercase tracking-[0.2em]">Tarifs</p>
 
           {isCig ? (
-            <div className="w-full grid grid-cols-3 gap-2 mb-4">
-              {[
-                { label: "Paquet", sub: "10 tiges", price: "1 100", icon: "🚬" },
-                { label: "Cartouche", sub: "10 paquets", price: "11 000", icon: "🗂️" },
-                { label: "Carton", sub: "25 cart.", price: "275 000", icon: "📦" },
-              ].map(row => (
-                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl p-2.5 flex flex-col items-center justify-between gap-1">
-                  <span className="text-xl leading-none">{row.icon}</span>
-                  <p className="font-heading text-[11px] font-bold text-white leading-tight">{row.label}</p>
-                  <p className="font-heading text-sm font-black text-white leading-none">{row.price}</p>
-                  <p className="font-body text-[9px] text-white/50 leading-tight">FCFA</p>
-                  <p className="font-body text-[9px] text-white/40 leading-tight">{row.sub}</p>
+            <div className="w-full grid grid-cols-3 gap-1.5 my-1">
+              {CIG_TARIFS.map(row => (
+                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl p-2 flex flex-col items-center gap-0.5">
+                  <span className="text-lg leading-none">{row.icon}</span>
+                  <p className="font-heading text-[10px] font-bold text-white leading-tight">{row.label}</p>
+                  <p className="font-heading text-[13px] font-black text-white leading-none">{row.price}</p>
+                  <p className="font-body text-[8px] text-white/50">FCFA</p>
+                  <p className="font-body text-[8px] text-white/35">{row.sub}</p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="font-heading text-3xl font-black text-white mb-4">
+            <p className="font-heading text-2xl font-black text-white">
               {product.details?.find(d => d.startsWith("Prix"))
                 ? product.details.find(d => d.startsWith("Prix")).replace("Prix : ", "")
                 : "Sur demande"}
@@ -108,22 +121,14 @@ function ProductCard({ product, index }) {
 
           <a
             href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20effectuer%20un%20achat%20pour%20:%20${encodeURIComponent(product.name)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-4 py-2.5 rounded-full hover:bg-white/90 transition-colors mb-2"
+            target="_blank" rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-1.5 bg-white text-gmo-green font-heading font-bold text-[11px] px-3 py-2 rounded-full hover:bg-white/90 transition-colors"
           >
-            <MessageCircle className="w-3.5 h-3.5" />
+            <MessageCircle className="w-3 h-3" />
             Effectuer un achat
           </a>
-
-          <button
-            onClick={() => setFlipped(false)}
-            className="text-white/35 text-[10px] font-body underline"
-          >
-            ← Retour
-          </button>
         </div>
-      )}
+      </div>
     </motion.div>
   );
 }
@@ -276,7 +281,7 @@ export default function ProductsSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"
           >
             {filtered.map((product, i) => (
               <ProductCard key={product.name} product={product} index={i} />
