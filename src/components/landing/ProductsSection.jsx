@@ -47,6 +47,7 @@ function ProductCard({ product, index }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
   const [flipped, setFlipped] = useState(false);
+  const isCig = product.category === "Cigarettes";
 
   return (
     <motion.div
@@ -55,75 +56,48 @@ function ProductCard({ product, index }) {
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.6, delay: (index % 4) * 0.09, ease: [0.22, 1, 0.36, 1] }}
       className="cursor-pointer"
-      style={{ perspective: "1000px", height: product.category === "Cigarettes" ? "360px" : "320px" }}
-      onMouseEnter={() => setFlipped(true)}
-      onMouseLeave={() => setFlipped(false)}
       onClick={() => setFlipped(!flipped)}
     >
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          transformStyle: "preserve-3d",
-          transition: "transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1)",
-          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-        }}
-      >
-        {/* FACE AVANT — blanche */}
-        <div
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
-          className="absolute inset-0 bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col p-5 overflow-hidden"
-        >
-          {/* Image */}
+      {/* FACE AVANT */}
+      {!flipped && (
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col p-5 overflow-hidden" style={{ minHeight: isCig ? 320 : 280 }}>
           <div className="flex-1 flex items-center justify-center mb-4">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-28 h-28 object-contain drop-shadow-md"
-            />
+            <img src={product.image} alt={product.name} className="w-24 h-24 object-contain drop-shadow-md" />
           </div>
-          {/* Badge catégorie */}
           <span className="self-start font-body text-[10px] text-obsidian/60 bg-gray-100 px-3 py-1 rounded-full mb-2">
             {product.category}
           </span>
-          {/* Nom */}
-          <h3 className="font-heading text-lg font-bold text-obsidian leading-tight">
-            {product.name}
-          </h3>
-          {/* Hint flip */}
+          <h3 className="font-heading text-base font-bold text-obsidian leading-tight">{product.name}</h3>
           <p className="font-body text-[10px] text-obsidian/30 mt-2 uppercase tracking-widest">
-            Cliquer pour voir le prix →
+            Appuyer pour voir le prix →
           </p>
         </div>
+      )}
 
-        {/* FACE ARRIÈRE — verte */}
+      {/* FACE ARRIÈRE */}
+      {flipped && (
         <div
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-          }}
-          className="absolute inset-0 bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center justify-center p-5 text-center overflow-hidden"
+          className="bg-gmo-green rounded-2xl shadow-lg flex flex-col items-center p-5 text-center"
+          onClick={e => e.stopPropagation()}
         >
-          <p className="font-heading text-sm font-bold text-white/70 uppercase tracking-widest mb-4">Tarifs</p>
+          <p className="font-heading text-xs font-bold text-white/60 uppercase tracking-widest mb-3">Tarifs</p>
 
-          {product.category === "Cigarettes" ? (
-            <div className="w-full space-y-2 mb-5">
+          {isCig ? (
+            <div className="w-full space-y-2 mb-4">
               {[
-                { label: "Carton", sub: "25 cartouches", value: "275 000", icon: "📦" },
-                { label: "Cartouche", sub: "10 paquets", value: "11 000", icon: "🗂️" },
-                { label: "Paquet", sub: "10 tiges", value: "1 100", icon: "🚬" },
+                { label: "Carton", sub: "25 cartouches", value: "275 000 FCFA", icon: "📦" },
+                { label: "Cartouche", sub: "10 paquets", value: "11 000 FCFA", icon: "🗂️" },
+                { label: "Paquet", sub: "10 tiges", value: "1 100 FCFA", icon: "🚬" },
               ].map(row => (
-                <div key={row.label} className="bg-white/15 border border-white/25 rounded-xl px-3 py-2.5">
+                <div key={row.label} className="bg-white/15 border border-white/20 rounded-xl px-3 py-2.5 text-left">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-base leading-none flex-shrink-0">{row.icon}</span>
-                      <p className="font-heading text-sm font-black text-white leading-none">{row.label}</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">{row.icon}</span>
+                      <span className="font-heading text-sm font-bold text-white">{row.label}</span>
                     </div>
-                    <p className="font-heading text-sm font-black text-white whitespace-nowrap flex-shrink-0">{row.value} <span className="text-[10px] font-normal text-white/70">FCFA</span></p>
+                    <span className="font-heading text-sm font-black text-white">{row.value}</span>
                   </div>
-                  <p className="font-body text-[10px] text-white/50 mt-1 ml-7">{row.sub}</p>
+                  <p className="font-body text-[10px] text-white/50 mt-0.5 ml-7">{row.sub}</p>
                 </div>
               ))}
             </div>
@@ -135,19 +109,24 @@ function ProductCard({ product, index }) {
             </p>
           )}
 
-          {/* Bouton */}
           <a
             href={`${WHATSAPP}?text=Bonjour%20GMO%2C%20je%20souhaite%20effectuer%20un%20achat%20pour%20:%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={e => e.stopPropagation()}
-            className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-5 py-2.5 rounded-full hover:bg-white/90 transition-colors duration-300"
+            className="flex items-center gap-2 bg-white text-gmo-green font-heading font-bold text-xs px-5 py-2.5 rounded-full hover:bg-white/90 transition-colors mb-2"
           >
             <MessageCircle className="w-4 h-4" />
             Effectuer un achat
           </a>
+
+          <button
+            onClick={() => setFlipped(false)}
+            className="text-white/40 text-[10px] font-body underline mt-1"
+          >
+            ← Retour
+          </button>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 }
@@ -300,7 +279,7 @@ export default function ProductsSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
             {filtered.map((product, i) => (
               <ProductCard key={product.name} product={product} index={i} />
