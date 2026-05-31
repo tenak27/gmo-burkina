@@ -130,7 +130,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3 text-gmo-green/40" />
             <p className="font-body text-[10px] text-white/15">
-              Conçu par <Link to="/admin" className="text-gmo-green/55 font-semibold hover:text-gmo-green transition-colors">IAM TECHNOLOGY</Link> · <span className="text-white/25">Armand Olivier KONATE</span>
+              Conçu par <a href="https://iamtechnology.store" target="_blank" rel="noopener noreferrer" className="text-gmo-green/55 font-semibold hover:text-gmo-green transition-colors">IAM TECHNOLOGY</a> · <span className="text-white/25">Armand Olivier KONATE</span>
             </p>
           </div>
         </div>
