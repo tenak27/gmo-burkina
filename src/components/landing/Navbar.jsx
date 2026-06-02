@@ -100,8 +100,13 @@ export default function Navbar({ heroHeight }) {
                 className="h-8 w-auto object-contain" />
             </motion.button>
 
-            {/* Right side — WhatsApp only */}
+            {/* Right side — Login & Portals */}
             <div className="flex items-center gap-2">
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-1.5 bg-obsidian/5 hover:bg-obsidian/10 text-obsidian font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all border border-obsidian/15">
+                Connexion
+              </Link>
               <a
                 href="https://wa.me/+22601181717"
                 target="_blank"
