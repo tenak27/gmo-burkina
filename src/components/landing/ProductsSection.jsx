@@ -8,16 +8,16 @@ const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
 const IMG_SOSUCO   = "https://gmobfaso.com/assets/img/partenaires/sosuco.jpg";
 const IMG_COBIFA   = "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg";
-const IMG_IMPERIAL = "https://gmobfaso.com/assets/img/partenaires/imperial.png";
+const IMG_IMPERIAL = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png";
 const IMG_CITEC    = "https://gmobfaso.com/assets/img/partenaires/citec.jpg";
 const IMG_GMF      = "https://gmobfaso.com/assets/img/partenaires/gmf.jpg";
 
 // ─── Catalogue statique ───────────────────────────────────────────────────────
 const PRODUCTS = [
   // Cigarettes
-  { name: "Hamilton", category: "Cigarettes", image: "https://gmobfaso.com/assets/img/produits/hamilton.jpg", details: [] },
-  { name: "Excellence", category: "Cigarettes", image: "https://gmobfaso.com/assets/img/produits/excellence.jpg", details: [] },
-  { name: "Dunhill", category: "Cigarettes", image: "https://gmobfaso.com/assets/img/produits/dunhill.jpg", details: [] },
+  { name: "Hamilton", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
+  { name: "Excellence", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
+  { name: "Dunhill", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
   // Alimentaire
   { name: "Sucre SOSUCO", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/sucre-sosuco.jpg", details: ["Prix : Sur demande"] },
   { name: "Huile SN CITEC", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-citec.jpg", details: ["Prix : Sur demande"] },
