@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Award, Users, Globe, Heart, Zap, Shield } from "lucide-react";
+import { useSiteImages } from "@/hooks/useSiteImages";
 
 function ValueCard3D({ value, index, isInView }) {
   const [flipped, setFlipped] = useState(false);
@@ -61,35 +62,11 @@ function ValueCard3D({ value, index, isInView }) {
   );
 }
 
-const VALUES = [
-  {
-    icon: Award,
-    title: "Qualité & Service",
-    description:
-      "Nous travaillons à tenir notre promesse sur la qualité des produits que nous distribuons. Nous mettons uniquement sur le marché des produits locaux avec une qualité garantie.",
-    image: "https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg",
-  },
-  {
-    icon: Heart,
-    title: "Responsabilité Sociétale",
-    description:
-      "Entreprise citoyenne, soucieuse du respect des normes, nous avons adopté une démarche RSE qui nous permet d'impacter positivement l'économie du Burkina.",
-    image: "https://gmobfaso.com/assets/img/a-propos/a-propos-4.jpg",
-  },
-  {
-    icon: Zap,
-    title: "Innovation",
-    description:
-      "Nous mettons en place tous les moyens nécessaires pour livrer nos clients à temps. Application mobile en développement pour commander et être livré automatiquement.",
-    image: "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg",
-  },
-  {
-    icon: Shield,
-    title: "Équité & Confiance",
-    description:
-      "Nous respectons nos engagements vis-à-vis de tous nos partenaires. Nous reconnaissons et valorisons la contribution de tous les acteurs de l'entreprise.",
-    image: "https://gmobfaso.com/assets/img/a-propos/a-propos-6.jpg",
-  },
+const VALUES_BASE = [
+  { icon: Award, title: "Qualité & Service", description: "Nous travaillons à tenir notre promesse sur la qualité des produits que nous distribuons. Nous mettons uniquement sur le marché des produits locaux avec une qualité garantie.", slot: "about_valeur_1" },
+  { icon: Heart, title: "Responsabilité Sociétale", description: "Entreprise citoyenne, soucieuse du respect des normes, nous avons adopté une démarche RSE qui nous permet d'impacter positivement l'économie du Burkina.", slot: "about_valeur_2" },
+  { icon: Zap, title: "Innovation", description: "Nous mettons en place tous les moyens nécessaires pour livrer nos clients à temps. Application mobile en développement pour commander et être livré automatiquement.", slot: "about_valeur_3" },
+  { icon: Shield, title: "Équité & Confiance", description: "Nous respectons nos engagements vis-à-vis de tous nos partenaires. Nous reconnaissons et valorisons la contribution de tous les acteurs de l'entreprise.", slot: "about_valeur_4" },
 ];
 
 export default function AboutSection() {
@@ -97,6 +74,9 @@ export default function AboutSection() {
   const valuesRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const valuesInView = useInView(valuesRef, { once: true, margin: "-80px" });
+  const { getImage } = useSiteImages();
+
+  const VALUES = VALUES_BASE.map(v => ({ ...v, image: getImage(v.slot) }));
 
   return (
     <section id="apropos" className="bg-concrete overflow-hidden">
@@ -113,10 +93,10 @@ export default function AboutSection() {
                 className="relative z-10"
               >
                 <img
-                  src="https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg"
-                  alt="PDG Hama TRAORE — Groupe Madina Oumarou"
-                  className="w-full aspect-[3/4] object-cover object-top"
-                />
+                   src={getImage("about_pdg")}
+                   alt="PDG Hama TRAORE — Groupe Madina Oumarou"
+                   className="w-full aspect-[3/4] object-cover object-top"
+                 />
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
@@ -125,10 +105,10 @@ export default function AboutSection() {
                 className="absolute -bottom-6 -right-4 lg:-right-8 w-40 lg:w-56 z-20 shadow-2xl"
               >
                 <img
-                  src="https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg"
-                  alt="Siège GMO"
-                  className="w-full aspect-square object-cover border-4 border-concrete"
-                />
+                   src={getImage("about_siege")}
+                   alt="Siège GMO"
+                   className="w-full aspect-square object-cover border-4 border-concrete"
+                 />
               </motion.div>
               <div className="absolute top-4 left-4 w-full h-full border border-gmo-green/20 -z-0" />
             </div>

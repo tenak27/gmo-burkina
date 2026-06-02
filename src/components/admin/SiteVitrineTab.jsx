@@ -6,8 +6,10 @@ import {
   MapPin, Calendar, ExternalLink, CheckCircle2, Archive, EyeOff, Download
 } from "lucide-react";
 import VitrineExportPanel from "./VitrineExportPanel";
+import SiteImagesManager from "./SiteImagesManager";
 
 const TABS = [
+  { id: "images",      label: "Images du site",   icon: Image,     color: "from-rose-500 to-pink-600" },
   { id: "produits",    label: "Produits vitrine", icon: Package,   color: "from-teal-500 to-green-600" },
   { id: "galerie",     label: "Galerie",          icon: Image,     color: "from-violet-500 to-purple-600" },
   { id: "partenaires", label: "Partenaires",       icon: Users,     color: "from-amber-500 to-orange-500" },
@@ -785,7 +787,7 @@ function OffresManager() {
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function SiteVitrineTab() {
-  const [activeTab, setActiveTab] = useState("galerie");
+  const [activeTab, setActiveTab] = useState("images");
   const currentTab = TABS.find(t => t.id === activeTab);
 
   return (
@@ -802,7 +804,7 @@ export default function SiteVitrineTab() {
       </div>
 
       {/* Tab selector */}
-      <div className="grid grid-cols-6 gap-2">
+      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
         {TABS.map(t => {
           const Icon = t.icon;
           return (
@@ -824,6 +826,7 @@ export default function SiteVitrineTab() {
           {currentTab?.label}
         </div>
 
+        {activeTab === "images"      && <SiteImagesManager />}
         {activeTab === "produits"    && <ProduitsVitrineManager />}
         {activeTab === "galerie"     && <GalerieManager />}
         {activeTab === "partenaires" && <PartenairesManager />}

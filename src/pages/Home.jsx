@@ -46,7 +46,7 @@ const FALLBACK_GALLERY = [
 ];
 
 export default function Home() {
-  const [galleryImages, setGalleryImages] = useState(FALLBACK_GALLERY);
+  const [galleryImages, setGalleryImages] = useState(FALLBACK_GALLERY); // kept for backward compat
 
   // Smooth section reveal via IntersectionObserver on all sections
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function Home() {
       <PresenceSection />
       <LogisticsPartnersSection />
       <FleetGallerySection />
-      <GallerySection images={galleryImages} />
+      <GallerySection />
       <JourneyBanner journeyImage={IMAGES.journey} />
       <MediaSection />
       <BlogSection />

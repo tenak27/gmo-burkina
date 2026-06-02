@@ -1,8 +1,13 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSiteImages, DEFAULT_IMAGES } from "@/hooks/useSiteImages";
 
-export default function GallerySection({ images }) {
+const GALLERY_SLOTS = ["galerie_1","galerie_2","galerie_3","galerie_4","galerie_5","galerie_6"];
+
+export default function GallerySection() {
+  const { getImage } = useSiteImages();
+  const images = GALLERY_SLOTS.map(s => getImage(s)).filter(Boolean);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [lightbox, setLightbox] = useState(null); // index of open image
