@@ -22,7 +22,6 @@ import ReceivablesTab from "@/components/admin/ReceivablesTab";
 import ApplicationsTab from "@/components/admin/ApplicationsTab";
 import StatsChartsPanel from "@/components/admin/StatsChartsPanel";
 import SettingsTab from "@/components/admin/SettingsTab";
-import SiteVitrineTab from "@/components/admin/SiteVitrineTab";
 import CaisseTab from "@/components/admin/CaisseTab";
 import RevendeurAdminTab from "@/components/admin/RevendeurAdminTab";
 
@@ -166,7 +165,6 @@ function AdminDashboard() {
             {tab === "applications" && <ApplicationsTab applications={applications} setApplications={setApplications} />}
             {tab === "stats"        && <StatsChartsPanel orders={orders} movements={movements} />}
             {tab === "settings"     && <SettingsTab />}
-            {tab === "vitrine"      && <SiteVitrineTab />}
             {tab === "caisse"       && <CaisseTab expenses={cashExpenses} setExpenses={setCashExpenses} />}
             {tab === "revendeurs"   && <RevendeurAdminTab orders={orders} setOrders={setOrders} clients={clients} receivables={receivables} />}
           </div>
