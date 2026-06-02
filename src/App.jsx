@@ -14,7 +14,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/carrieres" element={<Careers />} />
           <Route path="/login" element={<Navigate to="/" />} />
-          <Route path="/portail" element={<Navigate to="/" />} />
+          <Route path="/portail/vendeur" element={<Navigate to="/" />} />
+          <Route path="/portail/chauffeur" element={<Navigate to="/" />} />
+          <Route path="/portail/client" element={<Navigate to="/" />} />
+          <Route path="/portail/admin" element={<Navigate to="/" />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

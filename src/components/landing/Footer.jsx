@@ -70,16 +70,15 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Légal */}
+          {/* Portails */}
           <div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Légal</p>
-           <div className="space-y-1.5">
-             {["Mentions légales", "Confidentialité", "CGV"].map(l => (
-               <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/25 hover:text-white/55 transition-colors">
-                 <FileText className="w-2.5 h-2.5 opacity-50" />{l}
-               </a>
-             ))}
-           </div>
+            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Portails</p>
+            <div className="space-y-2">
+              <a href="/portail/vendeur" className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors">Vendeurs</a>
+              <a href="/portail/chauffeur" className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors">Chauffeurs</a>
+              <a href="/portail/client" className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors">Clients</a>
+              <a href="/portail/admin" className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors">Admin</a>
+            </div>
           </div>
 
           {/* Contact */}
