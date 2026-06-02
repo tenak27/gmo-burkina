@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import { Phone, Mail, MapPin, MessageCircle, Facebook, Twitter, Linkedin, Youtube, Instagram, Shield, FileText } from "lucide-react";
 
 const NAV = [
@@ -71,22 +70,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Portails */}
+          {/* Légal */}
           <div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Portails</p>
-           <div className="space-y-2">
-             <button onClick={() => base44.auth.redirectToLogin('/chauffeur', { locale: "fr" })}
-               className="flex items-center gap-1.5 text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
-               <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
-               Portail Chauffeurs
-             </button>
-             <button onClick={() => base44.auth.redirectToLogin('/vendeur', { locale: "fr" })}
-               className="flex items-center gap-1.5 text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
-               <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
-               Portail Ambulants
-             </button>
-           </div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-3 mt-5">Légal</p>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Légal</p>
            <div className="space-y-1.5">
              {["Mentions légales", "Confidentialité", "CGV"].map(l => (
                <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/25 hover:text-white/55 transition-colors">
