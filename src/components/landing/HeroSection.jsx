@@ -1,32 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronDown, Phone, Menu, X } from "lucide-react";
-import { IMAGES } from "@/lib/images";
+import { ArrowRight, ChevronDown, Phone, LogIn, Menu, X, User } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/lib/AuthContext";
+import { base44 } from "@/api/base44Client";
 
 const PANELS = [
   {
-    img: IMAGES.heroSlide1,
+    img: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
     label: "DISTRIBUTION",
     sub: "Nationale & Internationale",
     tagline: "Livraisons partout au Burkina Faso",
     color: "#1A7A2E",
   },
   {
-    img: IMAGES.heroSlide2,
+    img: "https://gmobfaso.com/assets/img/slides/slide-2.jpg",
     label: "TRANSPORT",
     sub: "Logistique de pointe",
     tagline: "Flotte moderne, délais garantis",
     color: "#CC1717",
   },
   {
-    img: IMAGES.heroQualite,
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg",
     label: "QUALITÉ",
     sub: "Produits locaux certifiés",
     tagline: "Excellence & responsabilité",
     color: "#F5C400",
   },
   {
-    img: IMAGES.heroExpansion,
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c25f1b164_Gemini_Generated_Image_7tq8x97tq8x97tq8.png",
     label: "EXPANSION",
     sub: "Afrique de l'Ouest",
     tagline: "Côte d'Ivoire · Mali · Niger",
@@ -48,6 +50,7 @@ export default function HeroSection() {
   const [hovered, setHovered] = useState(null);
   const [autoIdx, setAutoIdx] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     if (hovered !== null) return;
@@ -62,6 +65,14 @@ export default function HeroSection() {
     setMobileMenuOpen(false);
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const getDashboardLink = () => {
+    if (!user) return null;
+    if (user.role === "admin") return { to: "/admin", label: "Dashboard" };
+    if (user.role === "detaillant") return { to: "/detaillant", label: "Mon Espace" };
+    return { to: "/client", label: "Mon Espace" };
+  };
+  const dashLink = getDashboardLink();
 
   return (
     <section id="accueil" className="relative bg-obsidian overflow-hidden" style={{ height: "100svh", minHeight: 580, maxWidth: "100vw" }}>
@@ -86,7 +97,7 @@ export default function HeroSection() {
             {/* Logo */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
               <img
-                src={IMAGES.logoGmo}
+                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
                 alt="GMO"
                 className="h-10 w-auto object-contain brightness-0 invert"
               />
@@ -118,6 +129,23 @@ export default function HeroSection() {
               transition={{ delay: 0.4 }}
               className="hidden lg:flex items-center gap-3"
             >
+              {isAuthenticated && dashLink && (
+                <>
+                  <Link
+                    to={dashLink.to}
+                    className="flex items-center gap-2 text-white/65 font-heading font-semibold text-sm hover:text-white border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:bg-white/8 transition-all"
+                  >
+                    <User className="w-3.5 h-3.5" />
+                    {dashLink.label}
+                  </Link>
+                  <button
+                    onClick={() => logout()}
+                    className="font-body text-xs text-white/30 hover:text-white/70 transition-colors"
+                  >
+                    Déco.
+                  </button>
+                </>
+              )}
               <a
                 href="tel:+22601181717"
                 className="flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-sm px-5 py-2.5 rounded-lg btn-glow-green"
@@ -159,6 +187,12 @@ export default function HeroSection() {
                 {link.label}
               </motion.button>
             ))}
+            {isAuthenticated && dashLink && (
+              <Link to={dashLink.to} onClick={() => setMobileMenuOpen(false)}
+                className="font-heading text-3xl font-bold text-gmo-green">
+                {dashLink.label}
+              </Link>
+            )}
             <a href="tel:+22601181717"
               className="mt-4 flex items-center gap-2 bg-gmo-green text-white font-heading font-bold text-base px-8 py-4 rounded-xl">
               <Phone className="w-5 h-5" /> Appeler
@@ -216,7 +250,7 @@ export default function HeroSection() {
                 key={i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                onClick={() => setAutoIdx(i)}
+                onClick={() => { setAutoIdx(i); }}
                 className="transition-all duration-500 rounded-full flex-shrink-0 focus:outline-none"
                 style={{
                   width: i === activeIdx ? 32 : 8,
@@ -273,6 +307,7 @@ export default function HeroSection() {
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
               >
+                {/* Image */}
                 <motion.img
                   src={panel.img}
                   alt={panel.label}
@@ -280,6 +315,8 @@ export default function HeroSection() {
                   animate={{ scale: isActive ? 1.12 : 1.02 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 />
+
+                {/* Overlay */}
                 <motion.div
                   className="absolute inset-0"
                   animate={{
@@ -289,19 +326,28 @@ export default function HeroSection() {
                   }}
                   transition={{ duration: 0.65 }}
                 />
+
+                {/* Top accent line */}
                 <motion.div
                   className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl"
+                  style={{ background: panel.color }}
                   animate={{ opacity: isActive ? 1 : 0.2, scaleX: isActive ? 1 : 0.6 }}
                   transition={{ duration: 0.4 }}
                   style={{ background: panel.color, transformOrigin: "left" }}
                 />
+
+                {/* Panel number */}
                 <div className="absolute top-5 right-5 font-heading text-[11px] text-white/15 tracking-[0.3em]">
                   {String(i + 1).padStart(2, "0")}
                 </div>
+
+                {/* Collapsed state */}
                 <AnimatePresence>
                   {!isActive && (
                     <motion.div
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       transition={{ duration: 0.3 }}
                       className="absolute inset-0 flex flex-col items-center justify-end pb-10 gap-4"
                     >
@@ -315,24 +361,35 @@ export default function HeroSection() {
                     </motion.div>
                   )}
                 </AnimatePresence>
+
+                {/* Expanded content */}
                 <AnimatePresence>
                   {isActive && (
                     <motion.div
-                      initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 32 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.5, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
                       className="absolute inset-0 flex flex-col justify-end p-8"
                     >
                       <motion.div
                         className="h-[2px] rounded-full mb-5 bg-white/50"
-                        initial={{ width: 0 }} animate={{ width: 48 }}
+                        initial={{ width: 0 }}
+                        animate={{ width: 48 }}
                         transition={{ duration: 0.55, delay: 0.32 }}
                       />
-                      <p className="font-heading font-black text-white leading-none tracking-tight mb-2 drop-shadow-2xl"
-                        style={{ fontSize: "clamp(2.2rem, 3.8vw, 4rem)" }}>
+                      <p
+                        className="font-heading font-black text-white leading-none tracking-tight mb-2 drop-shadow-2xl"
+                        style={{ fontSize: "clamp(2.2rem, 3.8vw, 4rem)" }}
+                      >
                         {panel.label}
                       </p>
-                      <p className="font-body text-white/65 text-sm uppercase tracking-[0.22em] mb-1.5">{panel.sub}</p>
-                      <p className="font-body text-white/35 text-xs tracking-wide">{panel.tagline}</p>
+                      <p className="font-body text-white/65 text-sm uppercase tracking-[0.22em] mb-1.5">
+                        {panel.sub}
+                      </p>
+                      <p className="font-body text-white/35 text-xs tracking-wide">
+                        {panel.tagline}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>

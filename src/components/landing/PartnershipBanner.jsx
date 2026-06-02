@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Handshake, TrendingUp, Award } from "lucide-react";
-import { IMAGES } from "@/lib/images";
 
 export default function PartnershipBanner() {
   const ref = useRef(null);
@@ -81,7 +80,7 @@ export default function PartnershipBanner() {
                 {/* GMO Logo */}
                 <div className="relative">
                   <img
-                    src={IMAGES.logoGmoFull}
+                    src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/47050d727_logo-gmo2x-EVZXLeXs.png"
                     alt="GMO"
                     className="h-20 lg:h-24 w-auto object-contain" />
                 </div>
@@ -99,7 +98,7 @@ export default function PartnershipBanner() {
 
                 {/* SN CITEC Logo */}
                 <div className="relative">
-                  <img src={IMAGES.logoSnCitec}
+                  <img src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg"
                   alt="SN CITEC"
                   className="h-16 lg:h-20 w-auto object-contain" />
                 </div>

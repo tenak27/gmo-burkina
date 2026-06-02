@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
-import { IMAGES } from "@/lib/images";
 
 
 const WHATSAPP = "https://wa.me/22670213831";
@@ -180,11 +179,11 @@ export default function ProductsSection() {
     const isSnCitecProducts = name.includes("savon citec") || name.includes("tourtaux");
     const isGmfEtalon = name.includes("farine de blé gmf etalon") || name.includes("son de blé");
     
-    const soscoImage = IMAGES.logoSosuco;
-    const cobifaImage = IMAGES.logoCobifa;
-    const imperialImage = IMAGES.logoImperial;
-    const snCitecImage = IMAGES.logoSnCitec;
-    const gmfEtalonImage = IMAGES.logoGmfEtalon;
+    const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
+    const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
+    const imperialImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png";
+    const snCitecImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg";
+    const gmfEtalonImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ff5444a02_gmb.jpg";
     
     return {
       name: p.name,
