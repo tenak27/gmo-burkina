@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { IMAGES } from "@/lib/images";
 
 const NAV_LINKS = [
   { label: "Services", href: "#services" },
@@ -14,44 +14,13 @@ const NAV_LINKS = [
   { label: "Rejoindre GMO", href: "/carrieres", isPage: true },
 ];
 
-const CATEGORY_MAP = {
-  "hamilton": "Cigarettes",
-  "excellence": "Cigarettes",
-  "dunhill": "Cigarettes",
-  "farine gmf": "Alimentaire",
-  "farine": "Alimentaire",
-  "huile sn citec": "Alimentaire",
-  "huile savor": "Alimentaire",
-  "sucre": "Alimentaire",
-  "savon citec": "Hygiène",
-  "savon n°": "Hygiène",
-  "cobifa": "Alimentaire",
-  "tourteaux": "Embauche",
-  "betail": "Embauche",
-};
-
-const getCategoryForProduct = (name) => {
-  const normalized = name.toLowerCase();
-  for (const [key, cat] of Object.entries(CATEGORY_MAP)) {
-    if (normalized.includes(key)) return cat;
-  }
-  return "Alimentaire";
-};
+const PRODUCT_CATEGORIES = ["Tous", "Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
 export default function Navbar({ heroHeight }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    base44.entities.Product.list("name", 200).then((data) => {
-      const products = (data || []).filter((p) => p.show_on_vitrine && p.is_active !== false);
-      const cats = new Set();
-      products.forEach((p) => cats.add(getCategoryForProduct(p.name)));
-      setCategories(["Tous", ...Array.from(cats)]);
-    }).catch(() => {});
-  }, []);
+  const categories = PRODUCT_CATEGORIES;
 
   useEffect(() => {
     const threshold = heroHeight || window.innerHeight * 0.85;
@@ -108,7 +77,7 @@ export default function Navbar({ heroHeight }) {
                 {[0, 1, 2, 3].map((n) =>
                   <React.Fragment key={n}>
                     <img
-                      src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c6a35848c_Capturedcran2026-05-25112724AM.png"
+                      src={IMAGES.logoGmoTicker}
                       alt="GMO"
                       className="h-[70px] sm:h-[90px] lg:h-[110px] w-auto object-contain flex-shrink-0" />
                     <span className="text-gmo-red font-body italic text-xs sm:text-sm lg:text-base font-semibold flex-shrink-0 flex items-center whitespace-nowrap">
@@ -126,7 +95,7 @@ export default function Navbar({ heroHeight }) {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}>
               <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                src={IMAGES.logoGmo}
                 alt="GMO"
                 className="h-8 w-auto object-contain" />
             </motion.button>
@@ -176,7 +145,7 @@ export default function Navbar({ heroHeight }) {
                   </button>
                 </div>
                 <img
-                  src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                  src={IMAGES.logoGmo}
                   alt="GMO"
                   className="h-8 w-auto object-contain mx-auto" />
               </div>

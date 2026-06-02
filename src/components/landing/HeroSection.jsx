@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronDown, Phone, Menu, X } from "lucide-react";
+import { IMAGES } from "@/lib/images";
 
 const PANELS = [
   {
-    img: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
+    img: IMAGES.heroSlide1,
     label: "DISTRIBUTION",
     sub: "Nationale & Internationale",
     tagline: "Livraisons partout au Burkina Faso",
     color: "#1A7A2E",
   },
   {
-    img: "https://gmobfaso.com/assets/img/slides/slide-2.jpg",
+    img: IMAGES.heroSlide2,
     label: "TRANSPORT",
     sub: "Logistique de pointe",
     tagline: "Flotte moderne, délais garantis",
     color: "#CC1717",
   },
   {
-    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg",
+    img: IMAGES.heroQualite,
     label: "QUALITÉ",
     sub: "Produits locaux certifiés",
     tagline: "Excellence & responsabilité",
     color: "#F5C400",
   },
   {
-    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c25f1b164_Gemini_Generated_Image_7tq8x97tq8x97tq8.png",
+    img: IMAGES.heroExpansion,
     label: "EXPANSION",
     sub: "Afrique de l'Ouest",
     tagline: "Côte d'Ivoire · Mali · Niger",
@@ -85,7 +86,7 @@ export default function HeroSection() {
             {/* Logo */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
               <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                src={IMAGES.logoGmo}
                 alt="GMO"
                 className="h-10 w-auto object-contain brightness-0 invert"
               />

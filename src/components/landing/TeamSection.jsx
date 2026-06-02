@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, Users, TrendingUp, Award, ChevronRight } from "lucide-react";
+import { IMAGES } from "@/lib/images";
 
 function OperationalCard({ dept, index, isInView }) {
   const [hovered, setHovered] = useState(false);
@@ -132,7 +133,7 @@ const EXECUTIVE_BOARD = [
   title: "Président Directeur Général",
   role: "PDG",
   description: "Fondateur et visionnaire du Groupe Madina Oumarou, Hama TRAORE pilote la stratégie de croissance du groupe depuis sa création avec plus de 40 ans d'expertise en distribution.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg",
+  image: IMAGES.teamPdg,
   color: "#1A7A2E",
   tag: "Fondateur"
 },
@@ -141,7 +142,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable Commercial",
   role: "RC",
   description: "En charge du développement des ventes, de la relation client et de l'expansion du réseau de distribution à travers le Burkina Faso.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
+  image: IMAGES.teamCommercial,
   color: "#CC1717",
   tag: "Ventes & Croissance"
 },
@@ -150,7 +151,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable des Ventes",
   role: "RV",
   description: "En charge de la gestion des équipes commerciales et du développement du portefeuille clients sur l'ensemble du territoire.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png",
+  image: IMAGES.teamVentes,
   color: "#1A7A2E",
   tag: "Équipe Commerciale"
 }];
@@ -164,7 +165,7 @@ const OPERATIONAL_TEAM = [
   desc: "PDG et direction exécutive pilotant la stratégie du groupe",
   kpi: "40+ ans d'expertise",
   accent: "#1A7A2E",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1a0a79b3c_Gemini_Generated_Image_b8kbkwb8kbkwb8kb.png"
+  bgImage: IMAGES.deptDirGen
 },
 {
   dept: "Commercial & Ventes",
@@ -173,7 +174,7 @@ const OPERATIONAL_TEAM = [
   desc: "Commerciaux terrain, responsables secteur et attachés commerciaux",
   kpi: "200+ clients actifs",
   accent: "#1d4ed8",
-  bgImage: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=85"
+  bgImage: IMAGES.deptCommercial
 },
 {
   dept: "Logistique & Transport",
@@ -182,7 +183,7 @@ const OPERATIONAL_TEAM = [
   desc: "Chauffeurs, coordinateurs logistiques et planificateurs de tournées",
   kpi: "25+ véhicules en service",
   accent: "#1A7A2E",
-  bgImage: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800&q=85"
+  bgImage: IMAGES.deptLogistique
 },
 {
   dept: "Entrepôts & Stock",
@@ -191,7 +192,7 @@ const OPERATIONAL_TEAM = [
   desc: "Magasiniers, caristes et gestionnaires de stock certifiés",
   kpi: "3 sites de stockage",
   accent: "#d97706",
-  bgImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=85"
+  bgImage: IMAGES.deptEntrepot
 },
 {
   dept: "Finance & Comptabilité",
@@ -200,7 +201,7 @@ const OPERATIONAL_TEAM = [
   desc: "DAF, comptables, auditeurs et contrôleurs de gestion OHADA",
   kpi: "Conformité 100%",
   accent: "#7c3aed",
-  bgImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=85"
+  bgImage: IMAGES.deptFinance
 },
 {
   dept: "Ressources Humaines",
@@ -209,7 +210,7 @@ const OPERATIONAL_TEAM = [
   desc: "DRH, chargés de recrutement et formation continue",
   kpi: "80+ collaborateurs",
   accent: "#be185d",
-  bgImage: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&q=85"
+  bgImage: IMAGES.deptRH
 },
 {
   dept: "Informatique & Digital",
@@ -218,7 +219,7 @@ const OPERATIONAL_TEAM = [
   desc: "DSI, développeurs full-stack et administrateurs systèmes",
   kpi: "Plateforme 100% opérationnelle",
   accent: "#0891b2",
-  bgImage: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=85"
+  bgImage: IMAGES.deptIT
 },
 {
   dept: "Marketing & Communication",
@@ -227,7 +228,7 @@ const OPERATIONAL_TEAM = [
   desc: "Chef de projet marketing, community managers et graphistes",
   kpi: "Présence multi-canaux",
   accent: "#CC1717",
-  bgImage: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=85"
+  bgImage: IMAGES.deptMarketing
 },
 {
   dept: "Service Client",
@@ -236,7 +237,7 @@ const OPERATIONAL_TEAM = [
   desc: "Conseillers clientèle et support après-vente dédiés",
   kpi: "98% satisfaction",
   accent: "#4f46e5",
-  bgImage: "https://images.unsplash.com/photo-1553775927-a071d5a6a39a?w=800&q=85"
+  bgImage: IMAGES.deptServiceClient
 },
 {
   dept: "Qualité & Sécurité",
@@ -245,7 +246,7 @@ const OPERATIONAL_TEAM = [
   desc: "Responsables QSE et auditeurs qualité certifiés",
   kpi: "Normes ISO respectées",
   accent: "#059669",
-  bgImage: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=85"
+  bgImage: IMAGES.deptQualite
 },
 {
   dept: "Achats & Approvisionnement",
@@ -254,7 +255,7 @@ const OPERATIONAL_TEAM = [
   desc: "Buyers, négociateurs et gestionnaires de relations fournisseurs",
   kpi: "50+ fournisseurs partenaires",
   accent: "#0d9488",
-  bgImage: "https://images.unsplash.com/photo-1493612276216-ee3925520721?w=800&q=85"
+  bgImage: IMAGES.deptAchats
 }];
 
 
