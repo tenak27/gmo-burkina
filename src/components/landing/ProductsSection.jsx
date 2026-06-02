@@ -15,24 +15,24 @@ const IMG_GMF      = "https://gmobfaso.com/assets/img/partenaires/gmf.jpg";
 // ─── Catalogue statique ───────────────────────────────────────────────────────
 const PRODUCTS = [
   // Cigarettes
-  { name: "Hamilton", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
-  { name: "Excellence", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
-  { name: "Dunhill", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
+  { name: "Hamilton", category: "Cigarettes", image: "https://gmobfaso.com/assets/img/produits/hamilton.jpg", details: [] },
+  { name: "Excellence", category: "Cigarettes", image: "https://gmobfaso.com/assets/img/produits/excellence.jpg", details: [] },
+  { name: "Dunhill", category: "Cigarettes", image: "https://gmobfaso.com/assets/img/produits/dunhill.jpg", details: [] },
   // Alimentaire
-  { name: "Sucre SOSUCO", category: "Alimentaire", image: IMG_SOSUCO, details: ["Prix : Sur demande"] },
-  { name: "Huile SN CITEC", category: "Alimentaire", image: IMG_CITEC, details: ["Prix : Sur demande"] },
-  { name: "Huile Savor Soja", category: "Alimentaire", image: IMG_CITEC, details: ["Prix : Sur demande"] },
-  { name: "Huile Savor Graine", category: "Alimentaire", image: IMG_CITEC, details: ["Prix : Sur demande"] },
-  { name: "Farine GMF", category: "Alimentaire", image: IMG_GMF, details: ["Prix : Sur demande"] },
-  { name: "COBIFA AXE", category: "Alimentaire", image: IMG_COBIFA, details: ["Prix : Sur demande"] },
-  { name: "COBIFA Chewingum", category: "Alimentaire", image: IMG_COBIFA, details: ["Prix : Sur demande"] },
+  { name: "Sucre SOSUCO", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/sucre-sosuco.jpg", details: ["Prix : Sur demande"] },
+  { name: "Huile SN CITEC", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-citec.jpg", details: ["Prix : Sur demande"] },
+  { name: "Huile Savor Soja", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-savor-soja.jpg", details: ["Prix : Sur demande"] },
+  { name: "Huile Savor Graine", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-savor-graine.jpg", details: ["Prix : Sur demande"] },
+  { name: "Farine GMF", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/farine-gmf.jpg", details: ["Prix : Sur demande"] },
+  { name: "COBIFA AXE", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/cobifa-axe.jpg", details: ["Prix : Sur demande"] },
+  { name: "COBIFA Chewingum", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/cobifa-chewingum.jpg", details: ["Prix : Sur demande"] },
   // Hygiène
-  { name: "Savon CITEC", category: "Hygiène", image: IMG_CITEC, details: ["Prix : Sur demande"] },
+  { name: "Savon CITEC", category: "Hygiène", image: "https://gmobfaso.com/assets/img/produits/savon-citec.jpg", details: ["Prix : Sur demande"] },
   // Embauche / Élevage
-  { name: "Farine de Blé GMF Etalon", category: "Embauche", image: IMG_GMF, details: ["Prix : Sur demande"] },
-  { name: "Son de Blé", category: "Embauche", image: IMG_GMF, details: ["Prix : Sur demande"] },
-  { name: "Tourteaux SN CITEC", category: "Embauche", image: IMG_CITEC, details: ["Prix : Sur demande"] },
-  { name: "Aliment Bétail", category: "Embauche", image: IMG_CITEC, details: ["Prix : Sur demande"] },
+  { name: "Farine de Blé GMF Etalon", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/farine-ble-gmf.jpg", details: ["Prix : Sur demande"] },
+  { name: "Son de Blé", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/son-ble.jpg", details: ["Prix : Sur demande"] },
+  { name: "Tourteaux SN CITEC", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/tourteaux-citec.jpg", details: ["Prix : Sur demande"] },
+  { name: "Aliment Bétail", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/aliment-betail.jpg", details: ["Prix : Sur demande"] },
 ];
 
 const CIG_TARIFS = [
