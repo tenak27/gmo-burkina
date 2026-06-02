@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { DEFAULT_IMAGES, invalidateSiteImagesCache } from "@/hooks/useSiteImages";
 
-import { Upload, Loader2, X, RotateCcw, Download } from "lucide-react";
-import { DEFAULT_IMAGES as DEFAULTS } from "@/hooks/useSiteImages";
+import { Upload, Loader2, X, RotateCcw, Download, Cloud, CheckCircle2 } from "lucide-react";
 
 const SECTIONS = [
   {
@@ -233,6 +232,8 @@ export default function SiteImagesManager() {
   const [activeSection, setActiveSection] = useState("hero");
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState({ current: 0, total: 0 });
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState(null);
 
   useEffect(() => {
     base44.entities.SiteImages.list("order", 200).then(data => {
@@ -264,21 +265,41 @@ export default function SiteImagesManager() {
           <h3 className="font-heading text-base font-bold text-obsidian">Images du site vitrine</h3>
           <p className="text-[11px] text-obsidian/40 font-body mt-0.5">Modifiez les images de chaque section. Les changements sont pris en compte immédiatement.</p>
         </div>
-        <button
-          onClick={async () => {
-            setExporting(true);
-            setExportProgress({ current: 0, total: 0 });
-            await downloadAllPhotos(dbRecords, (current, total) => setExportProgress({ current, total }));
-            setExporting(false);
-          }}
-          disabled={exporting || loading}
-          className="flex items-center gap-1.5 bg-obsidian text-white text-xs font-heading font-bold px-4 py-2 rounded-xl hover:bg-obsidian/80 transition-colors disabled:opacity-50 cursor-pointer flex-shrink-0"
-        >
-          {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-          {exporting && exportProgress.total > 0
-            ? `${exportProgress.current}/${exportProgress.total} JPEG…`
-            : "Exporter tout en JPEG"}
-        </button>
+        <div className="flex flex-col gap-2 flex-shrink-0">
+          <button
+            onClick={async () => {
+              setSyncing(true);
+              setSyncResult(null);
+              const res = await base44.functions.invoke("syncImagesToDrive", {});
+              setSyncResult(res.data);
+              setSyncing(false);
+            }}
+            disabled={syncing || loading}
+            className="flex items-center gap-1.5 bg-blue-600 text-white text-xs font-heading font-bold px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50 cursor-pointer"
+          >
+            {syncing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Cloud className="w-3.5 h-3.5" />}
+            {syncing ? "Sync en cours…" : "Sync Google Drive"}
+          </button>
+          {syncResult && (
+            <div className={`flex items-center gap-1.5 text-[10px] font-body px-3 py-1.5 rounded-lg ${syncResult.success ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"}`}>
+              {syncResult.success ? <CheckCircle2 className="w-3 h-3 flex-shrink-0" /> : <X className="w-3 h-3 flex-shrink-0" />}
+              {syncResult.message || syncResult.error}
+            </div>
+          )}
+          <button
+            onClick={async () => {
+              setExporting(true);
+              setExportProgress({ current: 0, total: 0 });
+              await downloadAllPhotos(dbRecords, (current, total) => setExportProgress({ current, total }));
+              setExporting(false);
+            }}
+            disabled={exporting || loading}
+            className="flex items-center gap-1.5 bg-obsidian text-white text-xs font-heading font-bold px-4 py-2 rounded-xl hover:bg-obsidian/80 transition-colors disabled:opacity-50 cursor-pointer"
+          >
+            {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+            {exporting && exportProgress.total > 0 ? `${exportProgress.current}/${exportProgress.total} JPEG…` : "Exporter en JPEG"}
+          </button>
+        </div>
       </div>
 
       {/* Section tabs */}
