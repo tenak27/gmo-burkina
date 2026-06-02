@@ -159,23 +159,72 @@ function ImageSlot({ slot, label, dbRecord, onSave }) {
 // Collect all slots across all sections
 const ALL_SLOTS = SECTIONS.flatMap(s => s.slots);
 
-async function downloadAllPhotos(dbRecords) {
-  const rows = ALL_SLOTS.map(({ slot, label }) => {
+// Static images used elsewhere on the site
+const STATIC_IMAGES = [
+  { label: "Logo GMO blanc", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png", section: "Logo" },
+  { label: "Logo GMO couleur", url: "https://gmobfaso.com/assets/img/logo-gmo-white.png", section: "Logo" },
+  { label: "PDG Hama TRAORE", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg", section: "Équipe" },
+  { label: "Responsable Commercial", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg", section: "Équipe" },
+  { label: "Responsable des Ventes", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png", section: "Équipe" },
+  { label: "Direction Générale BG", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1a0a79b3c_Gemini_Generated_Image_b8kbkwb8kbkwb8kb.png", section: "Équipe Opérationnelle" },
+  { label: "Logo SN SOSUCO", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg", section: "Marques" },
+  { label: "Logo COBIFA", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg", section: "Marques" },
+  { label: "Logo Imperial Tobacco", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png", section: "Marques" },
+  { label: "Logo SN CITEC", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg", section: "Marques" },
+  { label: "Logo GMF Etalon", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ff5444a02_gmb.jpg", section: "Marques" },
+];
+
+async function urlToJpegBlob(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob(resolve, "image/jpeg", 0.92);
+    };
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
+async function downloadAllPhotos(dbRecords, onProgress) {
+  // Build full list: dynamic slots + static images
+  const dynamicRows = ALL_SLOTS.map(({ slot, label }) => {
     const rec = dbRecords.find(r => r.slot === slot);
     const url = rec?.image_url || DEFAULT_IMAGES[slot] || "";
     const section = SECTIONS.find(s => s.slots.some(sl => sl.slot === slot))?.label || "";
-    return { slot, label, section, url, custom: !!rec?.image_url };
+    return { filename: `${section.replace(/[^a-z0-9]/gi, "_")}_${slot}.jpg`, label, section, url };
   }).filter(r => r.url);
 
-  // 1. Export JSON catalog
-  const json = JSON.stringify(rows, null, 2);
-  const jsonBlob = new Blob([json], { type: "application/json" });
-  const jsonUrl = URL.createObjectURL(jsonBlob);
-  const a = document.createElement("a");
-  a.href = jsonUrl;
-  a.download = "gmo-site-images.json";
-  a.click();
-  URL.revokeObjectURL(jsonUrl);
+  const staticRows = STATIC_IMAGES.map(({ label, url, section }) => ({
+    filename: `${section.replace(/[^a-z0-9]/gi, "_")}_${label.replace(/[^a-z0-9]/gi, "_")}.jpg`,
+    label, section, url,
+  }));
+
+  const allRows = [...dynamicRows, ...staticRows];
+  let downloaded = 0;
+
+  for (const row of allRows) {
+    const blob = await urlToJpegBlob(row.url);
+    if (blob) {
+      const objUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = objUrl;
+      a.download = row.filename;
+      a.click();
+      URL.revokeObjectURL(objUrl);
+      // Small delay to avoid browser blocking multiple downloads
+      await new Promise(r => setTimeout(r, 300));
+    }
+    downloaded++;
+    onProgress(downloaded, allRows.length);
+  }
 }
 
 export default function SiteImagesManager() {
@@ -183,6 +232,7 @@ export default function SiteImagesManager() {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("hero");
   const [exporting, setExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState({ current: 0, total: 0 });
 
   useEffect(() => {
     base44.entities.SiteImages.list("order", 200).then(data => {
@@ -215,12 +265,19 @@ export default function SiteImagesManager() {
           <p className="text-[11px] text-obsidian/40 font-body mt-0.5">Modifiez les images de chaque section. Les changements sont pris en compte immédiatement.</p>
         </div>
         <button
-          onClick={async () => { setExporting(true); await downloadAllPhotos(dbRecords); setExporting(false); }}
+          onClick={async () => {
+            setExporting(true);
+            setExportProgress({ current: 0, total: 0 });
+            await downloadAllPhotos(dbRecords, (current, total) => setExportProgress({ current, total }));
+            setExporting(false);
+          }}
           disabled={exporting || loading}
           className="flex items-center gap-1.5 bg-obsidian text-white text-xs font-heading font-bold px-4 py-2 rounded-xl hover:bg-obsidian/80 transition-colors disabled:opacity-50 cursor-pointer flex-shrink-0"
         >
           {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-          Exporter les photos
+          {exporting && exportProgress.total > 0
+            ? `${exportProgress.current}/${exportProgress.total} JPEG…`
+            : "Exporter tout en JPEG"}
         </button>
       </div>
 
