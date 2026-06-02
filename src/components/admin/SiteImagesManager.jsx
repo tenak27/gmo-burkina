@@ -63,7 +63,10 @@ function ImageSlot({ slot, label, dbRecord, onSave }) {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const arrayBuffer = await file.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const res = await base44.functions.invoke("uploadImageToDrive", { fileBase64: base64, mimeType: file.type, slot, label });
+    const file_url = res.data.file_url;
     setUrl(file_url);
     setUploading(false);
     await handleSave(file_url);
