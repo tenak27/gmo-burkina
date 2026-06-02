@@ -9,7 +9,7 @@ const FLEET_ITEMS = [
   title: "Camion de distribution",
   category: "Transport",
   description: "Flotte de camions réfrigérés pour la distribution en zone urbaine",
-  image: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9d8d82728_Gemini_Generated_Image_6gbfb96gbfb96gbf.png",
   withLogo: false
 },
 {
@@ -25,7 +25,7 @@ const FLEET_ITEMS = [
   title: "Camionnette de vente ambulante",
   category: "Commercial",
   description: "Véhicules de représentation commerciale équipés de stocks",
-  image: "https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
   withLogo: true
 },
 {
@@ -33,7 +33,7 @@ const FLEET_ITEMS = [
   title: "Centre de stockage produits",
   category: "Infrastructure",
   description: "Entrepôts spécialisés avec système de gestion automatisé",
-  image: "https://gmobfaso.com/assets/img/a-propos/a-propos-4.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png",
   withLogo: false
 },
 {
@@ -41,7 +41,7 @@ const FLEET_ITEMS = [
   title: "Moto-taxi de livraison express",
   category: "Logistique",
   description: "Motos équipées pour les livraisons rapides en zone urbaine",
-  image: "https://gmobfaso.com/assets/img/slides/slide-2.jpg",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1e2be0905_generated_51987d61.png",
   withLogo: true
 },
 {
@@ -77,7 +77,7 @@ function FleetCard({ item, index, isInView, onOpen }) {
       {item.withLogo &&
       <div className="absolute top-3 right-3 opacity-60 group-hover:opacity-80 transition-opacity">
           <img
-          src="https://gmobfaso.com/assets/img/logo-gmo-white.png"
+          src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/47050d727_logo-gmo2x-EVZXLeXs.png"
           alt="GMO"
           className="h-8 w-auto brightness-0 invert" />
         
@@ -140,7 +140,7 @@ function LightboxModal({ item, onClose }) {
           {item.withLogo &&
           <div className="absolute bottom-4 right-4 opacity-70">
               <img
-              src="https://gmobfaso.com/assets/img/logo-gmo-white.png"
+              src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/47050d727_logo-gmo2x-EVZXLeXs.png"
               alt="GMO"
               className="h-12 w-auto brightness-0 invert" />
             

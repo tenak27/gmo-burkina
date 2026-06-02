@@ -19,7 +19,6 @@ import ResellerSpace from './pages/ResellerSpace';
 import VuexyFormDemo from './pages/VuexyFormDemo';
 import VendeursAdmin from './pages/VendeursAdmin';
 import VendeurSpace from './pages/VendeurSpace';
-import Vitrine from './pages/Vitrine';
 // Add page imports here
 
 // Redirects authenticated user to their correct space
@@ -74,7 +73,6 @@ const AuthenticatedApp = () => {
       <Route path="/vuexy-demo" element={<VuexyFormDemo />} />
       <Route path="/vendeurs" element={<VendeursAdmin />} />
       <Route path="/vendeur" element={<VendeurSpace />} />
-      <Route path="/vitrine" element={<Vitrine />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

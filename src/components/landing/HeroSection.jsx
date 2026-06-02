@@ -3,13 +3,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronDown, Phone, LogIn, Menu, X, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { useSiteImages } from "@/hooks/useSiteImages";
+import { base44 } from "@/api/base44Client";
 
-const PANELS_BASE = [
-  { slot: "hero_slide_1", label: "DISTRIBUTION", sub: "Nationale & Internationale", tagline: "Livraisons partout au Burkina Faso", color: "#1A7A2E" },
-  { slot: "hero_slide_2", label: "TRANSPORT", sub: "Logistique de pointe", tagline: "Flotte moderne, délais garantis", color: "#CC1717" },
-  { slot: "hero_slide_3", label: "QUALITÉ", sub: "Produits locaux certifiés", tagline: "Excellence & responsabilité", color: "#F5C400" },
-  { slot: "hero_slide_4", label: "EXPANSION", sub: "Afrique de l'Ouest", tagline: "Côte d'Ivoire · Mali · Niger", color: "#1A7A2E" },
+const PANELS = [
+  {
+    img: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
+    label: "DISTRIBUTION",
+    sub: "Nationale & Internationale",
+    tagline: "Livraisons partout au Burkina Faso",
+    color: "#1A7A2E",
+  },
+  {
+    img: "https://gmobfaso.com/assets/img/slides/slide-2.jpg",
+    label: "TRANSPORT",
+    sub: "Logistique de pointe",
+    tagline: "Flotte moderne, délais garantis",
+    color: "#CC1717",
+  },
+  {
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg",
+    label: "QUALITÉ",
+    sub: "Produits locaux certifiés",
+    tagline: "Excellence & responsabilité",
+    color: "#F5C400",
+  },
+  {
+    img: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c25f1b164_Gemini_Generated_Image_7tq8x97tq8x97tq8.png",
+    label: "EXPANSION",
+    sub: "Afrique de l'Ouest",
+    tagline: "Côte d'Ivoire · Mali · Niger",
+    color: "#1A7A2E",
+  },
 ];
 
 const TICKER = ["DISTRIBUTION NATIONALE", "OUAGA", "BOBO DIOULASSO", "OUAHIGOUYA", "DORI", "BOROMO", "DIEBOUGOU", "PÔ", "BANFORA", "DÉDOUGOU", "KOUDOUGOU", "FADA N'GOURMA", "KAYA", "GAOUA", "BURKINA FASO", "CÔTE D'IVOIRE · MALI · NIGER"];
@@ -27,9 +51,6 @@ export default function HeroSection() {
   const [autoIdx, setAutoIdx] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
-  const { getImage } = useSiteImages();
-
-  const PANELS = PANELS_BASE.map(p => ({ ...p, img: getImage(p.slot) }));
 
   useEffect(() => {
     if (hovered !== null) return;
@@ -76,7 +97,7 @@ export default function HeroSection() {
             {/* Logo */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
               <img
-                src="https://gmobfaso.com/assets/img/logo-gmo-white.png"
+                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
                 alt="GMO"
                 className="h-10 w-auto object-contain brightness-0 invert"
               />

@@ -1,39 +1,47 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { base44 } from "@/api/base44Client";
+
 
 const WHATSAPP = "https://wa.me/22670213831";
 
+// Mappe category DB → catégories affichées
+const CATEGORY_MAP = {
+  "hamilton": "Cigarettes",
+  "excellence": "Cigarettes",
+  "dunhill": "Cigarettes",
+  "farine de blé gmf etalon": "Embauche",
+  "farine gmf": "Alimentaire",
+  "farine": "Alimentaire",
+  "huile sn citec": "Alimentaire",
+  "huile savor soja": "Alimentaire",
+  "huile savor graine": "Alimentaire",
+  "huile savor": "Alimentaire",
+  "sucre": "Alimentaire",
+  "sosuco": "Alimentaire",
+  "savon citec": "Hygiène",
+  "savon n°": "Hygiène",
+  "cobifa axe": "Alimentaire",
+  "cobifa chewngun": "Alimentaire",
+  "cobifa": "Alimentaire",
+  "tourteaux": "Embauche",
+  "tourtaux": "Embauche",
+  "betail": "Embauche",
+  "son de blé": "Embauche",
+  "aliment bétail": "Embauche",
+  "aliment de betail": "Embauche",
+};
+
+const getCategoryForProduct = (name) => {
+  const normalized = name.toLowerCase();
+  for (const [key, cat] of Object.entries(CATEGORY_MAP)) {
+    if (normalized.includes(key)) return cat;
+  }
+  return "Alimentaire";
+};
+
 const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
-
-const IMG_SOSUCO   = "https://gmobfaso.com/assets/img/partenaires/sosuco.jpg";
-const IMG_COBIFA   = "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg";
-const IMG_IMPERIAL = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png";
-const IMG_CITEC    = "https://gmobfaso.com/assets/img/partenaires/citec.jpg";
-const IMG_GMF      = "https://gmobfaso.com/assets/img/partenaires/gmf.jpg";
-
-// ─── Catalogue statique ───────────────────────────────────────────────────────
-const PRODUCTS = [
-  // Cigarettes
-  { name: "Hamilton", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
-  { name: "Excellence", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
-  { name: "Dunhill", category: "Cigarettes", image: IMG_IMPERIAL, details: [] },
-  // Alimentaire
-  { name: "Sucre SOSUCO", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/sucre-sosuco.jpg", details: ["Prix : Sur demande"] },
-  { name: "Huile SN CITEC", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-citec.jpg", details: ["Prix : Sur demande"] },
-  { name: "Huile Savor Soja", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-savor-soja.jpg", details: ["Prix : Sur demande"] },
-  { name: "Huile Savor Graine", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/huile-savor-graine.jpg", details: ["Prix : Sur demande"] },
-  { name: "Farine GMF", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/farine-gmf.jpg", details: ["Prix : Sur demande"] },
-  { name: "COBIFA AXE", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/cobifa-axe.jpg", details: ["Prix : Sur demande"] },
-  { name: "COBIFA Chewingum", category: "Alimentaire", image: "https://gmobfaso.com/assets/img/produits/cobifa-chewingum.jpg", details: ["Prix : Sur demande"] },
-  // Hygiène
-  { name: "Savon CITEC", category: "Hygiène", image: "https://gmobfaso.com/assets/img/produits/savon-citec.jpg", details: ["Prix : Sur demande"] },
-  // Embauche / Élevage
-  { name: "Farine de Blé GMF Etalon", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/farine-ble-gmf.jpg", details: ["Prix : Sur demande"] },
-  { name: "Son de Blé", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/son-ble.jpg", details: ["Prix : Sur demande"] },
-  { name: "Tourteaux SN CITEC", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/tourteaux-citec.jpg", details: ["Prix : Sur demande"] },
-  { name: "Aliment Bétail", category: "Embauche", image: "https://gmobfaso.com/assets/img/produits/aliment-betail.jpg", details: ["Prix : Sur demande"] },
-];
 
 const CIG_TARIFS = [
   { label: "Carton", sub: "25 cartouches", price: "275 000", icon: "📦" },
@@ -134,6 +142,68 @@ export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeCategory, setActiveCategory] = useState("Tous");
+  const [dbProducts, setDbProducts] = useState([]);
+
+  // Charger les produits depuis la base de données
+  useEffect(() => {
+    base44.entities.Product.list("display_order", 200)
+      .then(data => {
+        const activeProducts = (data || []).filter(p => p.is_active !== false && p.show_on_vitrine !== false);
+        setDbProducts(activeProducts);
+      })
+      .catch(err => {
+        console.error("Erreur chargement produits:", err);
+        setDbProducts([]);
+      });
+  }, []);
+
+  // Map DB category to display category
+  const DB_CATEGORY_MAP = {
+    "tabac": "Cigarettes",
+    "alimentaire": "Alimentaire",
+    "hygiene": "Hygiène",
+    "embauche": "Embauche",
+  };
+
+  // Produits de la base de données avec images réelles
+  const PRODUCTS_FROM_DB = dbProducts.map(p => {
+    const name = p.name.toLowerCase();
+    
+    // Utiliser la catégorie de la base de données si disponible, sinon utiliser le mapping automatique
+    const category = p.category && DB_CATEGORY_MAP[p.category] ? DB_CATEGORY_MAP[p.category] : getCategoryForProduct(p.name);
+    
+    // Vérifier les marques avec logos spécifiques
+    const isSosuco = name.includes("sosuco");
+    const isCobifa = name.includes("cobifa");
+    const isImperialTobacco = name.includes("hamilton") || name.includes("excellence") || name.includes("dunhill");
+    const isSnCitecProducts = name.includes("savon citec") || name.includes("tourtaux");
+    const isGmfEtalon = name.includes("farine de blé gmf etalon") || name.includes("son de blé");
+    
+    const soscoImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
+    const cobifaImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
+    const imperialImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png";
+    const snCitecImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg";
+    const gmfEtalonImage = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ff5444a02_gmb.jpg";
+    
+    return {
+      name: p.name,
+      category: category,
+      brand: p.name.split(" ")[0],
+      description: p.description || "Produit de qualité",
+      unit_price: p.unit_price || null,
+      details: [
+        p.unit ? `Unité : ${p.unit}` : "Conditionnement standard",
+        p.unit_price ? `Prix : ${p.unit_price.toLocaleString()} FCFA` : "Prix sur demande",
+        p.stock_quantity !== undefined ? `Stock : ${p.stock_quantity}` : "En stock",
+      ].filter(Boolean),
+      image: isSosuco ? soscoImage : (isCobifa ? cobifaImage : (isImperialTobacco ? imperialImage : (isSnCitecProducts ? snCitecImage : (isGmfEtalon ? gmfEtalonImage : (p.image_url || "https://images.unsplash.com/photo-1574080532925-1d5e8daf2d13?w=400&h=300&fit=crop"))))),
+    };
+  });
+
+  // Supprimer les doublons par nom de produit
+  const PRODUCTS = PRODUCTS_FROM_DB.filter(
+    (product, index, self) => index === self.findIndex((p) => p.name === product.name)
+  );
 
   const categories = ["Tous", ...CATEGORIES_ORDER.filter(cat => PRODUCTS.some(p => p.category === cat))];
 
