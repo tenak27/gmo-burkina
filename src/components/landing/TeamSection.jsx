@@ -132,7 +132,7 @@ const EXECUTIVE_BOARD = [
   title: "Président Directeur Général",
   role: "PDG",
   description: "Fondateur et visionnaire du Groupe Madina Oumarou, Hama TRAORE pilote la stratégie de croissance du groupe depuis sa création avec plus de 40 ans d'expertise en distribution.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg",
+  image: "https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg",
   color: "#1A7A2E",
   tag: "Fondateur"
 },
@@ -141,7 +141,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable Commercial",
   role: "RC",
   description: "En charge du développement des ventes, de la relation client et de l'expansion du réseau de distribution à travers le Burkina Faso.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg",
+  image: "https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg",
   color: "#CC1717",
   tag: "Ventes & Croissance"
 },
@@ -150,7 +150,7 @@ const EXECUTIVE_BOARD = [
   title: "Responsable des Ventes",
   role: "RV",
   description: "En charge de la gestion des équipes commerciales et du développement du portefeuille clients sur l'ensemble du territoire.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png",
+  image: "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg",
   color: "#1A7A2E",
   tag: "Équipe Commerciale"
 }];
@@ -164,7 +164,7 @@ const OPERATIONAL_TEAM = [
   desc: "PDG et direction exécutive pilotant la stratégie du groupe",
   kpi: "40+ ans d'expertise",
   accent: "#1A7A2E",
-  bgImage: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1a0a79b3c_Gemini_Generated_Image_b8kbkwb8kbkwb8kb.png"
+  bgImage: "https://gmobfaso.com/assets/img/a-propos/a-propos-6.jpg"
 },
 {
   dept: "Commercial & Ventes",

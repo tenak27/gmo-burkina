@@ -6,8 +6,8 @@ export const DEFAULT_IMAGES = {
   // Hero slides
   hero_slide_1: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
   hero_slide_2: "https://gmobfaso.com/assets/img/slides/slide-2.jpg",
-  hero_slide_3: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/9a00481b3_a-propos-6.jpg",
-  hero_slide_4: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c25f1b164_Gemini_Generated_Image_7tq8x97tq8x97tq8.png",
+  hero_slide_3: "https://gmobfaso.com/assets/img/a-propos/a-propos-6.jpg",
+  hero_slide_4: "https://gmobfaso.com/assets/img/slides/slide-1.jpg",
   // About
   about_pdg: "https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg",
   about_siege: "https://gmobfaso.com/assets/img/a-propos/a-propos-2.jpg",

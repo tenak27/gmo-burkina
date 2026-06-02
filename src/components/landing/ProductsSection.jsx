@@ -6,11 +6,11 @@ const WHATSAPP = "https://wa.me/22670213831";
 
 const CATEGORIES_ORDER = ["Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
-const IMG_SOSUCO   = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg";
-const IMG_COBIFA   = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg";
-const IMG_IMPERIAL = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png";
-const IMG_CITEC    = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg";
-const IMG_GMF      = "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ff5444a02_gmb.jpg";
+const IMG_SOSUCO   = "https://gmobfaso.com/assets/img/partenaires/sosuco.jpg";
+const IMG_COBIFA   = "https://gmobfaso.com/assets/img/partenaires/cobifa.jpg";
+const IMG_IMPERIAL = "https://gmobfaso.com/assets/img/partenaires/imperial.png";
+const IMG_CITEC    = "https://gmobfaso.com/assets/img/partenaires/citec.jpg";
+const IMG_GMF      = "https://gmobfaso.com/assets/img/partenaires/gmf.jpg";
 
 // ─── Catalogue statique ───────────────────────────────────────────────────────
 const PRODUCTS = [

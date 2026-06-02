@@ -76,7 +76,7 @@ export default function HeroSection() {
             {/* Logo */}
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
               <img
-                src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
+                src="https://gmobfaso.com/assets/img/logo-gmo-white.png"
                 alt="GMO"
                 className="h-10 w-auto object-contain brightness-0 invert"
               />

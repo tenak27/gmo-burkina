@@ -163,17 +163,11 @@ const ALL_SLOTS = SECTIONS.flatMap(s => s.slots);
 
 // Static images used elsewhere on the site
 const STATIC_IMAGES = [
-  { label: "Logo GMO blanc", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png", section: "Logo" },
-  { label: "Logo GMO couleur", url: "https://gmobfaso.com/assets/img/logo-gmo-white.png", section: "Logo" },
-  { label: "PDG Hama TRAORE", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/54507cccd_a-propos-1.jpg", section: "Équipe" },
-  { label: "Responsable Commercial", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/7966bc145_a-propos-3.jpg", section: "Équipe" },
-  { label: "Responsable des Ventes", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/50ca5b66a_Capturedcran2026-05-2511424PM.png", section: "Équipe" },
-  { label: "Direction Générale BG", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1a0a79b3c_Gemini_Generated_Image_b8kbkwb8kbkwb8kb.png", section: "Équipe Opérationnelle" },
-  { label: "Logo SN SOSUCO", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/a07c14446_SN-SOSUCO_Logo.jpg", section: "Marques" },
-  { label: "Logo COBIFA", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87c9905a4_df17408e-8ab1-4f74-b8df-9b78417b22b4.jpeg", section: "Marques" },
-  { label: "Logo Imperial Tobacco", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/1336cac69_IMG_0553.png", section: "Marques" },
-  { label: "Logo SN CITEC", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg", section: "Marques" },
-  { label: "Logo GMF Etalon", url: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ff5444a02_gmb.jpg", section: "Marques" },
+  { label: "Logo GMO blanc", url: "https://gmobfaso.com/assets/img/logo-gmo-white.png", section: "Logo" },
+  { label: "PDG Hama TRAORE", url: "https://gmobfaso.com/assets/img/a-propos/a-propos-1.jpg", section: "Équipe" },
+  { label: "Responsable Commercial", url: "https://gmobfaso.com/assets/img/a-propos/a-propos-3.jpg", section: "Équipe" },
+  { label: "Responsable des Ventes", url: "https://gmobfaso.com/assets/img/a-propos/a-propos-5.jpg", section: "Équipe" },
+  { label: "Direction Générale BG", url: "https://gmobfaso.com/assets/img/a-propos/a-propos-6.jpg", section: "Équipe Opérationnelle" },
 ];
 
 async function urlToJpegBlob(url) {
