@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { DEFAULT_IMAGES, invalidateSiteImagesCache } from "@/hooks/useSiteImages";
-import { Upload, Loader2, X, RotateCcw } from "lucide-react";
+
+import { Upload, Loader2, X, RotateCcw, Download } from "lucide-react";
+import { DEFAULT_IMAGES as DEFAULTS } from "@/hooks/useSiteImages";
 
 const SECTIONS = [
   {
@@ -154,10 +156,33 @@ function ImageSlot({ slot, label, dbRecord, onSave }) {
   );
 }
 
+// Collect all slots across all sections
+const ALL_SLOTS = SECTIONS.flatMap(s => s.slots);
+
+async function downloadAllPhotos(dbRecords) {
+  const rows = ALL_SLOTS.map(({ slot, label }) => {
+    const rec = dbRecords.find(r => r.slot === slot);
+    const url = rec?.image_url || DEFAULT_IMAGES[slot] || "";
+    const section = SECTIONS.find(s => s.slots.some(sl => sl.slot === slot))?.label || "";
+    return { slot, label, section, url, custom: !!rec?.image_url };
+  }).filter(r => r.url);
+
+  // 1. Export JSON catalog
+  const json = JSON.stringify(rows, null, 2);
+  const jsonBlob = new Blob([json], { type: "application/json" });
+  const jsonUrl = URL.createObjectURL(jsonBlob);
+  const a = document.createElement("a");
+  a.href = jsonUrl;
+  a.download = "gmo-site-images.json";
+  a.click();
+  URL.revokeObjectURL(jsonUrl);
+}
+
 export default function SiteImagesManager() {
   const [dbRecords, setDbRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("hero");
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     base44.entities.SiteImages.list("order", 200).then(data => {
@@ -184,9 +209,19 @@ export default function SiteImagesManager() {
 
   return (
     <div className="space-y-5">
-      <div>
-        <h3 className="font-heading text-base font-bold text-obsidian">Images du site vitrine</h3>
-        <p className="text-[11px] text-obsidian/40 font-body mt-0.5">Modifiez les images de chaque section. Les changements sont pris en compte immédiatement.</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="font-heading text-base font-bold text-obsidian">Images du site vitrine</h3>
+          <p className="text-[11px] text-obsidian/40 font-body mt-0.5">Modifiez les images de chaque section. Les changements sont pris en compte immédiatement.</p>
+        </div>
+        <button
+          onClick={async () => { setExporting(true); await downloadAllPhotos(dbRecords); setExporting(false); }}
+          disabled={exporting || loading}
+          className="flex items-center gap-1.5 bg-obsidian text-white text-xs font-heading font-bold px-4 py-2 rounded-xl hover:bg-obsidian/80 transition-colors disabled:opacity-50 cursor-pointer flex-shrink-0"
+        >
+          {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+          Exporter les photos
+        </button>
       </div>
 
       {/* Section tabs */}
