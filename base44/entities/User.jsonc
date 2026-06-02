@@ -21,5 +21,6 @@
       ],
       "default": "client"
     }
-  }
+  },
+  "required": []
 }
