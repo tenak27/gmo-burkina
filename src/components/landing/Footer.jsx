@@ -29,7 +29,7 @@ export default function Footer() {
   const scrollTo = (id) => document.querySelector(`#${id}`)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <footer className="bg-[#0F0F11] border-t border-white/[0.05] overflow-hidden relative">
+    <footer className="bg-slate-900 border-t border-white/[0.05] overflow-hidden relative">
       {/* Glow accents */}
       <div className="absolute top-0 left-1/4 w-96 h-32 bg-gmo-green/8 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-64 h-24 bg-gmo-red/6 rounded-full blur-3xl pointer-events-none" />
