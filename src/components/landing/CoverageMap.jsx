@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 
 const CITIES = [
   { name: "Ouagadougou", lat: 12.3714, lng: -1.5197, status: "active", role: "Siège Social & Hub Principal", details: "Centre de distribution principal, siège de GMO" },
+  { name: "Ouahigouya", lat: 13.5728, lng: -2.4249, status: "active", role: "Antenne Régionale", details: "Centre Nord, hub de distribution et stockage régional" },
   { name: "Bobo-Dioulasso", lat: 11.177, lng: -4.2979, status: "active", role: "Antenne Régionale", details: "2ème ville du Burkina, hub de distribution Ouest" },
   { name: "Diébougou", lat: 10.9618, lng: -3.2514, status: "active", role: "Point de Distribution", details: "Couverture de la région du Sud-Ouest" },
   { name: "Pô", lat: 11.175, lng: -1.147, status: "active", role: "Point de Distribution", details: "Couverture de la région du Centre-Sud" },
