@@ -42,7 +42,7 @@ export default function Footer() {
           <div>
             <img src="https://gmobfaso.com/assets/img/logo-gmo-white.png"
               alt="GMO" className="h-9 brightness-0 invert opacity-85 mb-4" />
-            <p className="font-body text-xs text-white/35 leading-relaxed mb-4">
+            <p className="font-body text-xs text-white/80 leading-relaxed mb-4">
               Leader de la distribution au Burkina Faso. Transport, logistique, qualité.
             </p>
             <div className="flex items-center gap-1.5 mb-4">
@@ -61,35 +61,35 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Navigation</p>
+            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/70 mb-4">Navigation</p>
             <div className="space-y-2">
               {NAV.map(link => (
                 link.href
-                  ? <Link key={link.href} to={link.href} className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">{link.label}</Link>
-                  : <button key={link.id} onClick={() => scrollTo(link.id)} className="block text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">{link.label}</button>
+                  ? <Link key={link.href} to={link.href} className="block text-xs font-body text-white/70 hover:text-gmo-green transition-colors duration-200">{link.label}</Link>
+                  : <button key={link.id} onClick={() => scrollTo(link.id)} className="block text-xs font-body text-white/70 hover:text-gmo-green transition-colors duration-200">{link.label}</button>
               ))}
             </div>
           </div>
 
           {/* Portails */}
           <div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Portails</p>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/70 mb-4">Portails</p>
            <div className="space-y-2">
              <button onClick={() => base44.auth.redirectToLogin('/chauffeur', { locale: "fr" })}
-               className="flex items-center gap-1.5 text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
+               className="flex items-center gap-1.5 text-xs font-body text-white/70 hover:text-gmo-green transition-colors duration-200">
                <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
                Portail Chauffeurs
              </button>
              <button onClick={() => base44.auth.redirectToLogin('/vendeur', { locale: "fr" })}
-               className="flex items-center gap-1.5 text-xs font-body text-white/35 hover:text-gmo-green transition-colors duration-200">
+               className="flex items-center gap-1.5 text-xs font-body text-white/70 hover:text-gmo-green transition-colors duration-200">
                <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
                Portail Ambulants
              </button>
            </div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-3 mt-5">Légal</p>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/70 mb-3 mt-5">Légal</p>
            <div className="space-y-1.5">
              {["Mentions légales", "Confidentialité", "CGV"].map(l => (
-               <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/25 hover:text-white/55 transition-colors">
+               <a key={l} href="#" className="flex items-center gap-1.5 text-xs font-body text-white/60 hover:text-white/80 transition-colors">
                  <FileText className="w-2.5 h-2.5 opacity-50" />{l}
                </a>
              ))}
@@ -98,25 +98,25 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Contact</p>
+            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/70 mb-4">Contact</p>
             <div className="space-y-3">
               <div className="flex items-start gap-2.5">
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="w-3 h-3 text-gmo-green" />
                 </div>
-                <p className="font-body text-xs text-white/35 leading-relaxed">Siège : Dapoya, Point de vente Kwame Kruma<br />Avenue Yennega, Ouagadougou, BF</p>
+                <p className="font-body text-xs text-white/75 leading-relaxed">Siège : Dapoya, Point de vente Kwame Kruma<br />Avenue Yennega, Ouagadougou, BF</p>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-3 h-3 text-gmo-green" />
                 </div>
-                <a href="tel:+22601181717" className="font-body text-xs text-white/35 hover:text-gmo-green transition-colors">+226 01 18 17 17</a>
+                <a href="tel:+22601181717" className="font-body text-xs text-white/75 hover:text-gmo-green transition-colors">+226 01 18 17 17</a>
               </div>
               <div className="flex items-center gap-2.5">
                 <div className="w-6 h-6 rounded-lg bg-gmo-green/10 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-3 h-3 text-gmo-green" />
                 </div>
-                <a href="mailto:infos@gmoburkina.com" className="font-body text-xs text-white/35 hover:text-gmo-green transition-colors">infos@gmoburkina.com</a>
+                <a href="mailto:infos@gmoburkina.com" className="font-body text-xs text-white/75 hover:text-gmo-green transition-colors">infos@gmoburkina.com</a>
               </div>
             </div>
           </div>
@@ -124,13 +124,13 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/[0.05] pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-body text-[10px] text-white/15">
-            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/15 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <button onClick={() => base44.auth.redirectToLogin('/client', { locale: "fr" })} className="text-white/15 cursor-default" title="Connexion cachée">T</button><button onClick={() => base44.auth.redirectToLogin('/admin', { locale: "fr" })} className="text-white/15 cursor-default hover:text-white/20 transition-colors" title="Espace employé">ous droits réservés</button>
+          <p className="font-body text-[10px] text-white/50">
+            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/50 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <button onClick={() => base44.auth.redirectToLogin('/client', { locale: "fr" })} className="text-white/50 cursor-default" title="Connexion cachée">T</button><button onClick={() => base44.auth.redirectToLogin('/admin', { locale: "fr" })} className="text-white/50 cursor-default hover:text-white/70 transition-colors" title="Espace employé">ous droits réservés</button>
           </p>
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3 text-gmo-green/40" />
-            <p className="font-body text-[10px] text-white/15">
-              Conçu par <a href="https://iamtechnology.store" target="_blank" rel="noopener noreferrer" className="text-gmo-green/55 font-semibold hover:text-gmo-green transition-colors">IAM TECHNOLOGY</a> · <span className="text-white/25">Armand Olivier KONATE</span>
+            <p className="font-body text-[10px] text-white/50">
+              Conçu par <a href="https://iamtechnology.store" target="_blank" rel="noopener noreferrer" className="text-gmo-green/70 font-semibold hover:text-gmo-green transition-colors">IAM TECHNOLOGY</a> · <span className="text-white/60">Armand Olivier KONATE</span>
             </p>
           </div>
         </div>
