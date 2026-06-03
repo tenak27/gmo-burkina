@@ -114,94 +114,94 @@ export default function CatalogSection() {
 
   return (
     <section id="catalogue" className="bg-concrete py-24 lg:py-32">
-      <div ref={ref} className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Header */}
-        <div className="mb-10">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            className="font-body text-xs uppercase tracking-[0.3em] text-gmo-red block mb-4"
-          >
-            Notre catalogue
-          </motion.span>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.2 }}
-                className="font-heading text-4xl lg:text-5xl font-bold text-obsidian"
-              >
-                NOS PRODUITS
-              </motion.h2>
-              <motion.div
-                initial={{ width: 0 }}
-                animate={isInView ? { width: 80 } : {}}
-                transition={{ delay: 0.4, duration: 0.6 }}
-                className="h-[2px] bg-gmo-green mt-6"
-              />
-            </div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.5 }}
-              className="font-body text-sm text-obsidian/50 max-w-sm"
-            >
-              Alimentaire, hygiène, confiserie et élevage — une gamme complète distribuée à travers le Burkina Faso.
-            </motion.p>
-          </div>
-        </div>
+      
 
-        {/* Category Filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5 }}
-          className="flex flex-wrap gap-3 mb-12"
-        >
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`font-body text-xs uppercase tracking-widest px-5 py-2.5 border transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-gmo-green text-white border-gmo-green"
-                  : "border-obsidian/15 text-obsidian/60 hover:border-gmo-green hover:text-gmo-green"
-              }`}
-            >
-              {cat === "all" ? "Tous" : CATEGORY_LABELS[cat] || cat}
-              {cat !== "all" && (
-                <span className="ml-2 opacity-50">
-                  {products.filter((p) => p.category === cat).length}
-                </span>
-              )}
-            </button>
-          ))}
-        </motion.div>
 
-        {/* Products Grid */}
-        {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden animate-pulse">
-                <div className="aspect-[4/3] bg-gray-100" />
-                <div className="p-4 space-y-2">
-                  <div className="h-3 bg-gray-100 rounded w-3/4" />
-                  <div className="h-3 bg-gray-100 rounded w-1/2" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {filtered.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} isInView={isInView} />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </section>);
+
 
 
 
