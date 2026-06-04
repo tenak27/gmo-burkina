@@ -42,7 +42,7 @@ const MEDIA_ITEMS = [
   date: "10 avril 2026",
   title: "Nouveau partenariat stratégique avec SN CITEC",
   summary: "GMO Burkina renforce son portefeuille de produits alimentaires en signant un partenariat stratégique avec SN CITEC, leader régional de l'huile végétale.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ae4dea557_generated_image.png",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/4f07aa79b_generated_image.png",
   tag: "Partenariat",
   tagColor: "text-amber-400 bg-amber-400/10 border-amber-400/20",
   featured: false,
