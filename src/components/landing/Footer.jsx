@@ -53,7 +53,7 @@ export default function Footer() {
                 </a>
               )}
             </div>
-            <a href="https://wa.me/22601181717" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/+22601181717" target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 bg-gmo-green/12 border border-gmo-green/25 text-gmo-green text-xs px-3 py-2 rounded-full hover:bg-gmo-green hover:text-white transition-all duration-300 hover:shadow-md hover:shadow-gmo-green/20">
               <MessageCircle className="w-3 h-3" /> WhatsApp
             </a>

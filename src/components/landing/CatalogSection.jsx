@@ -76,7 +76,7 @@ function ProductCard({ product, index, isInView }) {
             <p className="text-[10px] text-obsidian/30 font-body">{product.unit || "unité"}</p>
           </div>
           <a
-            href={`https://wa.me/22676211633?text=Bonjour%20GMO%2C%20je%20souhaite%20commander%20:%20${encodeURIComponent(product.name)}`}
+            href={`https://wa.me/22601181717?text=Bonjour%20GMO%2C%20je%20souhaite%20commander%20:%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 bg-obsidian text-white text-[11px] font-heading font-bold px-3 py-1.5 rounded-xl hover:bg-gmo-green transition-colors duration-200">
