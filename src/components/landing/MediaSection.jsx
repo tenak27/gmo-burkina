@@ -17,10 +17,10 @@ const MEDIA_ITEMS = [
 {
   type: "communique",
   category: "Communiqué",
-  date: "3 mai 2026",
-  title: "Lancement officiel de la nouvelle marque Farine du Sahel",
-  summary: "GMO annonce le lancement commercial de sa farine 100% locale, fruit d'un partenariat avec des producteurs burkinabè, disponible dès maintenant chez tous nos revendeurs.",
-  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5839b0e84_generated_image.png",
+  date: "Bientôt",
+  title: "Prochainement : Nouveaux produits Madina Oumarou",
+  summary: "GMO prépare le lancement de sa nouvelle gamme de produits premium Madina Oumarou. Huiles végétales, condiments et essentiels culinaires fabriqués selon les plus hauts standards de qualité. À découvrir très bientôt chez vos revendeurs.",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/678f80d25_huile.jpg",
   tag: "Marques propres",
   tagColor: "text-gmo-green bg-gmo-green/10 border-gmo-green/20",
   featured: false
