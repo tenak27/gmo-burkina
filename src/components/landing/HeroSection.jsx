@@ -114,7 +114,7 @@ export default function HeroSection() {
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="font-body text-sm text-white/60 hover:text-white transition-colors relative group"
+                  className="font-body text-sm text-white/75 hover:text-white transition-colors relative group"
                 >
                   {link.label}
                   <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-white/60 group-hover:w-full transition-all duration-300 rounded-full" />
@@ -133,14 +133,14 @@ export default function HeroSection() {
                 <>
                   <Link
                     to={dashLink.to}
-                    className="flex items-center gap-2 text-white/65 font-heading font-semibold text-sm hover:text-white border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:bg-white/8 transition-all"
+                    className="flex items-center gap-2 text-white/80 font-heading font-semibold text-sm hover:text-white border border-white/20 px-4 py-2 rounded-lg hover:border-white/50 hover:bg-white/8 transition-all"
                   >
                     <User className="w-3.5 h-3.5" />
                     {dashLink.label}
                   </Link>
                   <button
                     onClick={() => logout()}
-                    className="font-body text-xs text-white/30 hover:text-white/70 transition-colors"
+                    className="font-body text-xs text-white/50 hover:text-white/80 transition-colors"
                   >
                     Déco.
                   </button>
