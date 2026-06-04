@@ -20,7 +20,7 @@ const MEDIA_ITEMS = [
   date: "3 mai 2026",
   title: "Lancement officiel de la nouvelle marque Farine du Sahel",
   summary: "GMO annonce le lancement commercial de sa farine 100% locale, fruit d'un partenariat avec des producteurs burkinabè, disponible dès maintenant chez tous nos revendeurs.",
-  image: "https://images.unsplash.com/photo-1586524206569-79def14b9017?w=800&h=600&fit=crop",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5839b0e84_generated_image.png",
   tag: "Marques propres",
   tagColor: "text-gmo-green bg-gmo-green/10 border-gmo-green/20",
   featured: false
@@ -42,7 +42,7 @@ const MEDIA_ITEMS = [
   date: "10 avril 2026",
   title: "Nouveau partenariat stratégique avec SN CITEC",
   summary: "GMO Burkina renforce son portefeuille de produits alimentaires en signant un partenariat stratégique avec SN CITEC, leader régional de l'huile végétale.",
-  image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/ae4dea557_generated_image.png",
   tag: "Partenariat",
   tagColor: "text-amber-400 bg-amber-400/10 border-amber-400/20",
   featured: false,
@@ -57,7 +57,7 @@ const MEDIA_ITEMS = [
   date: "25 mars 2026",
   title: "Journée RSE : Distribution de kits scolaires dans 5 écoles",
   summary: "Dans le cadre de ses engagements sociaux, GMO a distribué 300 kits scolaires complets à des élèves de 5 écoles primaires de Ouagadougou.",
-  image: "https://images.unsplash.com/photo-1427504494785-cdcd02f8e815?w=800&h=600&fit=crop",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/87ba94dd6_generated_image.png",
   tag: "RSE",
   tagColor: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
   featured: false
@@ -68,7 +68,7 @@ const MEDIA_ITEMS = [
   date: "15 mars 2026",
   title: "GMO déploie son ERP pour une gestion 100% numérique",
   summary: "La mise en service de notre nouveau système ERP intégré marque une étape majeure dans la transformation digitale du groupe, couvrant ventes, stock, logistique et finance.",
-  image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
+  image: "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/b416043e1_generated_image.png",
   tag: "Digital",
   tagColor: "text-purple-400 bg-purple-400/10 border-purple-400/20",
   featured: false
