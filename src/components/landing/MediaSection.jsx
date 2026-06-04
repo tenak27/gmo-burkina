@@ -47,8 +47,8 @@ const MEDIA_ITEMS = [
   tagColor: "text-amber-400 bg-amber-400/10 border-amber-400/20",
   featured: false,
   logos: [
-  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png",
-  "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0a/SN_CITEC_logo.png/320px-SN_CITEC_logo.png"]
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/dbd96d28b_logo-gmo2x-EVZXLeXs.png",
+  "https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/5455769ac_Logo-2025-taille-normale-300x91.jpg"]
 
 },
 {
@@ -202,6 +202,13 @@ export default function MediaSection() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-obsidian/60 to-transparent" />
+                    {item.logos && item.logos.length === 2 && (
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-3 bg-obsidian/80 backdrop-blur-sm p-2.5 rounded-lg">
+                        <img src={item.logos[0]} alt="GMO" className="h-7 w-auto object-contain brightness-0 invert" />
+                        <span className="text-white/40 font-bold">×</span>
+                        <img src={item.logos[1]} alt="SN CITEC" className="h-7 w-auto object-contain" />
+                      </div>
+                    )}
                     <div className="absolute top-3 left-3">
                       <span className={`text-[9px] font-heading uppercase tracking-widest border px-2 py-0.5 rounded-full ${item.tagColor}`}>{item.tag}</span>
                     </div>
