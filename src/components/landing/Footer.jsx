@@ -72,20 +72,18 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Portails */}
+          {/* Contact RH */}
           <div>
-           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Portails</p>
+           <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-4">Ressources Humaines</p>
            <div className="space-y-2">
-             <button onClick={() => base44.auth.redirectToLogin('/chauffeur', { locale: "fr" })}
-              className="flex items-center gap-1.5 text-xs font-body text-white/65 hover:text-gmo-green transition-colors duration-200">
+             <Link to="/carrieres" className="flex items-center gap-1.5 text-xs font-body text-white/65 hover:text-gmo-green transition-colors duration-200">
                <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
-               Portail Chauffeurs
-             </button>
-             <button onClick={() => base44.auth.redirectToLogin('/vendeur', { locale: "fr" })}
-              className="flex items-center gap-1.5 text-xs font-body text-white/65 hover:text-gmo-green transition-colors duration-200">
+               Offres d'emploi
+             </Link>
+             <a href="mailto:rh@gmoburkina.com" className="flex items-center gap-1.5 text-xs font-body text-white/65 hover:text-gmo-green transition-colors duration-200">
                <span className="w-1.5 h-1.5 rounded-full bg-gmo-green/50 flex-shrink-0" />
-               Portail Ambulants
-             </button>
+               rh@gmoburkina.com
+             </a>
            </div>
            <p className="font-heading text-[9px] uppercase tracking-[0.3em] text-white/20 mb-3 mt-5">Légal</p>
            <div className="space-y-1.5">
@@ -126,7 +124,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/[0.05] pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-[10px] text-white/45">
-            © {new Date().getFullYear()} Groupe <Link to="/admin" className="text-white/45 hover:text-gmo-green/60 transition-colors">Madina</Link> Oumarou · <button onClick={() => base44.auth.redirectToLogin('/client', { locale: "fr" })} className="text-white/45 cursor-default" title="Connexion cachée">T</button><button onClick={() => base44.auth.redirectToLogin('/admin', { locale: "fr" })} className="text-white/45 cursor-default hover:text-white/60 transition-colors" title="Espace employé">ous droits réservés</button>
+            © {new Date().getFullYear()} Groupe Madina Oumarou · Tous droits réservés
           </p>
           <div className="flex items-center gap-2">
             <Shield className="w-3 h-3 text-gmo-green/40" />

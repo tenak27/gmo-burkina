@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, LogIn, User, ChevronDown, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/lib/AuthContext";
 import { base44 } from "@/api/base44Client";
 
 const NAV_LINKS = [
@@ -43,17 +42,7 @@ export default function Navbar({ heroHeight }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const { user, isAuthenticated, logout } = useAuth();
-
-  useEffect(() => {
-    base44.entities.Product.list("name", 200).then((data) => {
-      const products = (data || []).filter((p) => p.show_on_vitrine && p.is_active !== false);
-      const cats = new Set();
-      products.forEach((p) => cats.add(getCategoryForProduct(p.name)));
-      setCategories(["Tous", ...Array.from(cats)]);
-    }).catch(() => {});
-  }, []);
+  const categories = ["Tous", "Cigarettes", "Alimentaire", "Hygiène", "Embauche"];
 
   useEffect(() => {
     const threshold = heroHeight || window.innerHeight * 0.85;
@@ -79,14 +68,7 @@ export default function Navbar({ heroHeight }) {
     }
   };
 
-  const getDashboardLink = () => {
-    if (!user) return null;
-    if (user.role === "admin") return { to: "/admin", label: "Dashboard Admin" };
-    if (user.role === "detaillant") return { to: "/detaillant", label: "Espace Détaillant" };
-    return { to: "/client", label: "Mon Espace" };
-  };
-
-  const dashLink = getDashboardLink();
+  const dashLink = null;
 
   return (
     <>
@@ -147,23 +129,8 @@ export default function Navbar({ heroHeight }) {
                 className="h-8 w-auto object-contain" />
             </motion.button>
 
-            {/* Right side */}
+            {/* Right side - WhatsApp only */}
             <div className="flex items-center gap-2">
-              {isAuthenticated && dashLink ? (
-                <Link
-                  to={dashLink.to}
-                  className="inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all border border-gmo-green/20">
-                  <User className="w-3.5 h-3.5" />
-                  <span>Mon Espace</span>
-                </Link>
-              ) : (
-                <button
-                  onClick={() => base44.auth.redirectToLogin(window.location.href)}
-                  className="inline-flex items-center gap-1.5 bg-gmo-green/10 hover:bg-gmo-green/20 text-gmo-green font-heading text-xs font-bold px-3.5 py-2 rounded-xl transition-all border border-gmo-green/20">
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>Connexion</span>
-                </button>
-              )}
               <a
                 href="https://wa.me/+22601181717"
                 target="_blank"
@@ -201,31 +168,11 @@ export default function Navbar({ heroHeight }) {
               <div className="bg-gradient-to-r from-gmo-green/5 to-gmo-red/5 border-b border-gray-100 px-6 py-5 fixed top-0 left-0 right-0 max-w-sm z-50">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-heading text-lg font-black text-obsidian">MENU</span>
-                  <div className="flex items-center gap-2">
-                    {isAuthenticated && dashLink ? (
-                      <Link
-                        to={dashLink.to}
-                        onClick={() => setMobileOpen(false)}
-                        className="p-2 text-gmo-green hover:bg-gmo-green/10 rounded-lg transition-all text-xs font-bold flex items-center gap-1">
-                        <User className="w-3.5 h-3.5" />
-                        Mon Espace
-                      </Link>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          base44.auth.redirectToLogin(window.location.href);
-                          setMobileOpen(false);
-                        }}
-                        className="p-2 text-gmo-green hover:bg-gmo-green/10 rounded-lg transition-all text-xs font-bold">
-                        Connexion
-                      </button>
-                    )}
-                    <button
+                  <button
                     onClick={() => setMobileOpen(false)}
                     className="p-2 text-obsidian/50 hover:text-gmo-red hover:bg-gmo-red/10 rounded-xl transition-all cursor-pointer">
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
                 <img
                 src="https://media.base44.com/images/public/69f7094dfbc2429a621ef8cd/c7662a636_logo-gmo2x.png"
@@ -325,34 +272,20 @@ export default function Navbar({ heroHeight }) {
                   </motion.div>
               )}
 
-              {/* Dashboard link for authenticated users */}
-              {isAuthenticated && dashLink &&
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
-                className="mb-2">
-                <Link
-                  to={dashLink.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-3.5 font-heading text-base font-bold text-gmo-green bg-gradient-to-r from-gmo-green/8 to-transparent rounded-xl transition-all">
-                  <div className="flex items-center gap-3">
-                    <User className="w-4 h-4 text-gmo-green" />
-                    Mon Espace
-                  </div>
-                </Link>
 
 
-
-
-
-
-
-                
-              </motion.div>
-              }
-
-              {/* Auth section — connexion jamais visible */}
+              {/* WhatsApp button */}
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <a
+                  href="https://wa.me/+22601181717"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-heading font-bold text-sm px-4 py-3 rounded-xl transition-all shadow-md">
+                  <MessageCircle className="w-4 h-4" />
+                  Contact WhatsApp
+                </a>
+              </div>
+              {/* Removed auth section */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
