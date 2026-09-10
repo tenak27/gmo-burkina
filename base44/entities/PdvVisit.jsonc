@@ -1,0 +1,59 @@
+{
+  "name": "PdvVisit",
+  "type": "object",
+  "properties": {
+    "vendeur_id": {
+      "type": "string",
+      "description": "ID du vendeur ambulant"
+    },
+    "vendeur_nom": {
+      "type": "string",
+      "description": "Nom complet du vendeur"
+    },
+    "pdv_id": {
+      "type": "string",
+      "description": "ID du point de vente"
+    },
+    "pdv_nom": {
+      "type": "string",
+      "description": "Nom du point de vente / client"
+    },
+    "pdv_quartier": {
+      "type": "string"
+    },
+    "arrival_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Heure d'arriv\u00e9e d\u00e9tect\u00e9e (ISO)"
+    },
+    "departure_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Heure de d\u00e9part d\u00e9tect\u00e9e (ISO)"
+    },
+    "duration_seconds": {
+      "type": "number",
+      "default": 0,
+      "description": "Dur\u00e9e du passage en secondes"
+    },
+    "arrival_lat": {
+      "type": "number"
+    },
+    "arrival_lng": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "en_cours",
+        "termine"
+      ],
+      "default": "en_cours"
+    }
+  },
+  "required": [
+    "vendeur_id",
+    "pdv_id",
+    "arrival_time"
+  ]
+}

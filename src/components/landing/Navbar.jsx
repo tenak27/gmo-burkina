@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, LogIn, User, ChevronDown, MessageCircle } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 
@@ -285,37 +285,7 @@ export default function Navbar({ heroHeight }) {
                   Contact WhatsApp
                 </a>
               </div>
-              {/* Removed auth section */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45 }}
-                className="mt-4 pt-4 border-t border-gray-100 hidden">
-                
-                {isAuthenticated ? null :
 
-
-
-
-
-
-
-
-
-
-                <button
-                  onClick={() => {
-                    base44.auth.redirectToLogin(window.location.href);
-                    setMobileOpen(false);
-                  }}
-                  className="w-full px-4 py-3.5 font-heading text-base font-bold text-obsidian bg-gradient-to-r from-obsidian/10 to-transparent rounded-xl hover:from-obsidian/15 transition-all text-left flex items-center gap-3">
-                  <LogIn className="w-4 h-4 text-obsidian" />
-                    Connexion
-                  </button>
-                }
-              </motion.div>
-
-              {/* WhatsApp button - Enhanced */}
               
 
 
