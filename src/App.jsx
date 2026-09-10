@@ -9,8 +9,6 @@ import Home from './pages/Home';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import VerifyDocument from './pages/VerifyDocument';
-import PointageVendeur from './pages/PointageVendeur';
-import Performances from './pages/Performances';
 // Add page imports here
 
 function App() {
@@ -23,8 +21,6 @@ function App() {
             <Route path="/carrieres" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/verify" element={<VerifyDocument />} />
-            <Route path="/pointage" element={<PointageVendeur />} />
-            <Route path="/performances" element={<Performances />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
